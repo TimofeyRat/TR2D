@@ -3,6 +3,7 @@
 int main(int argc, char* argv[])
 {
 	Window::init(argc, argv);
+	Window::setTitle("MapEditor");
 
 	while (Window::isOpen())
 	{

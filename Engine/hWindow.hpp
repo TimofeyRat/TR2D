@@ -107,6 +107,12 @@ public:
 
 	//Get the Programmable part of the window.
 	static Programmable *getProgrammable();
+
+	//Change the title of the window.
+	static void setTitle(sf::String title);
+
+	//Get the title of the window.
+	static sf::String getTitle();
 };
 
 #endif

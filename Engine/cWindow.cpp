@@ -146,3 +146,14 @@ bool Window::hasVar(sf::String name) { return vars.hasVar(name); }
 sf::RenderTarget *Window::getRenderTarget() { return &window; }
 sf::RenderTexture *Window::getScreen() { return &screen; }
 Programmable *Window::getProgrammable() { return &vars; }
+
+void Window::setTitle(sf::String title)
+{
+	window.setTitle(title);
+	setVar("Title", title);
+}
+
+sf::String Window::getTitle()
+{
+	return getVar("Title");
+}
