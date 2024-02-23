@@ -1,0 +1,17 @@
+Item bauble:speed
+ItmName "Ожерелье скорости"
+ItmAnimation res/anims/items.tranim
+ItmCountable 0
+ItmUseable 0
+EndItem
+
+Bauble speed
+BblAnimation res/anims/baubles.tranim
+BblEffect baubleSpeed num 1 0 1 1
+BblDelay 0
+BblOrigin 6 2
+BblScale 2
+BblRotation 0
+BblType Idle
+BblPlacement neckBone
+EndBauble

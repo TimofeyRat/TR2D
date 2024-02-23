@@ -1,0 +1,34 @@
+Animation invGrid
+Frame res/tex/ui/inv/invCell.png 0 0 11 11
+Duration 2
+Scale 1 1
+Repeat 0
+EndAnimation
+
+Animation invChosen
+Frame res/tex/ui/inv/invChosen.png 0 0 11 11
+Duration 2
+Scale 1 1
+Repeat 0
+EndAnimation
+
+Animation acsMenu0
+Texture res/tex/ui/inv/acsMenu.png 22 22 0 2
+Duration 2
+Scale 1 1
+Repeat 0
+EndAnimation
+
+Animation acsMenu1
+Texture res/tex/ui/inv/acsMenu.png 22 22 2 2
+Duration 2
+Scale 1 1
+Repeat 0
+EndAnimation
+
+Animation acsMenu2
+Texture res/tex/ui/inv/acsMenu.png 22 22 4 2
+Duration 2
+Scale 1 1
+Repeat 0
+EndAnimation

@@ -1,0 +1,6 @@
+Animation sticky_blade
+Frame res/tex/items/sticky_blade.png 11 6 15 20
+Duration 1
+Scale -1 -1
+Repeat 1
+EndAnimation

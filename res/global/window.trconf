@@ -1,0 +1,17 @@
+SizeX num 800
+SizeY num 450
+#PosX num 1
+#PosY num 1
+Title str "TR2D 3.0"
+VSync num 1
+Icon str "res/global/icon.png"
+#debug num 1
+invSizeX num 6
+invSizeY num 3
+invCellSize num 11
+invCellInner num 9
+clearClr str "0-0-0-255"
+musicVolume num 0
+sfxVolume num 100
+debug num 0
+Fullscreen num 0

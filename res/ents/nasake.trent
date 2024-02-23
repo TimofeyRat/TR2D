@@ -1,0 +1,28 @@
+#Game data
+Skeleton res/skeletons/nasake.trskeleton
+gameName str Nasake
+Name str "Nasake Hayse"
+HP num 100
+Copyable num 0
+handBone 8
+neckBone 2
+damageCooldown num 1
+
+#Physics data
+speed num 0.5
+maxSpeed num 1
+speedX num 35
+speedY num 2
+friction num 0.5
+mass num 1
+restituion num 0
+staticBody num 0
+angle num 0
+fixedAngle num 1
+
+#Animation
+wl str wl
+wr str wr
+il str idle
+ir str idle
+scale num 3

@@ -1,0 +1,13 @@
+Animation Nasake
+Frame res/tex/characters/nasake.png 0 0 22 18
+Duration 2
+Scale -1 -1
+Repeat 1
+EndAnimation
+
+Animation Eutihey
+Frame res/tex/characters/eutihey.png 2 0 17 17
+Duration 2
+Scale -1 -1
+Repeat 1
+EndAnimation

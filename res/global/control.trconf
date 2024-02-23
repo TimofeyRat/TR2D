@@ -1,0 +1,16 @@
+Controller keyboard
+#Variable [name: str] [default value: num]
+Variable speed 1
+Variable dx 0
+Variable dy 0
+Variable attack 0
+Variable interacting 0
+#Input [type-event-key] [variable name: str] [change type: add[false]/set[true]] [value: num]
+Input key-hold-LShift speed 0 0.5
+Input key-hold-LControl speed 0 -0.5
+Input key-hold-A dx 0 -1
+Input key-hold-D dx 0 1
+Input key-hold-Space dy 1 -1
+Input mouse-hold-Left attack 1 1
+Input key-press-F interacting 1 1
+EndController
