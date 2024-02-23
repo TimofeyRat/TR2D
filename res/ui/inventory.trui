@@ -76,7 +76,7 @@
 		<position type="relative-lerp">0.5 1 0.5 0.95</position>
 		<text name="phrase">
 			<toggle event="talk-active" />
-			<font path="res/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
+			<font path="res/global/font.ttf" idleSize="24" idleOutline="2" activeSize="24" activeOutline="2" sizeChange="set" />
 			<txt type="idle" appear="set"></txt>
 			<txt type="active" appear="typing-20"></txt>
 			<position type="relative-lerp">0.5 1 0.5 0.85</position>
@@ -86,7 +86,7 @@
 		</text>
 		<text name="speaker">
 			<toggle event="talk-active" />
-			<font path="res/global/font.ttf" idleSize="16" idleOutline="2" activeSize="16" activeOutline="2" sizeChange="set" />
+			<font path="res/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
 			<txt type="idle" appear="set"></txt>
 			<txt type="active" appear="set"></txt>
 			<position type="inherit-txt-rel">0.5 1 0.5 0 inventory-dialogue-phrase</position>

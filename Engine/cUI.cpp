@@ -518,6 +518,8 @@ void UI::Frame::Object::handle()
 		txt->activeTxt = txt->idleTxt = phrase->text;
 		//Speaker name
 		speaker->activeTxt = speaker->idleTxt = phrase->speaker;
+		auto clr = Talk::getNameColor(phrase->speaker);
+		speaker->activeClr = {clr.r, clr.g, clr.b, clr.a};
 		//Replies
 		if (phrase->replies.size() < 3) { re3->activeTxt = re3->idleTxt = ""; re3->setVar("acc", 1); re3->active = false; }
 		if (phrase->replies.size() < 2) { re2->activeTxt = re2->idleTxt = ""; re2->setVar("acc", 1); re2->active = false; }

@@ -3,12 +3,21 @@
 
 #include <vector>
 #include <string>
-#include <SFML/System.hpp>
+#include <SFML/Graphics.hpp>
+
+#define PUGIXML_WCHAR_MODE
+#include <pugixml.hpp>
 // #include "hAnimation.hpp"
 
 class Talk
 {
 public:
+	struct SpeakerColor
+	{
+		sf::String name;
+		sf::Color clr;
+		SpeakerColor();
+	};
 	struct Dialogue
 	{
 		struct Phrase
@@ -32,6 +41,7 @@ public:
 		Phrase *getCurrentPhrase();
 	};
 	static std::vector<Dialogue> dialogues;
+	static std::vector<SpeakerColor> nameColors;
 	static sf::String currentDialogue;
 	static bool active;
 	static void init();
@@ -39,6 +49,8 @@ public:
 	static Dialogue *getCurrentDialogue();
 	static bool conditionCheck(sf::String condition);
 	static void restart();
+	static void loadNameColors();
+	static sf::Color getNameColor(sf::String name);
 };
 
 #endif

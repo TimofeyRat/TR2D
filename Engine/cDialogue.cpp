@@ -13,6 +13,7 @@
 bool Talk::active;
 sf::String Talk::currentDialogue;
 std::vector<Talk::Dialogue> Talk::dialogues;
+std::vector<Talk::SpeakerColor> Talk::nameColors;
 
 Talk::Dialogue::Phrase::Reply::Reply()
 {
@@ -67,6 +68,7 @@ void Talk::init()
 	dialogues.clear();
 	currentDialogue = "";
 	active = false;
+	loadNameColors();
 }
 
 void Talk::loadFromFile(std::string filename)
@@ -161,4 +163,51 @@ void Talk::restart()
 	{
 		dialogues[i].currentPhrase = dialogues[i].phrases[0].name;
 	}
+}
+
+void Talk::loadNameColors()
+{
+	nameColors.clear();
+	pugi::xml_document doc;
+	doc.load_file("res/dialogues/colors.trconf");
+	for (auto clr : doc.children())
+	{
+		SpeakerColor sc;
+		sc.name = clr.attribute(L"name").as_string();
+		sf::String type = clr.attribute(L"type").as_string();
+		if (type == "rgb")
+		{
+			auto color = tr::splitStr(clr.text().as_string(), " ");
+			sc.clr = {
+				std::stoi(color[0].toAnsiString()), std::stoi(color[1].toAnsiString()),
+				std::stoi(color[2].toAnsiString()), std::stoi(color[3].toAnsiString())
+			};
+		}
+		else if (type == "hex")
+		{
+			sf::String color = clr.text().as_string();
+			sc.clr = {
+				std::stoi(color.substring(1, 2).toAnsiString(), nullptr, 16),
+				std::stoi(color.substring(3, 2).toAnsiString(), nullptr, 16),
+				std::stoi(color.substring(5, 2).toAnsiString(), nullptr, 16),
+				std::stoi(color.substring(7, 2).toAnsiString(), nullptr, 16)
+			};
+		}
+		nameColors.push_back(sc);
+	}
+}
+
+Talk::SpeakerColor::SpeakerColor()
+{
+	name = "";
+	clr = {0, 0, 0, 0};
+}
+
+sf::Color Talk::getNameColor(sf::String name)
+{
+	for (int i = 0; i < nameColors.size(); i++)
+	{
+		if (nameColors[i].name == name) { return nameColors[i].clr; }
+	}
+	return {0, 0, 0, 0};
 }
