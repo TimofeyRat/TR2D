@@ -4,8 +4,9 @@ gameName str Nasake
 Name str "Nasake Hayse"
 HP num 100
 Copyable num 0
-handBone 8
-neckBone 2
+handBone num 8
+neckBone num 2
+headBone num 1
 damageCooldown num 1
 
 #Physics data

@@ -6,6 +6,7 @@ HP num 100
 Copyable num 0
 handBone num 8
 neckBone num 2
+headBone num 1
 damageCooldown num 0.5
 
 #Physics data
