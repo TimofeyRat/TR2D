@@ -62,7 +62,7 @@ void Bauble::draw(Entity *owner)
 	auto boneName = owner->getVar(bone).num;
 	auto bonePos = owner->getSkeleton()->getBonePoints(boneName);
 	auto boneRot = owner->getSkeleton()->getBoneAngle(boneName);
-	spr.setPosition(bonePos.z, bonePos.w);
+	spr.setPosition(bonePos.x, bonePos.y);
 	spr.setRotation(boneRot + rotation * rot);
 	spr.setOrigin(origin);
 	spr.setScale(scale * rot, scale);
