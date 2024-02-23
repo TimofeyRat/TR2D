@@ -21,9 +21,9 @@ public:
 				Reply(sf::String N, sf::String T, sf::String C = "");
 			};
 			std::vector<Reply> replies;
-			sf::String name, text, condition;
+			sf::String name, text, speaker;
 			Phrase();
-			Phrase(sf::String N, sf::String T, sf::String C = "");
+			Phrase(sf::String N, sf::String T, sf::String S);
 		};
 		std::vector<Phrase> phrases;
 		sf::String name, currentPhrase;

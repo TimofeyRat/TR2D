@@ -30,14 +30,14 @@ Talk::Dialogue::Phrase::Reply::Reply(sf::String N, sf::String T, sf::String C)
 Talk::Dialogue::Phrase::Phrase()
 {
 	replies.clear();
-	name = text = condition = "";
+	name = text = speaker = "";
 }
-Talk::Dialogue::Phrase::Phrase(sf::String N, sf::String T, sf::String C)
+Talk::Dialogue::Phrase::Phrase(sf::String N, sf::String T, sf::String S)
 {
 	replies.clear();
 	name = N;
 	text = T;
-	condition = C;
+	speaker = S;
 }
 
 Talk::Dialogue::Dialogue()
@@ -69,8 +69,6 @@ void Talk::init()
 	active = false;
 }
 
-//Fix the cyrillic
-
 void Talk::loadFromFile(std::string filename)
 {
 	init();
@@ -87,7 +85,7 @@ void Talk::loadFromFile(std::string filename)
 			Dialogue::Phrase p(
 				phrase.attribute(L"name").as_string(),
 				phrase.child_value(L"text"),
-				phrase.attribute(L"condition").as_string()
+				phrase.child_value(L"speaker")
 			);
 			for (auto reply = phrase.first_child(); reply != pugi::xml_node(); reply = reply.next_sibling())
 			{

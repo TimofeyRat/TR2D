@@ -4,6 +4,8 @@
 #include "hWindow.hpp"
 #include "hInput.hpp"
 #include "hInventory.hpp"
+#include "hDialogue.hpp"
+#include "hUI.hpp"
 
 #include <iostream>
 
@@ -652,3 +654,54 @@ void World::throwItem(Inventory::Item itm, Entity *entity)
 World::Control::Control() { entName = ctrlID = ""; }
 
 World::Control::Control(sf::String ent, sf::String ctrl) { entName = ent; ctrlID = ctrl; }
+
+void tr::execute(sf::String cmd)
+{
+	auto args = tr::splitStr(cmd, "-");
+	if (args[0] == "window")
+	{
+		if (args[1] == "close") { Window::close(); }
+	}
+	else if (args[0] == "world")
+	{
+		if (args[1] == "load") { World::loadFromFile(args[2]); }
+		if (args[1] == "playSound")
+		{
+			World::playSound(args[2], {
+				std::stof(args[3].toAnsiString()), std::stof(args[4].toAnsiString())
+			}, std::stof(args[5].toAnsiString()));
+		}
+	}
+	else if (args[0] == "ui")
+	{
+		if (args[1] == "setFrame") { UI::setFrame(args[2]); }
+		else if (args[1] == "load") { UI::loadFromFile(args[2], true); }
+	}
+	else if (args[0] == "talk")
+	{
+		if (args[1] == "setPhrase")
+		{
+			Talk::getCurrentDialogue()->currentPhrase = args[2];
+		}
+		else if (args[1] == "setDialogue")
+		{
+			Talk::currentDialogue = args[2];
+		}
+		else if (args[1] == "active")
+		{
+			Talk::active = std::stoi(args[2].toAnsiString());
+		}
+		else if (args[1] == "load")
+		{
+			Talk::loadFromFile(args[2]);
+		}
+		else if (args[1] == "restart")
+		{
+			Talk::restart();
+		}
+	}
+	else if (args[0] == "input")
+	{
+		if (args[1] == "active") { Input::active = std::stoi(args[2].toAnsiString()); }
+	}
+}

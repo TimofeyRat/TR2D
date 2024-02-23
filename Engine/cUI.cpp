@@ -498,6 +498,7 @@ void UI::Frame::Object::handle()
 	else if (tr::strContains(handler, "dialogue"))
 	{
 		auto *txt = getText("phrase");
+		auto *speaker = getText("speaker");
 		auto *re1 = getText("re1");
 		auto *re2 = getText("re2");
 		auto *re3 = getText("re3");
@@ -509,12 +510,14 @@ void UI::Frame::Object::handle()
 			re2->setVar("acc", 1);
 			re3->activeTxt = re3->idleTxt = "";
 			re3->setVar("acc", 1);
-			txt->active = re1->active = re2->active = re3->active = false;
+			txt->active = speaker->active = re1->active = re2->active = re3->active = false;
 			return;
 		}
 		//Phrase
 		auto *phrase = Talk::getCurrentDialogue()->getCurrentPhrase();
 		txt->activeTxt = txt->idleTxt = phrase->text;
+		//Speaker name
+		speaker->activeTxt = speaker->idleTxt = phrase->speaker;
 		//Replies
 		if (phrase->replies.size() < 3) { re3->activeTxt = re3->idleTxt = ""; re3->setVar("acc", 1); re3->active = false; }
 		if (phrase->replies.size() < 2) { re2->activeTxt = re2->idleTxt = ""; re2->setVar("acc", 1); re2->active = false; }
