@@ -3,7 +3,6 @@
 #include "Engine/hUI.hpp"
 #include "Engine/hWorld.hpp"
 #include "Engine/hInput.hpp"
-
 #include "Engine/hInventory.hpp"
 #include "Engine/hDialogue.hpp"
 #include <iostream>
@@ -24,8 +23,6 @@ int main(int argc, char *argv[])
 		{
 			Inventory::addItem("food:shaurma", UINT16_MAX);
 			Inventory::addItem("food:meat", UINT16_MAX);
-			Inventory::addItem("weapon:sticky_blade");
-			Inventory::addItem("bauble:speed");
 		}
 		Window::update();
 
