@@ -29,12 +29,6 @@ target_link_libraries(TR2D
 
 target_compile_options(TR2D PUBLIC -w -static -D SFML_STATIC)
 
-add_custom_command(TARGET TR2D
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:TR2D>/res)
-
-
-
 project(MapEditor VERSION 0.1 LANGUAGES CXX)
 add_executable(MapEditor mapEditor.cpp
 	Engine/cWindow.cpp
@@ -53,7 +47,3 @@ target_link_libraries(MapEditor
 	box2d)
 
 target_compile_options(MapEditor PUBLIC -w -static -D SFML_STATIC)
-
-add_custom_command(TARGET MapEditor PRE_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/res $<TARGET_FILE_DIR:MapEditor>/res)

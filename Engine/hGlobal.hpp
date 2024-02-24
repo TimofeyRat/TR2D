@@ -2,8 +2,8 @@
 #define SFML_STATIC
 #endif
 
-#ifndef hGlobal
-#define hGlobal
+#ifndef trGlobal
+#define trGlobal
 
 #include <string>
 #include <vector>
