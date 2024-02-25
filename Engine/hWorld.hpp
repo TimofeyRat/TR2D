@@ -94,7 +94,7 @@ private:
 	{
 		Map map;
 		std::vector<Trigger> triggers;
-		std::vector<Entity*> ents;
+		std::vector<Entity> ents;
 		std::vector<SoundPlayer> sounds;
 		std::vector<Light> lights;
 		std::vector<FallenItem> items;
