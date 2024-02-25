@@ -1,12 +1,14 @@
 #include "Engine/hWindow.hpp"
 #include "Engine/hInput.hpp"
 #include "Engine/hGlobal.hpp"
-#include "Engine/hEntity.hpp"
+#include "Engine/hAnimation.hpp"
+#include "Engine/hAssets.hpp"
 
 #include <pugixml.hpp>
 
 #include <iostream>
 #include <filesystem>
+#include <fstream>
 
 class World
 {
@@ -128,16 +130,33 @@ public:
 		{
 			pos = xy;
 			entName = name;
-			for (auto path: std::filesystem::recursive_directory_iterator("res/ents"))
+			for (auto path : std::filesystem::recursive_directory_iterator("res/ents"))
 			{
-				Entity e; e.loadFromFile(path.path().string());
-				if (e.getVar("gameName") == entName)
+				std::ifstream ent(path.path().string());
+				std::string skeletonFile;
+				int bone = -1;
+				while (!ent.eof())
 				{
-					e.getSkeleton()->update();
-					auto *b = e.getSkeleton()->getBone(e.getVar("headBone"));
-					tex.update(*b->tex);
+					std::string line;
+					std::getline(ent, line);
+					auto args = tr::splitStr(line, " ");
+					if (args[0] == "Skeleton") { skeletonFile = args[1]; }
+					if (args[0] == "gameName")
+					{
+						if (args[2] != entName) { skeletonFile = ""; bone = -1; break; }
+					}
+					if (args[0] == "headBone") { bone = std::stoi(args[2].toAnsiString()); }
+				}
+				if (!skeletonFile.empty() && bone != -1)
+				{
+					Skeleton s; s.loadFromFile(skeletonFile);
+					s.update();
+					auto *b = s.getBone(bone);
+					tex.loadFromImage(b->tex->copyToImage());
 					spr.setTexture(tex);
 					spr.setTextureRect(b->spr.getTextureRect());
+					spr.setOrigin(spr.getTextureRect().width / 2, spr.getTextureRect().height / 2);
+					return;
 				}
 			}
 		}
@@ -177,7 +196,6 @@ public:
 			{
 				auto *s = &spawns[i];
 				s->spr.setTexture(s->tex);
-				s->spr.setOrigin((sf::Vector2f)s->tex.getSize() / 2.0f);
 				s->spr.setPosition(s->pos);
 				target->draw(s->spr);
 			}
@@ -242,6 +260,14 @@ public:
 				{std::stof(camOS[0].toAnsiString()), std::stof(camOS[1].toAnsiString())},
 				lvl.child(L"camera").attribute(L"owner").as_string()
 			);
+			for (auto ent : lvl.children(L"entity"))
+			{
+				auto pos = tr::splitStr(ent.attribute(L"pos").as_string(), " ");
+				level.spawns.push_back(Spawner(
+					{std::stof(pos[0].toAnsiString()), std::stof(pos[1].toAnsiString())},
+					ent.attribute(L"name").as_string()
+				));
+			}
 			World::lvls.push_back(level);
 		}
 	}
@@ -291,6 +317,17 @@ public:
 				std::to_string(lvls[i].cam.offset.y)
 			).c_str();
 			cam.append_attribute(L"owner") = lvls[i].cam.owner.toWideString().c_str();
+			//Spawners
+			for (int j = 0; j < lvls[i].spawns.size(); j++)
+			{
+				auto *s = &lvls[i].spawns[j];
+				auto spawner = level.append_child(L"entity");
+				spawner.append_attribute(L"name") = s->entName.toWideString().c_str();
+				spawner.append_attribute(L"pos") = pugi::as_wide(
+					std::to_string(s->pos.x) + " " +
+					std::to_string(s->pos.y)
+				).c_str();
+			}
 		}
 		doc.save_file(pugi::as_wide(filename).c_str());
 	}
@@ -484,6 +521,7 @@ void execute()
 
 int main(int argc, char* argv[])
 {
+	AssetManager::init();
 	Window::init(argc, argv);
 	Window::setTitle("MapEditor");
 	auto uiLeft = Window::getSize().x / 4 * 3;
@@ -546,27 +584,27 @@ int main(int argc, char* argv[])
 
 		float speed = 200;
 		if (!enter && Input::isKeyPressed(sf::Keyboard::LShift)) speed *= 2;
-		if (!enter && Input::isKeyPressed(sf::Keyboard::A)) { cam.move(-speed * Window::getDeltaTime(), 0); }
-		if (!enter && Input::isKeyPressed(sf::Keyboard::D)) { cam.move(speed * Window::getDeltaTime(), 0); }
-		if (!enter && Input::isKeyPressed(sf::Keyboard::W)) { cam.move(0, -speed * Window::getDeltaTime()); }
-		if (!enter && Input::isKeyPressed(sf::Keyboard::S)) { cam.move(0, speed * Window::getDeltaTime()); }
+		if (!enter && Input::isKeyPressed(sf::Keyboard::A) && currentMenu == UI_WORLDINFO) { cam.move(-speed * Window::getDeltaTime(), 0); }
+		if (!enter && Input::isKeyPressed(sf::Keyboard::D) && currentMenu == UI_WORLDINFO) { cam.move(speed * Window::getDeltaTime(), 0); }
+		if (!enter && Input::isKeyPressed(sf::Keyboard::W) && currentMenu == UI_WORLDINFO) { cam.move(0, -speed * Window::getDeltaTime()); }
+		if (!enter && Input::isKeyPressed(sf::Keyboard::S) && currentMenu == UI_WORLDINFO) { cam.move(0, speed * Window::getDeltaTime()); }
 		if (!enter && Input::isKeyPressed(sf::Keyboard::Q) && lvl)
 		{
 			if (currentMenu == UI_LEVELINFO) lvl->map.resize(abs(mPos.x), abs(mPos.y));
 			else if (currentMenu == UI_VISUALS) lvl->cam.offset = (sf::Vector2f)((sf::Vector2i)Input::getMousePos(true));
 		}
-		if (!enter && Input::isKeyPressed(sf::Keyboard::E) && lvl)
+		if (!enter && Input::isKeyPressed(sf::Keyboard::W) && lvl)
 		{
 			if (currentMenu == UI_VISUALS)
 				lvl->cam.view.setSize((sf::Vector2f)((sf::Vector2i)Input::getMousePos(true)) - lvl->cam.view.getCenter() + lvl->cam.view.getSize() / 2.0f);
 		}
-		if (Input::isMBPressed(sf::Mouse::Left))
+		if (Input::isMBPressed(sf::Mouse::Left) && currentMenu == UI_WORLDINFO)
 		{
 			if (lvl && currentMenu == UI_LEVELINFO && Input::getMousePos().x <= uiLeft)
 			if (mPos.x == std::clamp(mPos.x, 0, lvl->map.mapSize.x - 1) &&
 				mPos.y == std::clamp(mPos.y, 0, lvl->map.mapSize.y - 1)) lvl->map.tiles[mPos.x][mPos.y] = currentTile;
 		}
-		else if (Input::isMBPressed(sf::Mouse::Right))
+		else if (Input::isMBPressed(sf::Mouse::Right) && currentMenu == UI_WORLDINFO)
 		{
 			if (lvl && currentMenu == UI_LEVELINFO && Input::getMousePos().x <= uiLeft)
 			if (mPos.x == std::clamp(mPos.x, 0, lvl->map.mapSize.x - 1) &&
@@ -576,6 +614,11 @@ int main(int argc, char* argv[])
 		if (!enter && Input::isKeyJustPressed(sf::Keyboard::Num2)) { currentMenu = UI_LEVELINFO; }
 		if (!enter && Input::isKeyJustPressed(sf::Keyboard::Num3)) { currentMenu = UI_VISUALS; }
 		if (Input::isKeyJustPressed(sf::Keyboard::Enter)) { enter = false; if (!input.getString().isEmpty()) { execute(); } }
+
+		if (Input::isKeyJustPressed(sf::Keyboard::F))
+		{
+			World::lvls[World::currentLevel].spawns.push_back(World::Spawner({100, 100}, "Nasake"));
+		}
 
 		updateUI();
 

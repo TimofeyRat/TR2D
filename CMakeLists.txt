@@ -36,6 +36,8 @@ add_executable(MapEditor mapEditor.cpp
 	Engine/cGlobal.cpp
 	Engine/cAssets.cpp
 	Engine/cProgrammable.cpp
+	Engine/cAnimation.cpp
+	Engine/cAssets.cpp
 	Engine/pugixml.o)
 
 target_link_libraries(MapEditor
