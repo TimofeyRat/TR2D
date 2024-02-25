@@ -5,7 +5,6 @@
 #include <vector>
 #include <string>
 
-#define PUGIXML_WCHAR_MODE
 #include <pugixml.hpp>
 
 class FrameAnimator

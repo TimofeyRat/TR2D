@@ -36,6 +36,21 @@ private:
 		void draw(sf::RenderTarget *target);
 		void resize(int x, int y);
 		sf::Vector2f getPixelSize();
+		void computeRects()
+		{
+			tileRects.clear();
+			const auto texX = tileTex->getSize().x / tileSize.x,
+				texY = tileTex->getSize().y / tileSize.y;
+			for (short id = 0; id < texX * texY; id++)
+			{
+				sf::IntRect r;
+				r.left = (int)(id % texX) * tileSize.x;
+				r.top = (int)(id / texY) * tileSize.y;
+				r.width = tileSize.x;
+				r.height = tileSize.y;
+				tileRects.push_back(r);
+			}
+		}
 	};
 	struct Camera
 	{
@@ -103,7 +118,6 @@ private:
 	static int currentLevel;
 	static sf::RenderTexture screen;
 	static bool active;
-	static sf::Shader shader;
 public:
 	static b2World *world;
 	static void init();

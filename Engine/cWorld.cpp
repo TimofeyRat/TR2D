@@ -9,6 +9,8 @@
 
 #include <iostream>
 
+#include <pugiconfig.hpp>
+
 std::vector<Entity> World::ents;
 sf::RenderTexture World::screen;
 std::vector<World::Level> World::lvls;
@@ -16,7 +18,6 @@ int World::currentLevel;
 b2World *World::world;
 sf::Music World::music;
 bool World::active;
-sf::Shader World::shader;
 
 void World::init()
 {
@@ -40,87 +41,31 @@ void World::init()
 void World::loadFromFile(std::string filename)
 {
 	init();
-	Level level;
-	for (auto line : tr::splitStr(AssetManager::getText(filename), "\n"))
+	pugi::xml_document doc;
+	doc.load_file(pugi::as_wide(filename).c_str());
+	for (auto lvl : doc.children())
 	{
-		auto args = tr::splitStr(line, " ");
-		if (tr::strContains(args[0], "#")) { continue; }
-		else if (tr::strContains(args[0], "EndLevel"))
+		World::Level level;
+		level.name = lvl.attribute(L"name").as_string();
+		auto map = lvl.child(L"map");
+		level.map.tileTex = AssetManager::getTexture(pugi::as_utf8(map.attribute(L"tex").as_string()));
+		auto ts = tr::splitStr(map.attribute(L"tileSize").as_string(), " ");
+		level.map.tileSize = {std::stoi(ts[0].toAnsiString()), std::stoi(ts[1].toAnsiString())};
+		level.map.computeRects();
+		auto ms = tr::splitStr(map.attribute(L"size").as_string(), " ");
+		level.map.resize(std::stoi(ms[0].toAnsiString()), std::stoi(ms[1].toAnsiString()));
+		auto tilemap = tr::splitStr(map.text().as_string(), "x");
+		for (int y = 0; y < level.map.mapSize.y; y++)
 		{
-			lvls.push_back(level);
-			level.reset();
-		}
-		else if (tr::strContains(args[0], "Level"))
-		{
-			level.reset();
-			level.name = args[1];
-		}
-		else if (tr::strContains(args[0], "Map"))
-		{
-			level.map.loadFromFile(args[1]);
-		}
-		else if (tr::strContains(args[0], "Entity"))
-		{
-			auto *e = getEnt(args[1]);
-			if (e == nullptr) { continue; }
-			if (e->getVar("Copyable"))
+			for (int x = 0; x < level.map.mapSize.x; x++)
 			{
-				auto *ent = new Entity();
-				*ent = *e;
-				e = ent;
+				level.map.tiles[x][y] = std::stoi(tilemap[y * level.map.mapSize.x + x].toAnsiString());
 			}
-			e->setPosition({std::stof(args[2].toAnsiString()), std::stof(args[3].toAnsiString())});
-			level.ents.push_back(e);
 		}
-		else if (tr::strContains(args[0], "Gravity"))
-		{
-			level.gravity = {std::stof(args[1].toAnsiString()), std::stof(args[2].toAnsiString())};
-		}
-		else if (tr::strContains(args[0], "Trigger"))
-		{
-			level.triggers.push_back(Trigger({
-				std::stof(args[1].toAnsiString()), std::stof(args[2].toAnsiString()),
-				std::stof(args[3].toAnsiString()), std::stof(args[4].toAnsiString())
-			}, args[5]));
-		}
-		else if (tr::strContains(args[0], "Background"))
-		{
-			level.bgTex = AssetManager::getTexture(args[1]);
-		}
-		else if (tr::strContains(args[0], "Camera"))
-		{
-			level.cam = Camera(
-				{std::stof(args[1].toAnsiString()), std::stof(args[2].toAnsiString())},
-				{std::stof(args[3].toAnsiString()), std::stof(args[4].toAnsiString())},
-				args[5]
-			);
-		}
-		else if (tr::strContains(args[0], "Music"))
-		{
-			level.musicFilename = args[1];
-		}
-		else if (tr::strContains(args[0], "Light"))
-		{
-			Light l;
-			l.pos = sf::Vector2f(
-				std::stof(args[1].toAnsiString()),
-				std::stof(args[2].toAnsiString())
-			);
-			l.dist = std::stof(args[3].toAnsiString());
-			l.clr = sf::Color(
-				std::stoi(args[4].toAnsiString()),
-				std::stoi(args[5].toAnsiString()),
-				std::stoi(args[6].toAnsiString()),
-				255
-			);
-			level.lights.push_back(l);
-		}
-		else if (tr::strContains(args[0], "Control")) { level.controls.push_back({args[1], args[2]}); }
+		level.bgTex = AssetManager::getTexture(pugi::as_utf8(lvl.child(L"background").attribute(L"path").as_string()));
+		level.musicFilename = pugi::as_utf8(lvl.child(L"music").attribute(L"path").as_string());
+		World::lvls.push_back(level);
 	}
-	shader.loadFromMemory(
-		AssetManager::getText("res/global/tr_shader.frag"),
-		sf::Shader::Fragment
-	);
 	active = true;
 }
 
@@ -429,25 +374,7 @@ void World::Level::draw(sf::RenderTarget *target)
 	screen.display();
 	sf::Sprite spr(screen.getTexture());
 	Window::setView(cam.view);
-	if (Window::getVar("Shader"))
-	{
-		shader.setUniform("screen", screen.getTexture());
-		shader.setUniform("screenSize", (sf::Vector2f)screen.getSize());
-		std::vector<sf::Vector2f> lightPos;
-		std::vector<float> lightDist;
-		std::vector<sf::Glsl::Vec4> lightClr;
-		for (int i = 0; i < lights.size(); i++)
-		{
-			lightPos.push_back(lights[i].pos);
-			lightDist.push_back(lights[i].dist);
-			lightClr.push_back(lights[i].clr);
-		}
-		shader.setUniformArray("lightPos", lightPos.data(), tr::clamp(lightPos.size(), 0, 16));
-		shader.setUniformArray("lightDist", lightDist.data(), tr::clamp(lightDist.size(), 0, 16));
-		shader.setUniformArray("lightClr", lightClr.data(), tr::clamp(lightClr.size(), 0, 16));
-		Window::draw(spr, false, &shader);
-	}
-	else Window::draw(spr, false);
+	Window::draw(spr, false);
 	Window::drawScreen();
 	Window::setVar("mouseGameX", Input::getMousePos(true).x);
 	Window::setVar("mouseGameY", Input::getMousePos(true).y);

@@ -1,7 +1,6 @@
 #include "hAnimation.hpp"
 #include "hProgrammable.hpp"
 
-#define PUGIXML_WCHAR_MODE
 #include <pugixml.hpp>
 
 class UI

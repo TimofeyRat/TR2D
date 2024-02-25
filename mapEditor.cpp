@@ -1,8 +1,8 @@
 #include "Engine/hWindow.hpp"
 #include "Engine/hInput.hpp"
 #include "Engine/hGlobal.hpp"
+#include "Engine/hEntity.hpp"
 
-#define PUGIXML_WCHAR_MODE
 #include <pugixml.hpp>
 
 #include <iostream>
@@ -80,6 +80,68 @@ public:
 			}
 		}
 	};
+	struct Camera
+	{
+		sf::View view;
+		sf::String owner;
+		sf::Vector2f offset;
+		Camera()
+		{
+			view = sf::View({0, 0, 0, 0});
+			owner = "";
+			offset = {0, 0};
+		}
+		Camera(sf::Vector2f size, sf::Vector2f os, sf::String name)
+		{
+			view = sf::View({0, 0, size.x, size.y});
+			offset = os;
+			owner = name;
+		}
+		void update(sf::Vector2f mapSize)
+		{
+			auto *e = World::lvls[World::currentLevel].getSpawner(owner);
+			sf::Vector2f pos;
+			if (e == nullptr)
+			{
+				pos = offset;
+			}
+			else
+			{
+				pos = e->pos + offset;
+			}
+			sf::Vector2f min = view.getSize() / 2.0f;
+			sf::Vector2f max = mapSize - (view.getSize() / 2.0f);
+			if (view.getSize().x > mapSize.x) { min.x = max.x = mapSize.x / 2; }
+			if (view.getSize().y > mapSize.y) { min.y = max.y = mapSize.y / 2; }
+			view.setCenter(pos);
+			view.setSize(abs(view.getSize().x), abs(view.getSize().y));
+		}
+	};
+	struct Spawner
+	{
+		sf::Vector2f pos;
+		sf::String entName;
+		sf::Texture tex;
+		sf::Sprite spr;
+		Spawner() { pos = {0, 0}; entName = ""; }
+		Spawner(sf::Vector2f xy, sf::String name)
+		{
+			pos = xy;
+			entName = name;
+			for (auto path: std::filesystem::recursive_directory_iterator("res/ents"))
+			{
+				Entity e; e.loadFromFile(path.path().string());
+				if (e.getVar("gameName") == entName)
+				{
+					e.getSkeleton()->update();
+					auto *b = e.getSkeleton()->getBone(e.getVar("headBone"));
+					tex.update(*b->tex);
+					spr.setTexture(tex);
+					spr.setTextureRect(b->spr.getTextureRect());
+				}
+			}
+		}
+	};
 	struct Level
 	{
 		Map map;
@@ -87,6 +149,9 @@ public:
 		sf::String bgPath;
 		sf::Texture bgTex;
 		sf::Sprite bgSpr;
+		sf::String musicFile;
+		Camera cam;
+		std::vector<Spawner> spawns;
 		Level() { reset(); }
 		void reset()
 		{
@@ -94,7 +159,9 @@ public:
 			bgTex = sf::Texture();
 			bgSpr = sf::Sprite();
 			map.reset();
-			name = "";
+			name = musicFile = "";
+			cam = Camera();
+			spawns.clear();
 		}
 		void draw(sf::RenderTarget *target)
 		{
@@ -106,6 +173,25 @@ public:
 			);
 			target->draw(bgSpr);
 			map.draw(target);
+			for (int i = 0; i < spawns.size(); i++)
+			{
+				auto *s = &spawns[i];
+				s->spr.setTexture(s->tex);
+				s->spr.setOrigin((sf::Vector2f)s->tex.getSize() / 2.0f);
+				s->spr.setPosition(s->pos);
+				target->draw(s->spr);
+			}
+			cam.update(map.getPixelSize());
+			sf::RectangleShape camRect(cam.view.getSize());
+			camRect.setOrigin(camRect.getSize() / 2.0f);
+			camRect.setPosition(cam.view.getCenter());
+			camRect.setFillColor({0, 255, 0, 32});
+			target->draw(camRect);
+		}
+		Spawner *getSpawner(sf::String name)
+		{
+			for (int i = 0; i < spawns.size(); i++) { if (spawns[i].entName == name) { return &spawns[i]; } }
+			return nullptr;
 		}
 	};
 	static std::vector<Level> lvls;
@@ -148,6 +234,14 @@ public:
 			}
 			level.bgPath = lvl.child(L"background").attribute(L"path").as_string();
 			level.bgTex.loadFromFile(level.bgPath);
+			level.musicFile = lvl.child(L"music").attribute(L"path").as_string();
+			auto camSize = tr::splitStr(lvl.child(L"camera").attribute(L"size").as_string(), " ");
+			auto camOS = tr::splitStr(lvl.child(L"camera").attribute(L"offset").as_string(), " ");
+			level.cam = Camera(
+				{std::stof(camSize[0].toAnsiString()), std::stof(camSize[1].toAnsiString())},
+				{std::stof(camOS[0].toAnsiString()), std::stof(camOS[1].toAnsiString())},
+				lvl.child(L"camera").attribute(L"owner").as_string()
+			);
 			World::lvls.push_back(level);
 		}
 	}
@@ -182,6 +276,21 @@ public:
 				}
 			}
 			map.text() = tilemap.substring(0, tilemap.getSize() - 1).toWideString().c_str();
+			//Background node
+			level.append_child(L"background").append_attribute(L"path") = lvls[i].bgPath.toWideString().c_str();
+			//Music node
+			level.append_child(L"music").append_attribute(L"path") = lvls[i].musicFile.toWideString().c_str();
+			//Camera node
+			auto cam = level.append_child(L"camera");
+			cam.append_attribute(L"size") = pugi::as_wide(
+				std::to_string(lvls[i].cam.view.getSize().x) + " " +
+				std::to_string(lvls[i].cam.view.getSize().y)
+			).c_str();
+			cam.append_attribute(L"offset") = pugi::as_wide(
+				std::to_string(lvls[i].cam.offset.x) + " " +
+				std::to_string(lvls[i].cam.offset.y)
+			).c_str();
+			cam.append_attribute(L"owner") = lvls[i].cam.owner.toWideString().c_str();
 		}
 		doc.save_file(pugi::as_wide(filename).c_str());
 	}
@@ -203,6 +312,7 @@ std::string World::file;
 
 #define UI_WORLDINFO 0
 #define UI_LEVELINFO 1
+#define UI_VISUALS 2
 
 //UI_WORLDINFO buttons
 #define BTN_OPENWORLD 0
@@ -211,6 +321,7 @@ std::string World::file;
 #define BTN_SAVEWORLD 3
 #define BTN_CHOOSELEVELID 5
 #define BTN_SETLEVELNAME 6
+#define BTN_SETMUSICFILE 7
 
 //UI_LEVELINFO buttons
 #define BTN_RENAMELEVEL 0
@@ -219,6 +330,11 @@ std::string World::file;
 #define BTN_SETTILETEX 3
 #define BTN_RESIZETILE 4
 #define BTN_SCALEMAP 5
+
+//UI_VISUALS buttons
+#define BTN_MOVECAM 0
+#define BTN_RESIZECAM 1
+#define BTN_SETCAMOWNER 2
 
 sf::Font font;
 
@@ -233,7 +349,7 @@ void updateUI()
 {
 	if (currentMenu == UI_WORLDINFO)
 	{
-		ui.resize(7);
+		ui.resize(8);
 		ui[0] = sf::Text(sf::String("Current file:\n") + World::file, font, 20);
 		ui[1] = sf::Text(sf::String("New level"), font, 20);
 		ui[2] = sf::Text(sf::String("Delete level"), font, 20);
@@ -242,18 +358,31 @@ void updateUI()
 		ui[4] = sf::Text(sf::String("Level count: ") + std::to_string(World::lvls.size()), font, 20);
 		ui[5] = sf::Text(sf::String("Current level ID: ") + std::to_string(World::currentLevel), font, 20);
 		ui[6] = sf::Text(sf::String("Current level name: ") + World::lvls[World::currentLevel].name, font, 20);
+		ui[7] = sf::Text(sf::String("Music file:\n") + World::lvls[World::currentLevel].musicFile, font, 20);
 	}
 	else if (currentMenu == UI_LEVELINFO)
 	{
 		if (!World::lvls.size()) currentMenu = UI_WORLDINFO;
 		auto *lvl = &World::lvls[World::currentLevel];
-		ui.resize(6);
+		ui.resize(7);
 		ui[0] = sf::Text(sf::String("Level name: ") + lvl->name, font, 20);
 		ui[1] = sf::Text(sf::String("Background file:\n") + lvl->bgPath, font, 20);
 		ui[2] = sf::Text(sf::String("Map size: ") + std::to_string(lvl->map.mapSize.x) + " " + std::to_string(lvl->map.mapSize.y), font, 20);
 		ui[3] = sf::Text(sf::String("Tile file:\n") + lvl->map.texPath, font, 20);
 		ui[4] = sf::Text(sf::String("Tile size: ") + std::to_string(lvl->map.tileSize.x) + " " + std::to_string(lvl->map.tileSize.y), font, 20);
 		ui[5] = sf::Text(sf::String("Map scale: ") + std::to_string(lvl->map.scale), font, 20);
+		ui[6] = sf::Text(sf::String("Map pixel size:\n") +
+			std::to_string(lvl->map.getPixelSize().x) + "\n" + std::to_string(lvl->map.getPixelSize().y), font, 20);
+	}
+	else if (currentMenu == UI_VISUALS)
+	{
+		if (!World::lvls.size()) currentMenu = UI_WORLDINFO;
+		auto *lvl = &World::lvls[World::currentLevel];
+		ui.resize(3);
+		ui[0] = sf::Text(sf::String("Camera offset:\n") + std::to_string(lvl->cam.offset.x) + "\n" + std::to_string(lvl->cam.offset.y), font, 20);
+		ui[1] = sf::Text(sf::String("Camera size:\n") +
+			std::to_string(lvl->cam.view.getSize().x) + "\n" + std::to_string(lvl->cam.view.getSize().y), font, 20);
+		ui[2] = sf::Text(sf::String("Camera owner name:\n") + lvl->cam.owner, font, 20);
 	}
 }
 
@@ -273,9 +402,7 @@ void execute()
 	{
 		switch (currentInput)
 		{
-		case BTN_OPENWORLD:
-			World::loadFromFile(cmd);
-			break;
+		case BTN_OPENWORLD: World::loadFromFile(cmd); break;
 		case BTN_NEWLEVEL:
 			World::lvls.push_back(World::Level());
 			World::currentLevel = World::lvls.size() - 1;
@@ -290,15 +417,10 @@ void execute()
 					if (World::currentLevel == World::lvls.size()) World::currentLevel--;
 				}
 			}
-		case BTN_SAVEWORLD:
-			World::save(cmd);
-			break;
-		case BTN_CHOOSELEVELID:
-			World::currentLevel = std::clamp(std::stoi(cmd.toAnsiString()), 0, (int)World::lvls.size() - 1);
-			break;
-		case BTN_SETLEVELNAME:
-			World::lvls[World::currentLevel].name = cmd;
-			break;
+		case BTN_SAVEWORLD: World::save(cmd); break;
+		case BTN_CHOOSELEVELID: World::currentLevel = std::clamp(std::stoi(cmd.toAnsiString()), 0, (int)World::lvls.size() - 1); break;
+		case BTN_SETLEVELNAME: World::lvls[World::currentLevel].name = cmd; break;
+		case BTN_SETMUSICFILE: World::lvls[World::currentLevel].musicFile = cmd; break;
 		default: break;
 		}
 	}
@@ -306,9 +428,7 @@ void execute()
 	{
 		switch (currentInput)
 		{
-		case BTN_RENAMELEVEL:
-			World::lvls[World::currentLevel].name = cmd;
-			break;
+		case BTN_RENAMELEVEL: World::lvls[World::currentLevel].name = cmd; break;
 		case BTN_SETBGPATH:
 			World::lvls[World::currentLevel].bgPath = cmd;
 			World::lvls[World::currentLevel].bgTex.loadFromFile(World::lvls[World::currentLevel].bgPath);
@@ -330,8 +450,29 @@ void execute()
 			};
 			World::lvls[World::currentLevel].map.computeRects();
 			break;
-		case BTN_SCALEMAP:
-			World::lvls[World::currentLevel].map.scale = std::stof(cmd.toAnsiString());
+		case BTN_SCALEMAP: World::lvls[World::currentLevel].map.scale = std::stof(cmd.toAnsiString()); break;
+		default:
+			break;
+		}
+	}
+	else if (currentMenu == UI_VISUALS)
+	{
+		switch (currentInput)
+		{
+		case BTN_MOVECAM:
+			World::lvls[World::currentLevel].cam.offset = {
+				std::stof(tr::splitStr(cmd, " ")[0].toAnsiString()),
+				std::stof(tr::splitStr(cmd, " ")[1].toAnsiString())
+			};
+			break;
+		case BTN_RESIZECAM:
+			World::lvls[World::currentLevel].cam.view.setSize({
+				std::stof(tr::splitStr(cmd, " ")[0].toAnsiString()),
+				std::stof(tr::splitStr(cmd, " ")[1].toAnsiString())
+			});
+			break;
+		case BTN_SETCAMOWNER:
+			World::lvls[World::currentLevel].cam.owner = cmd;
 		default:
 			break;
 		}
@@ -409,9 +550,15 @@ int main(int argc, char* argv[])
 		if (!enter && Input::isKeyPressed(sf::Keyboard::D)) { cam.move(speed * Window::getDeltaTime(), 0); }
 		if (!enter && Input::isKeyPressed(sf::Keyboard::W)) { cam.move(0, -speed * Window::getDeltaTime()); }
 		if (!enter && Input::isKeyPressed(sf::Keyboard::S)) { cam.move(0, speed * Window::getDeltaTime()); }
-		if (!enter && Input::isKeyPressed(sf::Keyboard::Q))
+		if (!enter && Input::isKeyPressed(sf::Keyboard::Q) && lvl)
 		{
-			if (lvl && currentMenu == UI_LEVELINFO) lvl->map.resize(abs(mPos.x), abs(mPos.y));
+			if (currentMenu == UI_LEVELINFO) lvl->map.resize(abs(mPos.x), abs(mPos.y));
+			else if (currentMenu == UI_VISUALS) lvl->cam.offset = (sf::Vector2f)((sf::Vector2i)Input::getMousePos(true));
+		}
+		if (!enter && Input::isKeyPressed(sf::Keyboard::E) && lvl)
+		{
+			if (currentMenu == UI_VISUALS)
+				lvl->cam.view.setSize((sf::Vector2f)((sf::Vector2i)Input::getMousePos(true)) - lvl->cam.view.getCenter() + lvl->cam.view.getSize() / 2.0f);
 		}
 		if (Input::isMBPressed(sf::Mouse::Left))
 		{
@@ -427,6 +574,7 @@ int main(int argc, char* argv[])
 		}
 		if (!enter && Input::isKeyJustPressed(sf::Keyboard::Num1)) { currentMenu = UI_WORLDINFO; }
 		if (!enter && Input::isKeyJustPressed(sf::Keyboard::Num2)) { currentMenu = UI_LEVELINFO; }
+		if (!enter && Input::isKeyJustPressed(sf::Keyboard::Num3)) { currentMenu = UI_VISUALS; }
 		if (Input::isKeyJustPressed(sf::Keyboard::Enter)) { enter = false; if (!input.getString().isEmpty()) { execute(); } }
 
 		updateUI();

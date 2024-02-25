@@ -5,7 +5,6 @@
 #include "hWorld.hpp"
 #include "hWindow.hpp"
 
-#define PUGIXML_WCHAR_MODE
 #include <pugixml.hpp>
 
 #include <iostream>
