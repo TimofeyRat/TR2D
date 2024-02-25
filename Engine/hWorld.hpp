@@ -32,7 +32,6 @@ private:
 		std::string texFilename;
 		Map();
 		void reset();
-		void loadFromFile(std::string filename);
 		void draw(sf::RenderTarget *target);
 		void resize(int x, int y);
 		sf::Vector2f getPixelSize();

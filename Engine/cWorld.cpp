@@ -54,6 +54,7 @@ void World::loadFromFile(std::string filename)
 		level.map.computeRects();
 		auto ms = tr::splitStr(map.attribute(L"size").as_string(), " ");
 		level.map.resize(std::stoi(ms[0].toAnsiString()), std::stoi(ms[1].toAnsiString()));
+		level.map.scale = map.attribute(L"scale").as_float();
 		auto tilemap = tr::splitStr(map.text().as_string(), "x");
 		for (int y = 0; y < level.map.mapSize.y; y++)
 		{
@@ -64,6 +65,13 @@ void World::loadFromFile(std::string filename)
 		}
 		level.bgTex = AssetManager::getTexture(pugi::as_utf8(lvl.child(L"background").attribute(L"path").as_string()));
 		level.musicFilename = pugi::as_utf8(lvl.child(L"music").attribute(L"path").as_string());
+		auto camSize = tr::splitStr(lvl.child(L"camera").attribute(L"size").as_string(), " ");
+		auto camOS = tr::splitStr(lvl.child(L"camera").attribute(L"offset").as_string(), " ");
+		level.cam = Camera(
+			{std::stof(camSize[0].toAnsiString()), std::stof(camSize[1].toAnsiString())},
+			{std::stof(camOS[0].toAnsiString()), std::stof(camOS[1].toAnsiString())},
+			lvl.child(L"camera").attribute(L"owner").as_string()
+		);
 		World::lvls.push_back(level);
 	}
 	active = true;
@@ -138,66 +146,6 @@ void World::Map::reset()
 	tileTex = nullptr;
 	tile = sf::Sprite();
 	tileRects.clear();
-}
-
-void World::Map::loadFromFile(std::string filename)
-{
-	auto file = tr::splitStr(AssetManager::getText(filename), "\n");
-	for (int i = 0; i < file.size(); i++)
-	{
-		auto line = file[i];
-		auto args = tr::splitStr(line, " ");
-		if (args[0].find("#") != std::string::npos) { continue; }
-		else if (args[0].find("MapSize") != std::string::npos)
-		{
-			mapSize = { std::stoi(args[1].toAnsiString()), std::stoi(args[2].toAnsiString()) };
-			tiles.clear();
-		}
-		else if (args[0].find("TileTexture") != std::string::npos)
-		{
-			texFilename = args[1];
-			tileTex = AssetManager::getTexture(texFilename);
-		}
-		else if (args[0].find("TileSize") != std::string::npos)
-		{
-			tileSize = { std::stoi(args[1].toAnsiString()), std::stoi(args[2].toAnsiString())};
-			const auto texX = tileTex->getSize().x / tileSize.x,
-				texY = tileTex->getSize().y / tileSize.y;
-			for (short id = 0; id < texX * texY; id++)
-			{
-				sf::IntRect r;
-				r.left = (int)(id % texX) * tileSize.x;
-				r.top = (int)(id / texY) * tileSize.y;
-				r.width = tileSize.x;
-				r.height = tileSize.y;
-				tileRects.push_back(r);
-			}
-		}
-		else if (args[0].find("TileScale") != std::string::npos)
-		{
-			scale = std::stof(args[1].toAnsiString());
-		}
-		else if (args[0].find("StartMap") != std::string::npos)
-		{
-			args = tr::splitStr(file[++i], " ");
-			std::vector<std::string> wld;
-			while (args[0].find("EndMap") == std::string::npos)
-			{
-				wld.push_back(args[0]);
-				args = tr::splitStr(file[++i], " ");
-			}
-			for (short x = 0; x < mapSize.x; x++)
-			{
-				std::vector<sf::Uint16> blocks;
-				for (short y = 0; y < mapSize.y; y++)
-				{
-					auto b = tr::splitStr(wld[y], "x");
-					blocks.push_back(std::stoi(b[x].toAnsiString()));
-				}
-				tiles.push_back(blocks);
-			}
-		}
-	}
 }
 
 sf::Vector2f World::Map::getPixelSize()
@@ -352,7 +300,7 @@ void World::Level::draw(sf::RenderTarget *target)
 	auto mapSize = map.getPixelSize();
 	if (screen.getSize() != (sf::Vector2u)mapSize) { screen.create(mapSize.x, mapSize.y); }
 	screen.clear();
-	if (bgTex != nullptr) bgSpr.setTexture(*bgTex);
+	if (bgTex != nullptr) bgSpr.setTexture(*bgTex, false);
 	float bgScale = (mapSize.y - map.tileSize.y * map.scale) / bgSpr.getTextureRect().height;
 	bgSpr.setScale(bgScale, bgScale);
 	target->draw(bgSpr);
@@ -370,7 +318,7 @@ void World::Level::draw(sf::RenderTarget *target)
 	{
 		items[i].draw();
 	}
-	cam.update(bgSpr.getGlobalBounds().getSize());
+	cam.update(mapSize);
 	screen.display();
 	sf::Sprite spr(screen.getTexture());
 	Window::setView(cam.view);
@@ -437,7 +385,7 @@ void World::Camera::update(sf::Vector2f mapSize)
 	sf::Vector2f pos;
 	if (e == nullptr)
 	{
-		pos = view.getSize() / 2.0f;
+		pos = offset;
 	}
 	else
 	{
