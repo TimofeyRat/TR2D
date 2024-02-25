@@ -350,6 +350,7 @@ std::string World::file;
 #define UI_WORLDINFO 0
 #define UI_LEVELINFO 1
 #define UI_VISUALS 2
+#define UI_SPAWNERS 3
 
 //UI_WORLDINFO buttons
 #define BTN_OPENWORLD 0
@@ -373,6 +374,12 @@ std::string World::file;
 #define BTN_RESIZECAM 1
 #define BTN_SETCAMOWNER 2
 
+//UI_SPAWNERS buttons
+#define BTN_NEWSPAWNER 1
+#define BTN_DELETESPAWNER 2
+#define BTN_RENAMESPAWNER 3
+#define BTN_MOVESPAWNER 4
+
 sf::Font font;
 
 sf::Text input;
@@ -380,18 +387,20 @@ bool enter = false;
 
 std::vector<sf::Text> ui;
 
-int currentMenu = 0, currentInput = -1;
+int currentMenu = 0, currentInput = -1, currentSpawner = -1;
 
 void updateUI()
 {
 	if (currentMenu == UI_WORLDINFO)
 	{
-		ui.resize(8);
+		currentSpawner = -1;
+		ui.resize(4);
 		ui[0] = sf::Text(sf::String("Current file:\n") + World::file, font, 20);
 		ui[1] = sf::Text(sf::String("New level"), font, 20);
 		ui[2] = sf::Text(sf::String("Delete level"), font, 20);
 		ui[3] = sf::Text(sf::String("Save world"), font, 20);
 		if (!World::lvls.size()) return;
+		ui.resize(8);
 		ui[4] = sf::Text(sf::String("Level count: ") + std::to_string(World::lvls.size()), font, 20);
 		ui[5] = sf::Text(sf::String("Current level ID: ") + std::to_string(World::currentLevel), font, 20);
 		ui[6] = sf::Text(sf::String("Current level name: ") + World::lvls[World::currentLevel].name, font, 20);
@@ -399,7 +408,8 @@ void updateUI()
 	}
 	else if (currentMenu == UI_LEVELINFO)
 	{
-		if (!World::lvls.size()) currentMenu = UI_WORLDINFO;
+		currentSpawner = -1;
+		if (!World::lvls.size()) { currentMenu = UI_WORLDINFO; return; }
 		auto *lvl = &World::lvls[World::currentLevel];
 		ui.resize(7);
 		ui[0] = sf::Text(sf::String("Level name: ") + lvl->name, font, 20);
@@ -413,13 +423,28 @@ void updateUI()
 	}
 	else if (currentMenu == UI_VISUALS)
 	{
-		if (!World::lvls.size()) currentMenu = UI_WORLDINFO;
+		currentSpawner = -1;
+		if (!World::lvls.size()) { currentMenu = UI_WORLDINFO; return; }
 		auto *lvl = &World::lvls[World::currentLevel];
 		ui.resize(3);
 		ui[0] = sf::Text(sf::String("Camera offset:\n") + std::to_string(lvl->cam.offset.x) + "\n" + std::to_string(lvl->cam.offset.y), font, 20);
 		ui[1] = sf::Text(sf::String("Camera size:\n") +
 			std::to_string(lvl->cam.view.getSize().x) + "\n" + std::to_string(lvl->cam.view.getSize().y), font, 20);
 		ui[2] = sf::Text(sf::String("Camera owner name:\n") + lvl->cam.owner, font, 20);
+	}
+	else if (currentMenu == UI_SPAWNERS)
+	{
+		if (!World::lvls.size()) { currentMenu = UI_WORLDINFO; return; }
+		auto *lvl = &World::lvls[World::currentLevel];
+		ui.resize(3);
+		ui[0] = sf::Text(sf::String("Spawners count: ") + std::to_string(lvl->spawns.size()), font, 20);
+		ui[1] = sf::Text(sf::String("New spawner"), font, 20);
+		ui[2] = sf::Text(sf::String("Delete spawner"), font, 20);
+		if (currentSpawner == -1) return;
+		ui.resize(5);
+		auto *s = &lvl->spawns[currentSpawner];
+		ui[3] = sf::Text(sf::String("Spawner name: ") + s->entName, font, 20);
+		ui[4] = sf::Text(sf::String("Spawner position:\n") + std::to_string(s->pos.x) + "\n" + std::to_string(s->pos.y), font, 20);
 	}
 }
 
@@ -514,6 +539,41 @@ void execute()
 			break;
 		}
 	}
+	else if (currentMenu == UI_SPAWNERS)
+	{
+		switch (currentInput)
+		{
+		case BTN_NEWSPAWNER:
+			World::lvls[World::currentLevel].spawns.push_back({{0, 0}, cmd});
+			break;
+		case BTN_DELETESPAWNER:
+			for (int i = 0; i < World::lvls[World::currentLevel].spawns.size(); i++)
+			{
+				if (World::lvls[World::currentLevel].spawns[i].entName == cmd)
+				{
+					World::lvls[World::currentLevel].spawns.erase(World::lvls[World::currentLevel].spawns.begin() + i);
+					if (currentSpawner == World::lvls[World::currentLevel].spawns.size()) currentSpawner--;
+				}
+			}
+			break;
+		case BTN_RENAMESPAWNER:
+			World::lvls[World::currentLevel].spawns[currentSpawner] = World::Spawner(
+				{
+					World::lvls[World::currentLevel].spawns[currentSpawner].pos.x,
+					World::lvls[World::currentLevel].spawns[currentSpawner].pos.y
+				},
+				cmd
+			);
+			break;
+		case BTN_MOVESPAWNER:
+			World::lvls[World::currentLevel].spawns[currentSpawner].pos = {
+				std::stof(tr::splitStr(cmd, " ")[0].toAnsiString()),
+				std::stof(tr::splitStr(cmd, " ")[1].toAnsiString())
+			};
+		default:
+			break;
+		}
+	}
 	input.setString("");
 	enter = false;
 	currentInput = -1;
@@ -590,8 +650,10 @@ int main(int argc, char* argv[])
 		if (!enter && Input::isKeyPressed(sf::Keyboard::S) && currentMenu == UI_WORLDINFO) { cam.move(0, speed * Window::getDeltaTime()); }
 		if (!enter && Input::isKeyPressed(sf::Keyboard::Q) && lvl)
 		{
+			auto mouse = (sf::Vector2f)((sf::Vector2i)Input::getMousePos(true));
 			if (currentMenu == UI_LEVELINFO) lvl->map.resize(abs(mPos.x), abs(mPos.y));
-			else if (currentMenu == UI_VISUALS) lvl->cam.offset = (sf::Vector2f)((sf::Vector2i)Input::getMousePos(true));
+			else if (currentMenu == UI_VISUALS) lvl->cam.offset = mouse;
+			else if (currentMenu == UI_SPAWNERS && currentSpawner != -1) lvl->spawns[currentSpawner].pos = mouse;
 		}
 		if (!enter && Input::isKeyPressed(sf::Keyboard::W) && lvl)
 		{
@@ -610,15 +672,25 @@ int main(int argc, char* argv[])
 			if (mPos.x == std::clamp(mPos.x, 0, lvl->map.mapSize.x - 1) &&
 				mPos.y == std::clamp(mPos.y, 0, lvl->map.mapSize.y - 1)) currentTile = lvl->map.tiles[mPos.x][mPos.y];
 		}
+		if (currentMenu == UI_SPAWNERS && lvl)
+		{
+			if (Input::isMBJustPressed(sf::Mouse::Left) && Input::getMousePos().x <= uiLeft) { currentSpawner = -1; }
+			for (int i = 0; i < lvl->spawns.size(); i++)
+			{
+				if (lvl->spawns[i].spr.getGlobalBounds().contains(Input::getMousePos(true)))
+				{
+					lvl->spawns[i].spr.setColor(sf::Color::White);
+					if (Input::isMBJustPressed(sf::Mouse::Left) && Input::getMousePos().x <= uiLeft) { currentSpawner = i; }
+				}
+				else lvl->spawns[i].spr.setColor({255, 255, 255, 127});
+			}
+			if (currentSpawner != -1) lvl->spawns[currentSpawner].spr.setColor(sf::Color::White);
+		}
 		if (!enter && Input::isKeyJustPressed(sf::Keyboard::Num1)) { currentMenu = UI_WORLDINFO; }
 		if (!enter && Input::isKeyJustPressed(sf::Keyboard::Num2)) { currentMenu = UI_LEVELINFO; }
 		if (!enter && Input::isKeyJustPressed(sf::Keyboard::Num3)) { currentMenu = UI_VISUALS; }
+		if (!enter && Input::isKeyJustPressed(sf::Keyboard::Num4)) { currentMenu = UI_SPAWNERS; }
 		if (Input::isKeyJustPressed(sf::Keyboard::Enter)) { enter = false; if (!input.getString().isEmpty()) { execute(); } }
-
-		if (Input::isKeyJustPressed(sf::Keyboard::F))
-		{
-			World::lvls[World::currentLevel].spawns.push_back(World::Spawner({100, 100}, "Nasake"));
-		}
 
 		updateUI();
 
