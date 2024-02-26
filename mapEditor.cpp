@@ -171,6 +171,7 @@ public:
 		sf::String musicFile;
 		Camera cam;
 		std::vector<Spawner> spawns;
+		sf::Vector2f gravity;
 		Level() { reset(); }
 		void reset()
 		{
@@ -181,6 +182,7 @@ public:
 			name = musicFile = "";
 			cam = Camera();
 			spawns.clear();
+			gravity = {0, 0};
 		}
 		void draw(sf::RenderTarget *target)
 		{
@@ -268,6 +270,11 @@ public:
 					ent.attribute(L"name").as_string()
 				));
 			}
+			auto gravity = lvl.child(L"gravity").attribute(L"value").as_string();
+			level.gravity = {
+				std::stof(tr::splitStr(gravity, " ")[0].toAnsiString()),
+				std::stof(tr::splitStr(gravity, " ")[1].toAnsiString())
+			};
 			World::lvls.push_back(level);
 		}
 	}
@@ -317,6 +324,11 @@ public:
 				std::to_string(lvls[i].cam.offset.y)
 			).c_str();
 			cam.append_attribute(L"owner") = lvls[i].cam.owner.toWideString().c_str();
+			//Gravity
+			level.append_child(L"gravity").append_attribute(L"value") = pugi::as_wide(
+				std::to_string(lvls[i].gravity.x) + " " +
+				std::to_string(lvls[i].gravity.y)
+			).c_str();
 			//Spawners
 			for (int j = 0; j < lvls[i].spawns.size(); j++)
 			{
@@ -360,6 +372,7 @@ std::string World::file;
 #define BTN_CHOOSELEVELID 5
 #define BTN_SETLEVELNAME 6
 #define BTN_SETMUSICFILE 7
+#define BTN_SETGRAVITY 8
 
 //UI_LEVELINFO buttons
 #define BTN_RENAMELEVEL 0
@@ -400,11 +413,13 @@ void updateUI()
 		ui[2] = sf::Text(sf::String("Delete level"), font, 20);
 		ui[3] = sf::Text(sf::String("Save world"), font, 20);
 		if (!World::lvls.size()) return;
-		ui.resize(8);
+		auto *lvl = &World::lvls[World::currentLevel];
+		ui.resize(9);
 		ui[4] = sf::Text(sf::String("Level count: ") + std::to_string(World::lvls.size()), font, 20);
 		ui[5] = sf::Text(sf::String("Current level ID: ") + std::to_string(World::currentLevel), font, 20);
-		ui[6] = sf::Text(sf::String("Current level name: ") + World::lvls[World::currentLevel].name, font, 20);
-		ui[7] = sf::Text(sf::String("Music file:\n") + World::lvls[World::currentLevel].musicFile, font, 20);
+		ui[6] = sf::Text(sf::String("Current level name: ") + lvl->name, font, 20);
+		ui[7] = sf::Text(sf::String("Music file:\n") + lvl->musicFile, font, 20);
+		ui[8] = sf::Text(sf::String("Gravity:\n") + std::to_string(lvl->gravity.x) + " " + std::to_string(lvl->gravity.y), font, 20);
 	}
 	else if (currentMenu == UI_LEVELINFO)
 	{
@@ -455,6 +470,11 @@ void setInput(int buttonID)
 	input.setString(">|");
 }
 
+/*
+	1. Add the gravity setting
+	2. Add triggers
+*/
+
 void execute()
 {
 	if (currentInput == -1) { return; }
@@ -483,6 +503,11 @@ void execute()
 		case BTN_CHOOSELEVELID: World::currentLevel = std::clamp(std::stoi(cmd.toAnsiString()), 0, (int)World::lvls.size() - 1); break;
 		case BTN_SETLEVELNAME: World::lvls[World::currentLevel].name = cmd; break;
 		case BTN_SETMUSICFILE: World::lvls[World::currentLevel].musicFile = cmd; break;
+		case BTN_SETGRAVITY: World::lvls[World::currentLevel].gravity = {
+			std::stof(tr::splitStr(cmd, " ")[0].toAnsiString()),
+			std::stof(tr::splitStr(cmd, " ")[1].toAnsiString())
+		};
+		break;
 		default: break;
 		}
 	}
@@ -581,9 +606,9 @@ void execute()
 
 int main(int argc, char* argv[])
 {
-	AssetManager::init();
 	Window::init(argc, argv);
 	Window::setTitle("MapEditor");
+	AssetManager::init();
 	auto uiLeft = Window::getSize().x / 4 * 3;
 	auto *render = Window::getScreen();
 	render->create(uiLeft, Window::getSize().y);
@@ -662,13 +687,13 @@ int main(int argc, char* argv[])
 		}
 		if (Input::isMBPressed(sf::Mouse::Left) && currentMenu == UI_WORLDINFO)
 		{
-			if (lvl && currentMenu == UI_LEVELINFO && Input::getMousePos().x <= uiLeft)
+			if (lvl && Input::getMousePos().x <= uiLeft)
 			if (mPos.x == std::clamp(mPos.x, 0, lvl->map.mapSize.x - 1) &&
 				mPos.y == std::clamp(mPos.y, 0, lvl->map.mapSize.y - 1)) lvl->map.tiles[mPos.x][mPos.y] = currentTile;
 		}
 		else if (Input::isMBPressed(sf::Mouse::Right) && currentMenu == UI_WORLDINFO)
 		{
-			if (lvl && currentMenu == UI_LEVELINFO && Input::getMousePos().x <= uiLeft)
+			if (lvl && Input::getMousePos().x <= uiLeft)
 			if (mPos.x == std::clamp(mPos.x, 0, lvl->map.mapSize.x - 1) &&
 				mPos.y == std::clamp(mPos.y, 0, lvl->map.mapSize.y - 1)) currentTile = lvl->map.tiles[mPos.x][mPos.y];
 		}

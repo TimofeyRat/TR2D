@@ -79,6 +79,11 @@ void World::loadFromFile(std::string filename)
 			e->setPosition({std::stof(pos[0].toAnsiString()), std::stof(pos[1].toAnsiString())});
 			level.ents.push_back(*e);
 		}
+		auto gravity = lvl.child(L"gravity").attribute(L"value").as_string();
+		level.gravity = {
+			std::stof(tr::splitStr(gravity, " ")[0].toAnsiString()),
+			std::stof(tr::splitStr(gravity, " ")[1].toAnsiString())
+		};
 		World::lvls.push_back(level);
 	}
 	active = true;
