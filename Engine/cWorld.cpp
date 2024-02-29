@@ -101,6 +101,7 @@ void World::loadFromFile(std::string filename)
 				trigger.text().get()
 			));
 		}
+		level.controls.push_back(Control(level.cam.owner, "keyboard"));
 		World::lvls.push_back(level);
 	}
 	active = true;
