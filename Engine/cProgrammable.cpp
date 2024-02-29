@@ -68,3 +68,8 @@ bool Programmable::hasVar(sf::String name)
 	}
 	return false;
 }
+
+const std::vector<Programmable::Variable> Programmable::getVars()
+{
+	return vars;
+}

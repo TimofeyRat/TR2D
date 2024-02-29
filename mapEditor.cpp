@@ -161,6 +161,48 @@ public:
 			}
 		}
 	};
+	struct Trigger : public Programmable
+	{
+		sf::FloatRect rect;
+		sf::RectangleShape hitbox;
+		Trigger()
+		{
+			rect = {0, 0, 0, 0};
+			hitbox = sf::RectangleShape();
+			clear();
+		}
+		Trigger(sf::FloatRect r, sf::String vars)
+		{
+			rect = r;
+			clear();
+			for (auto cmd : tr::splitStr(vars, ";"))
+			{
+				auto args = tr::splitStr(cmd, "=");
+				if (tr::strContains(args[1], "str"))
+				{
+					setVar(args[0], args[2]);
+				}
+				else if (tr::strContains(args[1], "num"))
+				{
+					setVar(args[0], std::stof(args[2].toAnsiString()));
+				}
+			}
+			hitbox.setSize(rect.getSize());
+			hitbox.setRotation(getVar("angle"));
+			hitbox.setOrigin(rect.getSize() / 2.0f);
+			hitbox.setPosition(rect.getPosition() + rect.getSize() / 2.0f);
+			hitbox.setFillColor({0, 0, 0, 0});
+			hitbox.setOutlineColor(sf::Color::Yellow);
+			hitbox.setOutlineThickness(-2);
+		}
+		void update()
+		{
+			hitbox.setSize(rect.getSize());
+			hitbox.setRotation(getVar("angle"));
+			hitbox.setOrigin(rect.getSize() / 2.0f);
+			hitbox.setPosition(rect.getPosition() + rect.getSize() / 2.0f);
+		}
+	};
 	struct Level
 	{
 		Map map;
@@ -172,6 +214,7 @@ public:
 		Camera cam;
 		std::vector<Spawner> spawns;
 		sf::Vector2f gravity;
+		std::vector<Trigger> triggers;
 		Level() { reset(); }
 		void reset()
 		{
@@ -183,6 +226,7 @@ public:
 			cam = Camera();
 			spawns.clear();
 			gravity = {0, 0};
+			triggers.clear();
 		}
 		void draw(sf::RenderTarget *target)
 		{
@@ -200,6 +244,11 @@ public:
 				s->spr.setTexture(s->tex);
 				s->spr.setPosition(s->pos);
 				target->draw(s->spr);
+			}
+			for (int i = 0; i < triggers.size(); i++)
+			{
+				triggers[i].update();
+				target->draw(triggers[i].hitbox);
 			}
 			cam.update(map.getPixelSize());
 			sf::RectangleShape camRect(cam.view.getSize());
@@ -275,6 +324,18 @@ public:
 				std::stof(tr::splitStr(gravity, " ")[0].toAnsiString()),
 				std::stof(tr::splitStr(gravity, " ")[1].toAnsiString())
 			};
+			for (auto trigger : lvl.children(L"trigger"))
+			{
+				auto pos = tr::splitStr(trigger.attribute(L"pos").as_string(), " ");
+				auto size = tr::splitStr(trigger.attribute(L"size").as_string(), " ");
+				level.triggers.push_back(Trigger(
+					{
+						std::stof(pos[0].toAnsiString()), std::stof(pos[1].toAnsiString()),
+						std::stof(size[0].toAnsiString()), std::stof(size[1].toAnsiString())
+					},
+					trigger.text().get()
+				));
+			}
 			World::lvls.push_back(level);
 		}
 	}
@@ -329,6 +390,26 @@ public:
 				std::to_string(lvls[i].gravity.x) + " " +
 				std::to_string(lvls[i].gravity.y)
 			).c_str();
+			//Triggers
+			for (int j = 0; j < lvls[i].triggers.size(); j++)
+			{
+				auto *t = &lvls[i].triggers[j];
+				auto trigger = level.append_child(L"trigger");
+				trigger.append_attribute(L"pos") = pugi::as_wide(
+					std::to_string(t->rect.left) + " " +
+					std::to_string(t->rect.top)
+				).c_str();
+				trigger.append_attribute(L"size") = pugi::as_wide(
+					std::to_string(t->rect.width) + " "+
+					std::to_string(t->rect.height)
+				).c_str();
+				std::vector<sf::String> vars;
+				for (auto var : t->getVars())
+				{
+					vars.push_back(var.name + (var.str.isEmpty() ? sf::String("=num=") + std::to_string(var.num) : sf::String("=str=") + var.str));
+				}
+				trigger.text() = tr::partsToLine(vars, ";").toWideString().c_str();
+			}
 			//Spawners
 			for (int j = 0; j < lvls[i].spawns.size(); j++)
 			{
@@ -363,6 +444,7 @@ std::string World::file;
 #define UI_LEVELINFO 1
 #define UI_VISUALS 2
 #define UI_SPAWNERS 3
+#define UI_TRIGGERS 4
 
 //UI_WORLDINFO buttons
 #define BTN_OPENWORLD 0
@@ -393,6 +475,13 @@ std::string World::file;
 #define BTN_RENAMESPAWNER 3
 #define BTN_MOVESPAWNER 4
 
+//UI_TRIGGERS buttons
+#define BTN_NEWTRIGGER 1
+#define BTN_DELETETRIGGER 2
+#define BTN_MOVETRIGGER 3
+#define BTN_RESIZETRIGGER 4
+#define BTN_SETTRIGGERVAR 5
+
 sf::Font font;
 
 sf::Text input;
@@ -400,13 +489,16 @@ bool enter = false;
 
 std::vector<sf::Text> ui;
 
-int currentMenu = 0, currentInput = -1, currentSpawner = -1;
+int currentMenu = 0,
+	currentInput = -1,
+	currentSpawner = -1,
+	currentTrigger = -1;
 
 void updateUI()
 {
 	if (currentMenu == UI_WORLDINFO)
 	{
-		currentSpawner = -1;
+		currentSpawner = currentTrigger = -1;
 		ui.resize(4);
 		ui[0] = sf::Text(sf::String("Current file:\n") + World::file, font, 20);
 		ui[1] = sf::Text(sf::String("New level"), font, 20);
@@ -423,7 +515,7 @@ void updateUI()
 	}
 	else if (currentMenu == UI_LEVELINFO)
 	{
-		currentSpawner = -1;
+		currentSpawner = currentTrigger = -1;
 		if (!World::lvls.size()) { currentMenu = UI_WORLDINFO; return; }
 		auto *lvl = &World::lvls[World::currentLevel];
 		ui.resize(7);
@@ -438,7 +530,7 @@ void updateUI()
 	}
 	else if (currentMenu == UI_VISUALS)
 	{
-		currentSpawner = -1;
+		currentSpawner = currentTrigger = -1;
 		if (!World::lvls.size()) { currentMenu = UI_WORLDINFO; return; }
 		auto *lvl = &World::lvls[World::currentLevel];
 		ui.resize(3);
@@ -449,6 +541,7 @@ void updateUI()
 	}
 	else if (currentMenu == UI_SPAWNERS)
 	{
+		currentTrigger = -1;
 		if (!World::lvls.size()) { currentMenu = UI_WORLDINFO; return; }
 		auto *lvl = &World::lvls[World::currentLevel];
 		ui.resize(3);
@@ -461,6 +554,28 @@ void updateUI()
 		ui[3] = sf::Text(sf::String("Spawner name: ") + s->entName, font, 20);
 		ui[4] = sf::Text(sf::String("Spawner position:\n") + std::to_string(s->pos.x) + "\n" + std::to_string(s->pos.y), font, 20);
 	}
+	else if (currentMenu == UI_TRIGGERS)
+	{
+		currentSpawner = -1;
+		if (!World::lvls.size()) { currentMenu = UI_WORLDINFO; return; }
+		auto *lvl = &World::lvls[World::currentLevel];
+		ui.resize(3);
+		ui[0] = sf::Text(sf::String("Triggers count: ") + std::to_string(lvl->triggers.size()), font, 20);
+		ui[1] = sf::Text(sf::String("New trigger"), font, 20);
+		ui[2] = sf::Text(sf::String("Delete trigger"), font, 20);
+		if (currentTrigger == -1) return;
+		ui.resize(6);
+		auto *t = &lvl->triggers[currentTrigger];
+		ui[3] = sf::Text(sf::String("Trigger position: \n") + std::to_string(t->rect.left) + "\n" + std::to_string(t->rect.top), font, 20);
+		ui[4] = sf::Text(sf::String("Trigger size: \n") + std::to_string(t->rect.width) + "\n" + std::to_string(t->rect.height), font, 20);
+		auto vars = t->getVars();
+		ui[5] = sf::Text(sf::String("Trigger variables:\n"), font, 20);
+		for (int i = 0; i < vars.size(); i++)
+		{
+			ui[5].setString(ui[5].getString() +
+				vars[i].name + (vars[i].str.isEmpty() ? sf::String("=num=") + std::to_string(vars[i].num) : sf::String("=str=") + vars[i].str) + "\n");
+		}
+	}
 }
 
 void setInput(int buttonID)
@@ -470,16 +585,12 @@ void setInput(int buttonID)
 	input.setString(">|");
 }
 
-/*
-	1. Add the gravity setting
-	2. Add triggers
-*/
-
 void execute()
 {
 	if (currentInput == -1) { return; }
 	auto cmd = input.getString();
 	cmd = cmd.substring(1, cmd.getSize() - 2);
+	auto vars = tr::splitStr(cmd, " ");
 	if (currentMenu == UI_WORLDINFO)
 	{
 		switch (currentInput)
@@ -504,8 +615,8 @@ void execute()
 		case BTN_SETLEVELNAME: World::lvls[World::currentLevel].name = cmd; break;
 		case BTN_SETMUSICFILE: World::lvls[World::currentLevel].musicFile = cmd; break;
 		case BTN_SETGRAVITY: World::lvls[World::currentLevel].gravity = {
-			std::stof(tr::splitStr(cmd, " ")[0].toAnsiString()),
-			std::stof(tr::splitStr(cmd, " ")[1].toAnsiString())
+			std::stof(vars[0].toAnsiString()),
+			std::stof(vars[1].toAnsiString())
 		};
 		break;
 		default: break;
@@ -522,8 +633,8 @@ void execute()
 			break;
 		case BTN_RESIZEMAP:
 			World::lvls[World::currentLevel].map.resize(
-				std::stoi(tr::splitStr(cmd, " ")[0].toAnsiString()),
-				std::stoi(tr::splitStr(cmd, " ")[1].toAnsiString())
+				std::stoi(vars[0].toAnsiString()),
+				std::stoi(vars[1].toAnsiString())
 			);
 		case BTN_SETTILETEX:
 			World::lvls[World::currentLevel].map.texPath = cmd;
@@ -532,8 +643,8 @@ void execute()
 			break;
 		case BTN_RESIZETILE:
 			World::lvls[World::currentLevel].map.tileSize = {
-				std::stoi(tr::splitStr(cmd, " ")[0].toAnsiString()),
-				std::stoi(tr::splitStr(cmd, " ")[1].toAnsiString())
+				std::stoi(vars[0].toAnsiString()),
+				std::stoi(vars[1].toAnsiString())
 			};
 			World::lvls[World::currentLevel].map.computeRects();
 			break;
@@ -548,14 +659,14 @@ void execute()
 		{
 		case BTN_MOVECAM:
 			World::lvls[World::currentLevel].cam.offset = {
-				std::stof(tr::splitStr(cmd, " ")[0].toAnsiString()),
-				std::stof(tr::splitStr(cmd, " ")[1].toAnsiString())
+				std::stof(vars[0].toAnsiString()),
+				std::stof(vars[1].toAnsiString())
 			};
 			break;
 		case BTN_RESIZECAM:
 			World::lvls[World::currentLevel].cam.view.setSize({
-				std::stof(tr::splitStr(cmd, " ")[0].toAnsiString()),
-				std::stof(tr::splitStr(cmd, " ")[1].toAnsiString())
+				std::stof(vars[0].toAnsiString()),
+				std::stof(vars[1].toAnsiString())
 			});
 			break;
 		case BTN_SETCAMOWNER:
@@ -592,9 +703,63 @@ void execute()
 			break;
 		case BTN_MOVESPAWNER:
 			World::lvls[World::currentLevel].spawns[currentSpawner].pos = {
-				std::stof(tr::splitStr(cmd, " ")[0].toAnsiString()),
-				std::stof(tr::splitStr(cmd, " ")[1].toAnsiString())
+				std::stof(vars[0].toAnsiString()),
+				std::stof(vars[1].toAnsiString())
 			};
+			break;
+		default:
+			break;
+		}
+	}
+	else if (currentMenu == UI_TRIGGERS)
+	{
+		switch (currentInput)
+		{
+		case BTN_NEWTRIGGER:
+			World::lvls[World::currentLevel].triggers.push_back(World::Trigger({Input::getMousePos(true), {32, 32}}, cmd));
+			break;
+		case BTN_DELETETRIGGER:
+			for (int i = 0; i < World::lvls[World::currentLevel].triggers.size(); i++)
+			{
+				if (World::lvls[World::currentLevel].triggers[i].getVar("name") == cmd)
+				{
+					World::lvls[World::currentLevel].triggers.erase(World::lvls[World::currentLevel].triggers.begin() + i);
+					if (currentTrigger == World::lvls[World::currentLevel].triggers.size()) currentTrigger--;
+				}
+			}
+			break;
+		case BTN_MOVETRIGGER:
+			World::lvls[World::currentLevel].triggers[currentTrigger].rect = {
+				std::stof(vars[0].toAnsiString()),
+				std::stof(vars[1].toAnsiString()),
+				World::lvls[World::currentLevel].triggers[currentTrigger].rect.width,
+				World::lvls[World::currentLevel].triggers[currentTrigger].rect.height
+			};
+			break;
+		case BTN_RESIZETRIGGER:
+			World::lvls[World::currentLevel].triggers[currentTrigger].rect = {
+				World::lvls[World::currentLevel].triggers[currentTrigger].rect.left,
+				World::lvls[World::currentLevel].triggers[currentTrigger].rect.top,
+				std::stof(vars[0].toAnsiString()),
+				std::stof(vars[1].toAnsiString())
+			};
+			break;
+		case BTN_SETTRIGGERVAR:
+			if (vars[1] == "str")
+			{
+				World::lvls[World::currentLevel].triggers[currentTrigger].setVar(
+					vars[0],
+					vars[2]
+				);
+			}
+			else if (vars[1] == "num")
+			{
+				World::lvls[World::currentLevel].triggers[currentTrigger].setVar(
+					vars[0],
+					std::stof(vars[2].toAnsiString())
+				);
+			}
+			break;
 		default:
 			break;
 		}
@@ -603,6 +768,11 @@ void execute()
 	enter = false;
 	currentInput = -1;
 }
+
+/*
+	2. Добавь изменение отдельных переменных триггера
+	3. Добавь вращение триггера на E(atan2 в помощь)
+*/
 
 int main(int argc, char* argv[])
 {
@@ -679,11 +849,20 @@ int main(int argc, char* argv[])
 			if (currentMenu == UI_LEVELINFO) lvl->map.resize(abs(mPos.x), abs(mPos.y));
 			else if (currentMenu == UI_VISUALS) lvl->cam.offset = mouse;
 			else if (currentMenu == UI_SPAWNERS && currentSpawner != -1) lvl->spawns[currentSpawner].pos = mouse;
+			else if (currentMenu == UI_TRIGGERS && currentTrigger != -1) lvl->triggers[currentTrigger].rect = {
+				mouse,
+				{lvl->triggers[currentTrigger].rect.width, lvl->triggers[currentTrigger].rect.height}
+			};
 		}
 		if (!enter && Input::isKeyPressed(sf::Keyboard::W) && lvl)
 		{
 			if (currentMenu == UI_VISUALS)
 				lvl->cam.view.setSize((sf::Vector2f)((sf::Vector2i)Input::getMousePos(true)) - lvl->cam.view.getCenter() + lvl->cam.view.getSize() / 2.0f);
+			if (currentMenu == UI_TRIGGERS && currentTrigger != -1)
+				lvl->triggers[currentTrigger].rect = {
+					lvl->triggers[currentTrigger].rect.getPosition(),
+					(sf::Vector2f)((sf::Vector2i)Input::getMousePos(true)) - lvl->triggers[currentTrigger].rect.getPosition()
+				};
 		}
 		if (Input::isMBPressed(sf::Mouse::Left) && currentMenu == UI_WORLDINFO)
 		{
@@ -711,10 +890,25 @@ int main(int argc, char* argv[])
 			}
 			if (currentSpawner != -1) lvl->spawns[currentSpawner].spr.setColor(sf::Color::White);
 		}
+		else if (currentMenu == UI_TRIGGERS && lvl)
+		{
+			if (Input::isMBJustPressed(sf::Mouse::Left) && Input::getMousePos().x <= uiLeft) { currentTrigger = -1; }
+			for (int i = 0; i < lvl->triggers.size(); i++)
+			{
+				if (lvl->triggers[i].hitbox.getGlobalBounds().contains(Input::getMousePos(true)))
+				{
+					lvl->triggers[i].hitbox.setFillColor({255, 255, 255, 127});
+					if (Input::isMBJustPressed(sf::Mouse::Left) && Input::getMousePos().x <= uiLeft) { currentTrigger = i; }
+				}
+				else lvl->triggers[i].hitbox.setFillColor({0, 0, 0, 0});
+			}
+			if (currentTrigger != -1) lvl->triggers[currentTrigger].hitbox.setFillColor({255, 255, 255, 127});
+		}
 		if (!enter && Input::isKeyJustPressed(sf::Keyboard::Num1)) { currentMenu = UI_WORLDINFO; }
 		if (!enter && Input::isKeyJustPressed(sf::Keyboard::Num2)) { currentMenu = UI_LEVELINFO; }
 		if (!enter && Input::isKeyJustPressed(sf::Keyboard::Num3)) { currentMenu = UI_VISUALS; }
 		if (!enter && Input::isKeyJustPressed(sf::Keyboard::Num4)) { currentMenu = UI_SPAWNERS; }
+		if (!enter && Input::isKeyJustPressed(sf::Keyboard::Num5)) { currentMenu = UI_TRIGGERS; }
 		if (Input::isKeyJustPressed(sf::Keyboard::Enter)) { enter = false; if (!input.getString().isEmpty()) { execute(); } }
 
 		updateUI();
