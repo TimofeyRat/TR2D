@@ -84,6 +84,18 @@ void World::loadFromFile(std::string filename)
 			std::stof(tr::splitStr(gravity, " ")[0].toAnsiString()),
 			std::stof(tr::splitStr(gravity, " ")[1].toAnsiString())
 		};
+		for (auto trigger : lvl.children(L"trigger"))
+		{
+			auto pos = tr::splitStr(trigger.attribute(L"pos").as_string(), " ");
+			auto size = tr::splitStr(trigger.attribute(L"size").as_string(), " ");
+			level.triggers.push_back(Trigger(
+				{
+					std::stof(pos[0].toAnsiString()), std::stof(pos[1].toAnsiString()),
+					std::stof(size[0].toAnsiString()), std::stof(size[1].toAnsiString())
+				},
+				trigger.text().get()
+			));
+		}
 		World::lvls.push_back(level);
 	}
 	active = true;
