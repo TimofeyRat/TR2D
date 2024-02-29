@@ -215,6 +215,7 @@ public:
 		std::vector<Spawner> spawns;
 		sf::Vector2f gravity;
 		std::vector<Trigger> triggers;
+		sf::FloatRect bgBounds;
 		Level() { reset(); }
 		void reset()
 		{
@@ -227,14 +228,15 @@ public:
 			spawns.clear();
 			gravity = {0, 0};
 			triggers.clear();
+			bgBounds = {0, 0, 0, 0};
 		}
 		void draw(sf::RenderTarget *target)
 		{
 			bgSpr.setTexture(bgTex, true);
-			auto size = map.getPixelSize();
+			bgSpr.setPosition(bgBounds.getPosition());
 			bgSpr.setScale(
-				size.x / bgTex.getSize().x,
-				size.y / bgTex.getSize().y
+				bgBounds.width / bgTex.getSize().x,
+				bgBounds.height / bgTex.getSize().y
 			);
 			target->draw(bgSpr);
 			map.draw(target);
@@ -301,7 +303,13 @@ public:
 					level.map.tiles[x][y] = std::stoi(tilemap[y * level.map.mapSize.x + x].toAnsiString());
 				}
 			}
-			level.bgPath = lvl.child(L"background").attribute(L"path").as_string();
+			auto bg = lvl.child(L"background");
+			level.bgPath = bg.attribute(L"path").as_string();
+			auto bgBounds = tr::splitStr(bg.attribute(L"bounds").as_string(), " ");
+			level.bgBounds = {
+				std::stof(bgBounds[0].toAnsiString()), std::stof(bgBounds[1].toAnsiString()),
+				std::stof(bgBounds[2].toAnsiString()), std::stof(bgBounds[3].toAnsiString())
+			};
 			level.bgTex.loadFromFile(level.bgPath);
 			level.musicFile = lvl.child(L"music").attribute(L"path").as_string();
 			auto camSize = tr::splitStr(lvl.child(L"camera").attribute(L"size").as_string(), " ");
@@ -371,7 +379,12 @@ public:
 			}
 			map.text() = tilemap.substring(0, tilemap.getSize() - 1).toWideString().c_str();
 			//Background node
-			level.append_child(L"background").append_attribute(L"path") = lvls[i].bgPath.toWideString().c_str();
+			auto bg = level.append_child(L"background");
+			bg.append_attribute(L"path") = lvls[i].bgPath.toWideString().c_str();
+			bg.append_attribute(L"bounds") = pugi::as_wide(
+				std::to_string(lvls[i].bgBounds.left) + " " + std::to_string(lvls[i].bgBounds.top) + " " +
+				std::to_string(lvls[i].bgBounds.width) + " " + std::to_string(lvls[i].bgBounds.height)
+			).c_str();
 			//Music node
 			level.append_child(L"music").append_attribute(L"path") = lvls[i].musicFile.toWideString().c_str();
 			//Camera node
@@ -463,6 +476,7 @@ std::string World::file;
 #define BTN_SETTILETEX 3
 #define BTN_RESIZETILE 4
 #define BTN_SCALEMAP 5
+#define BTN_SETBGBOUNDS 7
 
 //UI_VISUALS buttons
 #define BTN_MOVECAM 0
@@ -518,7 +532,7 @@ void updateUI()
 		currentSpawner = currentTrigger = -1;
 		if (!World::lvls.size()) { currentMenu = UI_WORLDINFO; return; }
 		auto *lvl = &World::lvls[World::currentLevel];
-		ui.resize(7);
+		ui.resize(8);
 		ui[0] = sf::Text(sf::String("Level name: ") + lvl->name, font, 20);
 		ui[1] = sf::Text(sf::String("Background file:\n") + lvl->bgPath, font, 20);
 		ui[2] = sf::Text(sf::String("Map size: ") + std::to_string(lvl->map.mapSize.x) + " " + std::to_string(lvl->map.mapSize.y), font, 20);
@@ -527,6 +541,11 @@ void updateUI()
 		ui[5] = sf::Text(sf::String("Map scale: ") + std::to_string(lvl->map.scale), font, 20);
 		ui[6] = sf::Text(sf::String("Map pixel size:\n") +
 			std::to_string(lvl->map.getPixelSize().x) + "\n" + std::to_string(lvl->map.getPixelSize().y), font, 20);
+		ui[7] = sf::Text(sf::String("Background bounds:\n") + 
+			std::to_string(lvl->bgBounds.left) + "\n" +
+			std::to_string(lvl->bgBounds.top) + "\n" +
+			std::to_string(lvl->bgBounds.width) + "\n" +
+			std::to_string(lvl->bgBounds.height), font, 20);
 	}
 	else if (currentMenu == UI_VISUALS)
 	{
@@ -649,6 +668,12 @@ void execute()
 			World::lvls[World::currentLevel].map.computeRects();
 			break;
 		case BTN_SCALEMAP: World::lvls[World::currentLevel].map.scale = std::stof(cmd.toAnsiString()); break;
+		case BTN_SETBGBOUNDS:
+			World::lvls[World::currentLevel].bgBounds = {
+				std::stof(vars[0].toAnsiString()), std::stof(vars[1].toAnsiString()),
+				std::stof(vars[2].toAnsiString()), std::stof(vars[3].toAnsiString())
+			};
+			break;
 		default:
 			break;
 		}
