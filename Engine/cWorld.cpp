@@ -64,6 +64,11 @@ void World::loadFromFile(std::string filename)
 			}
 		}
 		level.bgTex = AssetManager::getTexture(pugi::as_utf8(lvl.child(L"background").attribute(L"path").as_string()));
+		auto bgBounds = tr::splitStr(lvl.child(L"background").attribute(L"bounds").as_string(), " ");
+		level.bgBounds = {
+			std::stof(bgBounds[0].toAnsiString()), std::stof(bgBounds[1].toAnsiString()),
+			std::stof(bgBounds[2].toAnsiString()), std::stof(bgBounds[3].toAnsiString())
+		};
 		level.musicFilename = pugi::as_utf8(lvl.child(L"music").attribute(L"path").as_string());
 		auto camSize = tr::splitStr(lvl.child(L"camera").attribute(L"size").as_string(), " ");
 		auto camOS = tr::splitStr(lvl.child(L"camera").attribute(L"offset").as_string(), " ");
@@ -204,6 +209,7 @@ void World::Level::reset()
 	items.clear();
 	controls.clear();
 	ents.clear();
+	bgBounds = {0, 0, 0, 0};
 }
 
 Entity *World::Level::getEntity(sf::String name)
@@ -320,8 +326,10 @@ void World::Level::draw(sf::RenderTarget *target)
 	if (screen.getSize() != (sf::Vector2u)mapSize) { screen.create(mapSize.x, mapSize.y); }
 	screen.clear();
 	if (bgTex != nullptr) bgSpr.setTexture(*bgTex, false);
-	float bgScale = (mapSize.y - map.tileSize.y * map.scale) / bgSpr.getTextureRect().height;
-	bgSpr.setScale(bgScale, bgScale);
+	bgSpr.setScale(
+		bgBounds.width / bgTex->getSize().x,
+		bgBounds.height / bgTex->getSize().y
+	);
 	target->draw(bgSpr);
 	map.draw(target);
 	for (int i = 0; i < triggers.size(); i++)
@@ -400,7 +408,7 @@ World::Camera::Camera(sf::Vector2f size, sf::Vector2f os, sf::String name)
 
 void World::Camera::update(sf::Vector2f mapSize)
 {
-	auto *e = getEnt(owner);
+	auto *e = World::lvls[World::currentLevel].getEntity(owner);
 	sf::Vector2f pos;
 	if (e == nullptr)
 	{

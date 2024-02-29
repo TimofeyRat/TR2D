@@ -105,6 +105,7 @@ private:
 		b2Vec2 gravity;
 		Camera cam;
 		std::string musicFilename;
+		sf::FloatRect bgBounds;
 		Level();
 		~Level();
 		void reset();
