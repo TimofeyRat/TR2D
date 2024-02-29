@@ -229,7 +229,8 @@ sf::Texture *AssetManager::getTexture(std::string path)
 			return &textures[i].tex;
 		}
 	}
-	return nullptr;
+	textures.push_back(Texture(path));
+	return &textures[textures.size() - 1].tex;
 }
 
 sf::String AssetManager::getText(std::string path)
@@ -241,7 +242,8 @@ sf::String AssetManager::getText(std::string path)
 			return texts[i].text;
 		}
 	}
-	return "";
+	texts.push_back(Text(path));
+	return texts[texts.size() - 1].text;
 }
 
 sf::Font *AssetManager::getFont(std::string path)
@@ -253,7 +255,8 @@ sf::Font *AssetManager::getFont(std::string path)
 			return &fonts[i].font;
 		}
 	}
-	return nullptr;
+	fonts.push_back(Font(path));
+	return &fonts[fonts.size() - 1].font;
 }
 
 sf::SoundBuffer *AssetManager::getSound(std::string path)
@@ -265,7 +268,8 @@ sf::SoundBuffer *AssetManager::getSound(std::string path)
 			return &sounds[i].music;
 		}
 	}
-	return nullptr;
+	sounds.push_back(Sound(path));
+	return &sounds[sounds.size() - 1].music;
 }
 
 std::vector<std::string> AssetManager::getTextures(std::string part)
