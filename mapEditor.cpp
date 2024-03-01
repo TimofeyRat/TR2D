@@ -853,7 +853,7 @@ int main(int argc, char* argv[])
 		{
 			auto e = Window::getEvent(sf::Event::MouseWheelMoved).mouseWheel;
 			currentTile -= e.delta;
-			if (currentTile < 0) currentTile = lvl->map.tileRects.size() - 1;
+			if (currentTile < 0) currentTile = std::max((int)lvl->map.tileRects.size() - 1, 0);
 			else if (currentTile >= lvl->map.tileRects.size()) currentTile = 0;
 		}
 		sf::Vector2i mPos;

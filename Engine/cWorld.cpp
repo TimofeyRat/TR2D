@@ -82,7 +82,7 @@ void World::loadFromFile(std::string filename)
 			auto pos = tr::splitStr(ent.attribute(L"pos").as_string(), " ");
 			auto e = getEnt(ent.attribute(L"name").as_string());
 			e->setPosition({std::stof(pos[0].toAnsiString()), std::stof(pos[1].toAnsiString())});
-			level.ents.push_back(*e);
+			level.ents.push_back(e);
 		}
 		auto gravity = lvl.child(L"gravity").attribute(L"value").as_string();
 		level.gravity = {
@@ -217,7 +217,7 @@ Entity *World::Level::getEntity(sf::String name)
 {
 	for (int i = 0; i < ents.size(); i++)
 	{
-		if (ents[i].getVar("gameName") == name) { return &ents[i]; }
+		if (ents[i]->getVar("gameName") == name) { return ents[i]; }
 	}
 	return nullptr;
 }
@@ -255,21 +255,21 @@ void World::Level::update()
 	}
 	for (int i = 0; i < ents.size(); i++)
 	{
-		ents[i].update();
-		if (!ents[i].weapon.meleeOrRange && ents[i].getVar("attacking"))
+		ents[i]->update();
+		if (!ents[i]->weapon.meleeOrRange && ents[i]->getVar("attacking"))
 		{
-			auto r = ents[i].weapon.spr.getGlobalBounds();
+			auto r = ents[i]->weapon.spr.getGlobalBounds();
 			for (int j = 0; j < ents.size(); j++)
 			{
 				if (i != j &&
-					r.intersects(ents[j].getHitbox()) &&
-					ents[j].getVar("noHurtTimer") >= ents[j].getVar("damageCD"))
+					r.intersects(ents[j]->getHitbox()) &&
+					ents[j]->getVar("noHurtTimer") >= ents[j]->getVar("damageCD"))
 				{
-					for (int k = 0; k < ents[i].weapon.effects.size(); k++)
+					for (int k = 0; k < ents[i]->weapon.effects.size(); k++)
 					{
-						ents[j].addEffect(ents[i].weapon.effects[k]);
+						ents[j]->addEffect(ents[i]->weapon.effects[k]);
 					}
-					ents[j].setVar("noHurtTimer", 0);
+					ents[j]->setVar("noHurtTimer", 0);
 				}
 			}
 		}
@@ -340,7 +340,7 @@ void World::Level::draw(sf::RenderTarget *target)
 	}
 	for (int i = 0; i < ents.size(); i++)
 	{
-		ents[i].draw(&screen);
+		ents[i]->draw(&screen);
 	}
 	for (int i = 0; i < items.size(); i++)
 	{

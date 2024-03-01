@@ -19,7 +19,6 @@ public:
 		Trigger(sf::FloatRect r, sf::String cmd);
 	};
 private:
-	static std::vector<Entity> ents;
 	struct Map
 	{
 		sf::Vector2i mapSize;
@@ -94,7 +93,7 @@ private:
 	{
 		Map map;
 		std::vector<Trigger> triggers;
-		std::vector<Entity> ents;
+		std::vector<Entity*> ents;
 		std::vector<SoundPlayer> sounds;
 		std::vector<Light> lights;
 		std::vector<FallenItem> items;
@@ -113,6 +112,7 @@ private:
 		void draw(sf::RenderTarget *target);
 		Entity *getEntity(sf::String name);
 	};
+	static std::vector<Entity> ents;
 	static sf::Music music;
 	static std::vector<Level> lvls;
 	static int currentLevel;
