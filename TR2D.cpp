@@ -26,6 +26,8 @@ int main(int argc, char *argv[])
 		}
 		Window::update();
 
+		if (Input::isKeyJustPressed(sf::Keyboard::F2)) { AssetManager::init(); }
+
 		Input::update();
 		World::update();
 
