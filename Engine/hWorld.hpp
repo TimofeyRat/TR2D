@@ -89,11 +89,19 @@ private:
 		Control();
 		Control(sf::String ctrl, sf::String ent);
 	};
+	struct Spawner
+	{
+		sf::String name;
+		sf::Vector2f pos;
+		Spawner();
+		Spawner(sf::String ent, sf::Vector2f xy);
+	};
 	struct Level
 	{
 		Map map;
 		std::vector<Trigger> triggers;
 		std::vector<Entity*> ents;
+		std::vector<Spawner> spawners;
 		std::vector<SoundPlayer> sounds;
 		std::vector<Light> lights;
 		std::vector<FallenItem> items;
@@ -105,6 +113,7 @@ private:
 		Camera cam;
 		std::string musicFilename;
 		sf::FloatRect bgBounds;
+		bool started;
 		Level();
 		~Level();
 		void reset();

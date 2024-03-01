@@ -80,9 +80,8 @@ void World::loadFromFile(std::string filename)
 		for (auto ent : lvl.children(L"entity"))
 		{
 			auto pos = tr::splitStr(ent.attribute(L"pos").as_string(), " ");
-			auto e = getEnt(ent.attribute(L"name").as_string());
-			e->setPosition({std::stof(pos[0].toAnsiString()), std::stof(pos[1].toAnsiString())});
-			level.ents.push_back(e);
+			level.spawners.push_back(Spawner(ent.attribute(L"name").as_string(), {std::stof(pos[0].toAnsiString()), std::stof(pos[1].toAnsiString())}));
+			level.ents.push_back(getEnt(ent.attribute(L"name").as_string()));
 		}
 		auto gravity = lvl.child(L"gravity").attribute(L"value").as_string();
 		level.gravity = {
@@ -210,7 +209,9 @@ void World::Level::reset()
 	items.clear();
 	controls.clear();
 	ents.clear();
+	spawners.clear();
 	bgBounds = {0, 0, 0, 0};
+	started = false;
 }
 
 Entity *World::Level::getEntity(sf::String name)
@@ -224,6 +225,14 @@ Entity *World::Level::getEntity(sf::String name)
 
 void World::Level::update()
 {
+	if (!started)
+	{
+		started = true;
+		for (int i = 0; i < spawners.size(); i++)
+		{
+			getEntity(spawners[i].name)->setPosition(spawners[i].pos);
+		}
+	}
 	world->SetGravity(gravity);
 	world->Step(Window::getDeltaTime(), 12, 8);
 	auto musicStatus = music.getStatus();
@@ -557,6 +566,18 @@ void World::throwItem(Inventory::Item itm, Entity *entity)
 World::Control::Control() { entName = ctrlID = ""; }
 
 World::Control::Control(sf::String ent, sf::String ctrl) { entName = ent; ctrlID = ctrl; }
+
+World::Spawner::Spawner()
+{
+	name = "";
+	pos = {0, 0};
+}
+
+World::Spawner::Spawner(sf::String ent, sf::Vector2f xy)
+{
+	name = ent;
+	pos = xy;
+}
 
 void tr::execute(sf::String cmd)
 {
