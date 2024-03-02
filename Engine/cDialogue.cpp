@@ -132,7 +132,7 @@ bool Talk::conditionCheck(sf::String condition)
 		auto owner = tr::splitStr(args[0], "-");
 		Programmable::Variable var;
 		sf::String v = args[1], cmp = args[2], val = args[3];
-		if (owner[0] == "ent") { var = World::getEnt(owner[1])->getVar(owner[2]); }
+		if (owner[0] == "ent") { var = World::getCurrentLevel()->getEntity(owner[1])->getVar(owner[2]); }
 		else if (owner[0] == "Window") { var = Window::getVar(owner[1]); }
 		bool numOrStr = false;
 		if (v == "num") { numOrStr = false; v = std::to_string(var); }

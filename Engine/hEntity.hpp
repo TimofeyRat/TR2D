@@ -32,6 +32,7 @@ public:
 	void addEffect(Inventory::Effect effect);
 	bool isAlive();
 	Skeleton *getSkeleton();
+	Rigidbody *getRigidbody();
 };
 
 #endif

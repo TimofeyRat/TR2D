@@ -85,7 +85,7 @@ void Entity::update()
 	updateAnim();
 	s.updateBones();
 	auto rect = s.generateHitbox();
-	rb.resize({!rect.width ? 1 : rect.width, !rect.height ? 1 : rect.height - 2});
+	rb.resize(rb.getBody()->GetWorld(), {!rect.width ? 1 : rect.width, !rect.height ? 1 : rect.height - 2});
 	s.setPosition({
 		rb.getPosition().x,
 		rb.getPosition().y - rect.height / 2 + (s.getPosition().y - rect.top)
@@ -222,4 +222,9 @@ void Entity::updateAttack()
 		setVar("attacking", 1);
 		weapon.timer.restart();
 	}
+}
+
+Rigidbody *Entity::getRigidbody()
+{
+	return &rb;
 }

@@ -2,13 +2,15 @@
 #include "hGlobal.hpp"
 #include "hWorld.hpp"
 
+#include <iostream>
+
 Rigidbody::Rigidbody()
 {
-	bodyDef = b2BodyDef();
+	bodyDef = nullptr;
 	body = nullptr;
-	fixDef = b2FixtureDef();
+	fixDef = nullptr;
 	fixture = nullptr;
-	shape = b2PolygonShape();
+	shape = nullptr;
 	size = {0, 0};
 }
 
@@ -16,38 +18,31 @@ void Rigidbody::create(b2Vec2 pos, b2Vec2 size, float friction, float density, f
 {
 	body = nullptr;
 	fixture = nullptr;
+	if (bodyDef != nullptr) { delete bodyDef; }
+	bodyDef = new b2BodyDef();
+	if (fixDef != nullptr) { delete fixDef; }
+	fixDef = new b2FixtureDef();
 	this->size = size;
-	if (pos != b2Vec2(-1, -1)) bodyDef.position.Set(pos.x / tr::M2P, pos.y / tr::M2P);
-	bodyDef.type = (dynamic ? b2_dynamicBody : b2_staticBody);
-	bodyDef.angle = angle * tr::DEGTORAD;
-	bodyDef.fixedRotation = fixedAngle;
-	shape.SetAsBox(this->size.x / 2 / tr::M2P , this->size.y / 2 / tr::M2P);
-	fixDef.shape = &shape;
-	fixDef.friction = friction;
-	fixDef.density = density;
-	fixDef.restitution = restitution;
-	fixDef.filter.groupIndex = cg;
+	if (pos != b2Vec2(-1, -1)) bodyDef->position.Set(pos.x / tr::M2P, pos.y / tr::M2P);
+	bodyDef->type = (dynamic ? b2_dynamicBody : b2_staticBody);
+	bodyDef->angle = angle * tr::DEGTORAD;
+	bodyDef->fixedRotation = fixedAngle;
+	if (shape != nullptr) { delete shape; }
+	shape = new b2PolygonShape();
+	shape->SetAsBox(this->size.x / 2 / tr::M2P , this->size.y / 2 / tr::M2P);
+	fixDef->shape = shape;
+	fixDef->friction = friction;
+	fixDef->density = density;
+	fixDef->restitution = restitution;
+	fixDef->filter.groupIndex = cg;
 }
 
-void Rigidbody::reset()
+void Rigidbody::reset(b2World *world)
 {
-	if (body != nullptr)
-	{
-		if (fixture != nullptr)
-		{
-			body->DestroyFixture(fixture);
-		}
-		World::world->DestroyBody(body);
-	}
-	body = World::world->CreateBody(&bodyDef);
-	fixture = body->CreateFixture(&fixDef);
-}
-
-void Rigidbody::initBody()
-{
-	if (body == nullptr) { body = World::world->CreateBody(&bodyDef); }
-	if (fixture != nullptr) { body->DestroyFixture(fixture); }
-	fixture = body->CreateFixture(&fixDef);
+	if (!world) { return; }
+	destroy(world);
+	body = world->CreateBody(bodyDef);
+	fixture = body->CreateFixture(fixDef);
 }
 
 b2Body *Rigidbody::getBody() { return body; }
@@ -65,19 +60,19 @@ void Rigidbody::draw(sf::RenderTarget *target)
 	target->draw(rs);
 }
 
-void Rigidbody::resize(b2Vec2 size)
+void Rigidbody::resize(b2World *world, b2Vec2 size)
 {
 	this->size = size;
-	shape.SetAsBox(this->size.x / 2 / tr::M2P, this->size.y / 2 / tr::M2P);
-	fixDef.shape = &shape;
-	initBody();
+	shape->SetAsBox(this->size.x / 2 / tr::M2P, this->size.y / 2 / tr::M2P);
+	fixDef->shape = shape;
+	reloadFixture();
 }
 
 b2Vec2 Rigidbody::getSize() { return size; }
 
 void Rigidbody::setPosition(b2Vec2 pos)
 {
-	bodyDef.position.Set(pos.x / tr::M2P, pos.y / tr::M2P);
+	bodyDef->position.Set(pos.x / tr::M2P, pos.y / tr::M2P);
 	if (body != nullptr) body->SetTransform({pos.x / tr::M2P, pos.y / tr::M2P}, body->GetAngle());
 }
 
@@ -90,10 +85,10 @@ b2Vec2 Rigidbody::getPosition()
 	};
 }
 
-void Rigidbody::setDensity(float density)
+void Rigidbody::setDensity(b2World *world, float density)
 {
-	fixDef.density = density;
-	initBody();
+	fixDef->density = density;
+	reset(world);
 }
 
 void Rigidbody::setAngle(float angle)
@@ -106,11 +101,20 @@ float Rigidbody::getAngle()
 	return body->GetAngle() * tr::RADTODEG;
 }
 
-void Rigidbody::destroy()
+void Rigidbody::destroy(b2World *world)
 {
 	if (body != nullptr)
 	{
 		if (fixture != nullptr) body->DestroyFixture(fixture);
-		World::world->DestroyBody(body);
+		world->DestroyBody(body);
 	}
+	body = nullptr;
+	fixture = nullptr;
+}
+
+void Rigidbody::reloadFixture()
+{
+	if (!body) { return; }
+	if (fixture != nullptr) { body->DestroyFixture(fixture); }
+	fixture = body->CreateFixture(fixDef);
 }

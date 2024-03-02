@@ -11,22 +11,20 @@
 
 #include <pugiconfig.hpp>
 
-std::vector<Entity> World::ents;
+std::map<sf::String, sf::String> World::ents;
 sf::RenderTexture World::screen;
 std::vector<World::Level> World::lvls;
 int World::currentLevel;
-b2World *World::world;
 sf::Music World::music;
 bool World::active;
+sf::String World::currentMusic;
 
 void World::init()
 {
 	ents.clear();
-	if (world != nullptr) delete world;
-	world = new b2World({0, 0});
 	for (auto file : AssetManager::getTexts(".trent"))
 	{
-		ents.push_back(Entity(file));
+		ents[Entity(file).getVar("gameName")] = file;
 	}
 	lvls.clear();
 	currentLevel = 0;
@@ -34,6 +32,7 @@ void World::init()
 	music.stop();
 	music.setVolume(Window::getVar("musicVolume"));
 	active = false;
+	currentMusic = "";
 	
 	Inventory::init();
 }
@@ -81,7 +80,7 @@ void World::loadFromFile(std::string filename)
 		{
 			auto pos = tr::splitStr(ent.attribute(L"pos").as_string(), " ");
 			level.spawners.push_back(Spawner(ent.attribute(L"name").as_string(), {std::stof(pos[0].toAnsiString()), std::stof(pos[1].toAnsiString())}));
-			level.ents.push_back(getEnt(ent.attribute(L"name").as_string()));
+			level.ents.push_back(Entity(getEntFile((ent.attribute(L"name").as_string()))));
 		}
 		auto gravity = lvl.child(L"gravity").attribute(L"value").as_string();
 		level.gravity = {
@@ -93,6 +92,7 @@ void World::loadFromFile(std::string filename)
 			auto pos = tr::splitStr(trigger.attribute(L"pos").as_string(), " ");
 			auto size = tr::splitStr(trigger.attribute(L"size").as_string(), " ");
 			level.triggers.push_back(Trigger(
+				level.world,
 				{
 					std::stof(pos[0].toAnsiString()), std::stof(pos[1].toAnsiString()),
 					std::stof(size[0].toAnsiString()), std::stof(size[1].toAnsiString())
@@ -118,7 +118,13 @@ void World::update()
 		}
 		return;
 	}
-	lvls[currentLevel].update();
+	if (getCurrentLevel()->musicFilename != currentMusic)
+	{
+		currentMusic = getCurrentLevel()->musicFilename;
+		music.openFromFile(currentMusic);
+		music.play();
+	}
+	getCurrentLevel()->update();
 }
 
 void World::draw()
@@ -129,17 +135,7 @@ void World::draw()
 
 sf::RenderTexture *World::getScreen() { return &screen; }
 
-Entity *World::getEnt(sf::String name)
-{
-	for (int i = 0; i < ents.size(); i++)
-	{
-		if (ents[i].getVar("gameName") == name)
-		{
-			return &ents[i];
-		}
-	}
-	return nullptr;
-}
+sf::String World::getEntFile(sf::String name) { return ents[name]; }
 
 World::Map::Map() { reset(); }
 
@@ -187,6 +183,7 @@ sf::Vector2f World::Map::getPixelSize()
 
 World::Level::Level()
 {
+	world = nullptr;
 	reset();
 }
 
@@ -205,20 +202,20 @@ void World::Level::reset()
 	cam = Camera();
 	triggers.clear();
 	sounds.clear();
-	lights.clear();
 	items.clear();
 	controls.clear();
 	ents.clear();
 	spawners.clear();
 	bgBounds = {0, 0, 0, 0};
 	started = false;
+	if (world != nullptr) { delete world; }
 }
 
 Entity *World::Level::getEntity(sf::String name)
 {
 	for (int i = 0; i < ents.size(); i++)
 	{
-		if (ents[i]->getVar("gameName") == name) { return ents[i]; }
+		if (ents[i].getVar("gameName") == name) { return &ents[i]; }
 	}
 	return nullptr;
 }
@@ -227,11 +224,21 @@ void World::Level::update()
 {
 	if (!started)
 	{
-		started = true;
+		if (world) { delete world; }
+		world = new b2World(gravity);
+		for (int i = 0; i < triggers.size(); i++)
+		{
+			triggers[i].rb.reset(world);
+		}
+		for (int i = 0; i < ents.size(); i++)
+		{
+			ents[i].getRigidbody()->reset(world);
+		}
 		for (int i = 0; i < spawners.size(); i++)
 		{
 			getEntity(spawners[i].name)->setPosition(spawners[i].pos);
 		}
+		started = true;
 	}
 	world->SetGravity(gravity);
 	world->Step(Window::getDeltaTime(), 12, 8);
@@ -264,26 +271,26 @@ void World::Level::update()
 	}
 	for (int i = 0; i < ents.size(); i++)
 	{
-		ents[i]->update();
-		if (!ents[i]->weapon.meleeOrRange && ents[i]->getVar("attacking"))
+		ents[i].update();
+		if (!ents[i].weapon.meleeOrRange && ents[i].getVar("attacking"))
 		{
-			auto r = ents[i]->weapon.spr.getGlobalBounds();
+			auto r = ents[i].weapon.spr.getGlobalBounds();
 			for (int j = 0; j < ents.size(); j++)
 			{
 				if (i != j &&
-					r.intersects(ents[j]->getHitbox()) &&
-					ents[j]->getVar("noHurtTimer") >= ents[j]->getVar("damageCD"))
+					r.intersects(ents[j].getHitbox()) &&
+					ents[j].getVar("noHurtTimer") >= ents[j].getVar("damageCD"))
 				{
-					for (int k = 0; k < ents[i]->weapon.effects.size(); k++)
+					for (int k = 0; k < ents[i].weapon.effects.size(); k++)
 					{
-						ents[j]->addEffect(ents[i]->weapon.effects[k]);
+						ents[j].addEffect(ents[i].weapon.effects[k]);
 					}
-					ents[j]->setVar("noHurtTimer", 0);
+					ents[j].setVar("noHurtTimer", 0);
 				}
 			}
 		}
 	}
-	auto *camOwner = getEnt(cam.owner);
+	auto *camOwner = getEntity(cam.owner);
 	if (camOwner)
 	{
 		auto pos = camOwner->getPosition();
@@ -315,7 +322,7 @@ void World::Level::update()
 					items[i].item.item.id == items[j].item.item.id &&
 					items[i].item.item.type == items[j].item.item.type)
 				{
-					items[i].rb.destroy();
+					items[i].rb.destroy(world);
 					items[j].item.count += items[i].item.count;
 					items.erase(items.begin() + i--);
 				}
@@ -323,7 +330,7 @@ void World::Level::update()
 			if (camOwner->getHitbox().intersects(items[j].item.item.spr.getGlobalBounds()) && items[j].cooldown.getElapsedTime().asSeconds() >= 1.5f)
 			{
 				Inventory::addItem(items[j].item.item.type, items[j].item.item.id, items[j].item.count);
-				items[j].rb.destroy();
+				items[j].rb.destroy(world);
 				items.erase(items.begin() + j--);
 			}
 		}
@@ -344,16 +351,16 @@ void World::Level::draw(sf::RenderTarget *target)
 	map.draw(target);
 	for (int i = 0; i < triggers.size(); i++)
 	{
-		triggers[i].rb.resize({triggers[i].rect.width, triggers[i].rect.height});
+		triggers[i].rb.resize(world, {triggers[i].rect.width, triggers[i].rect.height});
 		if (Window::getVar("debug")) triggers[i].rb.draw(&screen);
 	}
 	for (int i = 0; i < ents.size(); i++)
 	{
-		ents[i]->draw(&screen);
+		ents[i].draw(&screen);
 	}
 	for (int i = 0; i < items.size(); i++)
 	{
-		items[i].draw();
+		items[i].draw(world);
 	}
 	cam.update(mapSize);
 	screen.display();
@@ -372,7 +379,7 @@ World::Trigger::Trigger()
 	clear();
 }
 
-World::Trigger::Trigger(sf::FloatRect r, sf::String prompt)
+World::Trigger::Trigger(b2World *w, sf::FloatRect r, sf::String prompt)
 {
 	rect = r;
 	rb = Rigidbody();
@@ -474,53 +481,19 @@ std::vector<World::Trigger*> World::getTriggers()
 	return rbs;
 }
 
-std::vector<Entity*> World::getEntsWithVar(sf::String name, sf::String value)
-{
-	std::vector<Entity*> e;
-	for (int i = 0; i < ents.size(); i++)
-	{
-		if (ents[i].getVar(name) == value) { e.push_back(&ents[i]); }
-	}
-	return e;
-}
-
-std::vector<Entity*> World::getEntsWithVar(sf::String name, float value)
-{
-	std::vector<Entity*> e;
-	for (int i = 0; i < ents.size(); i++)
-	{
-		if (ents[i].getVar(name) == value) { e.push_back(&ents[i]); }
-	}
-	return e;
-}
-
-World::Light::Light()
-{
-	pos = {0, 0};
-	dist = 0;
-	clr = {0, 0, 0, 0};
-}
-
-World::Light::Light(sf::Vector2f position, float distance, sf::Color color)
-{
-	pos = position;
-	dist = distance;
-	clr = color;
-}
-
 Entity *World::getCameraOwner()
 {
-	return getEnt(lvls[currentLevel].cam.owner);
+	return getCurrentLevel()->getEntity(lvls[currentLevel].cam.owner);
 }
 
 World::FallenItem::FallenItem()
 {
 	item = Inventory::ItemEntry();
-	rb.reset();
+	rb.reset(nullptr);
 	cooldown.restart();
 }
 
-World::FallenItem::FallenItem(Inventory::ItemEntry entry, sf::Vector2f start, sf::Vector2f force)
+World::FallenItem::FallenItem(b2World *w, Inventory::ItemEntry entry, sf::Vector2f start, sf::Vector2f force)
 {
 	item = entry;
 	rb.create({start.x, start.y}, {1, 1}, 0.2, 0.75, 0.5, 0, true, true, -1);
@@ -528,12 +501,12 @@ World::FallenItem::FallenItem(Inventory::ItemEntry entry, sf::Vector2f start, sf
 	cooldown.restart();
 }
 
-void World::FallenItem::draw()
+void World::FallenItem::draw(b2World *world)
 {
 	float scale = 2;
 	item.item.updateSpr();
-	rb.resize({item.item.spr.getTextureRect().width * scale, item.item.spr.getTextureRect().height * scale});
-	if (!rb.getBody()) { rb.initBody(); }
+	rb.resize(world, {item.item.spr.getTextureRect().width * scale, item.item.spr.getTextureRect().height * scale});
+	if (!rb.getBody()) { rb.reset(world); }
 	if (!rb.getBody()->GetLinearVelocity().x) { rb.getBody()->ApplyLinearImpulseToCenter({impulse.x, impulse.y}, true); impulse = {0, 0}; }
 	item.item.spr.setPosition(rb.getPosition().x, rb.getPosition().y);
 	item.item.spr.setRotation(rb.getAngle());
@@ -560,7 +533,7 @@ void World::throwItem(Inventory::Item itm, Entity *entity)
 		entity->getVar("dx") + rotation,
 		-abs(entity->getVar("dy")) - 0.5
 	);
-	World::lvls[World::currentLevel].items.push_back(FallenItem({itm, 1}, position, impulse));
+	World::lvls[World::currentLevel].items.push_back(FallenItem(entity->getRigidbody()->getBody()->GetWorld(), {itm, 1}, position, impulse));
 }
 
 World::Control::Control() { entName = ctrlID = ""; }
@@ -579,6 +552,16 @@ World::Spawner::Spawner(sf::String ent, sf::Vector2f xy)
 	pos = xy;
 }
 
+World::Level *World::getCurrentLevel() { return &lvls[currentLevel]; }
+
+void World::setCurrentLevel(sf::String name)
+{
+	for (int i = 0; i < lvls.size(); i++)
+	{
+		if (lvls[i].name == name) { currentLevel = i; }
+	}
+}
+
 void tr::execute(sf::String cmd)
 {
 	auto args = tr::splitStr(cmd, "-");
@@ -589,12 +572,13 @@ void tr::execute(sf::String cmd)
 	else if (args[0] == "world")
 	{
 		if (args[1] == "load") { World::loadFromFile(args[2]); }
-		if (args[1] == "playSound")
+		else if (args[1] == "playSound")
 		{
 			World::playSound(args[2], {
 				std::stof(args[3].toAnsiString()), std::stof(args[4].toAnsiString())
 			}, std::stof(args[5].toAnsiString()));
 		}
+		else if (args[1] == "setLevel") { World::setCurrentLevel(args[2]); }
 	}
 	else if (args[0] == "ui")
 	{

@@ -16,9 +16,8 @@ public:
 		sf::FloatRect rect;
 		Rigidbody rb;
 		Trigger();
-		Trigger(sf::FloatRect r, sf::String cmd);
+		Trigger(b2World *w, sf::FloatRect r, sf::String cmd);
 	};
-private:
 	struct Map
 	{
 		sf::Vector2i mapSize;
@@ -65,14 +64,6 @@ private:
 		SoundPlayer();
 		SoundPlayer(std::string file, sf::Vector2f pos, float distance);
 	};
-	struct Light
-	{
-		sf::Vector2f pos;
-		float dist;
-		sf::Color clr;
-		Light();
-		Light(sf::Vector2f position, float distance, sf::Color color);
-	};
 	struct FallenItem
 	{
 		Inventory::ItemEntry item;
@@ -80,8 +71,8 @@ private:
 		sf::Clock cooldown;
 		sf::Vector2f impulse;
 		FallenItem();
-		FallenItem(Inventory::ItemEntry entry, sf::Vector2f throwStart, sf::Vector2f impulse);
-		void draw();
+		FallenItem(b2World *w, Inventory::ItemEntry entry, sf::Vector2f throwStart, sf::Vector2f impulse);
+		void draw(b2World *world);
 	};
 	struct Control
 	{
@@ -100,10 +91,9 @@ private:
 	{
 		Map map;
 		std::vector<Trigger> triggers;
-		std::vector<Entity*> ents;
+		std::vector<Entity> ents;
 		std::vector<Spawner> spawners;
 		std::vector<SoundPlayer> sounds;
-		std::vector<Light> lights;
 		std::vector<FallenItem> items;
 		std::vector<Control> controls;
 		sf::String name;
@@ -114,6 +104,7 @@ private:
 		std::string musicFilename;
 		sf::FloatRect bgBounds;
 		bool started;
+		b2World *world;
 		Level();
 		~Level();
 		void reset();
@@ -121,28 +112,28 @@ private:
 		void draw(sf::RenderTarget *target);
 		Entity *getEntity(sf::String name);
 	};
-	static std::vector<Entity> ents;
-	static sf::Music music;
-	static std::vector<Level> lvls;
-	static int currentLevel;
-	static sf::RenderTexture screen;
-	static bool active;
-public:
-	static b2World *world;
 	static void init();
 	static void loadFromFile(std::string filename);
 	static void update();
 	static void draw();
 	static sf::RenderTexture *getScreen();
-	static Entity *getEnt(sf::String name);
+	static sf::String getEntFile(sf::String name);
 	static void setActive(bool a);
 	static bool getActive();
 	static void playSound(std::string file, sf::Vector2f pos, float distance);
 	static std::vector<Trigger*> getTriggers();
-	static std::vector<Entity*> getEntsWithVar(sf::String name, sf::String value);
-	static std::vector<Entity*> getEntsWithVar(sf::String name, float value);
 	static Entity *getCameraOwner();
 	static void throwItem(Inventory::Item itm, Entity *sender);
+	static Level *getCurrentLevel();
+	static void setCurrentLevel(sf::String name);
+private:
+	static std::map<sf::String, sf::String> ents;
+	static sf::Music music;
+	static std::vector<Level> lvls;
+	static int currentLevel;
+	static sf::RenderTexture screen;
+	static bool active;
+	static sf::String currentMusic;
 };
 
 #endif

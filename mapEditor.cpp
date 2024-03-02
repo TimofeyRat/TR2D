@@ -795,8 +795,9 @@ void execute()
 }
 
 /*
-	2. Добавь изменение отдельных переменных триггера
-	3. Добавь вращение триггера на E(atan2 в помощь)
+	Добавь регулировку громкости музыки:
+	1. Поле musicVolume для уровня;
+	2. music.setVolume(Window::getVar("musicVolume") * musicVolume / 10000);
 */
 
 int main(int argc, char* argv[])
