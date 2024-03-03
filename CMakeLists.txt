@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.5.0)
 
+set(CMAKE_EXE_LINKER_FLAGS "-static")
+
 set(TR2D_SOURCES
 	Engine/cAnimation.cpp
 	Engine/cAssets.cpp
