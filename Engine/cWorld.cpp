@@ -69,6 +69,7 @@ void World::loadFromFile(std::string filename)
 			std::stof(bgBounds[2].toAnsiString()), std::stof(bgBounds[3].toAnsiString())
 		};
 		level.musicFilename = pugi::as_utf8(lvl.child(L"music").attribute(L"path").as_string());
+		level.musicVolume = lvl.child(L"music").attribute(L"volume").as_float();
 		auto camSize = tr::splitStr(lvl.child(L"camera").attribute(L"size").as_string(), " ");
 		auto camOS = tr::splitStr(lvl.child(L"camera").attribute(L"offset").as_string(), " ");
 		level.cam = Camera(
@@ -122,6 +123,8 @@ void World::update()
 	{
 		currentMusic = getCurrentLevel()->musicFilename;
 		music.openFromFile(currentMusic);
+		music.setVolume((getCurrentLevel()->musicVolume * Window::getVar("musicVolume")) / 100.0f);
+		std::cout << getCurrentLevel()->musicVolume << "|" << Window::getVar("musicVolume").num << "|" << music.getVolume() << std::endl;
 		music.play();
 	}
 	getCurrentLevel()->update();
@@ -209,6 +212,7 @@ void World::Level::reset()
 	bgBounds = {0, 0, 0, 0};
 	started = false;
 	if (world != nullptr) { delete world; }
+	musicVolume = 100;
 }
 
 Entity *World::Level::getEntity(sf::String name)
@@ -246,6 +250,7 @@ void World::Level::update()
 	if (musicStatus == sf::Music::Status::Stopped)
 	{
 		music.openFromFile(musicFilename);
+		music.setVolume((musicVolume * Window::getVar("musicVolume")) / 100.0f);
 		music.play();
 	}
 	else if (musicStatus == sf::Music::Status::Paused) { music.play(); }
@@ -579,6 +584,7 @@ void tr::execute(sf::String cmd)
 			}, std::stof(args[5].toAnsiString()));
 		}
 		else if (args[1] == "setLevel") { World::setCurrentLevel(args[2]); }
+		else if (args[1] == "setActive") { World::setActive(std::stoi(args[2].toAnsiString())); }
 	}
 	else if (args[0] == "ui")
 	{

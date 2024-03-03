@@ -216,6 +216,7 @@ public:
 		sf::Vector2f gravity;
 		std::vector<Trigger> triggers;
 		sf::FloatRect bgBounds;
+		float musicVolume;
 		Level() { reset(); }
 		void reset()
 		{
@@ -229,6 +230,7 @@ public:
 			gravity = {0, 0};
 			triggers.clear();
 			bgBounds = {0, 0, 0, 0};
+			musicVolume = 100;
 		}
 		void draw(sf::RenderTarget *target)
 		{
@@ -312,6 +314,7 @@ public:
 			};
 			level.bgTex.loadFromFile(level.bgPath);
 			level.musicFile = lvl.child(L"music").attribute(L"path").as_string();
+			level.musicVolume = lvl.child(L"music").attribute(L"volume").as_float();
 			auto camSize = tr::splitStr(lvl.child(L"camera").attribute(L"size").as_string(), " ");
 			auto camOS = tr::splitStr(lvl.child(L"camera").attribute(L"offset").as_string(), " ");
 			level.cam = Camera(
@@ -387,6 +390,7 @@ public:
 			).c_str();
 			//Music node
 			level.append_child(L"music").append_attribute(L"path") = lvls[i].musicFile.toWideString().c_str();
+			level.child(L"music").append_attribute(L"volume") = lvls[i].musicVolume;
 			//Camera node
 			auto cam = level.append_child(L"camera");
 			cam.append_attribute(L"size") = pugi::as_wide(
@@ -468,6 +472,7 @@ std::string World::file;
 #define BTN_SETLEVELNAME 6
 #define BTN_SETMUSICFILE 7
 #define BTN_SETGRAVITY 8
+#define BTN_SETMUSICVOLUME 9
 
 //UI_LEVELINFO buttons
 #define BTN_RENAMELEVEL 0
@@ -520,12 +525,13 @@ void updateUI()
 		ui[3] = sf::Text(sf::String("Save world"), font, 20);
 		if (!World::lvls.size()) return;
 		auto *lvl = &World::lvls[World::currentLevel];
-		ui.resize(9);
+		ui.resize(10);
 		ui[4] = sf::Text(sf::String("Level count: ") + std::to_string(World::lvls.size()), font, 20);
 		ui[5] = sf::Text(sf::String("Current level ID: ") + std::to_string(World::currentLevel), font, 20);
 		ui[6] = sf::Text(sf::String("Current level name: ") + lvl->name, font, 20);
 		ui[7] = sf::Text(sf::String("Music file:\n") + lvl->musicFile, font, 20);
 		ui[8] = sf::Text(sf::String("Gravity:\n") + std::to_string(lvl->gravity.x) + " " + std::to_string(lvl->gravity.y), font, 20);
+		ui[9] = sf::Text(sf::String("Music volume: ") + std::to_string(lvl->musicVolume), font, 20);
 	}
 	else if (currentMenu == UI_LEVELINFO)
 	{
@@ -634,10 +640,11 @@ void execute()
 		case BTN_SETLEVELNAME: World::lvls[World::currentLevel].name = cmd; break;
 		case BTN_SETMUSICFILE: World::lvls[World::currentLevel].musicFile = cmd; break;
 		case BTN_SETGRAVITY: World::lvls[World::currentLevel].gravity = {
-			std::stof(vars[0].toAnsiString()),
-			std::stof(vars[1].toAnsiString())
-		};
-		break;
+				std::stof(vars[0].toAnsiString()),
+				std::stof(vars[1].toAnsiString())
+			};
+			break;
+		case BTN_SETMUSICVOLUME: World::lvls[World::currentLevel].musicVolume = std::stof(cmd.toAnsiString()); break;
 		default: break;
 		}
 	}

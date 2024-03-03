@@ -105,6 +105,7 @@ public:
 		sf::FloatRect bgBounds;
 		bool started;
 		b2World *world;
+		float musicVolume;
 		Level();
 		~Level();
 		void reset();
