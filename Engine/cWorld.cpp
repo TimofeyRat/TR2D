@@ -124,7 +124,6 @@ void World::update()
 		currentMusic = getCurrentLevel()->musicFilename;
 		music.openFromFile(currentMusic);
 		music.setVolume((getCurrentLevel()->musicVolume * Window::getVar("musicVolume")) / 100.0f);
-		std::cout << getCurrentLevel()->musicVolume << "|" << Window::getVar("musicVolume").num << "|" << music.getVolume() << std::endl;
 		music.play();
 	}
 	getCurrentLevel()->update();
