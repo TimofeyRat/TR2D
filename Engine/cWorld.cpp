@@ -270,9 +270,10 @@ void World::Level::update()
 	{
 		auto *s = &sounds[i].sound;
 		if (s->getStatus() == sf::Sound::Status::Paused) { s->play(); }
-		if (s->getStatus() == sf::Sound::Status::Stopped && s->getPlayingOffset().asSeconds() > 0)
+		if (s->getStatus() == sf::Sound::Status::Stopped)
 		{
-			sounds.erase(sounds.begin() + i);
+			if (s->getPlayingOffset().asSeconds() > 0) sounds.erase(sounds.begin() + i);
+			else sounds[i].sound.play();
 		}
 	}
 	for (int i = 0; i < controls.size(); i++)
