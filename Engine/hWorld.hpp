@@ -131,8 +131,9 @@ private:
 	static std::map<sf::String, sf::String> ents;
 	static sf::Music music;
 	static std::vector<Level> lvls;
-	static int currentLevel;
+	static int currentLevel, nextLevel;
 	static sf::RenderTexture screen;
+	static float brightness, musicVolume;
 	static bool active;
 	static sf::String currentMusic;
 };

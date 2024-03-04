@@ -14,10 +14,11 @@
 std::map<sf::String, sf::String> World::ents;
 sf::RenderTexture World::screen;
 std::vector<World::Level> World::lvls;
-int World::currentLevel;
+int World::currentLevel, World::nextLevel;
 sf::Music World::music;
 bool World::active;
 sf::String World::currentMusic;
+float World::brightness, World::musicVolume;
 
 void World::init()
 {
@@ -33,6 +34,8 @@ void World::init()
 	music.setVolume(Window::getVar("musicVolume"));
 	active = false;
 	currentMusic = "";
+	brightness = 0;
+	musicVolume = 100;
 	
 	Inventory::init();
 }
@@ -119,11 +122,21 @@ void World::update()
 		}
 		return;
 	}
+	if (currentLevel != nextLevel)
+	{
+		brightness = tr::lerp(brightness, 0, 5 * Window::getDeltaTime());
+		if (brightness == tr::clamp(brightness, 0, 1))
+		{
+			currentLevel = nextLevel;
+		}
+	}
+	else if (brightness < 255) brightness = tr::lerp(brightness, 255, 5 * Window::getDeltaTime());
+	music.setVolume(brightness / 255 * musicVolume);
 	if (getCurrentLevel()->musicFilename != currentMusic)
 	{
 		currentMusic = getCurrentLevel()->musicFilename;
 		music.openFromFile(currentMusic);
-		music.setVolume((getCurrentLevel()->musicVolume * Window::getVar("musicVolume")) / 100.0f);
+		musicVolume = getCurrentLevel()->musicVolume * Window::getVar("musicVolume") / 100.0f;
 		music.play();
 	}
 	getCurrentLevel()->update();
@@ -249,7 +262,7 @@ void World::Level::update()
 	if (musicStatus == sf::Music::Status::Stopped)
 	{
 		music.openFromFile(musicFilename);
-		music.setVolume((musicVolume * Window::getVar("musicVolume")) / 100.0f);
+		musicVolume = musicVolume * Window::getVar("musicVolume") / 100.0f;
 		music.play();
 	}
 	else if (musicStatus == sf::Music::Status::Paused) { music.play(); }
@@ -369,6 +382,7 @@ void World::Level::draw(sf::RenderTarget *target)
 	cam.update(mapSize);
 	screen.display();
 	sf::Sprite spr(screen.getTexture());
+	spr.setColor({brightness, brightness, brightness, 255});
 	Window::setView(cam.view);
 	Window::draw(spr, false);
 	Window::drawScreen();
@@ -562,7 +576,7 @@ void World::setCurrentLevel(sf::String name)
 {
 	for (int i = 0; i < lvls.size(); i++)
 	{
-		if (lvls[i].name == name) { currentLevel = i; }
+		if (lvls[i].name == name) { nextLevel = i; }
 	}
 }
 
