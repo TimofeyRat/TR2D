@@ -25,11 +25,7 @@ int main(int argc, char *argv[])
 			Inventory::addItem("food:meat", UINT16_MAX);
 		}
 		Window::update();
-
-		if (Input::isKeyJustPressed(sf::Keyboard::F2)) { AssetManager::init(); }
-		if (Input::isKeyJustPressed(sf::Keyboard::F4)) { World::setCurrentLevel("room"); }
-		if (Input::isKeyJustPressed(sf::Keyboard::F5)) { World::setCurrentLevel("swamp"); }
-
+		
 		Input::update();
 		World::update();
 
