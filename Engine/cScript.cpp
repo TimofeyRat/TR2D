@@ -54,7 +54,7 @@ void Script::loadFromFile(std::string filename)
 
 std::vector<Script::Token> Script::tokenize(sf::String code)
 {
-	sf::String special = " {}=;";
+	sf::String special = " ;()[]{}+-=*/";
 	sf::String word;
 	std::vector<Script::Token> tokens;
 	for (int i = 0; i < code.getSize(); i++)
@@ -83,6 +83,7 @@ std::vector<Script::Token> Script::tokenize(sf::String code)
 
 Script::Token Script::convert(sf::String value)
 {
+	sf::String special = " ;()[]{}+-=*/";
 	if (value.isEmpty() || value == " ") { return {Token::Invalid, ""}; }
 	if (value == "function") { return {Token::Function, ""}; }
 	if (value == ";") { return {Token::Semicolon, ""}; }
@@ -94,7 +95,8 @@ Script::Token Script::convert(sf::String value)
 		bool ch = false;
 		for (int i = 0; i < value.getSize(); i++)
 		{
-			if (!std::isdigit(value.toAnsiString()[i])) { ch = true; break; }
+			if (tr::strContains(special, value[i])) { break; }
+			if (!(std::isdigit(value.toAnsiString()[i]) || value.toAnsiString()[i] == '.')) { ch = true; break; }
 		}
 		if (!ch) { return {Token::Number, value}; }
 	}

@@ -34,9 +34,9 @@ public:
 	Script(std::string filename);
 	void loadFromFile(std::string filename);
 	void execute(sf::String funcName, Programmable *executor);
+private:
 	static std::vector<Token> tokenize(sf::String code);
 	static Token convert(sf::String value);
-private:
 	std::vector<Function> funcs;
 };
 
