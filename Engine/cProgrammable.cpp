@@ -69,6 +69,14 @@ bool Programmable::hasVar(sf::String name)
 	return false;
 }
 
+void Programmable::deleteVar(sf::String name)
+{
+	for (int i = 0; i < vars.size(); i++)
+	{
+		if (vars[i].name == name) { vars.erase(vars.begin() + i); return; }
+	}
+}
+
 const std::vector<Programmable::Variable> Programmable::getVars()
 {
 	return vars;

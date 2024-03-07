@@ -16,6 +16,7 @@ set(TR2D_SOURCES
 	Engine/cWearable.cpp
 	Engine/cWindow.cpp
 	Engine/cWorld.cpp
+	Engine/cScript.cpp
 	Engine/pugixml.o)
 	
 project(TR2D VERSION 2.0 LANGUAGES CXX)

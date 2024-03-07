@@ -2,6 +2,7 @@
 #define trWorld
 
 #include "hEntity.hpp"
+#include "hScript.hpp"
 
 #include <SFML/Audio.hpp>
 #include <box2d/box2d.h>
@@ -87,7 +88,15 @@ public:
 		Spawner();
 		Spawner(sf::String ent, sf::Vector2f xy);
 	};
-	struct Level
+	struct ScriptObject
+	{
+		Script src;
+		sf::String mainFunc;
+		sf::String executor;
+		ScriptObject();
+		ScriptObject(std::string filename, sf::String MAIN, sf::String owner);
+	};
+	struct Level : public Programmable
 	{
 		Map map;
 		std::vector<Trigger> triggers;
@@ -96,6 +105,7 @@ public:
 		std::vector<SoundPlayer> sounds;
 		std::vector<FallenItem> items;
 		std::vector<Control> controls;
+		std::vector<ScriptObject> scripts;
 		sf::String name;
 		sf::Texture *bgTex;
 		sf::Sprite bgSpr;

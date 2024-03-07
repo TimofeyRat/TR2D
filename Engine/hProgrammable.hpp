@@ -22,6 +22,7 @@ public:
 	void setVar(sf::String name, float value);
 	Variable getVar(sf::String name);
 	bool hasVar(sf::String name);
+	void deleteVar(sf::String name);
 	const std::vector<Variable> getVars();
 private:
 	std::vector<Variable> vars;

@@ -104,7 +104,21 @@ void World::loadFromFile(std::string filename)
 				trigger.text().get()
 			));
 		}
-		level.controls.push_back(Control(level.cam.owner, "keyboard"));
+		for (auto control : lvl.children(L"control"))
+		{
+			level.controls.push_back(Control(
+				control.attribute(L"ent").as_string(),
+				control.attribute(L"controller").as_string()
+			));
+		}
+		for (auto script : lvl.children(L"script"))
+		{
+			level.scripts.push_back(ScriptObject(
+				pugi::as_utf8(script.attribute(L"file").as_string()),
+				script.attribute(L"mainFunc").as_string(),
+				script.attribute(L"executor").as_string()
+			));
+		}
 		World::lvls.push_back(level);
 	}
 	active = true;
@@ -221,10 +235,12 @@ void World::Level::reset()
 	controls.clear();
 	ents.clear();
 	spawners.clear();
+	scripts.clear();
 	bgBounds = {0, 0, 0, 0};
 	started = false;
 	if (world != nullptr) { delete world; }
 	musicVolume = 100;
+	clear();
 }
 
 Entity *World::Level::getEntity(sf::String name)
@@ -275,6 +291,11 @@ void World::Level::update()
 			if (s->getPlayingOffset().asSeconds() > 0) sounds.erase(sounds.begin() + i);
 			else sounds[i].sound.play();
 		}
+	}
+	for (int i = 0; i < scripts.size(); i++)
+	{
+		if (scripts[i].executor != "world") scripts[i].src.execute(scripts[i].mainFunc, getEntity(scripts[i].executor));
+		else scripts[i].src.execute(scripts[i].mainFunc, this);
 	}
 	for (int i = 0; i < controls.size(); i++)
 	{
@@ -569,6 +590,19 @@ World::Spawner::Spawner(sf::String ent, sf::Vector2f xy)
 {
 	name = ent;
 	pos = xy;
+}
+
+World::ScriptObject::ScriptObject()
+{
+	src = Script();
+	mainFunc = executor = "";
+}
+
+World::ScriptObject::ScriptObject(std::string filename, sf::String MAIN, sf::String owner)
+{
+	src.loadFromFile(filename);
+	mainFunc = MAIN;
+	executor = owner;
 }
 
 World::Level *World::getCurrentLevel() { return &lvls[currentLevel]; }
