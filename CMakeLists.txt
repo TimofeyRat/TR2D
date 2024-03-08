@@ -27,8 +27,7 @@ target_link_libraries(TR2D
 	sfml-graphics-s sfml-system-s sfml-window-s opengl32 freetype
 	sfml-system-s winmm
 	sfml-audio-s sfml-system-s openal32 flac vorbisenc vorbisfile vorbis ogg
-	sfml-network-s sfml-system-s ws2_32
-	box2d)
+	box2d lua)
 
 target_compile_options(TR2D PUBLIC -w -static -D SFML_STATIC)
 
@@ -48,7 +47,6 @@ target_link_libraries(MapEditor
 	sfml-graphics-s sfml-system-s sfml-window-s opengl32 freetype
 	sfml-system-s winmm
 	sfml-audio-s sfml-system-s openal32 flac vorbisenc vorbisfile vorbis ogg
-	sfml-network-s sfml-system-s ws2_32
 	box2d)
 
 target_compile_options(MapEditor PUBLIC -w -static -D SFML_STATIC)

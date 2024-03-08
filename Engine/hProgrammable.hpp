@@ -20,6 +20,7 @@ public:
 	void clear();
 	void setVar(sf::String name, sf::String value);
 	void setVar(sf::String name, float value);
+	void setVar(sf::String name, sf::String value, bool isNum);
 	Variable getVar(sf::String name);
 	bool hasVar(sf::String name);
 	void deleteVar(sf::String name);

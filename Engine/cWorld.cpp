@@ -153,7 +153,8 @@ void World::update()
 		musicVolume = getCurrentLevel()->musicVolume * Window::getVar("musicVolume") / 100.0f;
 		music.play();
 	}
-	getCurrentLevel()->update();
+	auto *lvl = getCurrentLevel();
+	if (lvl) lvl->update();
 }
 
 void World::draw()
@@ -600,7 +601,7 @@ World::ScriptObject::ScriptObject()
 
 World::ScriptObject::ScriptObject(std::string filename, sf::String MAIN, sf::String owner)
 {
-	src.loadFromFile(filename);
+	src = Script(filename);
 	mainFunc = MAIN;
 	executor = owner;
 }

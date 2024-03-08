@@ -8,7 +8,8 @@
 #include <string>
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include "hAssets.hpp"
+
+class Programmable;
 
 namespace tr
 {

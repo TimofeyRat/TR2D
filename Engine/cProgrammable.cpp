@@ -51,6 +51,25 @@ void Programmable::setVar(sf::String name, float value)
 	}
 }
 
+void Programmable::setVar(sf::String name, sf::String value, bool isNum)
+{
+	bool found = false;
+	for (int i = 0; i < vars.size(); i++)
+	{
+		if (vars[i].name == name)
+		{
+			if (isNum) vars[i].num = std::stof(value.toAnsiString());
+			else vars[i].str = value;
+			found = true;
+		}
+	}
+	if (!found)
+	{
+		if (isNum) vars.push_back(Variable(name, std::stof(value.toAnsiString())));
+		else vars.push_back(Variable(name, value));
+	}
+}
+
 Programmable::Variable Programmable::getVar(sf::String name)
 {
 	for (int i = 0; i < vars.size(); i++)

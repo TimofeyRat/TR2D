@@ -2,6 +2,7 @@
 #include "hWindow.hpp"
 #include "hGlobal.hpp"
 #include "hWorld.hpp"
+#include "hAssets.hpp"
 
 // #include <iostream>
 

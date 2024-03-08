@@ -1,5 +1,6 @@
 #include "hWindow.hpp"
 #include "hGlobal.hpp"
+#include "hAssets.hpp"
 #include <iostream>
 
 sf::RenderWindow Window::window;

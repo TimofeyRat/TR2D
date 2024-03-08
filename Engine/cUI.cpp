@@ -5,6 +5,7 @@
 #include "hInventory.hpp"
 #include "hWorld.hpp"
 #include "hDialogue.hpp"
+#include "hAssets.hpp"
 
 #include <iostream>
 
