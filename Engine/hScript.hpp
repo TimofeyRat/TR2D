@@ -116,6 +116,7 @@ private:
 	static std::vector<LogicExpr> logic;
 	static std::vector<Token> tokenize(sf::String code);
 	static Token convert(sf::String value);
+	static float evalMath(sf::String func, Programmable *prog);
 	std::vector<Function> funcs;
 };
 

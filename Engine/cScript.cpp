@@ -116,7 +116,7 @@ void Script::Function::execute(Programmable *prog, Script *launcher)
 			auto target = tr::splitStr(cmd.args[0].value, ".");
 			auto *t = getProg(target[0], prog);
 			auto expr = std::stoi(cmd.args[1].value.toAnsiString());
-			t->setVar(target[1], math[expr].eval(t));
+			t->setVar(target[1], math[expr].eval(prog));
 		}
 		else if (cmd.type == Command::Compare)
 		{
@@ -361,7 +361,8 @@ float Script::MathExpr::eval(Programmable *prog)
 			case MathToken::Type::Variable:
 			{
 				auto src = tr::splitStr(token.value, ".");
-				stack.push_back(getProg(src[0], prog)->getVar(src[1]));
+				if (src[0] == "math") { stack.push_back(evalMath(src[1], prog)); }
+				else { stack.push_back(getProg(src[0], prog)->getVar(src[1])); }
 			}
 			break;
 			case MathToken::Type::Operator:
@@ -522,4 +523,16 @@ Programmable *Script::getProg(sf::String name, Programmable *def)
 	if (name == "this") { return def; }
 	if (name == "camOwner") { return World::getCameraOwner(); }
 	return World::getCurrentLevel()->getEntity(name);
+}
+
+float Script::evalMath(sf::String func, Programmable *prog)
+{
+	if (func == "abs") { return abs(prog->getVar("arg1")); }
+	if (func == "dist")
+	{
+		float dx = abs(prog->getVar("arg1") - prog->getVar("arg3"));
+		float dy = abs(prog->getVar("arg2") - prog->getVar("arg4"));
+		return sqrt(dx * dx + dy * dy);
+	}
+	return 0;
 }
