@@ -15,22 +15,28 @@ public:
 			String = 1,
 			Number = 2,
 			Bracket = 3,
-			Operator = 4,
+			MathOperator = 4,
 			Semicolon = 5,
 			Variable = 6,
-			Expression = 7
+			MathExpression = 7,
+			IfStatement = 8,
+			LogicExpression = 9,
+			LogicOperator = 10
 		};
 		Type type;
 		sf::String value;
 		Token();
 		Token(Type token, sf::String val);
+		bool operator==(Token t1);
+		bool operator!=(Token t1);
 	};
 	struct Command
 	{
 		enum Type
 		{
 			Invalid = -1,
-			Assign = 0
+			Assign = 0,
+			Compare = 1
 		};
 		Type type;
 		std::vector<Token> args;
@@ -42,7 +48,7 @@ public:
 		sf::String name;
 		std::vector<Command> commands;
 		Function();
-		void execute(Programmable *prog);
+		void execute(Programmable *prog, Script *launcher);
 		void parse(std::vector<Token> tokens);
 	};
 	Script();
@@ -54,7 +60,7 @@ private:
 	{
 		enum Type
 		{
-			Unknown = -1,
+			Invalid = -1,
 			Variable = 0,
 			Number = 1,
 			Operator = 2,
@@ -76,7 +82,34 @@ private:
 		void shuntingYard(std::vector<Token> tokens);
 		float eval(Programmable *prog);
 	};
-	static std::vector<MathExpr> expressions;
+	struct LogicToken
+	{
+		enum Type
+		{
+			Invalid = -1,
+			Variable = 0,
+			Number = 1,
+			Operator = 2,
+			LeftBracket = 3,
+			RightBracket = 4
+		};
+		Type type;
+		sf::String value;
+		int priority;
+		LogicToken();
+		LogicToken(Type token, sf::String val);
+	};
+	struct LogicExpr
+	{
+		std::vector<LogicToken> tokens;
+		LogicExpr();
+		LogicExpr(std::vector<Token> tokens);
+		void shuntingYard(std::vector<Token> tokens);
+		bool eval(Programmable *prog);
+	};
+	static Programmable *getProg(sf::String name, Programmable *def);
+	static std::vector<MathExpr> math;
+	static std::vector<LogicExpr> logic;
 	static std::vector<Token> tokenize(sf::String code);
 	static Token convert(sf::String value);
 	std::vector<Function> funcs;
