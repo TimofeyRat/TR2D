@@ -102,12 +102,14 @@ void Script::Function::execute(Programmable *targetProg, Script *launcher)
 		{
 			auto target = tr::splitStr(cmd.args[0].value, ".");
 			auto *t = getProg(target[0], prog);
-			t->setVar(target[1], math[std::stoi(cmd.args[1].value.toAnsiString())].eval(t));
+			auto expr = std::stoi(cmd.args[1].value.toAnsiString());
+			t->setVar(target[1], math[expr].eval(t));
 		}
 		else if (cmd.type == Command::Compare)
 		{
-			bool check = logic[std::stoi(cmd.args[0].value.toAnsiString())].eval(prog);
-			if (check) { launcher->execute(cmd.args[1].value, prog); }
+			auto expr = std::stoi(cmd.args[0].value.toAnsiString());
+			bool check = logic[expr].eval(targetProg);
+			if (check) { if (cmd.args[1].value != "null") launcher->execute(cmd.args[1].value, prog); }
 			else if (cmd.args[2].value != "null") { launcher->execute(cmd.args[2].value, prog); }
 		}
 	}
@@ -169,6 +171,7 @@ std::vector<Script::Token> Script::tokenize(sf::String code)
 			auto chType = convert(ch).type, nextType = convert(code.toAnsiString()[i + 1]).type;
 			if ((chType == Token::MathOperator || chType == Token::LogicOperator) &&
 				(nextType == Token::MathOperator || nextType == Token::LogicOperator)) { ch += code.toAnsiString()[++i]; }
+			if (convert(ch) == Token(Token::MathOperator, "-") && nextType == Token::Number) { word += ch; continue; }
 			auto t1 = convert(word), t2 = convert(ch);
 			if (t1.type != Token::Invalid)
 			{
@@ -198,14 +201,14 @@ Script::Token Script::convert(sf::String value)
 		value == "&&" || value == "&" ||
 		value == "||" || value == "|") { return {Token::LogicOperator, value}; }
 	if (tr::strContains(value, ".") && !std::isdigit(value.toAnsiString()[0])) { return {Token::Variable, value }; }
-	if (!std::isdigit(value.toAnsiString()[0]) && value.toAnsiString()[0] != '_') { return {Token::String, value}; }
+	if (!std::isdigit(value.toAnsiString()[0]) && value.toAnsiString()[0] != '-') { return {Token::String, value}; }
 	else
 	{
 		bool ch = false;
 		for (int i = 0; i < value.getSize(); i++)
 		{
 			if (tr::strContains(special, value[i])) { break; }
-			if (!(std::isdigit(value.toAnsiString()[i]) || value.toAnsiString()[i] == '.' || value.toAnsiString()[i] == '_')) { ch = true; break; }
+			if (!(std::isdigit(value.toAnsiString()[i]) || value.toAnsiString()[i] == '.' || value.toAnsiString()[i] == '-')) { ch = true; break; }
 		}
 		if (!ch)
 		{
