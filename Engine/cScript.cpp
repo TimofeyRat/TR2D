@@ -99,7 +99,19 @@ void Script::Function::parse(std::vector<Script::Token> tokens)
 		}
 		if (t[0].type == Token::DeleteVar && t[1].type == Token::Variable)
 		{
-			cmd.type == Command::DeleteVar;
+			cmd.type = Command::DeleteVar;
+			cmd.args.push_back(t[1]);
+			commands.push_back(cmd);
+		}
+		if (t[0].type == Token::Call && t[1].type == Token::String)
+		{
+			cmd.type = Command::CallFunction;
+			cmd.args.push_back(t[1]);
+			commands.push_back(cmd);
+		}
+		if (t[0].type == Token::Execute && t[1].type == Token::String)
+		{
+			cmd.type = Command::CallEngine;
 			cmd.args.push_back(t[1]);
 			commands.push_back(cmd);
 		}
@@ -134,6 +146,14 @@ void Script::Function::execute(Programmable *prog, Script *launcher)
 		{
 			auto target = tr::splitStr(cmd.args[0].value, ".");
 			getProg(target[0], prog)->deleteVar(target[1]);
+		}
+		else if (cmd.type == Command::CallFunction)
+		{
+			launcher->execute(cmd.args[0].value, launcher);
+		}
+		else if (cmd.type == Command::CallEngine)
+		{
+			tr::execute(cmd.args[0].value);
 		}
 	}
 }
@@ -191,10 +211,11 @@ std::vector<Script::Token> Script::tokenize(sf::String code)
 		if (!tr::strContains(special, ch)) { word += ch; }
 		else
 		{
-			auto chType = convert(ch).type, nextType = convert(code.toAnsiString()[i + 1]).type;
-			if ((chType == Token::MathOperator || chType == Token::LogicOperator) &&
-				(nextType == Token::MathOperator || nextType == Token::LogicOperator)) { ch += code.toAnsiString()[++i]; }
-			if (convert(ch) == Token(Token::MathOperator, "-") && nextType == Token::Number) { word += ch; continue; }
+			auto cur = convert(ch), next = convert(code.toAnsiString()[i + 1]);
+			if ((cur.type == Token::MathOperator || cur.type == Token::LogicOperator) &&
+				(next.type == Token::MathOperator || next.type == Token::LogicOperator)) { ch += code.toAnsiString()[++i]; }
+			if (cur == Token(Token::MathOperator, "-") && next.type == Token::Number) { word += ch; continue; }
+			if (cur.type == Token::MathOperator && next.type == Token::String) { word += ch; continue; }
 			auto t1 = convert(word), t2 = convert(ch);
 			if (t1.type != Token::Invalid)
 			{
@@ -217,6 +238,8 @@ Script::Token Script::convert(sf::String value)
 	if (value == "if") { return {Token::IfStatement, ""}; }
 	if (value == "while") { return {Token::WhileLoop, ""}; }
 	if (value == "delete") { return {Token::DeleteVar, ""}; }
+	if (value == "call") { return {Token::Call, ""}; }
+	if (value == "execute") { return {Token::Execute, ""}; }
 	if (value == ";") { return {Token::Semicolon, ""}; }
 	if (tr::strContains(sf::String("()[]{}"), value)) { return {Token::Bracket, value}; }
 	if (tr::strContains(sf::String("+-=*/^"), value) && value.getSize() == 1) { return {Token::MathOperator, value}; }

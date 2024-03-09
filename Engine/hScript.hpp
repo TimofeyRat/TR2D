@@ -23,7 +23,9 @@ public:
 			LogicExpression = 9,
 			LogicOperator = 10,
 			WhileLoop = 11,
-			DeleteVar = 12
+			DeleteVar = 12,
+			Call = 13,
+			Execute = 14
 		};
 		Type type;
 		sf::String value;
@@ -40,7 +42,9 @@ public:
 			Assign = 0,
 			Compare = 1,
 			Loop = 2,
-			DeleteVar = 3
+			DeleteVar = 3,
+			CallFunction = 4,
+			CallEngine = 5
 		};
 		Type type;
 		std::vector<Token> args;
