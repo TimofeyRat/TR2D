@@ -214,6 +214,7 @@ void Entity::updateRB(float scale)
 
 void Entity::updateAttack()
 {
+	if (weapon.id == "null") setVar("attacking", 0);
 	if (getVar("attack") &&
 		!UI::containsMouse() &&
 		weapon.timer.getElapsedTime().asSeconds() >= weapon.useDelay &&
