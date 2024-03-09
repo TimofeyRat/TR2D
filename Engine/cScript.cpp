@@ -79,22 +79,35 @@ void Script::Function::parse(std::vector<Script::Token> tokens)
 			cmd.type = Command::Compare;
 			int j = 2;
 			std::vector<Token> expr;
-			while (t[j] != Token(Token::Bracket, ")"))
-			{
-				expr.push_back(t[j++]);
-			}
+			while (t[j] != Token(Token::Bracket, ")")) { expr.push_back(t[j++]); }
 			logic.push_back(LogicExpr(expr));
 			cmd.args.push_back({Token::LogicExpression, std::to_string(logic.size() - 1)});
 			cmd.args.push_back({Token::String, t[t.size() - 2].value});
 			cmd.args.push_back({Token::String, t[t.size() - 1].value});
 			commands.push_back(cmd);
 		}
+		if (t[0].type == Token::WhileLoop && t[1] == Token(Token::Bracket, "("))
+		{
+			cmd.type = Command::Loop;
+			int j = 2;
+			std::vector<Token> expr;
+			while (t[j] != Token(Token::Bracket, ")")) { expr.push_back(t[j++]); }
+			logic.push_back(LogicExpr(expr));
+			cmd.args.push_back({Token::LogicExpression, std::to_string(logic.size() - 1)});
+			cmd.args.push_back({Token::String, t[t.size() - 1].value});
+			commands.push_back(cmd);
+		}
+		if (t[0].type == Token::DeleteVar && t[1].type == Token::Variable)
+		{
+			cmd.type == Command::DeleteVar;
+			cmd.args.push_back(t[1]);
+			commands.push_back(cmd);
+		}
 	}
 }
 
-void Script::Function::execute(Programmable *targetProg, Script *launcher)
+void Script::Function::execute(Programmable *prog, Script *launcher)
 {
-	Programmable *prog = targetProg;
 	for (int i = 0; i < commands.size(); i++)
 	{
 		auto cmd = commands[i];
@@ -108,9 +121,19 @@ void Script::Function::execute(Programmable *targetProg, Script *launcher)
 		else if (cmd.type == Command::Compare)
 		{
 			auto expr = std::stoi(cmd.args[0].value.toAnsiString());
-			bool check = logic[expr].eval(targetProg);
+			bool check = logic[expr].eval(prog);
 			if (check) { if (cmd.args[1].value != "null") launcher->execute(cmd.args[1].value, prog); }
 			else if (cmd.args[2].value != "null") { launcher->execute(cmd.args[2].value, prog); }
+		}
+		else if (cmd.type == Command::Loop)
+		{
+			auto expr = std::stoi(cmd.args[0].value.toAnsiString());
+			while (logic[expr].eval(prog)) { launcher->execute(cmd.args[1].value, prog); }
+		}
+		else if (cmd.type == Command::DeleteVar)
+		{
+			auto target = tr::splitStr(cmd.args[0].value, ".");
+			getProg(target[0], prog)->deleteVar(target[1]);
 		}
 	}
 }
@@ -192,6 +215,8 @@ Script::Token Script::convert(sf::String value)
 	if (value.isEmpty() || value == " ") { return {Token::Invalid, ""}; }
 	if (value == "function") { return {Token::Function, ""}; }
 	if (value == "if") { return {Token::IfStatement, ""}; }
+	if (value == "while") { return {Token::WhileLoop, ""}; }
+	if (value == "delete") { return {Token::DeleteVar, ""}; }
 	if (value == ";") { return {Token::Semicolon, ""}; }
 	if (tr::strContains(sf::String("()[]{}"), value)) { return {Token::Bracket, value}; }
 	if (tr::strContains(sf::String("+-=*/^"), value) && value.getSize() == 1) { return {Token::MathOperator, value}; }

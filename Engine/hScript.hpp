@@ -21,7 +21,9 @@ public:
 			MathExpression = 7,
 			IfStatement = 8,
 			LogicExpression = 9,
-			LogicOperator = 10
+			LogicOperator = 10,
+			WhileLoop = 11,
+			DeleteVar = 12
 		};
 		Type type;
 		sf::String value;
@@ -36,7 +38,9 @@ public:
 		{
 			Invalid = -1,
 			Assign = 0,
-			Compare = 1
+			Compare = 1,
+			Loop = 2,
+			DeleteVar = 3
 		};
 		Type type;
 		std::vector<Token> args;
