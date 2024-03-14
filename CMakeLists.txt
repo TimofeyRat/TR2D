@@ -32,7 +32,7 @@ target_link_libraries(TR2D
 target_compile_options(TR2D PUBLIC -w -static -D SFML_STATIC)
 
 project(MapEditor VERSION 0.1 LANGUAGES CXX)
-add_executable(MapEditor mapEditor.cpp
+add_executable(MapEditor TRME.cpp
 	Engine/cWindow.cpp
 	Engine/cInput.cpp
 	Engine/cGlobal.cpp
@@ -52,7 +52,7 @@ target_link_libraries(MapEditor
 target_compile_options(MapEditor PUBLIC -w -static -D SFML_STATIC)
 
 project(SkeletonEditor VERSION 0.1 LANGUAGES CXX)
-add_executable(SkeletonEditor skeletonEditor.cpp Engine/pugixml.o)
+add_executable(SkeletonEditor TRSE.cpp Engine/pugixml.o)
 
 target_link_libraries(SkeletonEditor
 	sfml-window-s sfml-system-s opengl32 winmm gdi32

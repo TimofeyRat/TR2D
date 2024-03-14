@@ -4,10 +4,7 @@
 #include <vector>
 #include <string>
 #include <SFML/Graphics.hpp>
-
-#define PUGIXML_WCHAR_MODE
 #include <pugixml.hpp>
-// #include "hAnimation.hpp"
 
 class Talk
 {

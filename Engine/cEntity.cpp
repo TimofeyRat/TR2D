@@ -119,8 +119,8 @@ void Entity::updateAnim()
 
 	float dx = 0, dy = 0;
 	
-	if (bodyX < 0) { if (moveX <= 0) dx = -1; if (moveX > 0) dx = -0.5; setVar("rotation", -1); }
-	if (bodyX > 0) { if (moveX >= 0) dx = 1; if (moveX < 0) dx = 0.5; setVar("rotation", 1); }
+	if (bodyX < 0) { dx = -1; if (moveX >= 0) dx = -0.5; setVar("rotation", -1); }
+	if (bodyX > 0) { dx = 1; if (moveX <= 0) dx = 0.5; setVar("rotation", 1); }
 
 	sf::String anim;
 	if (dx == -1) { anim = "wl"; } //walkLeft

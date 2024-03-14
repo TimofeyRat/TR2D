@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
 			Inventory::addItem("food:shaurma", UINT16_MAX);
 			Inventory::addItem("food:meat", UINT16_MAX);
 			Inventory::addItem("weapon:sticky_blade");
+			Inventory::addItem("bauble:speed");
 		}
 		Window::update();
 		
