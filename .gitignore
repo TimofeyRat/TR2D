@@ -1,2 +1,6 @@
 Engine/*.old
 build/
+Engine/tr2d.res
+buildRelease.bat
+icon.ico
+res.rc

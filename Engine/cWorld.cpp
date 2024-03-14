@@ -312,23 +312,23 @@ void World::Level::update()
 	for (int i = 0; i < ents.size(); i++)
 	{
 		ents[i].update();
-		if (!ents[i].weapon.meleeOrRange && ents[i].getVar("attacking"))
-		{
-			auto r = ents[i].weapon.spr.getGlobalBounds();
-			for (int j = 0; j < ents.size(); j++)
-			{
-				if (i != j &&
-					r.intersects(ents[j].getHitbox()) &&
-					ents[j].getVar("noHurtTimer") >= ents[j].getVar("damageCD"))
-				{
-					for (int k = 0; k < ents[i].weapon.effects.size(); k++)
-					{
-						ents[j].addEffect(ents[i].weapon.effects[k]);
-					}
-					ents[j].setVar("noHurtTimer", 0);
-				}
-			}
-		}
+		// if (!ents[i].weapon.meleeOrRange && ents[i].getVar("attacking"))
+		// {
+		// 	auto r = ents[i].weapon.spr.getGlobalBounds();
+		// 	for (int j = 0; j < ents.size(); j++)
+		// 	{
+		// 		if (i != j &&
+		// 			r.intersects(ents[j].getHitbox()) &&
+		// 			ents[j].getVar("noHurtTimer") >= ents[j].getVar("damageCD"))
+		// 		{
+		// 			for (int k = 0; k < ents[i].weapon.effects.size(); k++)
+		// 			{
+		// 				ents[j].addEffect(ents[i].weapon.effects[k]);
+		// 			}
+		// 			ents[j].setVar("noHurtTimer", 0);
+		// 		}
+		// 	}
+		// }
 	}
 	auto *camOwner = getEntity(cam.owner);
 	if (camOwner)
