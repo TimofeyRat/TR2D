@@ -108,33 +108,26 @@ void Entity::draw(sf::RenderTarget *target)
 
 void Entity::updateAnim()
 {
-	auto *b = rb.getBody();
-	if (!b) { return; }
-	auto dx = b->GetLinearVelocity().x, dy = b->GetLinearVelocity().y;
+	float moveX, moveY, bodyX, bodyY;
+	if (auto *b = rb.getBody())
+	{
+		bodyX = b->GetLinearVelocity().x;
+		bodyY = b->GetLinearVelocity().y;
+	}
+	moveX = getVar("dx");
+	moveY = getVar("dy");
+
+	float dx = 0, dy = 0;
+	
+	if (bodyX < 0) { if (moveX <= 0) dx = -1; if (moveX > 0) dx = -0.5; setVar("rotation", -1); }
+	if (bodyX > 0) { if (moveX >= 0) dx = 1; if (moveX < 0) dx = 0.5; setVar("rotation", 1); }
+
 	sf::String anim;
-	if (dx < 0)
-	{
-		setVar("rotation", -1);
-		anim = "wl"; //walkLeft
-	}
-	else if (dx > 0)
-	{
-		setVar("rotation", 1);
-		anim = "wr"; //walkRight
-	}
-	else if (!dx)
-	{
-		auto r = getVar("rotation").num;
-		if (r < 0) anim = "il"; //idleLeft
-		if (r > 0) anim = "ir"; //idleRight
-	}
-	if (getVar("attacking") && !weapon.meleeOrRange)
-	{
-		auto r = getVar("rotation").num;
-		if (r < 0) anim = "al"; //attackLeft
-		if (r > 0) anim = "ar"; //attackRight
-		s.setSpeed(1);
-	}
+	if (dx == -1) { anim = "wl"; } //walkLeft
+	if (dx == -0.5) { anim = "sl"; } //stopLeft
+	if (dx == 1) { anim = "wr"; } //walkRight
+	if (dx == 0.5) { anim = "sr"; } //stopRight
+	if (!dx) { auto r = getVar("rotation").num; if (r < 0) anim = "il"; if (r > 0) anim = "ir"; } //idle
 	s.setCurrentAnimation(getVar(anim));
 	setVar("currentAnim", getVar(anim).str);
 }
