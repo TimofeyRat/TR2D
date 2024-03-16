@@ -3,8 +3,8 @@
 #include "hAssets.hpp"
 #include "hWindow.hpp"
 
-#include <iostream>
 #include <math.h>
+#include <pugixml.hpp>
 
 FrameAnimator::Animation::Animation()
 {
@@ -23,73 +23,131 @@ FrameAnimator::FrameAnimator()
 	currentAnimation = 0;
 }
 
+// void FrameAnimator::loadFromFile(std::string filename)
+// {
+// 	currentAnimation = 0;
+// 	anims.clear();
+// 	auto file = AssetManager::getText(filename);
+// 	Animation anim;
+// 	for (auto line : tr::splitStr(file, "\n"))
+// 	{
+// 		auto args = tr::splitStr(line, " ");
+// 		if (tr::strContains(args[0], "EndAnimation"))
+// 		{
+// 			anims.push_back(anim);
+// 		}
+// 		else if (tr::strContains(args[0], "Animation"))
+// 		{
+// 			anim = Animation();
+// 			anim.name = args[1];
+// 		}
+// 		else if (tr::strContains(args[0], "Texture"))
+// 		{
+// 			anim.texture = AssetManager::getTexture(args[1]);
+// 			int sizeX = std::stoi(args[2].toAnsiString()),
+// 				sizeY = std::stoi(args[3].toAnsiString()),
+// 				offset = std::stoi(args[4].toAnsiString()),
+// 				length = std::stoi(args[5].toAnsiString());
+// 			auto texCountX = anim.texture->getSize().x / sizeX;
+// 			for (int i = offset; i < offset + length; i++)
+// 			{
+// 				auto r = sf::IntRect(
+// 					sf::Vector2i(
+// 						sizeX * (i % texCountX),
+// 						sizeY * (i / texCountX)
+// 					),
+// 					sf::Vector2i(sizeX, sizeY)
+// 				);
+// 				anim.frames.push_back(r);
+// 				r.left += r.width;
+// 				r.width *= -1;
+// 				anim.frames_flip.push_back(r);
+// 			}
+// 		}
+// 		else if (tr::strContains(args[0], "Frame"))
+// 		{
+// 			anim.texture = AssetManager::getTexture(args[1]);
+// 			sf::IntRect frame;
+// 			frame.left = std::stof(args[2].toAnsiString());
+// 			frame.top = std::stof(args[3].toAnsiString());
+// 			frame.width = std::stof(args[4].toAnsiString());
+// 			frame.height = std::stof(args[5].toAnsiString());
+// 			anim.frames.push_back(frame);
+// 			frame.left += frame.width;
+// 			frame.width *= -1;
+// 			anim.frames_flip.push_back(frame);
+// 		}
+// 		else if (tr::strContains(args[0], "Duration"))
+// 		{
+// 			anim.duration = std::stof(args[1].toAnsiString());
+// 		}
+// 		else if (tr::strContains(args[0], "Scale"))
+// 		{
+// 			anim.scaleX = std::stof(args[1].toAnsiString());
+// 			anim.scaleY = std::stof(args[2].toAnsiString());
+// 		}
+// 		else if (tr::strContains(args[0], "Repeat"))
+// 		{
+// 			anim.repeat = std::stoi(args[1].toAnsiString());
+// 		}
+// 	}
+// }
+
 void FrameAnimator::loadFromFile(std::string filename)
 {
 	currentAnimation = 0;
 	anims.clear();
-	auto file = AssetManager::getText(filename);
-	Animation anim;
-	for (auto line : tr::splitStr(file, "\n"))
+	pugi::xml_document file;
+	file.load_file(pugi::as_wide(filename).c_str());
+	for (auto anim : file.children())
 	{
-		auto args = tr::splitStr(line, " ");
-		if (tr::strContains(args[0], "EndAnimation"))
+		Animation a;
+		a.name = anim.attribute(L"name").as_string();
+		a.duration = anim.attribute(L"duration").as_float();
+		a.repeat = anim.attribute(L"repeat").as_bool();
+		auto scale = tr::splitStr(anim.attribute(L"scale").as_string(), " ");
+		a.scaleX = std::stof(scale[0].toAnsiString());
+		a.scaleY = std::stof(scale[1].toAnsiString());
+		for (auto node : anim.children())
 		{
-			anims.push_back(anim);
-		}
-		else if (tr::strContains(args[0], "Animation"))
-		{
-			anim = Animation();
-			anim.name = args[1];
-		}
-		else if (tr::strContains(args[0], "Texture"))
-		{
-			anim.texture = AssetManager::getTexture(args[1]);
-			int sizeX = std::stoi(args[2].toAnsiString()),
-				sizeY = std::stoi(args[3].toAnsiString()),
-				offset = std::stoi(args[4].toAnsiString()),
-				length = std::stoi(args[5].toAnsiString());
-			auto texCountX = anim.texture->getSize().x / sizeX;
-			for (int i = offset; i < offset + length; i++)
+			if (sf::String(node.name()) == "texture")
 			{
-				auto r = sf::IntRect(
-					sf::Vector2i(
-						sizeX * (i % texCountX),
-						sizeY * (i / texCountX)
-					),
-					sf::Vector2i(sizeX, sizeY)
-				);
-				anim.frames.push_back(r);
-				r.left += r.width;
-				r.width *= -1;
-				anim.frames_flip.push_back(r);
+				a.texture = AssetManager::getTexture(sf::String(node.attribute(L"path").as_string()));
+				auto size = tr::splitStr(node.attribute(L"size").as_string(), " ");
+				int sizeX = std::stoi(size[0].toAnsiString()),
+					sizeY = std::stoi(size[1].toAnsiString()),
+					offset = node.attribute(L"start").as_int(),
+					length = node.attribute(L"count").as_int();	
+				auto texCountX = a.texture->getSize().x / sizeX;
+				for (int i = offset; i < offset + length; i++)
+				{
+					auto r = sf::IntRect(
+						sf::Vector2i(
+							sizeX * (i % texCountX),
+							sizeY * (i / texCountX)
+						),
+						sf::Vector2i(sizeX, sizeY)
+					);
+					a.frames.push_back(r);
+					r.left += r.width;
+					r.width *= -1;
+					a.frames_flip.push_back(r);
+				}
+			}
+			else if (sf::String(node.name()) == "frame")
+			{
+				a.texture = AssetManager::getTexture(sf::String(node.attribute(L"path").as_string()));
+				auto f = tr::splitStr(node.attribute(L"rect").as_string(), " ");
+				sf::IntRect frame = {
+					std::stoi(f[0].toAnsiString()), std::stoi(f[1].toAnsiString()),
+					std::stoi(f[2].toAnsiString()), std::stoi(f[3].toAnsiString())
+				};
+				a.frames.push_back(frame);
+				frame.left += frame.width; frame.width *= -1;
+				a.frames_flip.push_back(frame);
 			}
 		}
-		else if (tr::strContains(args[0], "Frame"))
-		{
-			anim.texture = AssetManager::getTexture(args[1]);
-			sf::IntRect frame;
-			frame.left = std::stof(args[2].toAnsiString());
-			frame.top = std::stof(args[3].toAnsiString());
-			frame.width = std::stof(args[4].toAnsiString());
-			frame.height = std::stof(args[5].toAnsiString());
-			anim.frames.push_back(frame);
-			frame.left += frame.width;
-			frame.width *= -1;
-			anim.frames_flip.push_back(frame);
-		}
-		else if (tr::strContains(args[0], "Duration"))
-		{
-			anim.duration = std::stof(args[1].toAnsiString());
-		}
-		else if (tr::strContains(args[0], "Scale"))
-		{
-			anim.scaleX = std::stof(args[1].toAnsiString());
-			anim.scaleY = std::stof(args[2].toAnsiString());
-		}
-		else if (tr::strContains(args[0], "Repeat"))
-		{
-			anim.repeat = std::stoi(args[1].toAnsiString());
-		}
+		anims.push_back(a);
 	}
 }
 
