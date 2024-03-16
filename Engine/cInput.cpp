@@ -696,43 +696,6 @@ void Input::Controller::update()
 
 void Input::update() { for (int i = 0; i < controls.size(); i++) { controls[i].update(); } }
 
-// void Input::init()
-// {
-// 	active = true;
-// 	controls.clear();
-// 	Controller ctrl;
-// 	for (auto line : tr::splitStr(AssetManager::getText("res/global/control.trconf"), "\n"))
-// 	{
-// 		auto args = tr::splitStr(line, " ");
-// 		if (tr::strContains(args[0], "#")) { continue; }
-// 		else if (tr::strContains(args[0], "EndController"))
-// 		{
-// 			controls.push_back(ctrl);
-// 		}
-// 		else if (tr::strContains(args[0], "Controller"))
-// 		{
-// 			ctrl = Controller();
-// 			ctrl.id = args[1];
-// 		}
-// 		else if (tr::strContains(args[0], "Variable"))
-// 		{
-// 			ctrl.vars.push_back({
-// 				args[1],
-// 				std::stof(args[2].toAnsiString())
-// 			});
-// 		}
-// 		else if (tr::strContains(args[0], "Input"))
-// 		{
-// 			ctrl.keys.push_back({
-// 				args[1],
-// 				args[2],
-// 				std::stoi(args[3].toAnsiString()),
-// 				std::stof(args[4].toAnsiString())
-// 			});
-// 		}
-// 	}
-// }
-
 void Input::init()
 {
 	active = true;
