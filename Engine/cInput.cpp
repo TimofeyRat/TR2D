@@ -4,6 +4,8 @@
 #include "hWorld.hpp"
 #include "hAssets.hpp"
 
+#include <pugixml.hpp>
+
 // #include <iostream>
 
 std::vector<Input::Controller> Input::controls;
@@ -694,39 +696,78 @@ void Input::Controller::update()
 
 void Input::update() { for (int i = 0; i < controls.size(); i++) { controls[i].update(); } }
 
+// void Input::init()
+// {
+// 	active = true;
+// 	controls.clear();
+// 	Controller ctrl;
+// 	for (auto line : tr::splitStr(AssetManager::getText("res/global/control.trconf"), "\n"))
+// 	{
+// 		auto args = tr::splitStr(line, " ");
+// 		if (tr::strContains(args[0], "#")) { continue; }
+// 		else if (tr::strContains(args[0], "EndController"))
+// 		{
+// 			controls.push_back(ctrl);
+// 		}
+// 		else if (tr::strContains(args[0], "Controller"))
+// 		{
+// 			ctrl = Controller();
+// 			ctrl.id = args[1];
+// 		}
+// 		else if (tr::strContains(args[0], "Variable"))
+// 		{
+// 			ctrl.vars.push_back({
+// 				args[1],
+// 				std::stof(args[2].toAnsiString())
+// 			});
+// 		}
+// 		else if (tr::strContains(args[0], "Input"))
+// 		{
+// 			ctrl.keys.push_back({
+// 				args[1],
+// 				args[2],
+// 				std::stoi(args[3].toAnsiString()),
+// 				std::stof(args[4].toAnsiString())
+// 			});
+// 		}
+// 	}
+// }
+
 void Input::init()
 {
 	active = true;
 	controls.clear();
-	Controller ctrl;
-	for (auto line : tr::splitStr(AssetManager::getText("res/global/control.trconf"), "\n"))
+	pugi::xml_document file;
+	file.load_file("res/global/control.trconf");
+	for (auto controller : file.children())
 	{
-		auto args = tr::splitStr(line, " ");
-		if (tr::strContains(args[0], "#")) { continue; }
-		else if (tr::strContains(args[0], "EndController"))
+		if (sf::String(controller.name()) == "controller")
 		{
+			Controller ctrl;
+			ctrl.id = controller.attribute(L"name").as_string();
+			for (auto node : controller.children())
+			{
+				if (sf::String(node.name()) == "variable")
+				{
+					ctrl.vars.push_back({
+						node.attribute(L"name").as_string(),
+						node.attribute(L"default").as_float()
+					});
+				}
+				else if (sf::String(node.name()) == "input")
+				{
+					bool addOrSet;
+					if (sf::String(node.attribute(L"type").as_string()) == "add") { addOrSet = false; }
+					if (sf::String(node.attribute(L"type").as_string()) == "set") { addOrSet = true; }
+					ctrl.keys.push_back({
+						node.attribute(L"event").as_string(),
+						node.attribute(L"var").as_string(),
+						addOrSet,
+						node.attribute(L"value").as_float()
+					});
+				} 
+			}
 			controls.push_back(ctrl);
-		}
-		else if (tr::strContains(args[0], "Controller"))
-		{
-			ctrl = Controller();
-			ctrl.id = args[1];
-		}
-		else if (tr::strContains(args[0], "Variable"))
-		{
-			ctrl.vars.push_back({
-				args[1],
-				std::stof(args[2].toAnsiString())
-			});
-		}
-		else if (tr::strContains(args[0], "Input"))
-		{
-			ctrl.keys.push_back({
-				args[1],
-				args[2],
-				std::stoi(args[3].toAnsiString()),
-				std::stof(args[4].toAnsiString())
-			});
 		}
 	}
 }
