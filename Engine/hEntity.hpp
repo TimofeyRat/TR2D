@@ -18,12 +18,15 @@ private:
 	void updateRB(float scale);
 	void updateAttack();
 public:
+	sf::String name;
 	Weapon weapon;
 	Bauble bauble;
 	Entity();
-	Entity(std::string filename);
+	Entity(sf::String file);
+	Entity(pugi::xml_node node);
 	void reset();
-	void loadFromFile(std::string filename);
+	void loadFromNode(pugi::xml_node node);
+	void loadFromFile(sf::String file);
 	void update();
 	void draw(sf::RenderTarget *target);
 	void setPosition(sf::Vector2f pos);

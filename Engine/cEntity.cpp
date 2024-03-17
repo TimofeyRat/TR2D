@@ -11,10 +11,16 @@ Entity::Entity()
 	reset();
 }
 
-Entity::Entity(std::string filename)
+Entity::Entity(pugi::xml_node node)
 {
 	reset();
-	loadFromFile(filename);
+	loadFromNode(node);
+}
+
+Entity::Entity(sf::String file)
+{
+	reset();
+	loadFromFile(file);
 }
 
 void Entity::reset()
@@ -27,32 +33,39 @@ void Entity::reset()
 	clear();
 }
 
-void Entity::loadFromFile(std::string filename)
+void Entity::loadFromFile(sf::String path)
 {
-	for (auto line : tr::splitStr(AssetManager::getText(filename), "\n"))
+	pugi::xml_document doc;
+	doc.load_file(path.toWideString().c_str());
+	loadFromNode(doc.first_child());
+}
+
+void Entity::loadFromNode(pugi::xml_node character)
+{
+	name = character.attribute(L"name").as_string();
+	s.loadFromFile(pugi::as_utf8(character.attribute(L"skeleton").as_string()));
+	clear();
+	setVar("rotation", 1);
+	for (auto node : character.children())
 	{
-		auto args = tr::splitStr(line, " ");
-		if (tr::strContains(args[0], "#")) { continue; }
-		else if (tr::strContains(args[0], "Skeleton"))
+		if (sf::String(node.name()) == "physics")
 		{
-			s.loadFromFile(args[1].toAnsiString());
+			rb.create({0, 0}, {1, 1},
+				node.attribute(L"friction").as_float(),
+				node.attribute(L"mass").as_float(),
+				node.attribute(L"restitution").as_float(),
+				node.attribute(L"angle").as_float(),
+				node.attribute(L"fixedAngle").as_bool(),
+				node.attribute(L"dynamic").as_bool(),
+				node.attribute(L"collisionGroup").as_int()
+			);
 		}
-		else
+		else if (sf::String(node.name()) == "variable")
 		{
-			if (tr::strContains(args[1], "str")) setVar(args[0], args[2]);
-			else if (tr::strContains(args[1], "num")) setVar(args[0], std::stof(args[2].toAnsiString()));
+			setVar(node.attribute(L"name").as_string(), node.attribute(L"string").as_string());
+			setVar(node.attribute(L"name").as_string(), node.attribute(L"num").as_float());
 		}
 	}
-	rb.create({0, 0}, {1, 1},
-		getVar("friction"),
-		getVar("mass"),
-		getVar("restitution"),
-		getVar("angle"),
-		getVar("fixedAngle"),
-		!getVar("staticBody"),
-		-1
-	);
-	setVar("rotation", 1);
 }
 
 void Entity::update()

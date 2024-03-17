@@ -9,8 +9,6 @@
 
 #include <iostream>
 
-#include <pugiconfig.hpp>
-
 std::map<sf::String, sf::String> World::ents;
 sf::RenderTexture World::screen;
 std::vector<World::Level> World::lvls;
@@ -23,9 +21,11 @@ float World::brightness, World::musicVolume;
 void World::init()
 {
 	ents.clear();
-	for (auto file : AssetManager::getTexts(".trent"))
+	for (auto path : AssetManager::getTexts(".trent"))
 	{
-		ents[Entity(file).getVar("gameName")] = file;
+		pugi::xml_document file;
+		file.load_file(pugi::as_wide(path).c_str());
+		ents[Entity(file.first_child()).name] = path;
 	}
 	lvls.clear();
 	currentLevel = 0;
@@ -84,7 +84,7 @@ void World::loadFromFile(std::string filename)
 		{
 			auto pos = tr::splitStr(ent.attribute(L"pos").as_string(), " ");
 			level.spawners.push_back(Spawner(ent.attribute(L"name").as_string(), {std::stof(pos[0].toAnsiString()), std::stof(pos[1].toAnsiString())}));
-			level.ents.push_back(Entity(getEntFile((ent.attribute(L"name").as_string()))));
+			level.ents.push_back(Entity(getEntFile(ent.attribute(L"name").as_string())));
 		}
 		auto gravity = lvl.child(L"gravity").attribute(L"value").as_string();
 		level.gravity = {
@@ -248,7 +248,7 @@ Entity *World::Level::getEntity(sf::String name)
 {
 	for (int i = 0; i < ents.size(); i++)
 	{
-		if (ents[i].getVar("gameName") == name) { return &ents[i]; }
+		if (ents[i].name == name) { return &ents[i]; }
 	}
 	return nullptr;
 }

@@ -7,11 +7,11 @@
 class Rigidbody
 {
 private:
-	b2BodyDef *bodyDef;
+	b2BodyDef bodyDef;
 	b2Body *body;
-	b2FixtureDef *fixDef;
+	b2FixtureDef fixDef;
 	b2Fixture *fixture;
-	b2PolygonShape *shape;
+	b2PolygonShape shape;
 	b2Vec2 size;
 public:
 	Rigidbody();
