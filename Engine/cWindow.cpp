@@ -1,7 +1,8 @@
 #include "hWindow.hpp"
 #include "hGlobal.hpp"
 #include "hAssets.hpp"
-#include <iostream>
+
+#include <pugixml.hpp>
 
 sf::RenderWindow Window::window;
 Programmable Window::vars;
@@ -12,11 +13,12 @@ float Window::deltaTime;
 
 void Window::init(int argc, char *argv[])
 {
-	for (auto line : AssetManager::readFile("res/global/window.trconf"))
+	pugi::xml_document config;
+	config.load_file("res/global/settings.trconf");
+	for (auto set : config.child(L"settings").children())
 	{
-		auto args = tr::splitStr(line, " ");
-		if (tr::strContains(args[1], "num")) { vars.setVar(args[0], std::stof(args[2].toAnsiString())); }
-		else if (tr::strContains(args[1], "str")) { vars.setVar(args[0], args[2]); }
+		vars.setVar(set.name(), set.attribute(L"num").as_float());
+		vars.setVar(set.name(), set.attribute(L"str").as_string());
 	}
 	if (vars.getVar("Fullscreen"))
 	{

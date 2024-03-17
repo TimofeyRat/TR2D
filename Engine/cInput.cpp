@@ -701,7 +701,7 @@ void Input::init()
 	active = true;
 	controls.clear();
 	pugi::xml_document file;
-	file.load_file("res/global/control.trconf");
+	file.load_file("res/global/settings.trconf");
 	for (auto controller : file.children())
 	{
 		if (sf::String(controller.name()) == "controller")
