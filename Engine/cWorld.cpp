@@ -295,7 +295,14 @@ void World::Level::update()
 	}
 	for (int i = 0; i < scripts.size(); i++)
 	{
-		if (scripts[i].executor != "world") scripts[i].src.execute(scripts[i].mainFunc, getEntity(scripts[i].executor));
+		if (scripts[i].executor != "world")
+		{
+			auto executors = tr::splitStr(scripts[i].executor, ";");
+			for (int j = 0; j < executors.size(); j++)
+			{
+				scripts[i].src.execute(scripts[i].mainFunc, getEntity(executors[j]));
+			}
+		}
 		else scripts[i].src.execute(scripts[i].mainFunc, this);
 	}
 	for (int i = 0; i < controls.size(); i++)
