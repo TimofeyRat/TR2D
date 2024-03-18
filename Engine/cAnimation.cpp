@@ -98,7 +98,7 @@ void FrameAnimator::loadFromFile(std::string filename)
 	currentAnimation = 0;
 	anims.clear();
 	pugi::xml_document file;
-	file.load_file(pugi::as_wide(filename).c_str());
+	file.load_string(AssetManager::getText(filename).toWideString().c_str());
 	for (auto anim : file.children())
 	{
 		Animation a;

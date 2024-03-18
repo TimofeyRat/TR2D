@@ -24,7 +24,7 @@ void World::init()
 	for (auto path : AssetManager::getTexts(".trent"))
 	{
 		pugi::xml_document file;
-		file.load_file(pugi::as_wide(path).c_str());
+		file.load_string(AssetManager::getText(path).toWideString().c_str());
 		ents[Entity(file.first_child()).name] = path;
 	}
 	lvls.clear();
@@ -44,7 +44,7 @@ void World::loadFromFile(std::string filename)
 {
 	init();
 	pugi::xml_document doc;
-	doc.load_file(pugi::as_wide(filename).c_str());
+	doc.load_string(AssetManager::getText(filename).toWideString().c_str());
 	for (auto lvl : doc.children())
 	{
 		World::Level level;

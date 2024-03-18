@@ -75,7 +75,6 @@ void Talk::loadFromFile(std::string filename)
 	init();
 	pugi::xml_document document;
 	document.load_string(AssetManager::getText(filename).toWideString().c_str());
-	// document.load_file(filename.c_str());
 	for (auto dialogue = document.first_child(); dialogue != pugi::xml_node(); dialogue = dialogue.next_sibling())
 	{
 		if (sf::String(dialogue.name()) != "dialogue") { continue; }
@@ -168,7 +167,7 @@ void Talk::loadNameColors()
 {
 	nameColors.clear();
 	pugi::xml_document doc;
-	doc.load_file("res/dialogues/colors.trconf");
+	doc.load_string(AssetManager::getText("res/dialogues/colors.trconf").toWideString().c_str());
 	for (auto clr : doc.children())
 	{
 		SpeakerColor sc;

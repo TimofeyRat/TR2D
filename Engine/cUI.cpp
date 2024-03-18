@@ -674,7 +674,7 @@ void UI::loadFromFile(std::string filename, bool reload)
 	init();
 	currentFile = filename;
 	pugi::xml_document document;
-	document.load_file(filename.c_str());
+	document.load_string(AssetManager::getText(filename).toWideString().c_str());
 	for (auto frame : document.children())
 	{
 		if (sf::String(frame.name()) != "frame") { continue; }

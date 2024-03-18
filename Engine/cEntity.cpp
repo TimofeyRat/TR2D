@@ -36,7 +36,7 @@ void Entity::reset()
 void Entity::loadFromFile(sf::String path)
 {
 	pugi::xml_document doc;
-	doc.load_file(path.toWideString().c_str());
+	doc.load_string(pugi::as_wide(AssetManager::getText(path.toAnsiString())).c_str());
 	loadFromNode(doc.first_child());
 }
 

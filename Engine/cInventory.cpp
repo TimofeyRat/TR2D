@@ -4,7 +4,7 @@
 #include "hWindow.hpp"
 #include "hWearable.hpp"
 
-#include <iostream>
+#include <pugixml.hpp>
 
 std::vector<Inventory::Item> Inventory::items;
 std::vector<Weapon> Inventory::weapons;
@@ -60,6 +60,182 @@ Inventory::ItemEntry::ItemEntry(Inventory::Item itm, sf::Uint16 cnt)
 	count = cnt;
 }
 
+// void Inventory::init()
+// {
+// 	size = {
+// 		Window::getVar("invSizeX"),
+// 		Window::getVar("invSizeY"),
+// 		Window::getVar("invCellSize"),
+// 		Window::getVar("invCellInner")
+// 	};
+// 	itemsCanvas.create(size.x * size.z, size.y * size.z);
+// 	items.clear();
+// 	weapons.clear();
+// 	baubles.clear();
+// 	inv.clear();
+// 	Item item;
+// 	Weapon wpn;
+// 	Bauble bbl;
+// 	for (auto file : AssetManager::getTexts("res/items"))
+// 	{
+// 		for (auto line : tr::splitStr(AssetManager::getText(file), "\n"))
+// 		{
+// 			auto args = tr::splitStr(line, " ");
+// 			if (tr::strContains(args[0], "#")) { continue; }
+// 			//Item
+// 			else if (tr::strContains(args[0], "EndItem"))
+// 			{
+// 				items.push_back(item);
+// 			}
+// 			else if (tr::strContains(args[0], "Item"))
+// 			{
+// 				item = Item();
+// 				auto id = tr::splitStr(args[1], ":");
+// 				item.type = id[0];
+// 				item.id = id[1];
+// 			}
+// 			else if (tr::strContains(args[0], "ItmName"))
+// 			{
+// 				item.name = args[1];
+// 			}
+// 			else if (tr::strContains(args[0], "ItmAnimation"))
+// 			{
+// 				item.fa.loadFromFile(args[1]);
+// 			}
+// 			else if (tr::strContains(args[0], "ItmEffect"))
+// 			{
+// 				Programmable::Variable var;
+// 				var.name = args[1];
+// 				if (tr::strContains(args[2], "str")) { var.str = args[3]; }
+// 				else if (tr::strContains(args[2], "num")) { var.num = std::stof(args[3].toAnsiString()); }
+// 				item.effects.push_back(Effect(
+// 					var,
+// 					std::stof(args[4].toAnsiString()),
+// 					std::stoi(args[5].toAnsiString()),
+// 					std::stoi(args[6].toAnsiString())
+// 				));
+// 			}
+// 			else if (tr::strContains(args[0], "ItmCountable"))
+// 			{
+// 				item.countable = std::stoi(args[1].toAnsiString());
+// 			}
+// 			else if (tr::strContains(args[0], "ItmUseable"))
+// 			{
+// 				item.useable = std::stoi(args[1].toAnsiString());
+// 			}
+// 			//Weapon
+// 			else if (tr::strContains(args[0], "EndWeapon"))
+// 			{
+// 				wpn.timer.restart();
+// 				weapons.push_back(wpn);
+// 			}
+// 			else if (tr::strContains(args[0], "Weapon"))
+// 			{
+// 				wpn = Weapon();
+// 				wpn.id = args[1];
+// 			}
+// 			else if (tr::strContains(args[0], "WpnAnimation"))
+// 			{
+// 				wpn.fa.loadFromFile(args[1]);
+// 				wpn.fa.setCurrentAnimation(wpn.id);
+// 			}
+// 			else if (tr::strContains(args[0], "WpnEffect"))
+// 			{
+// 				Programmable::Variable var;
+// 				var.name = args[1];
+// 				if (tr::strContains(args[2], "str")) { var.str = args[3]; }
+// 				else if (tr::strContains(args[2], "num")) { var.num = std::stof(args[3].toAnsiString()); }
+// 				wpn.effects.push_back(Effect(
+// 					var,
+// 					std::stof(args[4].toAnsiString()),
+// 					std::stoi(args[5].toAnsiString()),
+// 					std::stoi(args[6].toAnsiString())
+// 				));
+// 			}
+// 			else if (tr::strContains(args[0], "WpnDelay"))
+// 			{
+// 				wpn.useDelay = std::stof(args[1].toAnsiString());
+// 			}
+// 			else if (tr::strContains(args[0], "WpnOrigin"))
+// 			{
+// 				wpn.origin = {
+// 					std::stof(args[1].toAnsiString()),
+// 					std::stof(args[2].toAnsiString())
+// 				};
+// 			}
+// 			else if (tr::strContains(args[0], "WpnRotation"))
+// 			{
+// 				wpn.rotation = std::stof(args[1].toAnsiString());
+// 			}
+// 			else if (tr::strContains(args[0], "WpnScale"))
+// 			{
+// 				wpn.scale = std::stof(args[1].toAnsiString());
+// 			}
+// 			else if (tr::strContains(args[0], "WpnType"))
+// 			{
+// 				if (tr::strContains(args[1], "Melee")) wpn.meleeOrRange = false;
+// 				else if (tr::strContains(args[1], "Range")) { wpn.meleeOrRange = true; }
+// 			}
+// 			else if (tr::strContains(args[0], "EndBauble"))
+// 			{
+// 				bbl.timer.restart();
+// 				baubles.push_back(bbl);
+// 			}
+// 			else if (tr::strContains(args[0], "Bauble"))
+// 			{
+// 				bbl = Bauble();
+// 				bbl.id = args[1];
+// 			}
+// 			else if (tr::strContains(args[0], "BblAnimation"))
+// 			{
+// 				bbl.fa.loadFromFile(args[1]);
+// 				bbl.fa.setCurrentAnimation(bbl.id);
+// 			}
+// 			else if (tr::strContains(args[0], "BblEffect"))
+// 			{
+// 				Programmable::Variable var;
+// 				var.name = args[1];
+// 				if (tr::strContains(args[2], "str")) { var.str = args[3]; }
+// 				else if (tr::strContains(args[2], "num")) { var.num = std::stof(args[3].toAnsiString()); }
+// 				bbl.effects.push_back(Effect(
+// 					var,
+// 					std::stof(args[4].toAnsiString()),
+// 					std::stoi(args[5].toAnsiString()),
+// 					std::stoi(args[6].toAnsiString())
+// 				));
+// 			}
+// 			else if (tr::strContains(args[0], "BblDelay"))
+// 			{
+// 				bbl.useDelay = std::stof(args[1].toAnsiString());
+// 			}
+// 			else if (tr::strContains(args[0], "BblOrigin"))
+// 			{
+// 				bbl.origin = {
+// 					std::stof(args[1].toAnsiString()),
+// 					std::stof(args[2].toAnsiString())
+// 				};
+// 			}
+// 			else if (tr::strContains(args[0], "BblScale"))
+// 			{
+// 				bbl.scale = std::stof(args[1].toAnsiString());
+// 			}
+// 			else if (tr::strContains(args[0], "BblRotation"))
+// 			{
+// 				bbl.rotation = std::stof(args[1].toAnsiString());
+// 			}
+// 			else if (tr::strContains(args[0], "BblType"))
+// 			{
+// 				if (tr::strContains(args[1], "Idle")) { bbl.idleOrActive = false; }
+// 				else if (tr::strContains(args[1], "Active")) { bbl.idleOrActive = true; }
+// 			}
+// 			else if (tr::strContains(args[0], "BblPlacement"))
+// 			{
+// 				bbl.bone = args[1];
+// 			}
+// 		}
+// 	}
+// }
+
 void Inventory::init()
 {
 	size = {
@@ -73,164 +249,116 @@ void Inventory::init()
 	weapons.clear();
 	baubles.clear();
 	inv.clear();
-	Item item;
-	Weapon wpn;
-	Bauble bbl;
-	for (auto file : AssetManager::getTexts("res/items"))
+	for (auto path : AssetManager::getTexts("res/items"))
 	{
-		for (auto line : tr::splitStr(AssetManager::getText(file), "\n"))
+		pugi::xml_document file;
+		file.load_string(AssetManager::getText(path).toWideString().c_str());
+		for (auto node : file.children())
 		{
-			auto args = tr::splitStr(line, " ");
-			if (tr::strContains(args[0], "#")) { continue; }
-			//Item
-			else if (tr::strContains(args[0], "EndItem"))
+			auto type = sf::String(node.name());
+			if (type == "item")
 			{
-				items.push_back(item);
-			}
-			else if (tr::strContains(args[0], "Item"))
-			{
-				item = Item();
-				auto id = tr::splitStr(args[1], ":");
+				Item item;
+				auto id = tr::splitStr(node.attribute(L"id").as_string(), ":");
 				item.type = id[0];
 				item.id = id[1];
+				item.name = node.attribute(L"name").as_string();
+				item.fa.loadFromFile(pugi::as_utf8(node.attribute(L"anim").as_string()));
+				item.countable = node.attribute(L"countable").as_bool();
+				item.useable = node.attribute(L"useable").as_bool();
+				for (auto effect : node.children())
+				{
+					if (sf::String(effect.name()) == "effect")
+					{
+						Programmable::Variable var;
+						var.name = effect.attribute(L"name").as_string();
+						var.num = effect.attribute(L"num").as_float();
+						var.str = effect.attribute(L"str").as_string();
+						bool type = false;
+						if (sf::String(effect.attribute(L"type").as_string()) == "set") { type = false; }
+						if (sf::String(effect.attribute(L"type").as_string()) == "add") { type = true; }
+						item.effects.push_back(Effect(
+							var,
+							effect.attribute(L"frequency").as_float(),
+							effect.attribute(L"usages").as_float(),
+							type
+						));
+					}
+				}
+				items.push_back(item);
 			}
-			else if (tr::strContains(args[0], "ItmName"))
+			if (type == "weapon")
 			{
-				item.name = args[1];
-			}
-			else if (tr::strContains(args[0], "ItmAnimation"))
-			{
-				item.fa.loadFromFile(args[1]);
-			}
-			else if (tr::strContains(args[0], "ItmEffect"))
-			{
-				Programmable::Variable var;
-				var.name = args[1];
-				if (tr::strContains(args[2], "str")) { var.str = args[3]; }
-				else if (tr::strContains(args[2], "num")) { var.num = std::stof(args[3].toAnsiString()); }
-				item.effects.push_back(Effect(
-					var,
-					std::stof(args[4].toAnsiString()),
-					std::stoi(args[5].toAnsiString()),
-					std::stoi(args[6].toAnsiString())
-				));
-			}
-			else if (tr::strContains(args[0], "ItmCountable"))
-			{
-				item.countable = std::stoi(args[1].toAnsiString());
-			}
-			else if (tr::strContains(args[0], "ItmUseable"))
-			{
-				item.useable = std::stoi(args[1].toAnsiString());
-			}
-			//Weapon
-			else if (tr::strContains(args[0], "EndWeapon"))
-			{
-				wpn.timer.restart();
+				Weapon wpn;
+				wpn.id = node.attribute(L"id").as_string();
+				wpn.fa.loadFromFile(pugi::as_utf8(node.attribute(L"anim").as_string()));
+				wpn.fa.setCurrentAnimation(wpn.id);
+				wpn.useDelay = node.attribute(L"delay").as_float();
+				auto origin = tr::splitStr(node.attribute(L"origin").as_string(), " ");
+				wpn.origin = {
+					std::stof(origin[0].toAnsiString()),
+					std::stof(origin[1].toAnsiString())
+				};
+				wpn.rotation = node.attribute(L"rotation").as_float();
+				wpn.scale = node.attribute(L"scale").as_float();
+				wpn.meleeOrRange = (sf::String(node.attribute(L"type").as_string()) == "range");
+				for (auto effect : node.children())
+				{
+					if (sf::String(effect.name()) == "effect")
+					{
+						Programmable::Variable var;
+						var.name = effect.attribute(L"name").as_string();
+						var.num = effect.attribute(L"num").as_float();
+						var.str = effect.attribute(L"str").as_string();
+						bool type = false;
+						if (sf::String(effect.attribute(L"type").as_string()) == "set") { type = false; }
+						if (sf::String(effect.attribute(L"type").as_string()) == "add") { type = true; }
+						wpn.effects.push_back(Effect(
+							var,
+							effect.attribute(L"frequency").as_float(),
+							effect.attribute(L"usages").as_float(),
+							type
+						));
+					}
+				}
 				weapons.push_back(wpn);
 			}
-			else if (tr::strContains(args[0], "Weapon"))
+			if (type == "bauble")
 			{
-				wpn = Weapon();
-				wpn.id = args[1];
-			}
-			else if (tr::strContains(args[0], "WpnAnimation"))
-			{
-				wpn.fa.loadFromFile(args[1]);
-				wpn.fa.setCurrentAnimation(wpn.id);
-			}
-			else if (tr::strContains(args[0], "WpnEffect"))
-			{
-				Programmable::Variable var;
-				var.name = args[1];
-				if (tr::strContains(args[2], "str")) { var.str = args[3]; }
-				else if (tr::strContains(args[2], "num")) { var.num = std::stof(args[3].toAnsiString()); }
-				wpn.effects.push_back(Effect(
-					var,
-					std::stof(args[4].toAnsiString()),
-					std::stoi(args[5].toAnsiString()),
-					std::stoi(args[6].toAnsiString())
-				));
-			}
-			else if (tr::strContains(args[0], "WpnDelay"))
-			{
-				wpn.useDelay = std::stof(args[1].toAnsiString());
-			}
-			else if (tr::strContains(args[0], "WpnOrigin"))
-			{
-				wpn.origin = {
-					std::stof(args[1].toAnsiString()),
-					std::stof(args[2].toAnsiString())
-				};
-			}
-			else if (tr::strContains(args[0], "WpnRotation"))
-			{
-				wpn.rotation = std::stof(args[1].toAnsiString());
-			}
-			else if (tr::strContains(args[0], "WpnScale"))
-			{
-				wpn.scale = std::stof(args[1].toAnsiString());
-			}
-			else if (tr::strContains(args[0], "WpnType"))
-			{
-				if (tr::strContains(args[1], "Melee")) wpn.meleeOrRange = false;
-				else if (tr::strContains(args[1], "Range")) { wpn.meleeOrRange = true; }
-			}
-			else if (tr::strContains(args[0], "EndBauble"))
-			{
-				bbl.timer.restart();
-				baubles.push_back(bbl);
-			}
-			else if (tr::strContains(args[0], "Bauble"))
-			{
-				bbl = Bauble();
-				bbl.id = args[1];
-			}
-			else if (tr::strContains(args[0], "BblAnimation"))
-			{
-				bbl.fa.loadFromFile(args[1]);
+				Bauble bbl;
+				bbl.id = node.attribute(L"id").as_string();
+				bbl.fa.loadFromFile(pugi::as_utf8(node.attribute(L"anim").as_string()));
 				bbl.fa.setCurrentAnimation(bbl.id);
-			}
-			else if (tr::strContains(args[0], "BblEffect"))
-			{
-				Programmable::Variable var;
-				var.name = args[1];
-				if (tr::strContains(args[2], "str")) { var.str = args[3]; }
-				else if (tr::strContains(args[2], "num")) { var.num = std::stof(args[3].toAnsiString()); }
-				bbl.effects.push_back(Effect(
-					var,
-					std::stof(args[4].toAnsiString()),
-					std::stoi(args[5].toAnsiString()),
-					std::stoi(args[6].toAnsiString())
-				));
-			}
-			else if (tr::strContains(args[0], "BblDelay"))
-			{
-				bbl.useDelay = std::stof(args[1].toAnsiString());
-			}
-			else if (tr::strContains(args[0], "BblOrigin"))
-			{
+				bbl.useDelay = node.attribute(L"delay").as_float();
+				auto origin = tr::splitStr(node.attribute(L"origin").as_string(), " ");
 				bbl.origin = {
-					std::stof(args[1].toAnsiString()),
-					std::stof(args[2].toAnsiString())
+					std::stof(origin[0].toAnsiString()),
+					std::stof(origin[1].toAnsiString())
 				};
-			}
-			else if (tr::strContains(args[0], "BblScale"))
-			{
-				bbl.scale = std::stof(args[1].toAnsiString());
-			}
-			else if (tr::strContains(args[0], "BblRotation"))
-			{
-				bbl.rotation = std::stof(args[1].toAnsiString());
-			}
-			else if (tr::strContains(args[0], "BblType"))
-			{
-				if (tr::strContains(args[1], "Idle")) { bbl.idleOrActive = false; }
-				else if (tr::strContains(args[1], "Active")) { bbl.idleOrActive = true; }
-			}
-			else if (tr::strContains(args[0], "BblPlacement"))
-			{
-				bbl.bone = args[1];
+				bbl.scale = node.attribute(L"scale").as_float();
+				bbl.rotation = node.attribute(L"rotation").as_float();
+				bbl.idleOrActive = (sf::String(node.attribute(L"type").as_string()) == "active");
+				bbl.bone = node.attribute(L"placement").as_string();
+				for (auto effect : node.children())
+				{
+					if (sf::String(effect.name()) == "effect")
+					{
+						Programmable::Variable var;
+						var.name = effect.attribute(L"name").as_string();
+						var.num = effect.attribute(L"num").as_float();
+						var.str = effect.attribute(L"str").as_string();
+						bool type = false;
+						if (sf::String(effect.attribute(L"type").as_string()) == "set") { type = false; }
+						if (sf::String(effect.attribute(L"type").as_string()) == "add") { type = true; }
+						bbl.effects.push_back(Effect(
+							var,
+							effect.attribute(L"frequency").as_float(),
+							effect.attribute(L"usages").as_float(),
+							type
+						));
+					}
+				}
+				baubles.push_back(bbl);
 			}
 		}
 	}
