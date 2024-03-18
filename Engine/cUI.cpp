@@ -942,6 +942,7 @@ sf::String UI::parseText(sf::String txt)
 		sf::String value;
 		Programmable *prog = nullptr;
 		if (var[0] == "Window") prog = Window::getProgrammable();
+		else if (var[0] == "camOwner") prog = World::getCameraOwner();
 		else prog = World::getCurrentLevel()->getEntity(var[0]);
 		if (prog == nullptr) { result.replace(start, end - start + 1, "?"); continue; }
 		if (var[1] == "str") value = prog->getVar(var[2]);

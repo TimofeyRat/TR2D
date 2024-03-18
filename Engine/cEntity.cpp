@@ -106,6 +106,8 @@ void Entity::update()
 	s.update();
 	setVar("posX", rb.getPosition().x);
 	setVar("posY", rb.getPosition().y);
+	setVar("moveX", rb.getBody()->GetLinearVelocity().x);
+	setVar("moveY", rb.getBody()->GetLinearVelocity().y);
 	setVar("noHurtTimer", getVar("noHurtTimer") + Window::getDeltaTime());
 	setVar("damageCD", getVar("damageCooldown").num);
 }

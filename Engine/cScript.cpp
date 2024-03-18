@@ -70,8 +70,15 @@ void Script::Function::parse(std::vector<Script::Token> tokens)
 			t.erase(t.begin() + 1);
 			cmd.args.push_back(t[0]);
 			t.erase(t.begin());
-			math.push_back(MathExpr(t));
-			cmd.args.push_back({Token::MathExpression, std::to_string(math.size() - 1)});
+			if (t[0].type == Token::String)
+			{
+				cmd.args.push_back(t[0]);
+			}
+			else
+			{
+				math.push_back(MathExpr(t));
+				cmd.args.push_back({Token::MathExpression, std::to_string(math.size() - 1)});
+			}
 			commands.push_back(cmd);
 		}
 		if (t[0].type == Token::IfStatement && t[1] == Token(Token::Bracket, "("))
@@ -127,8 +134,15 @@ void Script::Function::execute(Programmable *prog, Script *launcher)
 		{
 			auto target = tr::splitStr(cmd.args[0].value, ".");
 			auto *t = getProg(target[0], prog);
-			auto expr = std::stoi(cmd.args[1].value.toAnsiString());
-			t->setVar(target[1], math[expr].eval(prog));
+			if (cmd.args[1].type == Token::String)
+			{
+				t->setVar(target[1], cmd.args[1].value);
+			}
+			else if (cmd.args[1].type == Token::MathExpression)
+			{
+				auto expr = std::stoi(cmd.args[1].value.toAnsiString());
+				t->setVar(target[1], math[expr].eval(prog));
+			}
 		}
 		else if (cmd.type == Command::Compare)
 		{
@@ -208,7 +222,19 @@ std::vector<Script::Token> Script::tokenize(sf::String code)
 	for (int i = 0; i < code.getSize(); i++)
 	{
 		std::string ch; ch += code.toAnsiString()[i];
-		if (!tr::strContains(special, ch)) { word += ch; }
+		if (ch == "\"")
+		{
+			ch = "";
+			i++;
+			while (ch != "\"")
+			{
+				word += ch;
+				ch = code.toAnsiString()[i++];
+			}
+			i--;
+			continue;
+		}
+		else if (!tr::strContains(special, ch)) { word += ch; }
 		else
 		{
 			auto cur = convert(ch), next = convert(code.toAnsiString()[i + 1]);
