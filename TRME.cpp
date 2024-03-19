@@ -132,25 +132,21 @@ public:
 			entName = name;
 			for (auto path : std::filesystem::recursive_directory_iterator("res/ents"))
 			{
-				std::ifstream ent(path.path().string());
-				std::string skeletonFile;
-				int bone = -1;
-				while (!ent.eof())
+				pugi::xml_document ent;
+				ent.load_string(AssetManager::getText(path.path().string()).toWideString().c_str());
+				if (sf::String(ent.first_child().attribute(L"name").as_string()) == name)
 				{
-					std::string line;
-					std::getline(ent, line);
-					auto args = tr::splitStr(line, " ");
-					if (args[0] == "Skeleton") { skeletonFile = args[1]; }
-					if (args[0] == "gameName")
-					{
-						if (args[2] != entName) { skeletonFile = ""; bone = -1; break; }
-					}
-					if (args[0] == "headBone") { bone = std::stoi(args[2].toAnsiString()); }
-				}
-				if (!skeletonFile.empty() && bone != -1)
-				{
-					Skeleton s; s.loadFromFile(skeletonFile);
+					Skeleton s; s.loadFromFile(pugi::as_utf8(ent.first_child().attribute(L"skeleton").as_string()));
 					s.update();
+					int bone = 0;
+					for (auto vars : ent.first_child().children())
+					{
+						if (sf::String(vars.name()) == "variable" &&
+							sf::String(vars.attribute(L"name").as_string()) == "headBone")
+						{
+							bone = vars.attribute(L"num").as_int();
+						}
+					}
 					auto *b = s.getBone(bone);
 					tex.loadFromImage(b->tex->copyToImage());
 					spr.setTexture(tex);
