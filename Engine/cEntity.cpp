@@ -95,7 +95,8 @@ void Entity::update()
 	s.setSpeed(getVar("speed")); s.setScale(scale);
 	updateAttack();
 	if (getVar("attacking") && (s.hasAnimationEnded() || weapon.id == "null")) { setVar("attacking", 0); }
-	updateAnim();
+	// updateAnim();
+	s.setCurrentAnimation(getVar(getVar("anim")));
 	s.updateBones();
 	auto rect = s.generateHitbox();
 	rb.resize(rb.getBody()->GetWorld(), {!rect.width ? 1 : rect.width, !rect.height ? 1 : rect.height - 2});
@@ -121,36 +122,36 @@ void Entity::draw(sf::RenderTarget *target)
 	if (Window::getVar("debug")) rb.draw(target);
 }
 
-void Entity::updateAnim()
-{
-	float moveX, moveY, bodyX, bodyY;
-	if (auto *b = rb.getBody())
-	{
-		bodyX = b->GetLinearVelocity().x;
-		bodyY = b->GetLinearVelocity().y;
-	}
-	moveX = getVar("dx");
-	moveY = getVar("dy");
+// void Entity::updateAnim()
+// {
+// 	float moveX, moveY, bodyX, bodyY;
+// 	if (auto *b = rb.getBody())
+// 	{
+// 		bodyX = b->GetLinearVelocity().x;
+// 		bodyY = b->GetLinearVelocity().y;
+// 	}
+// 	moveX = getVar("dx");
+// 	moveY = getVar("dy");
 
-	float dx = 0, dy = 0;
+// 	float dx = 0, dy = 0;
 	
-	if (moveX < 0) dx = -1;
-	if (moveX > 0) dx = 1;
-	if (bodyX < 0) { if (moveX >= 0) dx = -0.5; setVar("rotation", -1); }
-	if (bodyX > 0) { if (moveX <= 0) dx = 0.5; setVar("rotation", 1); }
-	dy = getVar("onGround") ? 0 : bodyY;
+// 	if (moveX < 0) dx = -1;
+// 	if (moveX > 0) dx = 1;
+// 	if (bodyX < 0) { if (moveX >= 0) dx = -0.5; setVar("rotation", -1); }
+// 	if (bodyX > 0) { if (moveX <= 0) dx = 0.5; setVar("rotation", 1); }
+// 	dy = getVar("onGround") ? 0 : bodyY;
 
-	sf::String anim;
-	if (dx == -1) { anim = "wl"; } //walkLeft
-	if (dx == -0.5) { anim = "sl"; } //stopLeft
-	if (dx == 1) { anim = "wr"; } //walkRight
-	if (dx == 0.5) { anim = "sr"; } //stopRight
-	if (!dx) { auto r = getVar("rotation").num; if (r < 0) anim = "il"; if (r > 0) anim = "ir"; } //idle
-	if (dy < 0) { auto r = getVar("rotation").num; if (r < 0) anim = "jl"; if (r > 0) anim = "jr"; } //Jump
-	if (dy > 0) { auto r = getVar("rotation").num; if (r < 0) anim = "fl"; if (r > 0) anim = "fr"; } //Fall
-	s.setCurrentAnimation(getVar(anim));
-	setVar("currentAnim", getVar(anim).str);
-}
+// 	sf::String anim;
+// 	if (dx == -1) { anim = "wl"; } //walkLeft
+// 	if (dx == -0.5) { anim = "sl"; } //stopLeft
+// 	if (dx == 1) { anim = "wr"; } //walkRight
+// 	if (dx == 0.5) { anim = "sr"; } //stopRight
+// 	if (!dx) { auto r = getVar("rotation").num; if (r < 0) anim = "il"; if (r > 0) anim = "ir"; } //idle
+// 	if (dy < 0) { auto r = getVar("rotation").num; if (r < 0) anim = "jl"; if (r > 0) anim = "jr"; } //Jump
+// 	if (dy > 0) { auto r = getVar("rotation").num; if (r < 0) anim = "fl"; if (r > 0) anim = "fr"; } //Fall
+// 	s.setCurrentAnimation(getVar(anim));
+// 	setVar("anim", getVar(anim).str);
+// }
 
 void Entity::setPosition(sf::Vector2f pos) { rb.setPosition({pos.x, pos.y}); }
 sf::Vector2f Entity::getPosition() { return s.getPosition(); }

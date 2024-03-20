@@ -12,7 +12,7 @@ class Entity : public Programmable
 private:
 	Skeleton s;
 	Rigidbody rb;
-	void updateAnim();
+	// void updateAnim();
 	std::vector<Inventory::Effect> effects;
 	void applyEffects();
 	void updateRB(float scale);
