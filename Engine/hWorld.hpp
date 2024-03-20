@@ -17,7 +17,7 @@ public:
 		sf::FloatRect rect;
 		Rigidbody rb;
 		Trigger();
-		Trigger(b2World *w, sf::FloatRect r, sf::String cmd);
+		Trigger(sf::String cmd);
 	};
 	struct Map
 	{

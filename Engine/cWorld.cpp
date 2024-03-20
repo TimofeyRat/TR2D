@@ -93,16 +93,20 @@ void World::loadFromFile(std::string filename)
 		};
 		for (auto trigger : lvl.children(L"trigger"))
 		{
-			auto pos = tr::splitStr(trigger.attribute(L"pos").as_string(), " ");
-			auto size = tr::splitStr(trigger.attribute(L"size").as_string(), " ");
-			level.triggers.push_back(Trigger(
-				level.world,
+			sf::String prompt;
+			for (auto attr: trigger.attributes())
+			{
+				auto name = tr::splitStr(attr.name(), "_");
+				if (name[1] == "str")
 				{
-					std::stof(pos[0].toAnsiString()), std::stof(pos[1].toAnsiString()),
-					std::stof(size[0].toAnsiString()), std::stof(size[1].toAnsiString())
-				},
-				trigger.text().get()
-			));
+					prompt += name[0] + "=str=\"" + attr.as_string() + "\";";
+				}
+				if (name[1] == "num")
+				{
+					prompt += name[0] + "=num=" + attr.as_string() + ";";
+				}
+			}
+			level.triggers.push_back(Trigger(prompt));
 		}
 		for (auto control : lvl.children(L"control"))
 		{
@@ -295,7 +299,15 @@ void World::Level::update()
 	}
 	for (int i = 0; i < scripts.size(); i++)
 	{
-		if (scripts[i].executor != "world")
+		if (tr::strContains(scripts[i].executor, "trigger"))
+		{
+			auto t = tr::splitStr(scripts[i].executor, "_")[1];
+			for (int j = 0; j < triggers.size(); j++)
+			{
+				if (triggers[j].getVar("name") == t) { scripts[i].src.execute(scripts[i].mainFunc, &triggers[j]); }
+			}
+		}
+		else if (scripts[i].executor != "world")
 		{
 			auto executors = tr::splitStr(scripts[i].executor, ";");
 			for (int j = 0; j < executors.size(); j++)
@@ -427,9 +439,8 @@ World::Trigger::Trigger()
 	clear();
 }
 
-World::Trigger::Trigger(b2World *w, sf::FloatRect r, sf::String prompt)
+World::Trigger::Trigger(sf::String prompt)
 {
-	rect = r;
 	rb = Rigidbody();
 	clear();
 	for (auto cmd : tr::splitStr(prompt, ";"))
@@ -444,6 +455,11 @@ World::Trigger::Trigger(b2World *w, sf::FloatRect r, sf::String prompt)
 			setVar(args[0], std::stof(args[2].toAnsiString()));
 		}
 	}
+	auto pos = tr::splitStr(getVar("pos"), " ");
+	auto size = tr::splitStr(getVar("size"), " ");
+	rect.left = std::stof(pos[0].toAnsiString()); rect.top = std::stof(pos[1].toAnsiString());
+	rect.width = std::stof(size[0].toAnsiString()); rect.height = std::stof(size[1].toAnsiString());
+	setVar("x", rect.left); setVar("y", rect.top); setVar("w", rect.width); setVar("h", rect.height);
 	rb.create(
 		{rect.left + rect.width / 2, rect.top + rect.height / 2},
 		{rect.width, rect.height},

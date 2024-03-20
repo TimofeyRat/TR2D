@@ -5,7 +5,7 @@
 #include <iostream>
 #include <deque>
 
-#define special sf::String(" ;()[]{}+-=*/^<>&|")
+#define special sf::String(" ;()[]{}+-=*/^<>&|!")
 
 std::vector<Script::MathExpr> Script::math;
 std::vector<Script::LogicExpr> Script::logic;
@@ -167,7 +167,12 @@ void Script::Function::execute(Programmable *prog, Script *launcher)
 		}
 		else if (cmd.type == Command::CallEngine)
 		{
-			tr::execute(cmd.args[0].value);
+			if (cmd.args[0].type == Token::Variable)
+			{
+				auto var = tr::splitStr(cmd.args[0].value, ".");
+				tr::execute(getProg(var[0], prog)->getVar(var[1]).str);
+			}
+			else tr::execute(cmd.args[0].value);
 		}
 	}
 }
@@ -242,6 +247,7 @@ std::vector<Script::Token> Script::tokenize(sf::String code)
 				(next.type == Token::MathOperator || next.type == Token::LogicOperator)) { ch += code.toAnsiString()[++i]; }
 			if (cur == Token(Token::MathOperator, "-") && next.type == Token::Number) { word += ch; continue; }
 			if (cur.type == Token::MathOperator && next.type == Token::String) { word += ch; continue; }
+			if (cur == Token(Token::String, "!") && next == Token(Token::MathOperator, "=")) { tokens.push_back(convert("!=")); continue; }
 			auto t1 = convert(word), t2 = convert(ch);
 			if (t1.type != Token::Invalid)
 			{
@@ -582,6 +588,18 @@ float Script::evalMath(sf::String func, Programmable *prog)
 		float dx = abs(prog->getVar("arg1") - prog->getVar("arg3"));
 		float dy = abs(prog->getVar("arg2") - prog->getVar("arg4"));
 		return sqrt(dx * dx + dy * dy);
+	}
+	if (func == "intersection")
+	{
+		sf::FloatRect r1(
+			prog->getVar("x"),
+			prog->getVar("y"),
+			prog->getVar("w"),
+			prog->getVar("h"));
+		sf::FloatRect r2;
+		if (prog->getVar("arg1").str == "camOwner") r2 = World::getCameraOwner()->getHitbox();
+		else r2 = World::getCurrentLevel()->getEntity(prog->getVar("arg1"))->getHitbox();
+		return r1.intersects(r2);
 	}
 	return 0;
 }
