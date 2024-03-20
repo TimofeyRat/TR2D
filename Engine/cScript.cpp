@@ -2,6 +2,7 @@
 #include "hGlobal.hpp"
 #include "hWorld.hpp"
 #include "hAssets.hpp"
+#include "hWindow.hpp"
 #include <iostream>
 #include <deque>
 
@@ -116,7 +117,7 @@ void Script::Function::parse(std::vector<Script::Token> tokens)
 			cmd.args.push_back(t[1]);
 			commands.push_back(cmd);
 		}
-		if (t[0].type == Token::Execute && t[1].type == Token::String)
+		if (t[0].type == Token::Execute && (t[1].type == Token::String || t[1].type == Token::Variable))
 		{
 			cmd.type = Command::CallEngine;
 			cmd.args.push_back(t[1]);
@@ -248,6 +249,7 @@ std::vector<Script::Token> Script::tokenize(sf::String code)
 			if (cur == Token(Token::MathOperator, "-") && next.type == Token::Number) { word += ch; continue; }
 			if (cur.type == Token::MathOperator && next.type == Token::String) { word += ch; continue; }
 			if (cur == Token(Token::String, "!") && next == Token(Token::MathOperator, "=")) { tokens.push_back(convert("!=")); continue; }
+			if (cur == Token(Token::MathOperator, "=") && next == Token(Token::MathOperator, "=")) { tokens.push_back(convert("==")); continue; }
 			auto t1 = convert(word), t2 = convert(ch);
 			if (t1.type != Token::Invalid)
 			{
@@ -600,6 +602,10 @@ float Script::evalMath(sf::String func, Programmable *prog)
 		if (prog->getVar("arg1").str == "camOwner") r2 = World::getCameraOwner()->getHitbox();
 		else r2 = World::getCurrentLevel()->getEntity(prog->getVar("arg1"))->getHitbox();
 		return r1.intersects(r2);
+	}
+	if (func == "deltaTime")
+	{
+		return Window::getDeltaTime();
 	}
 	return 0;
 }
