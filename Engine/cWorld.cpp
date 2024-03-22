@@ -399,23 +399,26 @@ void World::Level::update()
 	{
 		auto pos = camOwner->getPosition();
 		sf::Listener::setPosition(pos.x, 0, pos.y);
+		int interaction = -1;
 		for (int i = 0; i < triggers.size(); i++)
 		{
-			if (!triggers[i].hasVar("cmd")) continue;
-			bool inter = camOwner->getHitbox().intersects(triggers[i].rect);
-			setVar("showInteraction", inter);
-			if (inter && camOwner->getVar("interacting"))
+			if (camOwner->getHitbox().intersects(triggers[i].rect) && triggers[i].hasVar("cmd")) interaction = i;
+		}
+		bool inter = (interaction != -1);
+		setVar("showInteraction", inter);
+		if (inter && camOwner->getVar("interacting"))
+		{
+			auto prompt = triggers[interaction].getVar("cmd").str;
+			if (!prompt.isEmpty())
 			{
-				auto prompt = triggers[i].getVar("cmd").str;
-				if (prompt.isEmpty()) { continue; }
 				auto cmd = tr::splitStr(prompt, "|");
 				for (int j = 0; j < cmd.size(); j++)
 				{
 					tr::execute(cmd[j]);
 				}
 			}
-			camOwner->setVar("interacting", 0);
 		}
+		camOwner->setVar("interacting", 0);
 		for (int j = 0; j < items.size(); j++)
 		{
 			for (int i = 0; i < items.size(); i++)
@@ -777,5 +780,10 @@ void tr::execute(sf::String cmd)
 	else if (args[0] == "input")
 	{
 		if (args[1] == "active") { Input::active = std::stoi(args[2].toAnsiString()); }
+	}
+	else if (args[0] == "inv")
+	{
+		if (args[1] == "clear") { Inventory::inv.clear(); }
+		else if (args[1] == "addItem") { Inventory::addItem(args[2]); }
 	}
 }

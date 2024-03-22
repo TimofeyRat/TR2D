@@ -1,7 +1,7 @@
 #include "hWindow.hpp"
 #include "hGlobal.hpp"
 #include "hAssets.hpp"
-
+#include "hInput.hpp"
 #include <pugixml.hpp>
 
 sf::RenderWindow Window::window;
@@ -63,6 +63,8 @@ void Window::update()
 	setVar("FPS", 1.0f / deltaTime);
 	setVar("mouseX", sf::Mouse::getPosition(window).x);
 	setVar("mouseY", sf::Mouse::getPosition(window).y);
+	setVar("cursorX", Input::getMousePos(true).x);
+	setVar("cursorY", Input::getMousePos(true).y);
 	window.setVerticalSyncEnabled(getVar("VSync"));
 	events.clear();
 	sf::Event e;
