@@ -210,6 +210,25 @@ void FrameAnimator::send(sf::Sprite &spr, bool flip, bool scale)
 	if (scale && anim->scaleX >= 0 && anim->scaleY >= 0) spr.setScale(anim->scaleX, anim->scaleY);
 }
 
+sf::IntRect FrameAnimator::getCurrentFrame(bool flip)
+{
+	auto *anim = &anims[currentAnimation];
+	float currentFrame;
+	if (anim->duration == 0) currentFrame = 0;
+	else currentFrame = anim->currentFrame / anim->duration;
+	if (flip)
+	{
+		if (currentFrame >= 1) return anim->frames_flip[(int)anim->frames_flip.size() - 1];
+		else  return anim->frames_flip[(int)(currentFrame * anim->frames_flip.size())];
+	}
+	else
+	{
+		if (currentFrame >= 1) return anim->frames[(int)anim->frames.size() - 1];
+		else return anim->frames[(int)(currentFrame * anim->frames.size())];
+	}
+	return {0, 0, 0, 0};
+}
+
 FrameAnimator::Animation *FrameAnimator::getCurrentAnim()
 {
 	return &anims[currentAnimation];

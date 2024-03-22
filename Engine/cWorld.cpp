@@ -6,6 +6,7 @@
 #include "hInventory.hpp"
 #include "hDialogue.hpp"
 #include "hUI.hpp"
+#include "hParticles.hpp"
 
 #include <iostream>
 
@@ -38,6 +39,7 @@ void World::init()
 	musicVolume = 100;
 	
 	Inventory::init();
+	ParticleSystem::init();
 }
 
 void World::loadFromFile(std::string filename)

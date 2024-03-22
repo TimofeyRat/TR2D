@@ -28,6 +28,7 @@ public:
 	Animation *getCurrentAnim();
 	Animation *getAnim(sf::String name);
 	void restart();
+	sf::IntRect getCurrentFrame(bool flip);
 private:
 	std::vector<Animation> anims;
 	sf::Uint16 currentAnimation;
