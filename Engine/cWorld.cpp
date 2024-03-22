@@ -481,6 +481,10 @@ void World::Level::draw(sf::RenderTarget *target)
 			p->shape.getLocalBounds().height
 		});
 		p->shape.setPosition(p->rb.getPosition().x, p->rb.getPosition().y);
+		p->rb.getBody()->SetTransform(p->rb.getBody()->GetPosition(), atan2(
+			p->rb.getBody()->GetLinearVelocity().y,
+			p->rb.getBody()->GetLinearVelocity().x
+		) - 90 * tr::DEGTORAD);
 		p->shape.setRotation(p->rb.getAngle());
 		p->shape.setOrigin(p->shape.getLocalBounds().getSize() / 2.0f);
 		screen.draw(p->shape);
