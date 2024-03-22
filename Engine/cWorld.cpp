@@ -399,23 +399,23 @@ void World::Level::update()
 	{
 		auto pos = camOwner->getPosition();
 		sf::Listener::setPosition(pos.x, 0, pos.y);
-		if (camOwner->getVar("interacting"))
+		for (int i = 0; i < triggers.size(); i++)
 		{
-			for (int i = 0; i < triggers.size(); i++)
+			if (!triggers[i].hasVar("cmd")) continue;
+			bool inter = camOwner->getHitbox().intersects(triggers[i].rect);
+			setVar("showInteraction", inter);
+			if (inter && camOwner->getVar("interacting"))
 			{
-				if (camOwner->getHitbox().intersects(triggers[i].rect))
+				auto prompt = triggers[i].getVar("cmd").str;
+				if (prompt.isEmpty()) { continue; }
+				auto cmd = tr::splitStr(prompt, "|");
+				for (int j = 0; j < cmd.size(); j++)
 				{
-					auto prompt = triggers[i].getVar("cmd").str;
-					if (prompt.isEmpty()) { continue; }
-					auto cmd = tr::splitStr(prompt, "|");
-					for (int j = 0; j < cmd.size(); j++)
-					{
-						tr::execute(cmd[j]);
-					}
+					tr::execute(cmd[j]);
 				}
 			}
+			camOwner->setVar("interacting", 0);
 		}
-		camOwner->setVar("interacting", 0);
 		for (int j = 0; j < items.size(); j++)
 		{
 			for (int i = 0; i < items.size(); i++)

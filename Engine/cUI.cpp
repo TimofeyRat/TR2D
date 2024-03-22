@@ -929,6 +929,10 @@ bool UI::updateToggle(bool active, sf::String toggle, sf::FloatRect hitbox)
 		if (args[1] == "active") return Talk::active;
 		if (args[1] == "inactive") return !Talk::active;
 	}
+	else if (tr::strContains(args[0], "lvl"))
+	{
+		return World::getCurrentLevel()->getVar(args[1]).num == 1;
+	}
 	return false;
 }
 
@@ -943,11 +947,13 @@ sf::String UI::parseText(sf::String txt)
 		Programmable *prog = nullptr;
 		if (var[0] == "Window") prog = Window::getProgrammable();
 		else if (var[0] == "camOwner") prog = World::getCameraOwner();
+		else if (var[0] == "lvl") { prog = World::getCurrentLevel(); }
+		else if (var[0] == "input") { prog = Window::getProgrammable(); value = Input::getControl(var[1])->getKeyByVar(var[2])->toString(); }
 		else prog = World::getCurrentLevel()->getEntity(var[0]);
 		if (prog == nullptr) { result.replace(start, end - start + 1, "?"); continue; }
 		if (var[1] == "str") value = prog->getVar(var[2]);
 		else if (var[1] == "int") value = std::to_string((int)prog->getVar(var[2]).num);
-		else if (var[1] == "int") { value = std::to_string(prog->getVar(var[2]).num); value = value.substring(0, value.find(".") + 3); }
+		else if (var[1] == "num") { value = std::to_string(prog->getVar(var[2]).num); value = value.substring(0, value.find(".") + 3); }
 		result.replace(start, end - start + 1, value);
 	}
 	return result;

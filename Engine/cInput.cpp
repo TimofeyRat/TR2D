@@ -6,10 +6,11 @@
 
 #include <pugixml.hpp>
 
-// #include <iostream>
+#include <iostream>
 
 std::vector<Input::Controller> Input::controls;
 bool Input::active;
+int Input::mainControl;
 
 bool Input::isKeyPressed(sf::Keyboard::Key key)
 {
@@ -651,6 +652,8 @@ Input::Controller::Key::Key(sf::String Key, sf::String var, bool AddOrSet, float
 	value = Value;
 }
 
+sf::String Input::Controller::Key::toString() { return tr::splitStr(key, "-")[2]; }
+
 Input::Controller::Controller()
 {
 	id = "";
@@ -733,13 +736,31 @@ void Input::init()
 			controls.push_back(ctrl);
 		}
 	}
+	for (int i = 0; i < controls.size(); i++)
+	{
+		for (int j = 0; j < controls[i].keys.size(); j++)
+		{
+			sf::String name = controls[i].keys[j].varName + "_key" + std::to_string(i);
+			Window::setVar(name, controls[i].keys[j].key);
+		}
+	}
 }
 
 Input::Controller *Input::getControl(sf::String id)
 {
+	if (id == "main") { return &controls[mainControl]; }
 	for (int i = 0; i < controls.size(); i++)
 	{
 		if (controls[i].id == id) { return &controls[i]; }
+	}
+	return nullptr;
+}
+
+Input::Controller::Key *Input::Controller::getKeyByVar(sf::String varName)
+{
+	for (int i = 0; i < keys.size(); i++)
+	{
+		if (keys[i].varName == varName) { return &keys[i]; }
 	}
 	return nullptr;
 }

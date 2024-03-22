@@ -79,17 +79,20 @@ public:
 			float value;
 			Key();
 			Key(sf::String Key, sf::String var, bool AddOrSet, float Value);
+			sf::String toString();
 		};
 		sf::String id;
 		std::vector<Key> keys;
 		std::vector<Variable> vars;
 		Controller();
 		Variable *getVariable(sf::String name);
+		Key *getKeyByVar(sf::String varName);
 		void update();
 	};
 	static std::vector<Controller> controls;
 	static Controller *getControl(sf::String id);
 	static bool active;
+	static int mainControl;
 	static void init();
 	static void update();
 
