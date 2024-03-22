@@ -402,7 +402,8 @@ void World::Level::update()
 		int interaction = -1;
 		for (int i = 0; i < triggers.size(); i++)
 		{
-			if (camOwner->getHitbox().intersects(triggers[i].rect) && triggers[i].hasVar("cmd")) interaction = i;
+			if (camOwner->getHitbox().intersects(triggers[i].rect) && triggers[i].hasVar("cmd") &&
+				(triggers[i].getVar("used") < triggers[i].getVar("usages") || triggers[i].getVar("usages") == 0)) interaction = i;
 		}
 		bool inter = (interaction != -1);
 		setVar("showInteraction", inter);
@@ -416,6 +417,7 @@ void World::Level::update()
 				{
 					tr::execute(cmd[j]);
 				}
+				triggers[interaction].setVar("used", triggers[interaction].getVar("used") + 1);
 			}
 		}
 		camOwner->setVar("interacting", 0);

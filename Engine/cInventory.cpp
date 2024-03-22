@@ -60,191 +60,15 @@ Inventory::ItemEntry::ItemEntry(Inventory::Item itm, sf::Uint16 cnt)
 	count = cnt;
 }
 
-// void Inventory::init()
-// {
-// 	size = {
-// 		Window::getVar("invSizeX"),
-// 		Window::getVar("invSizeY"),
-// 		Window::getVar("invCellSize"),
-// 		Window::getVar("invCellInner")
-// 	};
-// 	itemsCanvas.create(size.x * size.z, size.y * size.z);
-// 	items.clear();
-// 	weapons.clear();
-// 	baubles.clear();
-// 	inv.clear();
-// 	Item item;
-// 	Weapon wpn;
-// 	Bauble bbl;
-// 	for (auto file : AssetManager::getTexts("res/items"))
-// 	{
-// 		for (auto line : tr::splitStr(AssetManager::getText(file), "\n"))
-// 		{
-// 			auto args = tr::splitStr(line, " ");
-// 			if (tr::strContains(args[0], "#")) { continue; }
-// 			//Item
-// 			else if (tr::strContains(args[0], "EndItem"))
-// 			{
-// 				items.push_back(item);
-// 			}
-// 			else if (tr::strContains(args[0], "Item"))
-// 			{
-// 				item = Item();
-// 				auto id = tr::splitStr(args[1], ":");
-// 				item.type = id[0];
-// 				item.id = id[1];
-// 			}
-// 			else if (tr::strContains(args[0], "ItmName"))
-// 			{
-// 				item.name = args[1];
-// 			}
-// 			else if (tr::strContains(args[0], "ItmAnimation"))
-// 			{
-// 				item.fa.loadFromFile(args[1]);
-// 			}
-// 			else if (tr::strContains(args[0], "ItmEffect"))
-// 			{
-// 				Programmable::Variable var;
-// 				var.name = args[1];
-// 				if (tr::strContains(args[2], "str")) { var.str = args[3]; }
-// 				else if (tr::strContains(args[2], "num")) { var.num = std::stof(args[3].toAnsiString()); }
-// 				item.effects.push_back(Effect(
-// 					var,
-// 					std::stof(args[4].toAnsiString()),
-// 					std::stoi(args[5].toAnsiString()),
-// 					std::stoi(args[6].toAnsiString())
-// 				));
-// 			}
-// 			else if (tr::strContains(args[0], "ItmCountable"))
-// 			{
-// 				item.countable = std::stoi(args[1].toAnsiString());
-// 			}
-// 			else if (tr::strContains(args[0], "ItmUseable"))
-// 			{
-// 				item.useable = std::stoi(args[1].toAnsiString());
-// 			}
-// 			//Weapon
-// 			else if (tr::strContains(args[0], "EndWeapon"))
-// 			{
-// 				wpn.timer.restart();
-// 				weapons.push_back(wpn);
-// 			}
-// 			else if (tr::strContains(args[0], "Weapon"))
-// 			{
-// 				wpn = Weapon();
-// 				wpn.id = args[1];
-// 			}
-// 			else if (tr::strContains(args[0], "WpnAnimation"))
-// 			{
-// 				wpn.fa.loadFromFile(args[1]);
-// 				wpn.fa.setCurrentAnimation(wpn.id);
-// 			}
-// 			else if (tr::strContains(args[0], "WpnEffect"))
-// 			{
-// 				Programmable::Variable var;
-// 				var.name = args[1];
-// 				if (tr::strContains(args[2], "str")) { var.str = args[3]; }
-// 				else if (tr::strContains(args[2], "num")) { var.num = std::stof(args[3].toAnsiString()); }
-// 				wpn.effects.push_back(Effect(
-// 					var,
-// 					std::stof(args[4].toAnsiString()),
-// 					std::stoi(args[5].toAnsiString()),
-// 					std::stoi(args[6].toAnsiString())
-// 				));
-// 			}
-// 			else if (tr::strContains(args[0], "WpnDelay"))
-// 			{
-// 				wpn.useDelay = std::stof(args[1].toAnsiString());
-// 			}
-// 			else if (tr::strContains(args[0], "WpnOrigin"))
-// 			{
-// 				wpn.origin = {
-// 					std::stof(args[1].toAnsiString()),
-// 					std::stof(args[2].toAnsiString())
-// 				};
-// 			}
-// 			else if (tr::strContains(args[0], "WpnRotation"))
-// 			{
-// 				wpn.rotation = std::stof(args[1].toAnsiString());
-// 			}
-// 			else if (tr::strContains(args[0], "WpnScale"))
-// 			{
-// 				wpn.scale = std::stof(args[1].toAnsiString());
-// 			}
-// 			else if (tr::strContains(args[0], "WpnType"))
-// 			{
-// 				if (tr::strContains(args[1], "Melee")) wpn.meleeOrRange = false;
-// 				else if (tr::strContains(args[1], "Range")) { wpn.meleeOrRange = true; }
-// 			}
-// 			else if (tr::strContains(args[0], "EndBauble"))
-// 			{
-// 				bbl.timer.restart();
-// 				baubles.push_back(bbl);
-// 			}
-// 			else if (tr::strContains(args[0], "Bauble"))
-// 			{
-// 				bbl = Bauble();
-// 				bbl.id = args[1];
-// 			}
-// 			else if (tr::strContains(args[0], "BblAnimation"))
-// 			{
-// 				bbl.fa.loadFromFile(args[1]);
-// 				bbl.fa.setCurrentAnimation(bbl.id);
-// 			}
-// 			else if (tr::strContains(args[0], "BblEffect"))
-// 			{
-// 				Programmable::Variable var;
-// 				var.name = args[1];
-// 				if (tr::strContains(args[2], "str")) { var.str = args[3]; }
-// 				else if (tr::strContains(args[2], "num")) { var.num = std::stof(args[3].toAnsiString()); }
-// 				bbl.effects.push_back(Effect(
-// 					var,
-// 					std::stof(args[4].toAnsiString()),
-// 					std::stoi(args[5].toAnsiString()),
-// 					std::stoi(args[6].toAnsiString())
-// 				));
-// 			}
-// 			else if (tr::strContains(args[0], "BblDelay"))
-// 			{
-// 				bbl.useDelay = std::stof(args[1].toAnsiString());
-// 			}
-// 			else if (tr::strContains(args[0], "BblOrigin"))
-// 			{
-// 				bbl.origin = {
-// 					std::stof(args[1].toAnsiString()),
-// 					std::stof(args[2].toAnsiString())
-// 				};
-// 			}
-// 			else if (tr::strContains(args[0], "BblScale"))
-// 			{
-// 				bbl.scale = std::stof(args[1].toAnsiString());
-// 			}
-// 			else if (tr::strContains(args[0], "BblRotation"))
-// 			{
-// 				bbl.rotation = std::stof(args[1].toAnsiString());
-// 			}
-// 			else if (tr::strContains(args[0], "BblType"))
-// 			{
-// 				if (tr::strContains(args[1], "Idle")) { bbl.idleOrActive = false; }
-// 				else if (tr::strContains(args[1], "Active")) { bbl.idleOrActive = true; }
-// 			}
-// 			else if (tr::strContains(args[0], "BblPlacement"))
-// 			{
-// 				bbl.bone = args[1];
-// 			}
-// 		}
-// 	}
-// }
-
 void Inventory::init()
 {
 	size = {
 		Window::getVar("invSizeX"),
 		Window::getVar("invSizeY"),
 		Window::getVar("invCellSize"),
-		Window::getVar("invCellInner")
+		Window::getVar("invCellMax")
 	};
-	itemsCanvas.create(size.x * size.z, size.y * size.z);
+	itemsCanvas.create(size.x * size.w, size.y * size.w);
 	items.clear();
 	weapons.clear();
 	baubles.clear();
@@ -434,7 +258,7 @@ void Inventory::updateGrid()
 			if (entry == nullptr) { continue; }
 			if (entry->count <= 0) { *entry = ItemEntry(); continue; }
 			entry->item.updateSpr();
-			entry->item.spr.setPosition(x * size.z + size.z / 2, y * size.z + size.z / 2);
+			entry->item.spr.setPosition(x * size.w + size.w / 2, y * size.w + size.w / 2);
 			entry->item.spr.setOrigin((sf::Vector2f)entry->item.spr.getTextureRect().getSize() / 2.0f);
 			auto s = sf::Vector2f(
 				entry->item.fa.getCurrentAnim()->frames[0].width,

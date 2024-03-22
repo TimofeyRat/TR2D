@@ -389,18 +389,21 @@ void UI::Frame::Object::handle()
 		auto *grid = getSprite("grid");
 		auto *fa = grid->fa.getCurrentAnim();
 		fa->texture->setRepeated(true);
-		auto invSize = (sf::Vector2f)Inventory::invItems.getSize();
-		fa->frames[0].width = invSize.x;
-		fa->frames[0].height = invSize.y;
+		fa->frames[0].width = Inventory::size.x * Inventory::size.z;
+		fa->frames[0].height = Inventory::size.y * Inventory::size.z;
 		auto startPos = grid->spr.getGlobalBounds().getPosition();
 		//Items
 		auto *items = getSprite("items");
 		items->spr.setPosition(startPos);
-		items->spr.setTexture(Inventory::invItems);
-		items->spr.setTextureRect({
-			{0, 0},
-			(sf::Vector2i)invSize
-		});
+		items->spr.setTexture(Inventory::invItems, true);
+		items->spr.setScale(
+			grid->spr.getGlobalBounds().width / items->spr.getTextureRect().width,
+			grid->spr.getGlobalBounds().height / items->spr.getTextureRect().height
+		);
+		// items->spr.setTextureRect({
+		// 	{0, 0},
+		// 	sf::Vector2i(Inventory::size.x * Inventory::size.z, Inventory::size.y * Inventory::size.z)
+		// });
 		//Chosen cell
 		if (!active) { return; }
 		auto *chosen = getSprite("chosen");
@@ -494,7 +497,8 @@ void UI::Frame::Object::handle()
 		desc->activeTxt = entry->item.name;
 		if (entry->item.type != "weapon" &&
 			entry->item.type != "armor" &&
-			entry->item.type != "bauble") desc->activeTxt += " [" + std::to_string(entry->count) + "]";
+			entry->item.type != "bauble" &&
+			entry->item.countable) desc->activeTxt += " [" + std::to_string(entry->count) + "]";
 	}
 	else if (tr::strContains(handler, "dialogue"))
 	{
