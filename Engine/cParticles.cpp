@@ -84,10 +84,10 @@ Particle ParticleTemplate::toParticle()
 		sf::Glsl::Vec4 clr;
 		if (clrType == "rand")
 		{
-			clr.x = minClr.r + ((float)rand() / RAND_MAX) * (maxClr.r - minClr.r);
-			clr.y = minClr.g + ((float)rand() / RAND_MAX) * (maxClr.g - minClr.g);
-			clr.z = minClr.b + ((float)rand() / RAND_MAX) * (maxClr.b - minClr.b);
-			clr.w = minClr.a + ((float)rand() / RAND_MAX) * (maxClr.a - minClr.a);
+			clr.x = tr::randBetween(minClr.r, maxClr.r);
+			clr.y = tr::randBetween(minClr.g, maxClr.g);
+			clr.z = tr::randBetween(minClr.b, maxClr.b);
+			clr.w = tr::randBetween(minClr.a, maxClr.a);
 		}
 		if (clrType == "set")
 		{
@@ -117,7 +117,15 @@ Particle ParticleTemplate::toParticle()
 Particle::Particle()
 {
 	rb = Rigidbody();
+	fa = FrameAnimator();
 	shape = sf::ConvexShape();
+	timer = life = 0;
+}
+
+void Particle::reset(b2World *world)
+{
+	rb.reset(world);
+	rb.getBody()->SetLinearVelocity({speed.x / tr::M2P, speed.y / tr::M2P});
 }
 
 void ParticleSystem::init()
@@ -143,4 +151,13 @@ Particle ParticleSystem::createParticle(b2World *world, sf::String name, sf::Vec
 	part.rb.setPosition({pos.x, pos.y});
 	part.rb.getBody()->SetLinearVelocity({speed.x / tr::M2P, speed.y / tr::M2P});
 	return part;
+}
+
+ParticleTemplate ParticleSystem::getTemplate(sf::String name)
+{
+	for (int i = 0; i < templates.size(); i++)
+	{
+		if (templates[i].name == name) { return templates[i]; }
+	}
+	return ParticleTemplate();
 }

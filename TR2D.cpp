@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 		Window::update();
 		
 		Input::update();
-		// World::update();
+		World::update();
 
 		Window::clear();
 		World::draw();

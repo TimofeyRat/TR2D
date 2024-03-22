@@ -80,6 +80,11 @@ namespace tr
 	// \param cmd Command to execute
 	// \warning If there are >=2 commands then you have to split them and execute one-by-one.
 	void execute(sf::String cmd);
+
+	//Create random number between two values.
+	// \param min Minimal value
+	// \param max Maximal value
+	float randBetween(float min, float max);
 }
 
 #endif

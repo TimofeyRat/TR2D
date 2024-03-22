@@ -6,7 +6,6 @@
 #include "hInventory.hpp"
 #include "hDialogue.hpp"
 #include "hUI.hpp"
-#include "hParticles.hpp"
 
 #include <iostream>
 
@@ -123,6 +122,24 @@ void World::loadFromFile(std::string filename)
 				pugi::as_utf8(script.attribute(L"file").as_string()),
 				script.attribute(L"mainFunc").as_string(),
 				script.attribute(L"executor").as_string()
+			));
+		}
+		for (auto gen : lvl.children(L"particles"))
+		{
+			auto min = tr::splitStr(gen.attribute(L"min").as_string(), " ");
+			auto max = tr::splitStr(gen.attribute(L"max").as_string(), " ");
+			auto rect = tr::splitStr(gen.attribute(L"rect").as_string(), " ");
+			level.partGens.push_back(ParticleGenerator(
+				gen.attribute(L"type").as_string(),
+				gen.attribute(L"spawnRule").as_string(),
+				gen.attribute(L"velocity").as_string(),
+				{std::stof(min[0].toAnsiString()), std::stof(min[1].toAnsiString())},
+				{std::stof(max[0].toAnsiString()), std::stof(max[1].toAnsiString())},
+				gen.attribute(L"timer").as_float(),
+				{
+					std::stof(rect[0].toAnsiString()), std::stof(rect[1].toAnsiString()),
+					std::stof(rect[2].toAnsiString()), std::stof(rect[3].toAnsiString())
+				}
 			));
 		}
 		World::lvls.push_back(level);
@@ -243,6 +260,8 @@ void World::Level::reset()
 	ents.clear();
 	spawners.clear();
 	scripts.clear();
+	partGens.clear();
+	parts.clear();
 	bgBounds = {0, 0, 0, 0};
 	started = false;
 	if (world != nullptr) { delete world; }
@@ -297,6 +316,30 @@ void World::Level::update()
 		{
 			if (s->getPlayingOffset().asSeconds() > 0) sounds.erase(sounds.begin() + i);
 			else sounds[i].sound.play();
+		}
+	}
+	for (int i = 0; i < partGens.size(); i++)
+	{
+		auto *pg = &partGens[i];
+		{
+			auto rule = tr::splitStr(pg->spawnRule, ";");
+			sf::Vector2f pos = {
+				tr::randBetween(pg->spawnRect.left, pg->spawnRect.left + pg->spawnRect.width),
+				tr::randBetween(pg->spawnRect.top, pg->spawnRect.top + pg->spawnRect.height)
+			}, speed = {
+				tr::randBetween(pg->minVel.x, pg->maxVel.x),
+				tr::randBetween(pg->minVel.y, pg->maxVel.y)
+			};
+			if (rule[0] == "chance")
+			{
+				auto chance = std::stof(rule[1].toAnsiString());
+				if ((float)rand() / RAND_MAX * 100 <= chance)
+				{
+					auto part = ParticleSystem::createParticle(world, pg->temp, pos, speed);
+					part.life = pg->lifeTime;
+					parts.push_back(part);
+				}
+			}
 		}
 	}
 	for (int i = 0; i < scripts.size(); i++)
@@ -422,6 +465,25 @@ void World::Level::draw(sf::RenderTarget *target)
 	for (int i = 0; i < items.size(); i++)
 	{
 		items[i].draw(world);
+	}
+	for (int i = 0; i < parts.size(); i++)
+	{
+		auto *p = &parts[i];
+		if (p->timer >= p->life)
+		{
+			std::swap(parts[i], parts[parts.size() - 1]);
+			parts.pop_back();
+			continue;
+		}
+		p->timer += Window::getDeltaTime();
+		p->rb.resize(world, {
+			p->shape.getLocalBounds().width,
+			p->shape.getLocalBounds().height
+		});
+		p->shape.setPosition(p->rb.getPosition().x, p->rb.getPosition().y);
+		p->shape.setRotation(p->rb.getAngle());
+		p->shape.setOrigin(p->shape.getLocalBounds().getSize() / 2.0f);
+		screen.draw(p->shape);
 	}
 	cam.update(mapSize);
 	screen.display();
@@ -639,6 +701,26 @@ void World::setCurrentLevel(sf::String name)
 	{
 		if (lvls[i].name == name) { nextLevel = i; }
 	}
+}
+
+World::ParticleGenerator::ParticleGenerator()
+{
+	spawnRect = {0, 0, 0, 0};
+	velType = spawnRule = temp = "";
+	minVel = maxVel = {0, 0};
+	lifeTime = timer = 0;
+}
+
+World::ParticleGenerator::ParticleGenerator(sf::String name, sf::String spawn, sf::String vel, sf::Vector2f min, sf::Vector2f max, float Timer, sf::FloatRect rect)
+{
+	temp = name;
+	spawnRule = spawn;
+	velType = vel;
+	minVel = min;
+	maxVel = max;
+	lifeTime = Timer;
+	timer = 0;
+	spawnRect = rect;
 }
 
 void tr::execute(sf::String cmd)

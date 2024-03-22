@@ -3,6 +3,7 @@
 
 #include "hEntity.hpp"
 #include "hScript.hpp"
+#include "hParticles.hpp"
 
 #include <SFML/Audio.hpp>
 #include <box2d/box2d.h>
@@ -96,6 +97,16 @@ public:
 		ScriptObject();
 		ScriptObject(std::string filename, sf::String MAIN, sf::String owner);
 	};
+	struct ParticleGenerator
+	{
+		sf::String temp;
+		sf::FloatRect spawnRect;
+		sf::String velType, spawnRule;
+		sf::Vector2f minVel, maxVel;
+		float lifeTime, timer;
+		ParticleGenerator();
+		ParticleGenerator(sf::String name, sf::String spawn, sf::String vel, sf::Vector2f min, sf::Vector2f max, float timer, sf::FloatRect rect);
+	};
 	struct Level : public Programmable
 	{
 		Map map;
@@ -106,6 +117,8 @@ public:
 		std::vector<FallenItem> items;
 		std::vector<Control> controls;
 		std::vector<ScriptObject> scripts;
+		std::vector<ParticleGenerator> partGens;
+		std::vector<Particle> parts;
 		sf::String name;
 		sf::Texture *bgTex;
 		sf::Sprite bgSpr;

@@ -109,3 +109,8 @@ sf::Glsl::Vec4 tr::lerpClr(sf::Glsl::Vec4 start, sf::Glsl::Vec4 end, float t)
 		lerp(start.z, end.z, t), lerp(start.w, end.w, t)
 	};
 }
+
+float tr::randBetween(float min, float max)
+{
+	return min + (float)rand() / RAND_MAX * (max - min + 1);
+}
