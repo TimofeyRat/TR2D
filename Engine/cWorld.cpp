@@ -373,27 +373,44 @@ void World::Level::update()
 			ent->setVar(v->name, v->value);
 		}
 	}
-	for (int i = 0; i < ents.size(); i++)
+	for (int i = 0; i < parts.size(); i++)
 	{
-		ents[i].update();
-		// if (!ents[i].weapon.meleeOrRange && ents[i].getVar("attacking"))
-		// {
-		// 	auto r = ents[i].weapon.spr.getGlobalBounds();
-		// 	for (int j = 0; j < ents.size(); j++)
-		// 	{
-		// 		if (i != j &&
-		// 			r.intersects(ents[j].getHitbox()) &&
-		// 			ents[j].getVar("noHurtTimer") >= ents[j].getVar("damageCD"))
-		// 		{
-		// 			for (int k = 0; k < ents[i].weapon.effects.size(); k++)
-		// 			{
-		// 				ents[j].addEffect(ents[i].weapon.effects[k]);
-		// 			}
-		// 			ents[j].setVar("noHurtTimer", 0);
-		// 		}
-		// 	}
-		// }
+		auto *p = &parts[i];
+		if (p->life > 0) { p->timer += Window::getDeltaTime(); if (p->timer >= p->life) continue; }
+		auto point = parts[i].shape.getPosition() + tr::getDelta(parts[i].shape.getRotation() + 90) * (parts[i].shape.getLocalBounds().height / 2 + 2);
+		auto cg = p->rb.getBody()->GetFixtureList()->GetFilterData().groupIndex;
+		bool destroyed = false;
+		for (int j = 0; j < triggers.size(); j++)
+		{
+			auto *b = triggers[j].rb.getBody()->GetFixtureList();
+			if (b->TestPoint({point.x / tr::M2P, point.y / tr::M2P}) && b->GetFilterData().groupIndex != cg)
+			{
+				world->DestroyBody(p->rb.getBody());
+				std::swap(parts[i], parts[parts.size() - 1]);
+				parts.pop_back();
+				destroyed = true;
+				break;
+			}
+		}
+		if (destroyed) continue;
+		for (int j = 0; j < ents.size(); j++)
+		{
+			auto *b = ents[j].getRigidbody()->getBody()->GetFixtureList();
+			if (b->TestPoint({point.x / tr::M2P, point.y / tr::M2P}))
+			{
+				for (int k = 0; k < p->effects.size(); k++)
+				{
+					ents[j].addEffect(p->effects[k]);
+				}
+				world->DestroyBody(p->rb.getBody());
+				std::swap(parts[i], parts[parts.size() - 1]);
+				parts.pop_back();
+				destroyed = true;
+				break;
+			}
+		}
 	}
+	for (int i = 0; i < ents.size(); i++) { ents[i].update(); }
 	auto *camOwner = getEntity(cam.owner);
 	if (camOwner)
 	{
@@ -474,13 +491,6 @@ void World::Level::draw(sf::RenderTarget *target)
 	for (int i = 0; i < parts.size(); i++)
 	{
 		auto *p = &parts[i];
-		if (p->timer >= p->life)
-		{
-			std::swap(parts[i], parts[parts.size() - 1]);
-			parts.pop_back();
-			continue;
-		}
-		p->timer += Window::getDeltaTime();
 		p->rb.resize(world, {
 			p->shape.getLocalBounds().width,
 			p->shape.getLocalBounds().height

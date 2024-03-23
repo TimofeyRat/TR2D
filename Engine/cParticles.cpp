@@ -10,6 +10,7 @@ std::vector<ParticleTemplate> ParticleSystem::templates;
 
 ParticleTemplate::ParticleTemplate()
 {
+	effects.clear();
 	name = texType = "";
 	clrType = ""; minClr = maxClr = sf::Color::White;
 	fa = FrameAnimator();
@@ -72,6 +73,22 @@ void ParticleTemplate::parse(pugi::xml_node node)
 				part.attribute(L"collisionGroup").as_int()
 			);
 		}
+		else if (type == "effect")
+		{
+			Programmable::Variable var;
+			var.name = part.attribute(L"name").as_string();
+			var.num = part.attribute(L"num").as_float();
+			var.str = part.attribute(L"str").as_string();
+			bool type = false;
+			if (sf::String(part.attribute(L"type").as_string()) == "set") { type = false; }
+			if (sf::String(part.attribute(L"type").as_string()) == "add") { type = true; }
+			effects.push_back(Inventory::Effect(
+				var,
+				part.attribute(L"frequency").as_float(),
+				part.attribute(L"usages").as_float(),
+				type
+			));
+		}
 	}
 }
 
@@ -107,6 +124,7 @@ Particle ParticleTemplate::toParticle()
 	}
 	part.rb = rb;
 	part.shape.setPointCount(points.size());
+	part.effects = effects;
 	for (int i = 0; i < points.size(); i++)
 	{
 		part.shape.setPoint(i, points[i]);
@@ -116,6 +134,7 @@ Particle ParticleTemplate::toParticle()
 
 Particle::Particle()
 {
+	effects.clear();
 	rb = Rigidbody();
 	fa = FrameAnimator();
 	shape = sf::ConvexShape();

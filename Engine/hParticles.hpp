@@ -3,12 +3,14 @@
 
 #include "hAnimation.hpp"
 #include "hRigidbody.hpp"
+#include "hInventory.hpp"
 
 #include <pugixml.hpp>
 #include <vector>
 
 struct Particle
 {
+	std::vector<Inventory::Effect> effects;
 	Rigidbody rb;
 	FrameAnimator fa;
 	sf::ConvexShape shape;
@@ -20,6 +22,7 @@ struct Particle
 
 struct ParticleTemplate
 {
+	std::vector<Inventory::Effect> effects;
 	sf::String name;
 	sf::String clrType; sf::Color minClr, maxClr;
 	FrameAnimator fa;
