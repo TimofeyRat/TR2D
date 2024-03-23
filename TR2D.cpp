@@ -19,13 +19,6 @@ int main(int argc, char *argv[])
 
 	while (Window::isOpen())
 	{
-		if (World::getActive() && !Inventory::inv.size())
-		{
-			Inventory::addItem("food:shaurma", UINT16_MAX);
-			Inventory::addItem("food:meat", UINT16_MAX);
-			Inventory::addItem("weapon:sticky_blade");
-			Inventory::addItem("bauble:speed");
-		}
 		Window::update();
 		
 		Input::update();
