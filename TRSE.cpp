@@ -818,6 +818,17 @@ void execute(std::string command = "")
 			cc = nullptr;
 			cf = nullptr;
 		}
+		else if (args[1] == "copySetup")
+		{
+			s.setCurrentAnimation(args[2]);
+			s.anims.push_back(*s.getCurrentAnim());
+			s.anims[s.anims.size() - 1].name = args[3];
+			s.setCurrentAnimation(args[3]);
+			for (int i = 0; i < s.getCurrentAnim()->changes.size(); i++)
+			{
+				while (s.getCurrentAnim()->changes[i].frames.size() > 1) s.getCurrentAnim()->changes[i].frames.pop_back();
+			}
+		}
 	}
 	else if (args[0] == "save")
 	{
