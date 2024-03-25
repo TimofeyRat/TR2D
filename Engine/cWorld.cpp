@@ -322,22 +322,27 @@ void World::Level::update()
 	{
 		auto *pg = &partGens[i];
 		{
-			auto rule = tr::splitStr(pg->spawnRule, ";");
-			sf::Vector2f pos = {
-				tr::randBetween(pg->spawnRect.left, pg->spawnRect.left + pg->spawnRect.width),
-				tr::randBetween(pg->spawnRect.top, pg->spawnRect.top + pg->spawnRect.height)
-			}, speed = {
-				tr::randBetween(pg->minVel.x, pg->maxVel.x),
-				tr::randBetween(pg->minVel.y, pg->maxVel.y)
-			};
+			auto rule = tr::splitStr(pg->spawnRule, "-");
 			if (rule[0] == "chance")
 			{
 				auto chance = std::stof(rule[1].toAnsiString());
-				if ((float)rand() / RAND_MAX * 100 <= chance)
+				int count = 1;
+				if (rule.size() == 3) count = std::stoi(rule[2].toAnsiString());
+				for (int j = 0; j < count; j++)
 				{
-					auto part = ParticleSystem::createParticle(world, pg->temp, pos, speed);
-					part.life = pg->lifeTime;
-					parts.push_back(part);
+					sf::Vector2f pos = {
+						tr::randBetween(pg->spawnRect.left, pg->spawnRect.left + pg->spawnRect.width),
+						tr::randBetween(pg->spawnRect.top, pg->spawnRect.top + pg->spawnRect.height)
+					}, speed = {
+						tr::randBetween(pg->minVel.x, pg->maxVel.x),
+						tr::randBetween(pg->minVel.y, pg->maxVel.y)
+					};
+					if ((float)rand() / RAND_MAX * 100 <= chance)
+					{
+						auto part = ParticleSystem::createParticle(world, pg->temp, pos, speed);
+						part.life = pg->lifeTime;
+						parts.push_back(part);
+					}
 				}
 			}
 		}
@@ -385,15 +390,11 @@ void World::Level::update()
 			auto *b = triggers[j].rb.getBody()->GetFixtureList();
 			if (b->TestPoint({point.x / tr::M2P, point.y / tr::M2P}) && b->GetFilterData().groupIndex != cg)
 			{
-				world->DestroyBody(p->rb.getBody());
-				std::swap(parts[i], parts[parts.size() - 1]);
-				parts.pop_back();
 				destroyed = true;
 				break;
 			}
 		}
-		if (destroyed) continue;
-		for (int j = 0; j < ents.size(); j++)
+		if (!destroyed) for (int j = 0; j < ents.size(); j++)
 		{
 			auto *b = ents[j].getRigidbody()->getBody()->GetFixtureList();
 			if (b->TestPoint({point.x / tr::M2P, point.y / tr::M2P}))
@@ -402,13 +403,11 @@ void World::Level::update()
 				{
 					ents[j].addEffect(p->effects[k]);
 				}
-				world->DestroyBody(p->rb.getBody());
-				std::swap(parts[i], parts[parts.size() - 1]);
-				parts.pop_back();
 				destroyed = true;
 				break;
 			}
 		}
+		if (destroyed) { world->DestroyBody(p->rb.getBody()); std::swap(parts[i], parts[parts.size() - 1]); parts.pop_back(); }
 	}
 	for (int i = 0; i < ents.size(); i++) { ents[i].update(); }
 	auto *camOwner = getEntity(cam.owner);
@@ -491,10 +490,6 @@ void World::Level::draw(sf::RenderTarget *target)
 	for (int i = 0; i < parts.size(); i++)
 	{
 		auto *p = &parts[i];
-		p->rb.resize(world, {
-			p->shape.getLocalBounds().width,
-			p->shape.getLocalBounds().height
-		});
 		p->shape.setPosition(p->rb.getPosition().x, p->rb.getPosition().y);
 		p->rb.getBody()->SetTransform(p->rb.getBody()->GetPosition(), atan2(
 			p->rb.getBody()->GetLinearVelocity().y,

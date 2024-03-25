@@ -167,6 +167,10 @@ Particle ParticleSystem::createParticle(b2World *world, sf::String name, sf::Vec
 		if (templates[i].name == name) { part = templates[i].toParticle(); }
 	}
 	part.rb.reset(world);
+	part.rb.resize(world, {
+		part.shape.getLocalBounds().width,
+		part.shape.getLocalBounds().height
+	});
 	part.rb.setPosition({pos.x, pos.y});
 	part.rb.getBody()->SetLinearVelocity({speed.x / tr::M2P, speed.y / tr::M2P});
 	return part;
