@@ -1,0 +1,19 @@
+<animation name="shaurma" duration="1" repeat="1" scale="-1 -1">
+	<frame path="res/tex/items/food.png" rect="32 64 16 16" />
+</animation>
+
+<animation name="meat" duration="1" repeat="1" scale="-1 -1">
+	<frame path="res/tex/items/food.png" rect="16 64 16 16" />
+</animation>
+
+<animation name="sticky_blade" duration="1" repeat="1" scale="-1 -1">
+	<frame path="res/tex/items/sticky_blade.png" rect="6 4 24 24" />
+</animation>
+
+<animation name="speed" duration="1" repeat="1" scale="-1 -1">
+	<frame path="res/tex/items/bauble.png" rect="0 0 32 32" />
+</animation>
+
+<animation name="lighter" duration="1" repeat="1" scale="-1 -1">
+	<frame path="res/tex/items/flint_and_steel.png" rect="0 0 16 16" />
+</animation>

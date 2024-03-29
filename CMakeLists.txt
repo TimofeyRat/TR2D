@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.5.0)
 
 set(CMAKE_EXE_LINKER_FLAGS "-static")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
 set(TR2D_SOURCES
 	Engine/cAnimation.cpp
@@ -51,13 +54,3 @@ target_link_libraries(MapEditor
 	box2d)
 
 target_compile_options(MapEditor PUBLIC -w -static -D SFML_STATIC)
-
-project(SkeletonEditor VERSION 0.1 LANGUAGES CXX)
-add_executable(SkeletonEditor TRSE.cpp Engine/pugixml.o)
-
-target_link_libraries(SkeletonEditor
-	sfml-window-s sfml-system-s opengl32 winmm gdi32
-	sfml-graphics-s sfml-system-s sfml-window-s opengl32 freetype
-	sfml-system-s winmm)
-
-target_compile_options(SkeletonEditor PUBLIC -w -static -D SFML_STATIC)

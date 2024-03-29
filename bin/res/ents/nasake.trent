@@ -1,0 +1,23 @@
+<entity name="Nasake" skeleton="res/skeletons/nasake.trskeleton">
+	<physics
+		friction="0.5"
+		mass="1"
+		restituion="0"
+		angle="0"
+		fixedAngle="1"
+		dynamic="1"
+		collisionGroup="-1" />
+	<variable name="HP" num="100" />
+	<variable name="handBone" num="8" />
+	<variable name="neckBone" num="2" />
+	<variable name="headBone" num="1" />
+	<variable name="damageCooldown" num="1" />
+	<variable name="speed" num="0.5" /><variable name="maxSpeed" num="1" />
+	<variable name="speedX" num="35" /><variable name="speedY" num="2" />
+	<variable name="wl" string="wl" /><variable name="wr" string="wr" />
+	<variable name="il" string="idle" /><variable name="ir" string="idle" />
+	<variable name="sl" string="sl" /><variable name="sr" string="sr" />
+	<variable name="jl" string="jl" /><variable name="jr" string="jr" />
+	<variable name="fl" string="fl" /><variable name="fr" string="fr" />
+	<variable name="scale" num="3.5" />
+</entity>

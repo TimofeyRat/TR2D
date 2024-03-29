@@ -1,0 +1,20 @@
+function main
+{
+	this.arg1 = this.posX;
+	this.arg2 = this.posY;
+	this.arg3 = camOwner.posX;
+	this.arg4 = camOwner.posY;
+	this.distance = math.dist;
+	this.dx = 0;
+	camOwner.test = "MAINER TEST";
+	if (camOwner.posX < this.posX) right null;
+	if (camOwner.posX > this.posX) left null;
+	if (this.distance < 200) walkAway stay;
+	if (this.distance < 150) runAway null;
+}
+
+function walkAway { this.speed = 0.5; }
+function runAway { this.speed = 1; }
+function stay { this.dx = 0; }
+function left { this.dx = -1; }
+function right { this.dx = 1; }

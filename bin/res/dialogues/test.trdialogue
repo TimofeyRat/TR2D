@@ -1,0 +1,28 @@
+<!-- Condition check: var=type=value
+type: lt(lower than), le(lower or equal), e(equal), ge(greater or equal), gt(greater than), ne(not equal) -->
+
+<?xml version="1.0"?>
+<dialogue name="test">
+	<phrase name="first">
+		<speaker>Насаке</speaker>
+		<text>Это тестовая фраза.</text>
+		<reply name="first">
+			<text>Надеюсь, что всё работает.</text>
+			<action>talk-setPhrase-second</action>
+		</reply>
+		<reply name="second">
+			<text>Я тороплюсь.</text>
+			<action>talk-active-0</action>
+			<action>input-active-1</action>
+		</reply>
+	</phrase>
+	<phrase name="second">
+		<speaker>Насаке</speaker>
+		<text>Спасибо!</text>
+		<reply name="first">
+			<text>Я пойду.</text>
+			<action>talk-active-0</action>
+			<action>input-active-1</action>
+		</reply>
+	</phrase>
+</dialogue>

@@ -1,0 +1,22 @@
+<particle name="rainDrop">
+	<color type="rand" min="0 0 255 255" max="127 127 255 255" />
+	<shape>
+		<vertex x="4" y="0" /><vertex x="5" y="0" />
+		<vertex x="8" y="10" /><vertex x="8" y="12" />
+		<vertex x="6" y="14" /><vertex x="2" y="14" />
+		<vertex x="0" y="12" /><vertex x="0" y="10" />
+	</shape>
+	<physics friction="0" mass="0" restituion="0" angle="0" fixedAngle="1" dynamic="1" collisionGroup="-1" />
+</particle>
+
+<particle name="toxicDrop">
+	<color type="rand" min="0 127 127 255" max="127 255 255 255" />
+	<shape>
+		<vertex x="4" y="0" /><vertex x="5" y="0" />
+		<vertex x="8" y="10" /><vertex x="8" y="12" />
+		<vertex x="6" y="14" /><vertex x="2" y="14" />
+		<vertex x="0" y="12" /><vertex x="0" y="10" />
+	</shape>
+	<physics friction="0" mass="0" restituion="0" angle="0" fixedAngle="1" dynamic="1" collisionGroup="-1" />
+	<effect name="HP" type="add" num="10" frequency="0.5" usages="4" />
+</particle>

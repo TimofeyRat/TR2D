@@ -1,0 +1,17 @@
+<entity name="GreenElemental" skeleton="res/skeletons/gr_el.trskeleton">
+	<physics
+		friction="0.5"
+		mass="1"
+		restituion="0"
+		angle="0"
+		fixedAngle="1"
+		dynamic="1"
+		collisionGroup="-1" />
+	<variable name="HP" num="10" />
+	<variable name="damageCooldown" num="0.5" />
+	<variable name="speed" num="0.5" /><variable name="maxSpeed" num="0.5" />
+	<variable name="speedX" num="30" /><variable name="speedY" num="2" />
+	<variable name="il" str="il" /><variable name="ir" str="ir" />
+	<variable name="wl" str="il" /><variable name="wr" str="ir" />
+	<variable name="scale" num="4" />
+</entity>
