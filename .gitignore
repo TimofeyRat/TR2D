@@ -1,6 +1,7 @@
-build/
-bin/*.exe
-buildRelease.bat
-icon.ico
-res.rc
-Engine/tr2d.res
+**/build/*
+**/bin/*.exe
+**/buildRelease.bat
+**/icon.ico
+**/res.rc
+**/Engine/tr2d.res
+**/.vscode
