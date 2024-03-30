@@ -32,6 +32,8 @@ void Rigidbody::create(b2Vec2 pos, b2Vec2 size, float friction, float density, f
 	fixDef.density = density;
 	fixDef.restitution = restitution;
 	fixDef.filter.groupIndex = cg;
+	userData = "";
+	bodyDef.userData.pointer = (uintptr_t)&userData;
 }
 
 void Rigidbody::reset(b2World *world)
@@ -116,4 +118,11 @@ void Rigidbody::reloadFixture()
 	if (fixture != nullptr) { body->DestroyFixture(fixture); }
 	fixDef.shape = &shape;
 	fixture = body->CreateFixture(&fixDef);
+}
+
+void Rigidbody::setUserData(sf::String data, b2World *world)
+{
+	userData = data;
+	bodyDef.userData.pointer = (uintptr_t)&userData;
+	reset(world);
 }

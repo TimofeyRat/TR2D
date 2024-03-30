@@ -10,6 +10,14 @@
 #include <string>
 #include <vector>
 
+class WorldCL : public b2ContactListener
+{
+public:
+	WorldCL();
+	void BeginContact(b2Contact *contact);
+	void EndContact(b2Contact *contact);
+};
+
 class World
 {
 public:
@@ -129,6 +137,7 @@ public:
 		bool started;
 		b2World *world;
 		float musicVolume;
+		WorldCL cl;
 		Level();
 		~Level();
 		void reset();

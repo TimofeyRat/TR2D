@@ -13,6 +13,7 @@ private:
 	b2Fixture *fixture;
 	b2PolygonShape shape;
 	b2Vec2 size;
+	sf::String userData;
 public:
 	Rigidbody();
 	void create(b2Vec2 pos, b2Vec2 size, float friction, float density, float restitution, float angle = 0, bool fixedAngle = true, bool dynamic = true, int collisionGroup = 0);
@@ -28,6 +29,7 @@ public:
 	float getAngle();
 	void destroy(b2World *world);
 	void reloadFixture();
+	void setUserData(sf::String data, b2World *world);
 };
 
 #endif

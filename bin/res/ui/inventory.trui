@@ -141,8 +141,8 @@
 		<text name="hint">
 			<toggle event="obj-inventory-hint" />
 			<font path="res/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
-			<txt type="idle" appear="set">Press [{input-main-interacting}] to interact.</txt>
-			<txt type="active" appear="set">Press [{input-main-interacting}] to interact.</txt>
+			<txt type="idle" appear="set">Нажмите [{input-main-interacting}] для взаимодействия.</txt>
+			<txt type="active" appear="set">Нажмите [{input-main-interacting}] для взаимодействия.</txt>
 			<position type="relative-set">0.5 1 0.5 1</position>
 			<origin type="relative-lerp">0.5 0 0.5 1</origin>
 			<color state="idle" type="lerp">255 255 255 255</color><outline state="idle" type="lerp">0 0 0 255</outline>

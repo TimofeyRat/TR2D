@@ -18,6 +18,20 @@ bool World::active;
 sf::String World::currentMusic;
 float World::brightness, World::musicVolume;
 
+WorldCL::WorldCL() {}
+
+void WorldCL::BeginContact(b2Contact *contact)
+{
+	sf::String b1 = *(sf::String*)contact->GetFixtureA()->GetBody()->GetUserData().pointer;
+	sf::String b2 = *(sf::String*)contact->GetFixtureB()->GetBody()->GetUserData().pointer;
+}
+
+void WorldCL::EndContact(b2Contact *contact)
+{
+	sf::String b1 = *(sf::String*)contact->GetFixtureA()->GetBody()->GetUserData().pointer;
+	sf::String b2 = *(sf::String*)contact->GetFixtureB()->GetBody()->GetUserData().pointer;
+}
+
 void World::init()
 {
 	ents.clear();
@@ -267,6 +281,7 @@ void World::Level::reset()
 	if (world != nullptr) { delete world; }
 	musicVolume = 100;
 	clear();
+	cl = WorldCL();
 }
 
 Entity *World::Level::getEntity(sf::String name)
@@ -284,13 +299,16 @@ void World::Level::update()
 	{
 		if (world) { delete world; }
 		world = new b2World(gravity);
+		world->SetContactListener(&cl);
 		for (int i = 0; i < triggers.size(); i++)
 		{
 			triggers[i].rb.reset(world);
+			triggers[i].rb.setUserData(sf::String("trigger_") + triggers[i].getVar("name"), world);
 		}
 		for (int i = 0; i < ents.size(); i++)
 		{
 			ents[i].getRigidbody()->reset(world);
+			ents[i].getRigidbody()->setUserData(sf::String("ent_") + ents[i].name, world);
 		}
 		for (int i = 0; i < spawners.size(); i++)
 		{
