@@ -1,0 +1,23 @@
+AppIcon ICON "icon.ico"
+1 VERSIONINFO
+FILEVERSION 1,0,0,0
+PRODUCTVERSION 1,0,0,0
+BEGIN
+	BLOCK "StringFileInfo"
+	BEGIN
+		BLOCK "040904E4"
+		BEGIN
+			VALUE "CompanyName", "TimRat\0"
+			VALUE "FileDescription", "TR2D Game Engine\0"
+			VALUE "FileVersion", "0.1\0"
+			VALUE "InternalName", "TR2D\0"
+			VALUE "OriginalFilename", "TR2D.exe\0"
+			VALUE "ProductName", "TR2D\0"
+			VALUE "ProductVersion", "0.1\0"
+		END
+	END
+	BLOCK "VarFileInfo"
+	BEGIN
+		VALUE "Translation", 0x419, 1200
+	END
+END

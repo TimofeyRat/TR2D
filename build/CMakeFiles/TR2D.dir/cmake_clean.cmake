@@ -1,0 +1,43 @@
+file(REMOVE_RECURSE
+  "C:/Projects/TR2D/bin/TR2D.exe"
+  "C:/Projects/TR2D/bin/TR2D.exe.manifest"
+  "C:/Projects/TR2D/bin/TR2D.pdb"
+  "C:/Projects/TR2D/bin/libTR2D.dll.a"
+  "CMakeFiles/TR2D.dir/Engine/cAnimation.cpp.obj"
+  "CMakeFiles/TR2D.dir/Engine/cAnimation.cpp.obj.d"
+  "CMakeFiles/TR2D.dir/Engine/cAssets.cpp.obj"
+  "CMakeFiles/TR2D.dir/Engine/cAssets.cpp.obj.d"
+  "CMakeFiles/TR2D.dir/Engine/cDialogue.cpp.obj"
+  "CMakeFiles/TR2D.dir/Engine/cDialogue.cpp.obj.d"
+  "CMakeFiles/TR2D.dir/Engine/cEntity.cpp.obj"
+  "CMakeFiles/TR2D.dir/Engine/cEntity.cpp.obj.d"
+  "CMakeFiles/TR2D.dir/Engine/cGlobal.cpp.obj"
+  "CMakeFiles/TR2D.dir/Engine/cGlobal.cpp.obj.d"
+  "CMakeFiles/TR2D.dir/Engine/cInput.cpp.obj"
+  "CMakeFiles/TR2D.dir/Engine/cInput.cpp.obj.d"
+  "CMakeFiles/TR2D.dir/Engine/cInventory.cpp.obj"
+  "CMakeFiles/TR2D.dir/Engine/cInventory.cpp.obj.d"
+  "CMakeFiles/TR2D.dir/Engine/cParticles.cpp.obj"
+  "CMakeFiles/TR2D.dir/Engine/cParticles.cpp.obj.d"
+  "CMakeFiles/TR2D.dir/Engine/cProgrammable.cpp.obj"
+  "CMakeFiles/TR2D.dir/Engine/cProgrammable.cpp.obj.d"
+  "CMakeFiles/TR2D.dir/Engine/cRigidbody.cpp.obj"
+  "CMakeFiles/TR2D.dir/Engine/cRigidbody.cpp.obj.d"
+  "CMakeFiles/TR2D.dir/Engine/cScript.cpp.obj"
+  "CMakeFiles/TR2D.dir/Engine/cScript.cpp.obj.d"
+  "CMakeFiles/TR2D.dir/Engine/cUI.cpp.obj"
+  "CMakeFiles/TR2D.dir/Engine/cUI.cpp.obj.d"
+  "CMakeFiles/TR2D.dir/Engine/cWearable.cpp.obj"
+  "CMakeFiles/TR2D.dir/Engine/cWearable.cpp.obj.d"
+  "CMakeFiles/TR2D.dir/Engine/cWindow.cpp.obj"
+  "CMakeFiles/TR2D.dir/Engine/cWindow.cpp.obj.d"
+  "CMakeFiles/TR2D.dir/Engine/cWorld.cpp.obj"
+  "CMakeFiles/TR2D.dir/Engine/cWorld.cpp.obj.d"
+  "CMakeFiles/TR2D.dir/TR2D.cpp.obj"
+  "CMakeFiles/TR2D.dir/TR2D.cpp.obj.d"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/TR2D.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()
