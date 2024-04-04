@@ -16,6 +16,7 @@ struct Particle
 	sf::ConvexShape shape;
 	float timer, life;
 	sf::Vector2f speed;
+	bool destroyed, physics;
 	Particle();
 	void reset(b2World *world);
 };
@@ -29,6 +30,7 @@ struct ParticleTemplate
 	std::vector<sf::Vector2f> points;
 	sf::String texType;
 	Rigidbody rb;
+	bool physics;
 	ParticleTemplate();
 	ParticleTemplate(pugi::xml_node node);
 	void parse(pugi::xml_node node);

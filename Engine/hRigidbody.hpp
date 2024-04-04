@@ -29,7 +29,7 @@ public:
 	float getAngle();
 	void destroy(b2World *world);
 	void reloadFixture();
-	void setUserData(sf::String data, b2World *world);
+	void setUserData(sf::String data);
 };
 
 #endif

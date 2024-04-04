@@ -163,8 +163,8 @@
 		<text name="debugger">
 			<toggle event="key-click-F3" />
 			<font path="res/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
-			<txt type="idle" appear="set">{camOwner-num-moveX}</txt>
-			<txt type="active" appear="set">{camOwner-num-moveX}</txt>
+			<txt type="idle" appear="set">{lvl-int-showInteraction}</txt>
+			<txt type="active" appear="set">{lvl-int-showInteraction}</txt>
 			<position type="inherit-txt-rel">1 1 1 1 inventory-Debug-FPS</position>
 			<origin type="relative-lerp">1 1 1 0</origin>
 			<color state="idle" type="lerp">255 255 255 255</color><outline state="idle" type="lerp">0 0 0 255</outline>

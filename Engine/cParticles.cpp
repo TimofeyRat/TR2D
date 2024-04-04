@@ -16,6 +16,7 @@ ParticleTemplate::ParticleTemplate()
 	fa = FrameAnimator();
 	rb = Rigidbody();
 	points.clear();
+	physics = true;
 }
 
 ParticleTemplate::ParticleTemplate(pugi::xml_node node)
@@ -63,13 +64,14 @@ void ParticleTemplate::parse(pugi::xml_node node)
 		}
 		else if (type == "physics")
 		{
-			rb.create({0, 0}, {1, 1},
+			physics = part.attribute(L"dynamic").as_bool();
+			if (physics) rb.create({0, 0}, {1, 1},
 				part.attribute(L"friction").as_float(),
 				part.attribute(L"mass").as_float(),
 				part.attribute(L"restitution").as_float(),
 				part.attribute(L"angle").as_float(),
 				part.attribute(L"fixedAngle").as_bool(),
-				part.attribute(L"dynamic").as_bool(),
+				true,
 				part.attribute(L"collisionGroup").as_int()
 			);
 		}
@@ -122,7 +124,8 @@ Particle ParticleTemplate::toParticle()
 		part.fa.setCurrentAnimation(fa.getCurrentAnim()->name);
 		part.shape.setTexture(part.fa.getCurrentAnim()->texture);
 	}
-	part.rb = rb;
+	part.physics = physics;
+	if (physics) part.rb = rb;
 	part.shape.setPointCount(points.size());
 	part.effects = effects;
 	for (int i = 0; i < points.size(); i++)
@@ -139,6 +142,9 @@ Particle::Particle()
 	fa = FrameAnimator();
 	shape = sf::ConvexShape();
 	timer = life = 0;
+	destroyed = false;
+	physics = true;
+	speed = {0, 0};
 }
 
 void Particle::reset(b2World *world)
@@ -166,13 +172,21 @@ Particle ParticleSystem::createParticle(b2World *world, sf::String name, sf::Vec
 	{
 		if (templates[i].name == name) { part = templates[i].toParticle(); }
 	}
-	part.rb.reset(world);
-	part.rb.resize(world, {
-		part.shape.getLocalBounds().width,
-		part.shape.getLocalBounds().height
-	});
-	part.rb.setPosition({pos.x, pos.y});
-	part.rb.getBody()->SetLinearVelocity({speed.x / tr::M2P, speed.y / tr::M2P});
+	if (part.physics)
+	{
+		part.rb.reset(world);
+		part.rb.resize(world, {
+			part.shape.getLocalBounds().width,
+			part.shape.getLocalBounds().height
+		});
+		part.rb.setPosition({pos.x, pos.y});
+		part.rb.getBody()->SetLinearVelocity({speed.x / tr::M2P, speed.y / tr::M2P});
+	}
+	else
+	{
+		part.speed = speed;
+		part.shape.setPosition(pos);
+	}
 	return part;
 }
 

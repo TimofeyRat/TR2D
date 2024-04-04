@@ -120,9 +120,9 @@ void Rigidbody::reloadFixture()
 	fixture = body->CreateFixture(&fixDef);
 }
 
-void Rigidbody::setUserData(sf::String data, b2World *world)
+void Rigidbody::setUserData(sf::String data)
 {
 	userData = data;
 	bodyDef.userData.pointer = (uintptr_t)&userData;
-	reset(world);
+	if (body) body->GetUserData().pointer = (uintptr_t)&userData;
 }

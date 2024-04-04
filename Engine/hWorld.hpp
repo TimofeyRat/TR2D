@@ -16,6 +16,10 @@ public:
 	WorldCL();
 	void BeginContact(b2Contact *contact);
 	void EndContact(b2Contact *contact);
+private:
+	void ParticleEntity(int particleID, sf::String entName, bool start = true);
+	void ParticleTrigger(int particleID, sf::String triggerName, bool start = true);
+	void EntityTrigger(sf::String entName, sf::String triggerName, bool start = true);
 };
 
 class World
@@ -144,6 +148,7 @@ public:
 		void update();
 		void draw(sf::RenderTarget *target);
 		Entity *getEntity(sf::String name);
+		Trigger *getTrigger(sf::String name);
 	};
 	static void init();
 	static void loadFromFile(std::string filename);

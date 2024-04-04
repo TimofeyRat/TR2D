@@ -22,14 +22,75 @@ WorldCL::WorldCL() {}
 
 void WorldCL::BeginContact(b2Contact *contact)
 {
-	sf::String b1 = *(sf::String*)contact->GetFixtureA()->GetBody()->GetUserData().pointer;
-	sf::String b2 = *(sf::String*)contact->GetFixtureB()->GetBody()->GetUserData().pointer;
+	auto p1 = contact->GetFixtureA()->GetBody()->GetUserData().pointer;
+	auto p2 = contact->GetFixtureB()->GetBody()->GetUserData().pointer;
+	if (p1 == 0 || p2 == 0) return;
+	auto s1 = *(sf::String*)p1;
+	auto s2 = *(sf::String*)p2;
+	if (s1.isEmpty() || s2.isEmpty()) return;
+	auto b1 = tr::splitStr(s1, "_");
+	auto b2 = tr::splitStr(s2, "_");
+	if (b1[0] == "trigger" && b2[0] == "particle") ParticleTrigger(std::stoi(b2[1].toAnsiString()), b1[1]);
+	if (b1[0] == "particle" && b2[0] == "trigger") ParticleTrigger(std::stoi(b1[1].toAnsiString()), b2[1]);
+	if (b1[0] == "ent" && b2[0] == "particle") ParticleEntity(std::stoi(b2[1].toAnsiString()), b1[1]);
+	if (b1[0] == "particle" && b2[0] == "ent") ParticleEntity(std::stoi(b1[1].toAnsiString()), b2[1]);
+	if (b1[0] == "trigger" && b2[0] == "ent") EntityTrigger(b2[1], b1[1]);
+	if (b1[0] == "ent" && b2[0] == "trigger") EntityTrigger(b1[1], b2[1]);
 }
 
 void WorldCL::EndContact(b2Contact *contact)
 {
-	sf::String b1 = *(sf::String*)contact->GetFixtureA()->GetBody()->GetUserData().pointer;
-	sf::String b2 = *(sf::String*)contact->GetFixtureB()->GetBody()->GetUserData().pointer;
+	auto p1 = contact->GetFixtureA()->GetBody()->GetUserData().pointer;
+	auto p2 = contact->GetFixtureB()->GetBody()->GetUserData().pointer;
+	if (p1 == 0 || p2 == 0) return;
+	auto s1 = *(sf::String*)p1;
+	auto s2 = *(sf::String*)p2;
+	if (s1.isEmpty() || s2.isEmpty()) return;
+	auto b1 = tr::splitStr(s1, "_");
+	auto b2 = tr::splitStr(s2, "_");
+	if (b1[0] == "trigger" && b2[0] == "ent") EntityTrigger(b2[1], b1[1], false);
+	if (b1[0] == "ent" && b2[0] == "trigger") EntityTrigger(b1[1], b2[1], false);
+}
+
+void WorldCL::ParticleTrigger(int partID, sf::String triggerName, bool start)
+{
+	auto *part = &World::getCurrentLevel()->parts[partID];
+	auto *trigger = World::getCurrentLevel()->getTrigger(triggerName);
+	part->destroyed = true;
+}
+
+void WorldCL::ParticleEntity(int partID, sf::String entName, bool start)
+{
+	auto *part = &World::getCurrentLevel()->parts[partID];
+	auto *ent = World::getCurrentLevel()->getEntity(entName);
+	for (int i = 0; i < part->effects.size(); i++)
+	{
+		ent->addEffect(part->effects[i]);
+	}
+	part->destroyed = true;
+}
+
+void WorldCL::EntityTrigger(sf::String entName, sf::String triggerName, bool start)
+{
+	auto *lvl = World::getCurrentLevel();
+	auto *ent = lvl->getEntity(entName);
+	auto *trigger = lvl->getTrigger(triggerName);
+	if (entName == lvl->cam.owner)
+	{
+		if (ent->getHitbox().intersects(trigger->rect) &&
+			trigger->hasVar("cmd") &&
+			(trigger->getVar("used") < trigger->getVar("usages") ||
+			trigger->getVar("usages") == 0))
+		{
+			lvl->setVar("showInteraction", 1);
+			lvl->setVar("interactableTrigger", triggerName);
+		}
+		else
+		{
+			lvl->setVar("showInteraction", 0);
+			lvl->setVar("interactableTrigger", "");
+		}
+	}
 }
 
 void World::init()
@@ -303,12 +364,14 @@ void World::Level::update()
 		for (int i = 0; i < triggers.size(); i++)
 		{
 			triggers[i].rb.reset(world);
-			triggers[i].rb.setUserData(sf::String("trigger_") + triggers[i].getVar("name"), world);
+			triggers[i].rb.resize(world, {triggers[i].rect.width, triggers[i].rect.height});
+			triggers[i].rb.setUserData(sf::String("trigger_") + triggers[i].getVar("name"));
+			if (triggers[i].getVar("collision") == 0) triggers[i].rb.getBody()->GetFixtureList()->SetSensor(true);
 		}
 		for (int i = 0; i < ents.size(); i++)
 		{
 			ents[i].getRigidbody()->reset(world);
-			ents[i].getRigidbody()->setUserData(sf::String("ent_") + ents[i].name, world);
+			ents[i].getRigidbody()->setUserData(sf::String("ent_") + ents[i].name);
 		}
 		for (int i = 0; i < spawners.size(); i++)
 		{
@@ -360,6 +423,7 @@ void World::Level::update()
 						auto part = ParticleSystem::createParticle(world, pg->temp, pos, speed);
 						part.life = pg->lifeTime;
 						parts.push_back(part);
+						parts[parts.size() - 1].rb.setUserData("particle_" + std::to_string(parts.size() - 1));
 					}
 				}
 			}
@@ -399,51 +463,50 @@ void World::Level::update()
 	for (int i = 0; i < parts.size(); i++)
 	{
 		auto *p = &parts[i];
-		if (p->life > 0) { p->timer += Window::getDeltaTime(); if (p->timer >= p->life) continue; }
-		auto point = parts[i].shape.getPosition() + tr::getDelta(parts[i].shape.getRotation() + 90) * (parts[i].shape.getLocalBounds().height / 2 + 2);
-		auto cg = p->rb.getBody()->GetFixtureList()->GetFilterData().groupIndex;
-		bool destroyed = false;
-		for (int j = 0; j < triggers.size(); j++)
+		if (p->life > 0)
 		{
-			auto *b = triggers[j].rb.getBody()->GetFixtureList();
-			if (b->TestPoint({point.x / tr::M2P, point.y / tr::M2P}) && b->GetFilterData().groupIndex != cg)
-			{
-				destroyed = true;
-				break;
-			}
+			p->timer += Window::getDeltaTime();
+			if (p->timer >= p->life) { p->destroyed = true; }
 		}
-		if (!destroyed) for (int j = 0; j < ents.size(); j++)
+		if (!p->physics)
 		{
-			auto *b = ents[j].getRigidbody()->getBody()->GetFixtureList();
-			if (b->TestPoint({point.x / tr::M2P, point.y / tr::M2P}))
+			p->shape.move(p->speed * Window::getDeltaTime());
+			for (int j = 0; j < triggers.size(); j++)
 			{
-				for (int k = 0; k < p->effects.size(); k++)
+				if (triggers[j].rect.intersects(p->shape.getGlobalBounds()))
 				{
-					ents[j].addEffect(p->effects[k]);
+					p->destroyed = true;
+					break;
 				}
-				destroyed = true;
-				break;
+			}
+			if (!p->destroyed) for (int j = 0; j < ents.size(); j++)
+			{
+				if (ents[j].getHitbox().intersects(p->shape.getGlobalBounds()))
+				{
+					for (int k = 0; k < p->effects.size(); k++)
+					{
+						ents[j].addEffect(p->effects[k]);
+					}
+					p->destroyed = true;
+					break;
+				}
 			}
 		}
-		if (destroyed) { world->DestroyBody(p->rb.getBody()); std::swap(parts[i], parts[parts.size() - 1]); parts.pop_back(); }
+		if (p->destroyed)
+		{
+			p->rb.destroy(world);
+			std::swap(parts[i], parts[parts.size() - 1]);
+			parts.pop_back();
+		}
 	}
 	for (int i = 0; i < ents.size(); i++) { ents[i].update(); }
 	auto *camOwner = getEntity(cam.owner);
 	if (camOwner)
 	{
-		auto pos = camOwner->getPosition();
-		sf::Listener::setPosition(pos.x, 0, pos.y);
-		int interaction = -1;
-		for (int i = 0; i < triggers.size(); i++)
+		if (getVar("showInteraction") && camOwner->getVar("interacting"))
 		{
-			if (camOwner->getHitbox().intersects(triggers[i].rect) && triggers[i].hasVar("cmd") &&
-				(triggers[i].getVar("used") < triggers[i].getVar("usages") || triggers[i].getVar("usages") == 0)) interaction = i;
-		}
-		bool inter = (interaction != -1);
-		setVar("showInteraction", inter);
-		if (inter && camOwner->getVar("interacting"))
-		{
-			auto prompt = triggers[interaction].getVar("cmd").str;
+			auto *t = getTrigger(getVar("interactableTrigger"));
+			auto prompt = t->getVar("cmd").str;
 			if (!prompt.isEmpty())
 			{
 				auto cmd = tr::splitStr(prompt, "|");
@@ -451,7 +514,7 @@ void World::Level::update()
 				{
 					tr::execute(cmd[j]);
 				}
-				triggers[interaction].setVar("used", triggers[interaction].getVar("used") + 1);
+				t->setVar("used", t->getVar("used") + 1);
 			}
 		}
 		camOwner->setVar("interacting", 0);
@@ -492,14 +555,12 @@ void World::Level::draw(sf::RenderTarget *target)
 	);
 	target->draw(bgSpr);
 	map.draw(target);
-	for (int i = 0; i < triggers.size(); i++)
-	{
-		triggers[i].rb.resize(world, {triggers[i].rect.width, triggers[i].rect.height});
-		if (Window::getVar("debug")) triggers[i].rb.draw(&screen);
-	}
+	cam.update(mapSize);
+	sf::Listener::setPosition(cam.view.getCenter().x, 0, cam.view.getCenter().y);
+	sf::FloatRect camRect = {cam.view.getCenter() - cam.view.getSize() / 2.0f, cam.view.getSize()};
 	for (int i = 0; i < ents.size(); i++)
 	{
-		ents[i].draw(&screen);
+		if (ents[i].getHitbox().intersects(camRect)) ents[i].draw(&screen);
 	}
 	for (int i = 0; i < items.size(); i++)
 	{
@@ -508,16 +569,19 @@ void World::Level::draw(sf::RenderTarget *target)
 	for (int i = 0; i < parts.size(); i++)
 	{
 		auto *p = &parts[i];
-		p->shape.setPosition(p->rb.getPosition().x, p->rb.getPosition().y);
-		p->rb.getBody()->SetTransform(p->rb.getBody()->GetPosition(), atan2(
-			p->rb.getBody()->GetLinearVelocity().y,
-			p->rb.getBody()->GetLinearVelocity().x
-		) - 90 * tr::DEGTORAD);
-		p->shape.setRotation(p->rb.getAngle());
+		if (p->physics)
+		{
+			p->shape.setPosition(p->rb.getPosition().x, p->rb.getPosition().y);
+			p->rb.getBody()->SetTransform(p->rb.getBody()->GetPosition(), atan2(
+				p->rb.getBody()->GetLinearVelocity().y,
+				p->rb.getBody()->GetLinearVelocity().x
+			) - 90 * tr::DEGTORAD);
+			p->shape.setRotation(p->rb.getAngle());
+			p->rb.setUserData("particle_" + std::to_string(i));
+		}
 		p->shape.setOrigin(p->shape.getLocalBounds().getSize() / 2.0f);
-		screen.draw(p->shape);
+		if (p->shape.getGlobalBounds().intersects(camRect)) screen.draw(p->shape);
 	}
-	cam.update(mapSize);
 	screen.display();
 	sf::Sprite spr(screen.getTexture());
 	spr.setColor({brightness, brightness, brightness, 255});
@@ -666,7 +730,7 @@ void World::FallenItem::draw(b2World *world)
 	float scale = 2;
 	item.item.updateSpr();
 	rb.resize(world, {item.item.spr.getTextureRect().width * scale, item.item.spr.getTextureRect().height * scale});
-	if (!rb.getBody()) { rb.reset(world); }
+	if (!rb.getBody()) { rb.reset(world); rb.setUserData(sf::String("item_") + item.item.type + ":" + item.item.id); }
 	if (!rb.getBody()->GetLinearVelocity().x) { rb.getBody()->ApplyLinearImpulseToCenter({impulse.x, impulse.y}, true); impulse = {0, 0}; }
 	item.item.spr.setPosition(rb.getPosition().x, rb.getPosition().y);
 	item.item.spr.setRotation(rb.getAngle());
@@ -688,7 +752,7 @@ void World::FallenItem::draw(b2World *world)
 void World::throwItem(Inventory::Item itm, Entity *entity)
 {
 	auto rotation = entity->getVar("rotation").num;
-	auto position = entity->getPosition() + sf::Vector2f((entity->getHitbox().width) * rotation, 0);
+	auto position = entity->getPosition() + sf::Vector2f((entity->getHitbox().width / 2) * rotation, 0);
 	auto impulse = sf::Vector2f(
 		entity->getVar("dx") + rotation,
 		-abs(entity->getVar("dy")) - 0.5
@@ -811,4 +875,13 @@ void tr::execute(sf::String cmd)
 		if (args[1] == "clear") { Inventory::inv.clear(); }
 		else if (args[1] == "addItem") { Inventory::addItem(args[2]); }
 	}
+}
+
+World::Trigger *World::Level::getTrigger(sf::String name)
+{
+	for (int i = 0; i < triggers.size(); i++)
+	{
+		if (triggers[i].getVar("name") == name) { return &triggers[i]; }
+	}
+	return nullptr;
 }
