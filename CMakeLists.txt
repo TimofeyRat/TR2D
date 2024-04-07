@@ -21,6 +21,7 @@ set(TR2D_SOURCES
 	Engine/cWorld.cpp
 	Engine/cScript.cpp
 	Engine/cParticles.cpp
+	Engine/cCutscene.cpp
 	Engine/pugixml.o)
 	
 project(TR2D VERSION 2.0 LANGUAGES CXX)

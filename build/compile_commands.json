@@ -97,6 +97,12 @@
 },
 {
   "directory": "C:/Projects/TR2D/build",
+  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -o CMakeFiles\\TR2D.dir\\Engine\\cCutscene.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cCutscene.cpp",
+  "file": "C:/Projects/TR2D/Engine/cCutscene.cpp",
+  "output": "CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.obj"
+},
+{
+  "directory": "C:/Projects/TR2D/build",
   "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -o CMakeFiles\\MapEditor.dir\\TRME.cpp.obj -c C:\\Projects\\TR2D\\TRME.cpp",
   "file": "C:/Projects/TR2D/TRME.cpp",
   "output": "CMakeFiles/MapEditor.dir/TRME.cpp.obj"

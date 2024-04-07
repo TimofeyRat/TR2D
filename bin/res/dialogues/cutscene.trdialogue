@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<dialogue name="intro">
+	<phrase name="first">
+		<speaker />
+		<text>Звезда летит.</text>
+		<reply name="continue">
+			<text>ух ебать</text>
+			<action>talk-setPhrase-second</action>
+		</reply>
+	</phrase>
+	<phrase name="second">
+		<speaker />
+		<text>Звезда всё ещё летит.</text>
+		<reply name="continue">
+			<text>да ну нахуй</text>
+			<action>cutscene-executeAction-test</action>
+		</reply>
+	</phrase>
+</dialogue>

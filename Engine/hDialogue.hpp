@@ -1,5 +1,5 @@
-#ifndef hDialogue
-#define hDialogue
+#ifndef trDialogue
+#define trDialogue
 
 #include <vector>
 #include <string>

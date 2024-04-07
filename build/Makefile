@@ -195,6 +195,30 @@ Engine/cAssets.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cAssets.cpp.s
 .PHONY : Engine/cAssets.cpp.s
 
+Engine/cCutscene.obj: Engine/cCutscene.cpp.obj
+.PHONY : Engine/cCutscene.obj
+
+# target to build an object file
+Engine/cCutscene.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.obj
+.PHONY : Engine/cCutscene.cpp.obj
+
+Engine/cCutscene.i: Engine/cCutscene.cpp.i
+.PHONY : Engine/cCutscene.i
+
+# target to preprocess a source file
+Engine/cCutscene.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.i
+.PHONY : Engine/cCutscene.cpp.i
+
+Engine/cCutscene.s: Engine/cCutscene.cpp.s
+.PHONY : Engine/cCutscene.s
+
+# target to generate assembly for a file
+Engine/cCutscene.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.s
+.PHONY : Engine/cCutscene.cpp.s
+
 Engine/cDialogue.obj: Engine/cDialogue.cpp.obj
 .PHONY : Engine/cDialogue.obj
 
@@ -583,6 +607,9 @@ help:
 	@echo ... Engine/cAssets.obj
 	@echo ... Engine/cAssets.i
 	@echo ... Engine/cAssets.s
+	@echo ... Engine/cCutscene.obj
+	@echo ... Engine/cCutscene.i
+	@echo ... Engine/cCutscene.s
 	@echo ... Engine/cDialogue.obj
 	@echo ... Engine/cDialogue.i
 	@echo ... Engine/cDialogue.s

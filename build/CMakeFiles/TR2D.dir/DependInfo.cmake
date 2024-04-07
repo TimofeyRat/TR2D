@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "C:/Projects/TR2D/Engine/cAnimation.cpp" "CMakeFiles/TR2D.dir/Engine/cAnimation.cpp.obj" "gcc" "CMakeFiles/TR2D.dir/Engine/cAnimation.cpp.obj.d"
   "C:/Projects/TR2D/Engine/cAssets.cpp" "CMakeFiles/TR2D.dir/Engine/cAssets.cpp.obj" "gcc" "CMakeFiles/TR2D.dir/Engine/cAssets.cpp.obj.d"
+  "C:/Projects/TR2D/Engine/cCutscene.cpp" "CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.obj" "gcc" "CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.obj.d"
   "C:/Projects/TR2D/Engine/cDialogue.cpp" "CMakeFiles/TR2D.dir/Engine/cDialogue.cpp.obj" "gcc" "CMakeFiles/TR2D.dir/Engine/cDialogue.cpp.obj.d"
   "C:/Projects/TR2D/Engine/cEntity.cpp" "CMakeFiles/TR2D.dir/Engine/cEntity.cpp.obj" "gcc" "CMakeFiles/TR2D.dir/Engine/cEntity.cpp.obj.d"
   "C:/Projects/TR2D/Engine/cGlobal.cpp" "CMakeFiles/TR2D.dir/Engine/cGlobal.cpp.obj" "gcc" "CMakeFiles/TR2D.dir/Engine/cGlobal.cpp.obj.d"

@@ -7,6 +7,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/TR2D.dir/Engine/cAnimation.cpp.obj.d"
   "CMakeFiles/TR2D.dir/Engine/cAssets.cpp.obj"
   "CMakeFiles/TR2D.dir/Engine/cAssets.cpp.obj.d"
+  "CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.obj"
+  "CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.obj.d"
   "CMakeFiles/TR2D.dir/Engine/cDialogue.cpp.obj"
   "CMakeFiles/TR2D.dir/Engine/cDialogue.cpp.obj.d"
   "CMakeFiles/TR2D.dir/Engine/cEntity.cpp.obj"

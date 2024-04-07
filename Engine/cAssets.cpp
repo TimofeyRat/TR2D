@@ -102,15 +102,19 @@ void AssetManager::init()
 	sf::Font f; f.loadFromFile("res/global/font.ttf");
 	sf::Text t("", f, 32);
 	float clr = 0;
-	auto fileCount = iterateDir("res").size();
+	auto files = iterateDir("res");
+	auto fileCount = files.size();
 	while (currentFileLoading < fileCount)
 	{
 		Window::update();
+		if (!Window::isOpen()) { exit(0); }
 
 		clr = tr::clamp(clr + Window::getDeltaTime() * 200, 0, 255);
 
 		t.setFillColor({clr, clr, clr, clr});
-		t.setString("Loading resource " + std::to_string(currentFileLoading) + "/" + std::to_string(fileCount) + "...");
+		t.setString("Loading resource " +
+			std::to_string(currentFileLoading) + "/" + std::to_string(fileCount) +
+			" (" + files[currentFileLoading] + ")...");
 		t.setOrigin(t.getGlobalBounds().getSize() / 2.0f);
 		t.setPosition(Window::getSize() / 2.0f);
 
@@ -128,7 +132,7 @@ void AssetManager::load()
 	currentFileLoading = 0;
 	for (auto file : files)
 	{
-		if (tr::strContains(file, "tr"))
+		if (tr::strContains(file, ".tr"))
 		{
 			auto txt = readFile(file);
 			if (!txt.empty()) texts.push_back(Text(
@@ -136,15 +140,15 @@ void AssetManager::load()
 				file
 			));
 		}
-		else if (tr::strContains(file, "ttf"))
+		else if (tr::strContains(file, ".ttf"))
 		{
 			fonts.push_back(Font(file));
 		}
-		else if (tr::strContains(file, "png"))
+		else if (tr::strContains(file, ".png"))
 		{
 			textures.push_back(Texture(file));
 		}
-		else if (tr::strContains(file, "ogg"))
+		else if (tr::strContains(file, ".ogg"))
 		{
 			sounds.push_back(Sound(file));
 		}

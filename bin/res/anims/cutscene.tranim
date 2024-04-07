@@ -1,0 +1,3 @@
+<animation name="intro" duration="2" repeat="1" scale="-1 -1">
+	<texture path="res/tex/cutscenes/intro.png" size="1024 576" start="0" count="2" />
+</animation>

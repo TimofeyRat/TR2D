@@ -1,0 +1,11 @@
+<cutscene name="test" type="frame_animation">
+	<anim path="res/anims/cutscene.tranim" />
+	<dialogue path="res/dialogues/cutscene.trdialogue" />
+	<init>
+		<animation name="intro" />
+		<command>talk-setPharse-first</command>
+	</init>
+	<action phrase="first" skippable="0">
+		<command>talk-setPhrase-first</command>
+	</action>
+</cutscene>

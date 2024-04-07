@@ -578,6 +578,8 @@ CMakeFiles/TR2D.dir/Engine/cAssets.cpp.obj: C:/Projects/TR2D/Engine/cAssets.cpp 
   C:/Projects/TR2D/Engine/hProgrammable.hpp \
   C:/Projects/TR2D/Engine/hWindow.hpp
 
+CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.obj: C:/Projects/TR2D/Engine/cCutscene.cpp
+
 CMakeFiles/TR2D.dir/Engine/cDialogue.cpp.obj: C:/Projects/TR2D/Engine/cDialogue.cpp \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/algorithm \
   C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/backward/binders.h \
@@ -5090,6 +5092,8 @@ C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/stl
 C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_pulley_joint.h:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/cxxabi_init_exception.h:
+
+C:/Projects/TR2D/Engine/cCutscene.cpp:
 
 C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/exception_defines.h:
 
