@@ -71,13 +71,9 @@ void CSManager::setCutscene(sf::String name)
 {
 	for (int i = 0; i < frames.size(); i++)
 	{
-		if (frames[i].name == name) { current = {0, i}; break; }
+		frames[i].frame.restart();
+		if (frames[i].name == name) { current = {0, i}; }
 	}
-}
-
-void CSManager::start()
-{
-	UI::setFrame(Window::getVar("dialogueFrame"));
 }
 
 sf::String CSManager::getTalk()

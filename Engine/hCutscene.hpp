@@ -23,7 +23,6 @@ public:
 	};
 	static void init();
 	static void setCutscene(sf::String name);
-	static void start();
 	static sf::String getTalk();
 	static bool active;
 	//x - type(0 - frame, 1 - world), y - index

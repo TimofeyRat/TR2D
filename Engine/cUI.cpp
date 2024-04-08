@@ -518,6 +518,15 @@ void UI::Frame::Object::handle()
 			re3->activeTxt = re3->idleTxt = "";
 			re3->setVar("acc", 1);
 			txt->active = speaker->active = re1->active = re2->active = re3->active = false;
+			auto bgclr = tr::lerpClr(
+				{
+					(float)bg->spr.getColor().r, (float)bg->spr.getColor().g,
+					(float)bg->spr.getColor().b, (float)bg->spr.getColor().a
+				},
+				{0, 0, 0, 0},
+				Window::getDeltaTime() * 10
+			);
+			bg->spr.setColor({bgclr.x, bgclr.y, bgclr.z, bgclr.w});
 			return;
 		}
 		//Phrase
@@ -556,16 +565,15 @@ void UI::Frame::Object::handle()
 			}
 		}
 		//Background
-		sf::Glsl::Vec4 bgclr;
 		if (CSManager::active && !CSManager::current.x)
 		{
-			bgclr = tr::lerpClr(
+			auto bgclr = tr::lerpClr(
 				{
 					(float)bg->spr.getColor().r, (float)bg->spr.getColor().g,
 					(float)bg->spr.getColor().b, (float)bg->spr.getColor().a
 				},
 				{255, 255, 255, 255},
-				Window::getDeltaTime()
+				Window::getDeltaTime() * 10
 			);
 			auto *cs = &CSManager::frames[CSManager::current.y];
 			auto change = cs->getChange(Talk::getCurrentDialogue()->getCurrentPhrase()->name);
@@ -580,16 +588,8 @@ void UI::Frame::Object::handle()
 				Window::getSize().x / bg->spr.getGlobalBounds().width,
 				Window::getSize().y / bg->spr.getGlobalBounds().height
 			);
+			bg->spr.setColor({bgclr.x, bgclr.y, bgclr.z, bgclr.w});
 		}
-		else bgclr = tr::lerpClr(
-			{
-				(float)bg->spr.getColor().r, (float)bg->spr.getColor().g,
-				(float)bg->spr.getColor().b, (float)bg->spr.getColor().a
-			},
-			{0, 0, 0, 0},
-			Window::getDeltaTime()
-		);
-		bg->spr.setColor({bgclr.x, bgclr.y, bgclr.z, bgclr.w});
 	}
 	else if (tr::strContains(handler, "acsMenu"))
 	{

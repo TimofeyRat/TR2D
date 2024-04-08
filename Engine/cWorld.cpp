@@ -888,7 +888,6 @@ void tr::execute(sf::String cmd)
 	{
 		if (args[1] == "start")
 		{
-			CSManager::start();
 			CSManager::setCutscene(args[2]);
 			CSManager::active = true;
 			Input::active = false;

@@ -4,7 +4,7 @@
 		<speaker />
 		<text>Звезда летит.</text>
 		<reply name="continue">
-			<text>ух ебать</text>
+			<text>да неужели</text>
 			<action>talk-setPhrase-second</action>
 		</reply>
 	</phrase>
@@ -12,10 +12,9 @@
 		<speaker />
 		<text>Звезда всё ещё летит.</text>
 		<reply name="continue">
-			<text>да ну нахуй</text>
+			<text>не верю</text>
 			<action>talk-active-0</action>
 			<action>input-active-1</action>
-			<action>ui-setFrame-inventory</action>
 			<action>cutscene-active-0</action>
 		</reply>
 	</phrase>
