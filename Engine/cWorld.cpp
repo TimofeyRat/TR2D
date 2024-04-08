@@ -377,6 +377,8 @@ void World::Level::update()
 		{
 			getEntity(spawners[i].name)->setPosition(spawners[i].pos);
 		}
+		setVar("w", map.getPixelSize().x);
+		setVar("h", map.getPixelSize().y);
 		started = true;
 	}
 	world->SetGravity(gravity);
@@ -874,6 +876,12 @@ void tr::execute(sf::String cmd)
 	{
 		if (args[1] == "clear") { Inventory::inv.clear(); }
 		else if (args[1] == "addItem") { Inventory::addItem(args[2]); }
+	}
+	else if (args[0] == "setWeapon")
+	{
+		auto *ent = World::getCurrentLevel()->getEntity(args[1]);
+		if (ent == nullptr) { return; }
+		ent->weapon = Inventory::getWeapon(args[2]);
 	}
 }
 

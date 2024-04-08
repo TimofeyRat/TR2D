@@ -1,8 +1,8 @@
 #include "hInput.hpp"
 #include "hWindow.hpp"
 #include "hGlobal.hpp"
-#include "hWorld.hpp"
 #include "hAssets.hpp"
+#include "hUI.hpp"
 
 #include <pugixml.hpp>
 
@@ -687,7 +687,8 @@ void Input::Controller::update()
 		}
 		else if (key[0] == "mouse")
 		{
-			active = (key[1] == "press" && isMBJustPressed(strToMouse(key[2]))) || (key[1] == "hold" && isMBPressed(strToMouse(key[2])));
+			active = (key[1] == "press" && isMBJustPressed(strToMouse(key[2]))) || (key[1] == "hold" && isMBPressed(strToMouse(key[2]))) &&
+				!UI::containsMouse();
 		}
 		if (active)
 		{

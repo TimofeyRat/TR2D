@@ -8,7 +8,7 @@
 		dynamic="1"
 		collisionGroup="-1" />
 	<variable name="HP" num="100" />
-	<variable name="handBone" num="8" />
+	<variable name="handBone" num="5" />
 	<variable name="neckBone" num="2" />
 	<variable name="headBone" num="1" />
 	<variable name="damageCooldown" num="0.5" />
@@ -19,5 +19,6 @@
 	<variable name="sl" string="sl" /><variable name="sr" string="sr" />
 	<variable name="jl" string="jl" /><variable name="jr" string="jr" />
 	<variable name="fl" string="fl" /><variable name="fr" string="fr" />
+	<variable name="al" string="al" /><variable name="ar" string="ar" />
 	<variable name="scale" num="3.5" />
 </entity>

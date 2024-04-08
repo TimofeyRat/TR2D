@@ -6,7 +6,7 @@
 
 <item id="weapon:sticky_blade" name="Липкий клинок" countable="0" useable="0" anim="res/anims/items.tranim" />
 
-<weapon id="sticky_blade" anim="res/anims/weapons.tranim" delay="0.5" origin="4 17" scale="4" rotation="60" type="melee">
+<weapon id="sticky_blade" anim="res/anims/weapons.tranim" delay="1.0" origin="4 17" scale="4" rotation="60" type="melee">
 	<effect name="HP" type="add" num="-10" frequency="0.5" usages="4" />
 </weapon>
 

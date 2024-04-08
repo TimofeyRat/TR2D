@@ -94,7 +94,6 @@ void Entity::update()
 	updateRB(scale);
 	s.setSpeed(getVar("speed")); s.setScale(scale);
 	updateAttack();
-	if (getVar("attacking") && (s.hasAnimationEnded() || weapon.id == "null")) { setVar("attacking", 0); }
 	updateAnim();
 	s.updateBones();
 	auto rect = s.generateHitbox();
@@ -148,6 +147,7 @@ void Entity::updateAnim()
 	if (!dx) { auto r = getVar("rotation").num; if (r < 0) anim = "il"; if (r > 0) anim = "ir"; } //idle
 	if (dy < 0) { auto r = getVar("rotation").num; if (r < 0) anim = "jl"; if (r > 0) anim = "jr"; } //Jump
 	if (dy > 0) { auto r = getVar("rotation").num; if (r < 0) anim = "fl"; if (r > 0) anim = "fr"; } //Fall
+	if (getVar("attacking")) { auto r = getVar("rotation").num; if (r < 0) anim = "al"; if (r > 0) anim = "ar"; } //Attack
 	s.setCurrentAnimation(getVar(anim));
 	setVar("anim", getVar(anim).str);
 }
@@ -215,11 +215,14 @@ void Entity::updateRB(float scale)
 			}
 		}
 		auto x = body->GetLinearVelocity().x, dx = getVar("dx").num, maxSpeed = getVar("maxSpeed").num * speed * scale;
-		body->ApplyForceToCenter({dx * getVar("speedX") * speed * scale, 0}, true);
+		if (getVar("attacking")) { maxSpeed /= 2; }
+		else
+		{
+			body->ApplyForceToCenter({dx * getVar("speedX") * speed * scale, 0}, true);
+			if (getVar("onGround") && getVar("dy")) body->SetLinearVelocity({body->GetLinearVelocity().x, getVar("dy") * getVar("speedY") * scale});
+		}
 		if (body->GetLinearVelocity().x > maxSpeed) { body->SetLinearVelocity({maxSpeed, body->GetLinearVelocity().y}); }
 		else if (body->GetLinearVelocity().x < -maxSpeed) { body->SetLinearVelocity({-maxSpeed, body->GetLinearVelocity().y}); }
-		if (getVar("attacking") && getVar("onGround") && !weapon.meleeOrRange) { body->SetLinearVelocity({0, body->GetLinearVelocity().y}); }
-		if (getVar("onGround") && getVar("dy")) body->SetLinearVelocity({body->GetLinearVelocity().x, getVar("dy") * getVar("speedY") * scale});
 		setVar("moveX", body->GetLinearVelocity().x);
 		setVar("moveY", body->GetLinearVelocity().y);
 	}
@@ -227,11 +230,15 @@ void Entity::updateRB(float scale)
 
 void Entity::updateAttack()
 {
-	if (weapon.id == "null") setVar("attacking", 0);
-	if (getVar("attack") &&
-		!UI::containsMouse() &&
-		weapon.timer.getElapsedTime().asSeconds() >= weapon.useDelay &&
-		weapon.id != "null")
+	if (weapon.id == "null")
+	{
+		setVar("attacking", 0);
+		setVar("attack", 0);
+		return;
+	}
+	if (s.hasAnimationEnded() && getVar("attacking")) { setVar("attacking", 0); }
+	setVar("weaponCD", weapon.useDelay - weapon.timer.getElapsedTime().asSeconds());
+	if (getVar("attack") && getVar("weaponCD") <= 0)
 	{
 		setVar("attacking", 1);
 		weapon.timer.restart();

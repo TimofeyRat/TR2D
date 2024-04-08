@@ -1,20 +1,23 @@
-function main
+function init
 {
-	this.arg1 = this.posX;
-	this.arg2 = this.posY;
-	this.arg3 = camOwner.posX;
-	this.arg4 = camOwner.posY;
-	this.distance = math.dist;
-	this.dx = 0;
-	camOwner.test = "MAINER TEST";
-	if (camOwner.posX < this.posX) right null;
-	if (camOwner.posX > this.posX) left null;
-	if (this.distance < 200) walkAway stay;
-	if (this.distance < 150) runAway null;
+	this.speed = 1;
+	execute "setWeapon-Eutihey-sticky_blade";
+	this.init = 1;
 }
 
-function walkAway { this.speed = 0.5; }
-function runAway { this.speed = 1; }
-function stay { this.dx = 0; }
+function main
+{
+	if (this.init == 0) init null;
+	this.x1 = this.posX; this.y1 = this.posY; this.x2 = camOwner.posX; this.y2 = camOwner.posY; this.dist = math.dist;
+	this.dx = 0;
+	if (this.dist < 300) walk null;
+}
+
+function walk
+{
+	if (this.posX > camOwner.posX) right null;
+	if (this.posX < camOwner.posX) left null;
+}
+
 function left { this.dx = -1; }
 function right { this.dx = 1; }

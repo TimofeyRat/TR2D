@@ -241,78 +241,7 @@ CMakeFiles/TR2D.dir/Engine/cInput.cpp.obj: \
  C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/SFML/Graphics/Text.hpp \
  C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/SFML/Graphics/VertexBuffer.hpp \
  C:\Projects\TR2D\Engine\hProgrammable.hpp \
- C:\Projects\TR2D\Engine\hGlobal.hpp C:\Projects\TR2D\Engine\hWorld.hpp \
- C:\Projects\TR2D\Engine\hEntity.hpp \
- C:\Projects\TR2D\Engine\hAnimation.hpp \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/pugixml.hpp \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/pugiconfig.hpp \
- C:\Projects\TR2D\Engine\hRigidbody.hpp \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/box2d.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_settings.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_types.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_api.h \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/stdarg.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/stdarg.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/_mingw_stdarg.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_common.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/assert.h \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/float.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/float.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_draw.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_math.h \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/math.h \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/cmath \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/math.h \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/specfun.h \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/limits \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/gamma.tcc \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/special_function_util.h \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/bessel_function.tcc \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/beta_function.tcc \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/ell_integral.tcc \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/exp_integral.tcc \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/hypergeometric.tcc \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/legendre_function.tcc \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/modified_bessel_func.tcc \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/poly_hermite.tcc \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/poly_laguerre.tcc \
- C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/tr1/riemann_zeta.tcc \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_timer.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_chain_shape.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_shape.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_collision.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_circle_shape.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_edge_shape.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_polygon_shape.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_broad_phase.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_dynamic_tree.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_growable_stack.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/string.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/sec_api/string_s.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_body.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_contact.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_fixture.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_time_step.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_world.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_block_allocator.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_contact_manager.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_stack_allocator.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_world_callbacks.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_distance_joint.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_joint.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_friction_joint.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_gear_joint.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_motor_joint.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_mouse_joint.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_prismatic_joint.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_pulley_joint.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_revolute_joint.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_weld_joint.h \
- C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_wheel_joint.h \
- C:\Projects\TR2D\Engine\hInventory.hpp \
- C:\Projects\TR2D\Engine\hWearable.hpp \
- C:\Projects\TR2D\Engine\hScript.hpp \
- C:\Projects\TR2D\Engine\hParticles.hpp \
+ C:\Projects\TR2D\Engine\hGlobal.hpp C:\Projects\TR2D\Engine\hAssets.hpp \
  C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/SFML/Audio.hpp \
  C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/SFML/Audio/InputSoundFile.hpp \
  C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/SFML/Audio/Export.hpp \
@@ -333,7 +262,9 @@ CMakeFiles/TR2D.dir/Engine/cInput.cpp.obj: \
  C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/SFML/Audio/SoundFileFactory.inl \
  C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/SFML/Audio/SoundFileReader.hpp \
  C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/SFML/Audio/SoundFileWriter.hpp \
- C:\Projects\TR2D\Engine\hAssets.hpp \
+ C:\Projects\TR2D\Engine\hUI.hpp C:\Projects\TR2D\Engine\hAnimation.hpp \
+ C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/pugixml.hpp \
+ C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/pugiconfig.hpp \
  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/iostream \
  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/istream \
  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/istream.tcc

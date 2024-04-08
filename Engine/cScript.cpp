@@ -164,7 +164,7 @@ void Script::Function::execute(Programmable *prog, Script *launcher)
 		}
 		else if (cmd.type == Command::CallFunction)
 		{
-			launcher->execute(cmd.args[0].value, launcher);
+			launcher->execute(cmd.args[0].value, prog);
 		}
 		else if (cmd.type == Command::CallEngine)
 		{
@@ -579,16 +579,17 @@ Programmable *Script::getProg(sf::String name, Programmable *def)
 {
 	if (name == "this") { return def; }
 	if (name == "camOwner") { return World::getCameraOwner(); }
+	if (name == "lvl") { return World::getCurrentLevel(); }
 	return World::getCurrentLevel()->getEntity(name);
 }
 
 float Script::evalMath(sf::String func, Programmable *prog)
 {
-	if (func == "abs") { return abs(prog->getVar("arg1")); }
+	if (func == "abs") { return abs(prog->getVar("abs")); }
 	if (func == "dist")
 	{
-		float dx = abs(prog->getVar("arg1") - prog->getVar("arg3"));
-		float dy = abs(prog->getVar("arg2") - prog->getVar("arg4"));
+		float dx = abs(prog->getVar("x1") - prog->getVar("x2"));
+		float dy = abs(prog->getVar("y1") - prog->getVar("y2"));
 		return sqrt(dx * dx + dy * dy);
 	}
 	if (func == "intersection")
@@ -599,13 +600,17 @@ float Script::evalMath(sf::String func, Programmable *prog)
 			prog->getVar("w"),
 			prog->getVar("h"));
 		sf::FloatRect r2;
-		if (prog->getVar("arg1").str == "camOwner") r2 = World::getCameraOwner()->getHitbox();
-		else r2 = World::getCurrentLevel()->getEntity(prog->getVar("arg1"))->getHitbox();
+		if (prog->getVar("ent").str == "camOwner") r2 = World::getCameraOwner()->getHitbox();
+		else r2 = World::getCurrentLevel()->getEntity(prog->getVar("ent"))->getHitbox();
 		return r1.intersects(r2);
 	}
 	if (func == "deltaTime")
 	{
 		return Window::getDeltaTime();
+	}
+	if (func == "rand")
+	{
+		return tr::randBetween(prog->getVar("min"), prog->getVar("max"));
 	}
 	return 0;
 }

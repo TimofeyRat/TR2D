@@ -1,4 +1,4 @@
-<cutscene name="test" type="frame_animation">
+<cutscene name="test" type="frame">
 	<anim path="res/anims/cutscene.tranim" />
 	<dialogue path="res/dialogues/cutscene.trdialogue" />
 	<init>
