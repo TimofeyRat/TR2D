@@ -6,6 +6,7 @@
 	<clearClr str="0-0-0-255" />
 	<musicVolume num="0" /><sfxVolume num="100" />
 	<debug num="0" /><Fullscreen num="0" />
+	<dialogueFrame str="dialogue" />
 </settings>
 <controller name="keyboard">
 	<variable name="speed" default="1" />

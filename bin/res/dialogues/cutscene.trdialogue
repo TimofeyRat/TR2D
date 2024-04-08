@@ -13,7 +13,10 @@
 		<text>Звезда всё ещё летит.</text>
 		<reply name="continue">
 			<text>да ну нахуй</text>
-			<action>cutscene-executeAction-test</action>
+			<action>talk-active-0</action>
+			<action>input-active-1</action>
+			<action>ui-setFrame-inventory</action>
+			<action>cutscene-active-0</action>
 		</reply>
 	</phrase>
 </dialogue>

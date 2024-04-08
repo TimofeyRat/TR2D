@@ -6,6 +6,7 @@
 #include "hWorld.hpp"
 #include "hDialogue.hpp"
 #include "hAssets.hpp"
+#include "hCutscene.hpp"
 
 #include <iostream>
 
@@ -507,6 +508,7 @@ void UI::Frame::Object::handle()
 		auto *re1 = getText("re1");
 		auto *re2 = getText("re2");
 		auto *re3 = getText("re3");
+		auto *bg = getSprite("anim");
 		if (!Talk::active)
 		{
 			re1->activeTxt = re1->idleTxt = "";
@@ -553,6 +555,41 @@ void UI::Frame::Object::handle()
 				}
 			}
 		}
+		//Background
+		sf::Glsl::Vec4 bgclr;
+		if (CSManager::active && !CSManager::current.x)
+		{
+			bgclr = tr::lerpClr(
+				{
+					(float)bg->spr.getColor().r, (float)bg->spr.getColor().g,
+					(float)bg->spr.getColor().b, (float)bg->spr.getColor().a
+				},
+				{255, 255, 255, 255},
+				Window::getDeltaTime()
+			);
+			auto *cs = &CSManager::frames[CSManager::current.y];
+			auto change = cs->getChange(Talk::getCurrentDialogue()->getCurrentPhrase()->name);
+			if (change->skippable && Input::isMBJustPressed(sf::Mouse::Left))
+			{
+				txt->setVar("acc", txt->activeTxt.getSize());
+			}
+			cs->frame.setCurrentAnimation(change->anim);
+			cs->frame.update();
+			cs->frame.send(bg->spr, false, false);
+			bg->spr.scale(
+				Window::getSize().x / bg->spr.getGlobalBounds().width,
+				Window::getSize().y / bg->spr.getGlobalBounds().height
+			);
+		}
+		else bgclr = tr::lerpClr(
+			{
+				(float)bg->spr.getColor().r, (float)bg->spr.getColor().g,
+				(float)bg->spr.getColor().b, (float)bg->spr.getColor().a
+			},
+			{0, 0, 0, 0},
+			Window::getDeltaTime()
+		);
+		bg->spr.setColor({bgclr.x, bgclr.y, bgclr.z, bgclr.w});
 	}
 	else if (tr::strContains(handler, "acsMenu"))
 	{

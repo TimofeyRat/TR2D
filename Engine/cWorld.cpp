@@ -6,7 +6,7 @@
 #include "hInventory.hpp"
 #include "hDialogue.hpp"
 #include "hUI.hpp"
-
+#include "hCutscene.hpp"
 #include <iostream>
 
 std::map<sf::String, sf::String> World::ents;
@@ -114,6 +114,7 @@ void World::init()
 	
 	Inventory::init();
 	ParticleSystem::init();
+	CSManager::init();
 }
 
 void World::loadFromFile(std::string filename)
@@ -882,6 +883,19 @@ void tr::execute(sf::String cmd)
 		auto *ent = World::getCurrentLevel()->getEntity(args[1]);
 		if (ent == nullptr) { return; }
 		ent->weapon = Inventory::getWeapon(args[2]);
+	}
+	else if (args[0] == "cutscene")
+	{
+		if (args[1] == "start")
+		{
+			CSManager::start();
+			CSManager::setCutscene(args[2]);
+			CSManager::active = true;
+			Input::active = false;
+			Talk::loadFromFile(CSManager::getTalk());
+			Talk::active = true;
+		}
+		else if (args[1] == "active") { CSManager::active = std::stoi(args[2].toAnsiString()); }
 	}
 }
 

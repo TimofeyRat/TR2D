@@ -334,6 +334,7 @@ CMakeFiles/TR2D.dir/Engine/cUI.cpp.obj: C:\Projects\TR2D\Engine\cUI.cpp \
  C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/SFML/Audio/SoundFileWriter.hpp \
  C:\Projects\TR2D\Engine\hDialogue.hpp \
  C:\Projects\TR2D\Engine\hAssets.hpp \
+ C:\Projects\TR2D\Engine\hCutscene.hpp \
  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/iostream \
  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/istream \
  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/istream.tcc

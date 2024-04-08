@@ -37,15 +37,7 @@ target_link_libraries(TR2D
 target_compile_options(TR2D PUBLIC -w -static -D SFML_STATIC)
 
 project(MapEditor VERSION 0.1 LANGUAGES CXX)
-add_executable(MapEditor TRME.cpp
-	Engine/cWindow.cpp
-	Engine/cInput.cpp
-	Engine/cGlobal.cpp
-	Engine/cAssets.cpp
-	Engine/cProgrammable.cpp
-	Engine/cAnimation.cpp
-	Engine/cAssets.cpp
-	Engine/pugixml.o)
+add_executable(MapEditor TRME.cpp ${TR2D_SOURCES})
 
 target_link_libraries(MapEditor
 	sfml-window-s sfml-system-s opengl32 winmm gdi32

@@ -201,6 +201,7 @@ Engine/cCutscene.obj: Engine/cCutscene.cpp.obj
 # target to build an object file
 Engine/cCutscene.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cCutscene.cpp.obj
 .PHONY : Engine/cCutscene.cpp.obj
 
 Engine/cCutscene.i: Engine/cCutscene.cpp.i
@@ -209,6 +210,7 @@ Engine/cCutscene.i: Engine/cCutscene.cpp.i
 # target to preprocess a source file
 Engine/cCutscene.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cCutscene.cpp.i
 .PHONY : Engine/cCutscene.cpp.i
 
 Engine/cCutscene.s: Engine/cCutscene.cpp.s
@@ -217,6 +219,7 @@ Engine/cCutscene.s: Engine/cCutscene.cpp.s
 # target to generate assembly for a file
 Engine/cCutscene.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cCutscene.cpp.s
 .PHONY : Engine/cCutscene.cpp.s
 
 Engine/cDialogue.obj: Engine/cDialogue.cpp.obj
@@ -225,6 +228,7 @@ Engine/cDialogue.obj: Engine/cDialogue.cpp.obj
 # target to build an object file
 Engine/cDialogue.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cDialogue.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cDialogue.cpp.obj
 .PHONY : Engine/cDialogue.cpp.obj
 
 Engine/cDialogue.i: Engine/cDialogue.cpp.i
@@ -233,6 +237,7 @@ Engine/cDialogue.i: Engine/cDialogue.cpp.i
 # target to preprocess a source file
 Engine/cDialogue.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cDialogue.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cDialogue.cpp.i
 .PHONY : Engine/cDialogue.cpp.i
 
 Engine/cDialogue.s: Engine/cDialogue.cpp.s
@@ -241,6 +246,7 @@ Engine/cDialogue.s: Engine/cDialogue.cpp.s
 # target to generate assembly for a file
 Engine/cDialogue.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cDialogue.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cDialogue.cpp.s
 .PHONY : Engine/cDialogue.cpp.s
 
 Engine/cEntity.obj: Engine/cEntity.cpp.obj
@@ -249,6 +255,7 @@ Engine/cEntity.obj: Engine/cEntity.cpp.obj
 # target to build an object file
 Engine/cEntity.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cEntity.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cEntity.cpp.obj
 .PHONY : Engine/cEntity.cpp.obj
 
 Engine/cEntity.i: Engine/cEntity.cpp.i
@@ -257,6 +264,7 @@ Engine/cEntity.i: Engine/cEntity.cpp.i
 # target to preprocess a source file
 Engine/cEntity.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cEntity.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cEntity.cpp.i
 .PHONY : Engine/cEntity.cpp.i
 
 Engine/cEntity.s: Engine/cEntity.cpp.s
@@ -265,6 +273,7 @@ Engine/cEntity.s: Engine/cEntity.cpp.s
 # target to generate assembly for a file
 Engine/cEntity.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cEntity.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cEntity.cpp.s
 .PHONY : Engine/cEntity.cpp.s
 
 Engine/cGlobal.obj: Engine/cGlobal.cpp.obj
@@ -327,6 +336,7 @@ Engine/cInventory.obj: Engine/cInventory.cpp.obj
 # target to build an object file
 Engine/cInventory.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cInventory.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cInventory.cpp.obj
 .PHONY : Engine/cInventory.cpp.obj
 
 Engine/cInventory.i: Engine/cInventory.cpp.i
@@ -335,6 +345,7 @@ Engine/cInventory.i: Engine/cInventory.cpp.i
 # target to preprocess a source file
 Engine/cInventory.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cInventory.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cInventory.cpp.i
 .PHONY : Engine/cInventory.cpp.i
 
 Engine/cInventory.s: Engine/cInventory.cpp.s
@@ -343,6 +354,7 @@ Engine/cInventory.s: Engine/cInventory.cpp.s
 # target to generate assembly for a file
 Engine/cInventory.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cInventory.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cInventory.cpp.s
 .PHONY : Engine/cInventory.cpp.s
 
 Engine/cParticles.obj: Engine/cParticles.cpp.obj
@@ -351,6 +363,7 @@ Engine/cParticles.obj: Engine/cParticles.cpp.obj
 # target to build an object file
 Engine/cParticles.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cParticles.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cParticles.cpp.obj
 .PHONY : Engine/cParticles.cpp.obj
 
 Engine/cParticles.i: Engine/cParticles.cpp.i
@@ -359,6 +372,7 @@ Engine/cParticles.i: Engine/cParticles.cpp.i
 # target to preprocess a source file
 Engine/cParticles.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cParticles.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cParticles.cpp.i
 .PHONY : Engine/cParticles.cpp.i
 
 Engine/cParticles.s: Engine/cParticles.cpp.s
@@ -367,6 +381,7 @@ Engine/cParticles.s: Engine/cParticles.cpp.s
 # target to generate assembly for a file
 Engine/cParticles.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cParticles.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cParticles.cpp.s
 .PHONY : Engine/cParticles.cpp.s
 
 Engine/cProgrammable.obj: Engine/cProgrammable.cpp.obj
@@ -402,6 +417,7 @@ Engine/cRigidbody.obj: Engine/cRigidbody.cpp.obj
 # target to build an object file
 Engine/cRigidbody.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cRigidbody.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cRigidbody.cpp.obj
 .PHONY : Engine/cRigidbody.cpp.obj
 
 Engine/cRigidbody.i: Engine/cRigidbody.cpp.i
@@ -410,6 +426,7 @@ Engine/cRigidbody.i: Engine/cRigidbody.cpp.i
 # target to preprocess a source file
 Engine/cRigidbody.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cRigidbody.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cRigidbody.cpp.i
 .PHONY : Engine/cRigidbody.cpp.i
 
 Engine/cRigidbody.s: Engine/cRigidbody.cpp.s
@@ -418,6 +435,7 @@ Engine/cRigidbody.s: Engine/cRigidbody.cpp.s
 # target to generate assembly for a file
 Engine/cRigidbody.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cRigidbody.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cRigidbody.cpp.s
 .PHONY : Engine/cRigidbody.cpp.s
 
 Engine/cScript.obj: Engine/cScript.cpp.obj
@@ -426,6 +444,7 @@ Engine/cScript.obj: Engine/cScript.cpp.obj
 # target to build an object file
 Engine/cScript.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cScript.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cScript.cpp.obj
 .PHONY : Engine/cScript.cpp.obj
 
 Engine/cScript.i: Engine/cScript.cpp.i
@@ -434,6 +453,7 @@ Engine/cScript.i: Engine/cScript.cpp.i
 # target to preprocess a source file
 Engine/cScript.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cScript.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cScript.cpp.i
 .PHONY : Engine/cScript.cpp.i
 
 Engine/cScript.s: Engine/cScript.cpp.s
@@ -442,6 +462,7 @@ Engine/cScript.s: Engine/cScript.cpp.s
 # target to generate assembly for a file
 Engine/cScript.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cScript.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cScript.cpp.s
 .PHONY : Engine/cScript.cpp.s
 
 Engine/cUI.obj: Engine/cUI.cpp.obj
@@ -450,6 +471,7 @@ Engine/cUI.obj: Engine/cUI.cpp.obj
 # target to build an object file
 Engine/cUI.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cUI.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cUI.cpp.obj
 .PHONY : Engine/cUI.cpp.obj
 
 Engine/cUI.i: Engine/cUI.cpp.i
@@ -458,6 +480,7 @@ Engine/cUI.i: Engine/cUI.cpp.i
 # target to preprocess a source file
 Engine/cUI.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cUI.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cUI.cpp.i
 .PHONY : Engine/cUI.cpp.i
 
 Engine/cUI.s: Engine/cUI.cpp.s
@@ -466,6 +489,7 @@ Engine/cUI.s: Engine/cUI.cpp.s
 # target to generate assembly for a file
 Engine/cUI.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cUI.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cUI.cpp.s
 .PHONY : Engine/cUI.cpp.s
 
 Engine/cWearable.obj: Engine/cWearable.cpp.obj
@@ -474,6 +498,7 @@ Engine/cWearable.obj: Engine/cWearable.cpp.obj
 # target to build an object file
 Engine/cWearable.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cWearable.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cWearable.cpp.obj
 .PHONY : Engine/cWearable.cpp.obj
 
 Engine/cWearable.i: Engine/cWearable.cpp.i
@@ -482,6 +507,7 @@ Engine/cWearable.i: Engine/cWearable.cpp.i
 # target to preprocess a source file
 Engine/cWearable.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cWearable.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cWearable.cpp.i
 .PHONY : Engine/cWearable.cpp.i
 
 Engine/cWearable.s: Engine/cWearable.cpp.s
@@ -490,6 +516,7 @@ Engine/cWearable.s: Engine/cWearable.cpp.s
 # target to generate assembly for a file
 Engine/cWearable.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cWearable.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cWearable.cpp.s
 .PHONY : Engine/cWearable.cpp.s
 
 Engine/cWindow.obj: Engine/cWindow.cpp.obj
@@ -525,6 +552,7 @@ Engine/cWorld.obj: Engine/cWorld.cpp.obj
 # target to build an object file
 Engine/cWorld.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cWorld.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cWorld.cpp.obj
 .PHONY : Engine/cWorld.cpp.obj
 
 Engine/cWorld.i: Engine/cWorld.cpp.i
@@ -533,6 +561,7 @@ Engine/cWorld.i: Engine/cWorld.cpp.i
 # target to preprocess a source file
 Engine/cWorld.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cWorld.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cWorld.cpp.i
 .PHONY : Engine/cWorld.cpp.i
 
 Engine/cWorld.s: Engine/cWorld.cpp.s
@@ -541,6 +570,7 @@ Engine/cWorld.s: Engine/cWorld.cpp.s
 # target to generate assembly for a file
 Engine/cWorld.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cWorld.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cWorld.cpp.s
 .PHONY : Engine/cWorld.cpp.s
 
 TR2D.obj: TR2D.cpp.obj

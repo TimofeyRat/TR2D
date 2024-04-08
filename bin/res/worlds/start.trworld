@@ -25,6 +25,7 @@
 	<trigger pos_str="-32.000000 0.000000" size_str="32.000000 608.000000" name_str="wall" static_num="1" collision_num="1" />
 	<trigger pos_str="1280.000000 0.000000" size_str="32.000000 608.000000" name_str="wall" static_num="1" collision_num="1" />
 	<trigger pos_str="608.000000 448.000000" size_str="128.000000 160.000000" name_str="gotoRoom" cmd_str="world-setLevel-room" collision_num="0" />
+	<trigger pos_str="800.000000 450.000000" size_str="256.000000 256.000000" name_str="test" cmd_str="cutscene-start-test" usages_num="1" collision_num="0" />
 	<entity name="Eutihey" pos="300.000000 570.000000" />
 	<entity name="GreenElemental" pos="500.000000 570.000000" />
 	<entity name="Nasake" pos="750.000000 570.000000" />
