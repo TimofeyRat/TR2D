@@ -16,6 +16,8 @@
 			<action>talk-active-0</action>
 			<action>input-active-1</action>
 			<action>cutscene-active-0</action>
+			<action>world-load-res/worlds/start.trworld</action>
+			<action>ui-load-res/ui/inventory.trui</action>
 		</reply>
 	</phrase>
 </dialogue>

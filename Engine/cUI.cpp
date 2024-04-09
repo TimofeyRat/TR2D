@@ -527,6 +527,11 @@ void UI::Frame::Object::handle()
 				Window::getDeltaTime() * 10
 			);
 			bg->spr.setColor({bgclr.x, bgclr.y, bgclr.z, bgclr.w});
+			if (CSManager::music.getVolume() > 0)
+			{
+				CSManager::music.setVolume(tr::clamp(CSManager::music.getVolume() - Window::getDeltaTime() * 100, 0, 100));
+			}
+			else CSManager::music.stop();
 			return;
 		}
 		//Phrase
@@ -567,6 +572,7 @@ void UI::Frame::Object::handle()
 		//Background
 		if (CSManager::active && !CSManager::current.x)
 		{
+			CSManager::music.setVolume(tr::clamp(CSManager::music.getVolume() + Window::getDeltaTime() * 100, 0, 100));
 			auto bgclr = tr::lerpClr(
 				{
 					(float)bg->spr.getColor().r, (float)bg->spr.getColor().g,

@@ -8,10 +8,11 @@
 std::vector<CSManager::FrameCutscene> CSManager::frames;
 sf::Vector2i CSManager::current;
 bool CSManager::active;
+sf::Music CSManager::music;
 
 CSManager::FrameCutscene::Change::Change()
 {
-	phrase = anim = "";
+	phrase = anim = musicPath = "";
 	skippable = false;
 }
 
@@ -58,6 +59,7 @@ void CSManager::init()
 						c.phrase = change.attribute(L"phrase").as_string();
 						c.skippable = change.attribute(L"skippable").as_bool();
 						c.anim = change.attribute(L"anim").as_string();
+						c.musicPath = change.attribute(L"music").as_string();
 						fc.changes.push_back(c);
 					}
 				}
@@ -81,6 +83,15 @@ sf::String CSManager::getTalk()
 	if (!current.x)
 	{
 		return frames[current.y].talkPath;
+	}
+	return "";
+}
+
+sf::String CSManager::getMusic(sf::String phrase)
+{
+	if (!current.x)
+	{
+		return frames[current.y].getChange(phrase)->musicPath;
 	}
 	return "";
 }

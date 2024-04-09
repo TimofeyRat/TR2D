@@ -1,4 +1,4 @@
-<frame_cutscene name="test" anim="res/anims/cutscene.tranim" dialogue="res/dialogues/cutscene.trdialogue">
-	<change phrase="first" skippable="0" anim="intro" />
+<frame_cutscene name="intro" anim="res/anims/cutscene.tranim" dialogue="res/dialogues/cutscene.trdialogue">
+	<change phrase="first" skippable="0" anim="intro" music="res/audio/music/Ambient.ogg" />
 	<change phrase="second" skippable="0" anim="intro" />
 </cutscene>

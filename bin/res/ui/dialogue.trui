@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<frame name="dialogue">
+	<object name="dialogue">
+		<update type="dialogue" />
+		<toggle event="txtReady-dialogue-dialogue-phrase" />
+		<position type="relative-lerp">0.5 1 0.5 0.95</position>
+		<sprite name="anim">
+			<toggle event="talk-active" />
+			<position type="relative-lerp">0 0 0 0</position>
+			<origin type="relative-lerp">0 0 0 0</origin>
+		</sprite>
+		<text name="phrase">
+			<toggle event="talk-active" />
+			<font path="res/global/font.ttf" idleSize="24" idleOutline="2" activeSize="24" activeOutline="2" sizeChange="set" />
+			<txt type="idle" appear="set"></txt>
+			<txt type="active" appear="typing-20"></txt>
+			<position type="relative-lerp">0.5 1 0.5 0.85</position>
+			<origin type="relative-lerp">0.5 0 0.5 1</origin>
+			<color state="idle" type="lerp">255 255 255 0</color><outline state="idle" type="lerp">0 0 0 0</outline>
+			<color state="active" type="lerp">255 255 255 255</color><outline state="active" type="lerp">0 0 0 255</outline>
+		</text>
+		<text name="speaker">
+			<toggle event="talk-active" />
+			<font path="res/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
+			<txt type="idle" appear="set"></txt>
+			<txt type="active" appear="set"></txt>
+			<position type="inherit-txt-rel">0.5 1 0.5 0 dialogue-dialogue-phrase</position>
+			<origin type="relative-lerp">0.5 0 0.5 1.5</origin>
+			<color state="idle" type="lerp">255 255 255 0</color><outline state="idle" type="lerp">0 0 0 0</outline>
+			<color state="active" type="lerp">255 255 255 255</color><outline state="active" type="lerp">0 0 0 255</outline>
+		</text>
+		<text name="re1">
+			<font path="res/global/font.ttf" idleSize="22" idleOutline="2" activeSize="22" activeOutline="2" sizeChange="set" />
+			<txt type="idle" appear="set">test</txt>
+			<txt type="active" appear="set">test</txt>
+			<position type="inherit-obj-rel">0 0 0 0 dialogue-dialogue</position>
+			<origin type="relative">0.5 0.5 0.5 0.5</origin>
+			<color state="idle" type="lerp">255 255 255 127</color><outline state="idle" type="lerp">0 0 0 127</outline>
+			<color state="active" type="lerp">255 255 255 255</color><outline state="active" type="lerp">0 0 0 255</outline>
+		</text>
+		<text name="re2">
+			<font path="res/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
+			<txt type="idle" appear="set">test</txt>
+			<txt type="active" appear="set">test</txt>
+			<position type="inherit-obj-rel">-0.25 0 -0.25 0 dialogue-dialogue</position>
+			<origin type="relative">0.5 0.5 0.5 0.5</origin>
+			<color state="idle" type="lerp">255 255 255 127</color><outline state="idle" type="lerp">0 0 0 127</outline>
+			<color state="active" type="lerp">255 255 255 255</color><outline state="active" type="lerp">0 0 0 255</outline>
+		</text>
+		<text name="re3">
+			<font path="res/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
+			<txt type="idle" appear="set">test</txt>
+			<txt type="active" appear="set">test</txt>
+			<position type="inherit-obj-rel">0.25 0 0.25 0 dialogue-dialogue</position>
+			<origin type="relative">0.5 0.5 0.5 0.5</origin>
+			<color state="idle" type="lerp">255 255 255 127</color><outline state="idle" type="lerp">0 0 0 127</outline>
+			<color state="active" type="lerp">255 255 255 255</color><outline state="active" type="lerp">0 0 0 255</outline>
+		</text>
+	</object>
+</frame>

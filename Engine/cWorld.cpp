@@ -888,13 +888,21 @@ void tr::execute(sf::String cmd)
 	{
 		if (args[1] == "start")
 		{
+			if (!CSManager::frames.size()) { CSManager::init(); }
+			World::setActive(false);
 			CSManager::setCutscene(args[2]);
 			CSManager::active = true;
 			Input::active = false;
 			Talk::loadFromFile(CSManager::getTalk());
 			Talk::active = true;
+			CSManager::music.openFromFile(CSManager::getMusic(Talk::getCurrentDialogue()->getCurrentPhrase()->name));
+			CSManager::music.play();
 		}
-		else if (args[1] == "active") { CSManager::active = std::stoi(args[2].toAnsiString()); }
+		else if (args[1] == "active")
+		{
+			CSManager::active = std::stoi(args[2].toAnsiString());
+			World::setActive(!CSManager::active);
+		}
 	}
 }
 
