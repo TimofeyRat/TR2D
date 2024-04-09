@@ -164,7 +164,9 @@ public:
 	static void throwItem(Inventory::Item itm, Entity *sender);
 	static Level *getCurrentLevel();
 	static void setCurrentLevel(sf::String name);
+#ifndef trMapEditor
 private:
+#endif
 	static std::map<sf::String, sf::String> ents;
 	static sf::Music music;
 	static std::vector<Level> lvls;

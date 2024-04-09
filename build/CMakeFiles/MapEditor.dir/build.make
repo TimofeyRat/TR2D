@@ -110,38 +110,10 @@ CMakeFiles/MapEditor.dir/Engine/cAssets.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MapEditor.dir/Engine/cAssets.cpp.s"
 	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Projects\TR2D\Engine\cAssets.cpp -o CMakeFiles\MapEditor.dir\Engine\cAssets.cpp.s
 
-CMakeFiles/MapEditor.dir/Engine/cDialogue.cpp.obj: CMakeFiles/MapEditor.dir/flags.make
-CMakeFiles/MapEditor.dir/Engine/cDialogue.cpp.obj: C:/Projects/TR2D/Engine/cDialogue.cpp
-CMakeFiles/MapEditor.dir/Engine/cDialogue.cpp.obj: CMakeFiles/MapEditor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/MapEditor.dir/Engine/cDialogue.cpp.obj"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MapEditor.dir/Engine/cDialogue.cpp.obj -MF CMakeFiles\MapEditor.dir\Engine\cDialogue.cpp.obj.d -o CMakeFiles\MapEditor.dir\Engine\cDialogue.cpp.obj -c C:\Projects\TR2D\Engine\cDialogue.cpp
-
-CMakeFiles/MapEditor.dir/Engine/cDialogue.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/MapEditor.dir/Engine/cDialogue.cpp.i"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Projects\TR2D\Engine\cDialogue.cpp > CMakeFiles\MapEditor.dir\Engine\cDialogue.cpp.i
-
-CMakeFiles/MapEditor.dir/Engine/cDialogue.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MapEditor.dir/Engine/cDialogue.cpp.s"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Projects\TR2D\Engine\cDialogue.cpp -o CMakeFiles\MapEditor.dir\Engine\cDialogue.cpp.s
-
-CMakeFiles/MapEditor.dir/Engine/cEntity.cpp.obj: CMakeFiles/MapEditor.dir/flags.make
-CMakeFiles/MapEditor.dir/Engine/cEntity.cpp.obj: C:/Projects/TR2D/Engine/cEntity.cpp
-CMakeFiles/MapEditor.dir/Engine/cEntity.cpp.obj: CMakeFiles/MapEditor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/MapEditor.dir/Engine/cEntity.cpp.obj"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MapEditor.dir/Engine/cEntity.cpp.obj -MF CMakeFiles\MapEditor.dir\Engine\cEntity.cpp.obj.d -o CMakeFiles\MapEditor.dir\Engine\cEntity.cpp.obj -c C:\Projects\TR2D\Engine\cEntity.cpp
-
-CMakeFiles/MapEditor.dir/Engine/cEntity.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/MapEditor.dir/Engine/cEntity.cpp.i"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Projects\TR2D\Engine\cEntity.cpp > CMakeFiles\MapEditor.dir\Engine\cEntity.cpp.i
-
-CMakeFiles/MapEditor.dir/Engine/cEntity.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MapEditor.dir/Engine/cEntity.cpp.s"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Projects\TR2D\Engine\cEntity.cpp -o CMakeFiles\MapEditor.dir\Engine\cEntity.cpp.s
-
 CMakeFiles/MapEditor.dir/Engine/cGlobal.cpp.obj: CMakeFiles/MapEditor.dir/flags.make
 CMakeFiles/MapEditor.dir/Engine/cGlobal.cpp.obj: C:/Projects/TR2D/Engine/cGlobal.cpp
 CMakeFiles/MapEditor.dir/Engine/cGlobal.cpp.obj: CMakeFiles/MapEditor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/MapEditor.dir/Engine/cGlobal.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/MapEditor.dir/Engine/cGlobal.cpp.obj"
 	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MapEditor.dir/Engine/cGlobal.cpp.obj -MF CMakeFiles\MapEditor.dir\Engine\cGlobal.cpp.obj.d -o CMakeFiles\MapEditor.dir\Engine\cGlobal.cpp.obj -c C:\Projects\TR2D\Engine\cGlobal.cpp
 
 CMakeFiles/MapEditor.dir/Engine/cGlobal.cpp.i: cmake_force
@@ -155,7 +127,7 @@ CMakeFiles/MapEditor.dir/Engine/cGlobal.cpp.s: cmake_force
 CMakeFiles/MapEditor.dir/Engine/cInput.cpp.obj: CMakeFiles/MapEditor.dir/flags.make
 CMakeFiles/MapEditor.dir/Engine/cInput.cpp.obj: C:/Projects/TR2D/Engine/cInput.cpp
 CMakeFiles/MapEditor.dir/Engine/cInput.cpp.obj: CMakeFiles/MapEditor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/MapEditor.dir/Engine/cInput.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/MapEditor.dir/Engine/cInput.cpp.obj"
 	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MapEditor.dir/Engine/cInput.cpp.obj -MF CMakeFiles\MapEditor.dir\Engine\cInput.cpp.obj.d -o CMakeFiles\MapEditor.dir\Engine\cInput.cpp.obj -c C:\Projects\TR2D\Engine\cInput.cpp
 
 CMakeFiles/MapEditor.dir/Engine/cInput.cpp.i: cmake_force
@@ -166,24 +138,10 @@ CMakeFiles/MapEditor.dir/Engine/cInput.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MapEditor.dir/Engine/cInput.cpp.s"
 	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Projects\TR2D\Engine\cInput.cpp -o CMakeFiles\MapEditor.dir\Engine\cInput.cpp.s
 
-CMakeFiles/MapEditor.dir/Engine/cInventory.cpp.obj: CMakeFiles/MapEditor.dir/flags.make
-CMakeFiles/MapEditor.dir/Engine/cInventory.cpp.obj: C:/Projects/TR2D/Engine/cInventory.cpp
-CMakeFiles/MapEditor.dir/Engine/cInventory.cpp.obj: CMakeFiles/MapEditor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/MapEditor.dir/Engine/cInventory.cpp.obj"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MapEditor.dir/Engine/cInventory.cpp.obj -MF CMakeFiles\MapEditor.dir\Engine\cInventory.cpp.obj.d -o CMakeFiles\MapEditor.dir\Engine\cInventory.cpp.obj -c C:\Projects\TR2D\Engine\cInventory.cpp
-
-CMakeFiles/MapEditor.dir/Engine/cInventory.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/MapEditor.dir/Engine/cInventory.cpp.i"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Projects\TR2D\Engine\cInventory.cpp > CMakeFiles\MapEditor.dir\Engine\cInventory.cpp.i
-
-CMakeFiles/MapEditor.dir/Engine/cInventory.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MapEditor.dir/Engine/cInventory.cpp.s"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Projects\TR2D\Engine\cInventory.cpp -o CMakeFiles\MapEditor.dir\Engine\cInventory.cpp.s
-
 CMakeFiles/MapEditor.dir/Engine/cProgrammable.cpp.obj: CMakeFiles/MapEditor.dir/flags.make
 CMakeFiles/MapEditor.dir/Engine/cProgrammable.cpp.obj: C:/Projects/TR2D/Engine/cProgrammable.cpp
 CMakeFiles/MapEditor.dir/Engine/cProgrammable.cpp.obj: CMakeFiles/MapEditor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/MapEditor.dir/Engine/cProgrammable.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/MapEditor.dir/Engine/cProgrammable.cpp.obj"
 	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MapEditor.dir/Engine/cProgrammable.cpp.obj -MF CMakeFiles\MapEditor.dir\Engine\cProgrammable.cpp.obj.d -o CMakeFiles\MapEditor.dir\Engine\cProgrammable.cpp.obj -c C:\Projects\TR2D\Engine\cProgrammable.cpp
 
 CMakeFiles/MapEditor.dir/Engine/cProgrammable.cpp.i: cmake_force
@@ -194,52 +152,10 @@ CMakeFiles/MapEditor.dir/Engine/cProgrammable.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MapEditor.dir/Engine/cProgrammable.cpp.s"
 	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Projects\TR2D\Engine\cProgrammable.cpp -o CMakeFiles\MapEditor.dir\Engine\cProgrammable.cpp.s
 
-CMakeFiles/MapEditor.dir/Engine/cRigidbody.cpp.obj: CMakeFiles/MapEditor.dir/flags.make
-CMakeFiles/MapEditor.dir/Engine/cRigidbody.cpp.obj: C:/Projects/TR2D/Engine/cRigidbody.cpp
-CMakeFiles/MapEditor.dir/Engine/cRigidbody.cpp.obj: CMakeFiles/MapEditor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/MapEditor.dir/Engine/cRigidbody.cpp.obj"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MapEditor.dir/Engine/cRigidbody.cpp.obj -MF CMakeFiles\MapEditor.dir\Engine\cRigidbody.cpp.obj.d -o CMakeFiles\MapEditor.dir\Engine\cRigidbody.cpp.obj -c C:\Projects\TR2D\Engine\cRigidbody.cpp
-
-CMakeFiles/MapEditor.dir/Engine/cRigidbody.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/MapEditor.dir/Engine/cRigidbody.cpp.i"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Projects\TR2D\Engine\cRigidbody.cpp > CMakeFiles\MapEditor.dir\Engine\cRigidbody.cpp.i
-
-CMakeFiles/MapEditor.dir/Engine/cRigidbody.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MapEditor.dir/Engine/cRigidbody.cpp.s"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Projects\TR2D\Engine\cRigidbody.cpp -o CMakeFiles\MapEditor.dir\Engine\cRigidbody.cpp.s
-
-CMakeFiles/MapEditor.dir/Engine/cUI.cpp.obj: CMakeFiles/MapEditor.dir/flags.make
-CMakeFiles/MapEditor.dir/Engine/cUI.cpp.obj: C:/Projects/TR2D/Engine/cUI.cpp
-CMakeFiles/MapEditor.dir/Engine/cUI.cpp.obj: CMakeFiles/MapEditor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/MapEditor.dir/Engine/cUI.cpp.obj"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MapEditor.dir/Engine/cUI.cpp.obj -MF CMakeFiles\MapEditor.dir\Engine\cUI.cpp.obj.d -o CMakeFiles\MapEditor.dir\Engine\cUI.cpp.obj -c C:\Projects\TR2D\Engine\cUI.cpp
-
-CMakeFiles/MapEditor.dir/Engine/cUI.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/MapEditor.dir/Engine/cUI.cpp.i"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Projects\TR2D\Engine\cUI.cpp > CMakeFiles\MapEditor.dir\Engine\cUI.cpp.i
-
-CMakeFiles/MapEditor.dir/Engine/cUI.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MapEditor.dir/Engine/cUI.cpp.s"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Projects\TR2D\Engine\cUI.cpp -o CMakeFiles\MapEditor.dir\Engine\cUI.cpp.s
-
-CMakeFiles/MapEditor.dir/Engine/cWearable.cpp.obj: CMakeFiles/MapEditor.dir/flags.make
-CMakeFiles/MapEditor.dir/Engine/cWearable.cpp.obj: C:/Projects/TR2D/Engine/cWearable.cpp
-CMakeFiles/MapEditor.dir/Engine/cWearable.cpp.obj: CMakeFiles/MapEditor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/MapEditor.dir/Engine/cWearable.cpp.obj"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MapEditor.dir/Engine/cWearable.cpp.obj -MF CMakeFiles\MapEditor.dir\Engine\cWearable.cpp.obj.d -o CMakeFiles\MapEditor.dir\Engine\cWearable.cpp.obj -c C:\Projects\TR2D\Engine\cWearable.cpp
-
-CMakeFiles/MapEditor.dir/Engine/cWearable.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/MapEditor.dir/Engine/cWearable.cpp.i"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Projects\TR2D\Engine\cWearable.cpp > CMakeFiles\MapEditor.dir\Engine\cWearable.cpp.i
-
-CMakeFiles/MapEditor.dir/Engine/cWearable.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MapEditor.dir/Engine/cWearable.cpp.s"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Projects\TR2D\Engine\cWearable.cpp -o CMakeFiles\MapEditor.dir\Engine\cWearable.cpp.s
-
 CMakeFiles/MapEditor.dir/Engine/cWindow.cpp.obj: CMakeFiles/MapEditor.dir/flags.make
 CMakeFiles/MapEditor.dir/Engine/cWindow.cpp.obj: C:/Projects/TR2D/Engine/cWindow.cpp
 CMakeFiles/MapEditor.dir/Engine/cWindow.cpp.obj: CMakeFiles/MapEditor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/MapEditor.dir/Engine/cWindow.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/MapEditor.dir/Engine/cWindow.cpp.obj"
 	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MapEditor.dir/Engine/cWindow.cpp.obj -MF CMakeFiles\MapEditor.dir\Engine\cWindow.cpp.obj.d -o CMakeFiles\MapEditor.dir\Engine\cWindow.cpp.obj -c C:\Projects\TR2D\Engine\cWindow.cpp
 
 CMakeFiles/MapEditor.dir/Engine/cWindow.cpp.i: cmake_force
@@ -250,81 +166,15 @@ CMakeFiles/MapEditor.dir/Engine/cWindow.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MapEditor.dir/Engine/cWindow.cpp.s"
 	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Projects\TR2D\Engine\cWindow.cpp -o CMakeFiles\MapEditor.dir\Engine\cWindow.cpp.s
 
-CMakeFiles/MapEditor.dir/Engine/cWorld.cpp.obj: CMakeFiles/MapEditor.dir/flags.make
-CMakeFiles/MapEditor.dir/Engine/cWorld.cpp.obj: C:/Projects/TR2D/Engine/cWorld.cpp
-CMakeFiles/MapEditor.dir/Engine/cWorld.cpp.obj: CMakeFiles/MapEditor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/MapEditor.dir/Engine/cWorld.cpp.obj"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MapEditor.dir/Engine/cWorld.cpp.obj -MF CMakeFiles\MapEditor.dir\Engine\cWorld.cpp.obj.d -o CMakeFiles\MapEditor.dir\Engine\cWorld.cpp.obj -c C:\Projects\TR2D\Engine\cWorld.cpp
-
-CMakeFiles/MapEditor.dir/Engine/cWorld.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/MapEditor.dir/Engine/cWorld.cpp.i"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Projects\TR2D\Engine\cWorld.cpp > CMakeFiles\MapEditor.dir\Engine\cWorld.cpp.i
-
-CMakeFiles/MapEditor.dir/Engine/cWorld.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MapEditor.dir/Engine/cWorld.cpp.s"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Projects\TR2D\Engine\cWorld.cpp -o CMakeFiles\MapEditor.dir\Engine\cWorld.cpp.s
-
-CMakeFiles/MapEditor.dir/Engine/cScript.cpp.obj: CMakeFiles/MapEditor.dir/flags.make
-CMakeFiles/MapEditor.dir/Engine/cScript.cpp.obj: C:/Projects/TR2D/Engine/cScript.cpp
-CMakeFiles/MapEditor.dir/Engine/cScript.cpp.obj: CMakeFiles/MapEditor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/MapEditor.dir/Engine/cScript.cpp.obj"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MapEditor.dir/Engine/cScript.cpp.obj -MF CMakeFiles\MapEditor.dir\Engine\cScript.cpp.obj.d -o CMakeFiles\MapEditor.dir\Engine\cScript.cpp.obj -c C:\Projects\TR2D\Engine\cScript.cpp
-
-CMakeFiles/MapEditor.dir/Engine/cScript.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/MapEditor.dir/Engine/cScript.cpp.i"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Projects\TR2D\Engine\cScript.cpp > CMakeFiles\MapEditor.dir\Engine\cScript.cpp.i
-
-CMakeFiles/MapEditor.dir/Engine/cScript.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MapEditor.dir/Engine/cScript.cpp.s"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Projects\TR2D\Engine\cScript.cpp -o CMakeFiles\MapEditor.dir\Engine\cScript.cpp.s
-
-CMakeFiles/MapEditor.dir/Engine/cParticles.cpp.obj: CMakeFiles/MapEditor.dir/flags.make
-CMakeFiles/MapEditor.dir/Engine/cParticles.cpp.obj: C:/Projects/TR2D/Engine/cParticles.cpp
-CMakeFiles/MapEditor.dir/Engine/cParticles.cpp.obj: CMakeFiles/MapEditor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/MapEditor.dir/Engine/cParticles.cpp.obj"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MapEditor.dir/Engine/cParticles.cpp.obj -MF CMakeFiles\MapEditor.dir\Engine\cParticles.cpp.obj.d -o CMakeFiles\MapEditor.dir\Engine\cParticles.cpp.obj -c C:\Projects\TR2D\Engine\cParticles.cpp
-
-CMakeFiles/MapEditor.dir/Engine/cParticles.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/MapEditor.dir/Engine/cParticles.cpp.i"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Projects\TR2D\Engine\cParticles.cpp > CMakeFiles\MapEditor.dir\Engine\cParticles.cpp.i
-
-CMakeFiles/MapEditor.dir/Engine/cParticles.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MapEditor.dir/Engine/cParticles.cpp.s"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Projects\TR2D\Engine\cParticles.cpp -o CMakeFiles\MapEditor.dir\Engine\cParticles.cpp.s
-
-CMakeFiles/MapEditor.dir/Engine/cCutscene.cpp.obj: CMakeFiles/MapEditor.dir/flags.make
-CMakeFiles/MapEditor.dir/Engine/cCutscene.cpp.obj: C:/Projects/TR2D/Engine/cCutscene.cpp
-CMakeFiles/MapEditor.dir/Engine/cCutscene.cpp.obj: CMakeFiles/MapEditor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/MapEditor.dir/Engine/cCutscene.cpp.obj"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MapEditor.dir/Engine/cCutscene.cpp.obj -MF CMakeFiles\MapEditor.dir\Engine\cCutscene.cpp.obj.d -o CMakeFiles\MapEditor.dir\Engine\cCutscene.cpp.obj -c C:\Projects\TR2D\Engine\cCutscene.cpp
-
-CMakeFiles/MapEditor.dir/Engine/cCutscene.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/MapEditor.dir/Engine/cCutscene.cpp.i"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Projects\TR2D\Engine\cCutscene.cpp > CMakeFiles\MapEditor.dir\Engine\cCutscene.cpp.i
-
-CMakeFiles/MapEditor.dir/Engine/cCutscene.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/MapEditor.dir/Engine/cCutscene.cpp.s"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Projects\TR2D\Engine\cCutscene.cpp -o CMakeFiles\MapEditor.dir\Engine\cCutscene.cpp.s
-
 # Object files for target MapEditor
 MapEditor_OBJECTS = \
 "CMakeFiles/MapEditor.dir/TRME.cpp.obj" \
 "CMakeFiles/MapEditor.dir/Engine/cAnimation.cpp.obj" \
 "CMakeFiles/MapEditor.dir/Engine/cAssets.cpp.obj" \
-"CMakeFiles/MapEditor.dir/Engine/cDialogue.cpp.obj" \
-"CMakeFiles/MapEditor.dir/Engine/cEntity.cpp.obj" \
 "CMakeFiles/MapEditor.dir/Engine/cGlobal.cpp.obj" \
 "CMakeFiles/MapEditor.dir/Engine/cInput.cpp.obj" \
-"CMakeFiles/MapEditor.dir/Engine/cInventory.cpp.obj" \
 "CMakeFiles/MapEditor.dir/Engine/cProgrammable.cpp.obj" \
-"CMakeFiles/MapEditor.dir/Engine/cRigidbody.cpp.obj" \
-"CMakeFiles/MapEditor.dir/Engine/cUI.cpp.obj" \
-"CMakeFiles/MapEditor.dir/Engine/cWearable.cpp.obj" \
-"CMakeFiles/MapEditor.dir/Engine/cWindow.cpp.obj" \
-"CMakeFiles/MapEditor.dir/Engine/cWorld.cpp.obj" \
-"CMakeFiles/MapEditor.dir/Engine/cScript.cpp.obj" \
-"CMakeFiles/MapEditor.dir/Engine/cParticles.cpp.obj" \
-"CMakeFiles/MapEditor.dir/Engine/cCutscene.cpp.obj"
+"CMakeFiles/MapEditor.dir/Engine/cWindow.cpp.obj"
 
 # External object files for target MapEditor
 MapEditor_EXTERNAL_OBJECTS = \
@@ -333,26 +183,16 @@ MapEditor_EXTERNAL_OBJECTS = \
 C:/Projects/TR2D/bin/MapEditor.exe: CMakeFiles/MapEditor.dir/TRME.cpp.obj
 C:/Projects/TR2D/bin/MapEditor.exe: CMakeFiles/MapEditor.dir/Engine/cAnimation.cpp.obj
 C:/Projects/TR2D/bin/MapEditor.exe: CMakeFiles/MapEditor.dir/Engine/cAssets.cpp.obj
-C:/Projects/TR2D/bin/MapEditor.exe: CMakeFiles/MapEditor.dir/Engine/cDialogue.cpp.obj
-C:/Projects/TR2D/bin/MapEditor.exe: CMakeFiles/MapEditor.dir/Engine/cEntity.cpp.obj
 C:/Projects/TR2D/bin/MapEditor.exe: CMakeFiles/MapEditor.dir/Engine/cGlobal.cpp.obj
 C:/Projects/TR2D/bin/MapEditor.exe: CMakeFiles/MapEditor.dir/Engine/cInput.cpp.obj
-C:/Projects/TR2D/bin/MapEditor.exe: CMakeFiles/MapEditor.dir/Engine/cInventory.cpp.obj
 C:/Projects/TR2D/bin/MapEditor.exe: CMakeFiles/MapEditor.dir/Engine/cProgrammable.cpp.obj
-C:/Projects/TR2D/bin/MapEditor.exe: CMakeFiles/MapEditor.dir/Engine/cRigidbody.cpp.obj
-C:/Projects/TR2D/bin/MapEditor.exe: CMakeFiles/MapEditor.dir/Engine/cUI.cpp.obj
-C:/Projects/TR2D/bin/MapEditor.exe: CMakeFiles/MapEditor.dir/Engine/cWearable.cpp.obj
 C:/Projects/TR2D/bin/MapEditor.exe: CMakeFiles/MapEditor.dir/Engine/cWindow.cpp.obj
-C:/Projects/TR2D/bin/MapEditor.exe: CMakeFiles/MapEditor.dir/Engine/cWorld.cpp.obj
-C:/Projects/TR2D/bin/MapEditor.exe: CMakeFiles/MapEditor.dir/Engine/cScript.cpp.obj
-C:/Projects/TR2D/bin/MapEditor.exe: CMakeFiles/MapEditor.dir/Engine/cParticles.cpp.obj
-C:/Projects/TR2D/bin/MapEditor.exe: CMakeFiles/MapEditor.dir/Engine/cCutscene.cpp.obj
 C:/Projects/TR2D/bin/MapEditor.exe: C:/Projects/TR2D/Engine/pugixml.o
 C:/Projects/TR2D/bin/MapEditor.exe: CMakeFiles/MapEditor.dir/build.make
 C:/Projects/TR2D/bin/MapEditor.exe: CMakeFiles/MapEditor.dir/linkLibs.rsp
 C:/Projects/TR2D/bin/MapEditor.exe: CMakeFiles/MapEditor.dir/objects1.rsp
 C:/Projects/TR2D/bin/MapEditor.exe: CMakeFiles/MapEditor.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Linking CXX executable C:\Projects\TR2D\bin\MapEditor.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable C:\Projects\TR2D\bin\MapEditor.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\MapEditor.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

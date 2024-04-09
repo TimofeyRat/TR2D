@@ -167,11 +167,10 @@ public:
 			hitbox = sf::RectangleShape();
 			clear();
 		}
-		Trigger(sf::FloatRect r, sf::String vars)
+		Trigger(sf::String prompt)
 		{
-			rect = r;
 			clear();
-			for (auto cmd : tr::splitStr(vars, ";"))
+			for (auto cmd : tr::splitStr(prompt, ";"))
 			{
 				auto args = tr::splitStr(cmd, "=");
 				if (tr::strContains(args[1], "str"))
@@ -183,6 +182,11 @@ public:
 					setVar(args[0], std::stof(args[2].toAnsiString()));
 				}
 			}
+			auto pos = tr::splitStr(getVar("pos"), " ");
+			auto size = tr::splitStr(getVar("size"), " ");
+			rect.left = std::stof(pos[0].toAnsiString()); rect.top = std::stof(pos[1].toAnsiString());
+			rect.width = std::stof(size[0].toAnsiString()); rect.height = std::stof(size[1].toAnsiString());
+			setVar("x", rect.left); setVar("y", rect.top); setVar("w", rect.width); setVar("h", rect.height);
 			hitbox.setSize(rect.getSize());
 			hitbox.setRotation(getVar("angle"));
 			hitbox.setOrigin(rect.getSize() / 2.0f);
@@ -333,15 +337,20 @@ public:
 			};
 			for (auto trigger : lvl.children(L"trigger"))
 			{
-				auto pos = tr::splitStr(trigger.attribute(L"pos").as_string(), " ");
-				auto size = tr::splitStr(trigger.attribute(L"size").as_string(), " ");
-				level.triggers.push_back(Trigger(
+				sf::String prompt;
+				for (auto attr: trigger.attributes())
+				{
+					auto name = tr::splitStr(attr.name(), "_");
+					if (name[1] == "str")
 					{
-						std::stof(pos[0].toAnsiString()), std::stof(pos[1].toAnsiString()),
-						std::stof(size[0].toAnsiString()), std::stof(size[1].toAnsiString())
-					},
-					trigger.text().get()
-				));
+						prompt += name[0] + "=str=\"" + attr.as_string() + "\";";
+					}
+					if (name[1] == "num")
+					{
+						prompt += name[0] + "=num=" + attr.as_string() + ";";
+					}
+				}
+				level.triggers.push_back(Trigger(prompt));
 			}
 			World::lvls.push_back(level);
 		}
@@ -408,20 +417,17 @@ public:
 			{
 				auto *t = &lvls[i].triggers[j];
 				auto trigger = level.append_child(L"trigger");
-				trigger.append_attribute(L"pos") = pugi::as_wide(
-					std::to_string(t->rect.left) + " " +
-					std::to_string(t->rect.top)
-				).c_str();
-				trigger.append_attribute(L"size") = pugi::as_wide(
-					std::to_string(t->rect.width) + " "+
-					std::to_string(t->rect.height)
-				).c_str();
-				std::vector<sf::String> vars;
-				for (auto var : t->getVars())
+				for (auto v : t->getVars())
 				{
-					vars.push_back(var.name + (var.str.isEmpty() ? sf::String("=num=") + std::to_string(var.num) : sf::String("=str=") + var.str));
+					if (v.str.isEmpty())
+					{
+						trigger.append_attribute(sf::String(v.name + "_num").toWideString().c_str()) = v.num;
+					}
+					else
+					{
+						trigger.append_attribute(sf::String(v.name + "_str").toWideString().c_str()) = v.str.toWideString().c_str();
+					}
 				}
-				trigger.text() = tr::partsToLine(vars, ";").toWideString().c_str();
 			}
 			//Spawners
 			for (int j = 0; j < lvls[i].spawns.size(); j++)
@@ -744,7 +750,7 @@ void execute()
 		switch (currentInput)
 		{
 		case BTN_NEWTRIGGER:
-			World::lvls[World::currentLevel].triggers.push_back(World::Trigger({Input::getMousePos(true), {32, 32}}, cmd));
+			World::lvls[World::currentLevel].triggers.push_back(World::Trigger(cmd));
 			break;
 		case BTN_DELETETRIGGER:
 			for (int i = 0; i < World::lvls[World::currentLevel].triggers.size(); i++)

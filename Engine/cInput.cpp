@@ -687,8 +687,7 @@ void Input::Controller::update()
 		}
 		else if (key[0] == "mouse")
 		{
-			active = (key[1] == "press" && isMBJustPressed(strToMouse(key[2]))) || (key[1] == "hold" && isMBPressed(strToMouse(key[2]))) &&
-				!UI::containsMouse();
+			active = (key[1] == "press" && isMBJustPressed(strToMouse(key[2]))) || (key[1] == "hold" && isMBPressed(strToMouse(key[2])));
 		}
 		if (active)
 		{
