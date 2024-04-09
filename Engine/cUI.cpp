@@ -545,7 +545,6 @@ void UI::Frame::Object::handle()
 		if (phrase->replies.size() < 3) { re3->activeTxt = re3->idleTxt = ""; re3->setVar("acc", 1); re3->active = false; }
 		if (phrase->replies.size() < 2) { re2->activeTxt = re2->idleTxt = ""; re2->setVar("acc", 1); re2->active = false; }
 		if (phrase->replies.size() < 1) { re1->activeTxt = re1->idleTxt = ""; re1->setVar("acc", 1); re1->active = false; return; }
-		else
 		{
 			int cur = 0;
 			for (int i = 0; i < phrase->replies.size(); i++)
@@ -566,6 +565,7 @@ void UI::Frame::Object::handle()
 						tr::execute(phrase->replies[i].actions[j]);
 					}
 					txt->setVar("acc", 1);
+					txt->txt.setString("");
 				}
 			}
 		}

@@ -828,6 +828,10 @@ void tr::execute(sf::String cmd)
 	if (args[0] == "window")
 	{
 		if (args[1] == "close") { Window::close(); }
+		if (args[1] == "showCredits")
+		{
+			Window::setVar("showCredits", std::stoi(args[2].toAnsiString()));
+		}
 	}
 	else if (args[0] == "world")
 	{
@@ -898,10 +902,13 @@ void tr::execute(sf::String cmd)
 			CSManager::music.openFromFile(CSManager::getMusic(Talk::getCurrentDialogue()->getCurrentPhrase()->name));
 			CSManager::music.play();
 		}
-		else if (args[1] == "active")
+		else if (args[1] == "active") { CSManager::active = std::stoi(args[2].toAnsiString()); }
+		else if (args[1] == "stop")
 		{
-			CSManager::active = std::stoi(args[2].toAnsiString());
-			World::setActive(!CSManager::active);
+			CSManager::active = false;
+			World::setActive(true);
+			Input::active = true;
+			Talk::active = false;
 		}
 	}
 }

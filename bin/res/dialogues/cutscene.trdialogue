@@ -2,21 +2,19 @@
 <dialogue name="intro">
 	<phrase name="first">
 		<speaker />
-		<text>Звезда летит.</text>
+		<text>Сотни лет назад, когда Египет ещё был великой страной...</text>
 		<reply name="continue">
-			<text>да неужели</text>
+			<text>[Дальше]</text>
 			<action>talk-setPhrase-second</action>
 		</reply>
 	</phrase>
 	<phrase name="second">
 		<speaker />
-		<text>Звезда всё ещё летит.</text>
+		<text>Существовал бог по имени Евгений.</text>
 		<reply name="continue">
 			<text>не верю</text>
-			<action>talk-active-0</action>
-			<action>input-active-1</action>
-			<action>cutscene-active-0</action>
 			<action>world-load-res/worlds/start.trworld</action>
+			<action>cutscene-stop</action>
 			<action>ui-load-res/ui/inventory.trui</action>
 		</reply>
 	</phrase>

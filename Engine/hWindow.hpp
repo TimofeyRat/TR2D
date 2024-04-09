@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "hProgrammable.hpp"
 #include <vector>
+#include <map>
 
 //Class for all the window stuff.
 class Window
@@ -15,6 +16,14 @@ private:
 	static std::vector<sf::Event> events;
 	static Programmable vars;
 	static float deltaTime;
+	struct CreditsGroup
+	{
+		sf::String title;
+		std::vector<sf::String> creators;
+		CreditsGroup();
+		CreditsGroup(sf::String name);
+	};
+	static std::vector<CreditsGroup> credits;
 public:
 	//Initialize the window.
 	// \param argc Count of arguments provided while starting

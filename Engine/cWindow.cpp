@@ -10,15 +10,38 @@ sf::Clock Window::deltaTimer;
 std::vector<sf::Event> Window::events;
 sf::RenderTexture Window::screen;
 float Window::deltaTime;
+std::vector<Window::CreditsGroup> Window::credits;
+
+Window::CreditsGroup::CreditsGroup()
+{
+	title = "";
+	creators.clear();
+}
+
+Window::CreditsGroup::CreditsGroup(sf::String name)
+{
+	title = name;
+	creators.clear();
+}
 
 void Window::init(int argc, char *argv[])
 {
 	pugi::xml_document config;
 	config.load_file("res/global/settings.trconf");
+	credits.clear();
 	for (auto set : config.child(L"settings").children())
 	{
 		vars.setVar(set.name(), set.attribute(L"num").as_float());
 		vars.setVar(set.name(), set.attribute(L"str").as_string());
+	}
+	for (auto group : config.child(L"credits").children())
+	{
+		CreditsGroup cg(group.attribute(L"name").as_string());
+		for (auto creator : group.children())
+		{
+			cg.creators.push_back(creator.text().as_string());
+		}
+		credits.push_back(cg);
 	}
 	if (vars.getVar("Fullscreen"))
 	{
@@ -118,6 +141,7 @@ sf::Texture Window::capture()
 
 void Window::draw(sf::Drawable &obj, bool drawUI, const sf::RenderStates states)
 {
+	if (getVar("showCredits")) return;
 	if (drawUI) window.draw(obj, states);
 	else screen.draw(obj, states);
 }
@@ -135,7 +159,54 @@ void Window::setView(sf::View view)
 }
 
 void Window::close() { window.close(); screen.clear(); }
-void Window::display() { window.display(); }
+void Window::display()
+{
+	if (getVar("showCredits"))
+	{
+		auto font = *AssetManager::getFont("res/global/font.ttf");
+		int count = 0, current = 0;
+		for (int i = 0; i < credits.size(); i++)
+		{
+			count++;
+			if (credits[i].creators.size() > 1) count += credits[i].creators.size();
+		}
+		float y_diff = getSize().y / (count + 1);
+		for (int i = 0; i < credits.size(); i++)
+		{
+			auto *g = &credits[i];
+			sf::Text txt(g->title + ":", font, 20);
+			txt.setPosition(getSize().x / 2, y_diff * ++current);
+			txt.setFillColor(sf::Color::White);
+			float c = tr::clamp(tr::lerp(getVar("credit"), 255, getDeltaTime() * 5), 0, 255);
+			txt.setFillColor(sf::Color(c, c, c, c));
+			setVar("credit", c);
+			if (g->creators.size() == 1)
+			{
+				txt.setString(txt.getString() + " " + g->creators[0]);
+				txt.setOrigin(txt.getLocalBounds().getSize() / 2.0f);
+				window.draw(txt);
+			}
+			else
+			{
+				txt.setOrigin(txt.getLocalBounds().getSize() / 2.0f);
+				window.draw(txt);
+				for (int j = 0; j < g->creators.size(); j++)
+				{
+					txt.setString(g->creators[j]);
+					txt.setOrigin(txt.getLocalBounds().getSize() / 2.0f);
+					txt.setPosition(getSize().x / 2, y_diff * ++current);
+					window.draw(txt);
+				}
+			}
+		}
+		if (Input::isKeyJustPressed(sf::Keyboard::Escape))
+		{
+			setVar("credit", 0);
+			setVar("showCredits", 0);
+		}
+	}
+	window.display();
+}
 bool Window::hasEvent(sf::Event::EventType type) { return getEvent(type).type == type; }
 void Window::addEvent(sf::Event e) { events.push_back(e); }
 float Window::getDeltaTime() { return deltaTime; }

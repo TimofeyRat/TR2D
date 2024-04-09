@@ -70,66 +70,12 @@
 			<toggle event="mouseHover" />
 			<action
 				event="mouse-click-Left"
-				condition="active-true">ui-setFrame-credits</action>
+				condition="active-true">window-showCredits-1</action>
 			<font path="res/global/font.ttf" idleSize="14" activeSize="14" activeOutline="2" idleOutline="2" sizeChange="set" />
 			<txt type="idle" appear="set">Авторы</txt>
 			<txt type="active" appear="set">Авторы</txt>
 			<position type="inherit-obj-rel">0 0 0 0 menu-credits</position>
 			<origin type="relative">1 1 1 1</origin>
-			<color state="active" type="lerp">0 0 0 255</color><outline state="active" type="lerp">255 255 255 255</outline>
-			<color state="idle" type="lerp">255 255 255 255</color><outline state="idle" type="lerp">0 0 0 255</outline>
-		</text>
-	</object>
-</frame>
-<frame name="credits">
-	<object name="game">
-		<action event="key-click-Escape" condition="null">ui-setFrame-menu</action>
-		<position type="relative-set">0.5 0.1 0.5 0.1</position>
-		<sprite name="bg">
-			<toggle event="mouse-click-Left" />
-			<texture path="res/anims/menus.tranim" activeAnim="menuEnd" idleAnim="menuEnd" />
-			<position type="relative">0 0 0 0</position>
-			<origin type="relative">0 0 0 0</origin>
-			<scale type="stretch" />
-		</sprite>
-		<text name="programmer">
-			<toggle event="mouseHover" />
-			<font path="res/global/font.ttf" idleSize="20" activeSize="20" activeOutline="2" idleOutline="2" sizeChange="set" />
-			<txt type="idle" appear="set">Программист: Aeterno</txt>
-			<txt type="active" appear="set">Программист: Aeterno</txt>
-			<position type="inherit-obj-abs">0 0 0 0 credits-game</position>
-			<origin type="relative">0.5 0 0.5 0</origin>
-			<color state="active" type="lerp">0 0 0 255</color><outline state="active" type="lerp">255 255 255 255</outline>
-			<color state="idle" type="lerp">255 255 255 255</color><outline state="idle" type="lerp">0 0 0 255</outline>
-		</text>
-		<text name="contentMaker">
-			<toggle event="mouseHover" />
-			<font path="res/global/font.ttf" idleSize="20" activeSize="20" activeOutline="2" idleOutline="2" sizeChange="set" />
-			<txt type="idle" appear="set">Бредовик(сценарист): Rul</txt>
-			<txt type="active" appear="set">Бредовик(сценарист): Rul</txt>
-			<position type="inherit-obj-abs">0 30 0 30 credits-game</position>
-			<origin type="relative">0.5 0 0.5 0</origin>
-			<color state="active" type="lerp">0 0 0 255</color><outline state="active" type="lerp">255 255 255 255</outline>
-			<color state="idle" type="lerp">255 255 255 255</color><outline state="idle" type="lerp">0 0 0 255</outline>
-		</text>
-		<text name="artist">
-			<toggle event="mouseHover" />
-			<font path="res/global/font.ttf" idleSize="20" activeSize="20" activeOutline="2" idleOutline="2" sizeChange="set" />
-			<txt type="idle" appear="set">Художницы: Teresa, Korolain</txt>
-			<txt type="active" appear="set">Художницы: Teresa, Korolain</txt>
-			<position type="inherit-obj-abs">0 60 0 60 credits-game</position>
-			<origin type="relative">0.5 0 0.5 0</origin>
-			<color state="active" type="lerp">0 0 0 255</color><outline state="active" type="lerp">255 255 255 255</outline>
-			<color state="idle" type="lerp">255 255 255 255</color><outline state="idle" type="lerp">0 0 0 255</outline>
-		</text>
-		<text name="exit">
-			<toggle event="mouseHover" />
-			<action event="mouse-click-Left" condition="active-true">ui-setFrame-menu</action>
-			<font path="res/global/font.ttf" idleSize="20" activeSize="20" activeOutline="2" idleOutline="2" sizeChange="set" />
-			<txt type="idle" appear="set">Выход</txt>
-			<txt type="active" appear="set">Выход</txt>
-			<position type="relative-set">0.5 1 0.5 1</position>
-			<origin type="relative">0.5 1 0.5 1</origin>
 			<color state="active" type="lerp">0 0 0 255</color><outline state="active" type="lerp">255 255 255 255</outline>
 			<color state="idle" type="lerp">255 255 255 255</color><outline state="idle" type="lerp">0 0 0 255</outline>
 		</text>
