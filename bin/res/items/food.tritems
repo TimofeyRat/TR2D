@@ -3,5 +3,5 @@
 </item>
 
 <item id="food:meat" name="Шашлык" countable="1" useable="1" anim="res/anims/items.tranim">
-	<effect name="HP" type="add" num="10" frequency="0.5" usages="4" />
+	<effect name="HP" type="add" num="-10" frequency="0.5" usages="4" />
 </item>

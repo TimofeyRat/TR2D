@@ -880,7 +880,7 @@ void tr::execute(sf::String cmd)
 	else if (args[0] == "inv")
 	{
 		if (args[1] == "clear") { Inventory::inv.clear(); }
-		else if (args[1] == "addItem") { Inventory::addItem(args[2]); }
+		else if (args[1] == "addItem") { Inventory::addItem(args[2], args.size() == 4 ? std::stoi(args[3].toAnsiString()) : 1); }
 	}
 	else if (args[0] == "setWeapon")
 	{

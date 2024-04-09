@@ -48,8 +48,22 @@ public:
 				sf::String getText(sf::String appear, float speed);
 				void parse(pugi::xml_node node);
 			};
+			struct Progress : public Programmable
+			{
+				bool active;
+				float value, min, max;
+				sf::Sprite bg, fg;
+				FrameAnimator fa_bg, fa_fg;
+				sf::Vector2f offset;
+				sf::String target;
+				Progress();
+				Progress(pugi::xml_node node);
+				void update();
+				void parse(pugi::xml_node node);
+			};
 			std::vector<Sprite> sprites;
 			std::vector<Text> texts;
+			std::vector<Progress> bars;
 			std::vector<Action> actions;
 			sf::String name, toggle, pos, handler;
 			sf::Vector2f position;

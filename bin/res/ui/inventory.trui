@@ -40,13 +40,22 @@
 		<text name="HP">
 			<toggle event="obj-inventory-inv" />
 			<font path="res/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
-			<txt type="idle" appear="set">Здоровье: {camOwner-int-HP}</txt>
-			<txt type="active" appear="set">Здоровье: {camOwner-int-HP}</txt>
+			<txt type="idle" appear="set">Здоровье:</txt>
+			<txt type="active" appear="set">Здоровье:</txt>
 			<position type="relative-set">0.5 0 0.5 0</position>
 			<origin type="relative-lerp">0.5 1 0.5 0</origin>
 			<color state="idle" type="lerp">255 255 255 0</color><outline state="idle" type="lerp">0 0 0 0</outline>
 			<color state="active" type="lerp">255 255 255 255</color><outline state="active" type="lerp">0 0 0 255</outline>
 		</text>
+		<progress name="health">
+			<toggle event="obj-inventory-inv" />
+			<texture path="res/anims/ui.tranim" bg="progressBG" fg="progressFG" offset="6 6" />
+			<position type="inherit-txt-rel">1 0 1 0 inventory-inv-HP</position>
+			<scale type="lerp">1.5 1.5 1.5 1.5</scale>
+			<origin-bg type="relative-set">0 0.5 0 0.5</origin-bg>
+			<origin-fg type="relative-set">0 0 0 0</origin-fg>
+			<value min="0" max="100" target="camOwner-num-HP" />
+		</progress>
 	</object>
 	<object name="acsMenu">
 		<toggle event="obj-inventory-inv" />

@@ -282,6 +282,91 @@ void UI::Frame::Object::Text::parse(pugi::xml_node node)
 	}
 }
 
+UI::Frame::Object::Progress::Progress()
+{
+	active = false;
+	value = min = max = 0;
+	bg = fg = sf::Sprite();
+	fa_fg = fa_bg = FrameAnimator();
+	offset = {0, 0};
+	target = "";
+}
+
+UI::Frame::Object::Progress::Progress(pugi::xml_node node)
+{
+	parse(node);
+}
+
+void UI::Frame::Object::Progress::parse(pugi::xml_node node)
+{
+	setVar("name", node.attribute(L"name").as_string());
+	for (auto part : node.children())
+	{
+		auto name = sf::String(part.name());
+		if (name == "toggle") { setVar("toggle", part.attribute(L"event").as_string()); }
+		else if (name == "texture")
+		{
+			fa_fg.loadFromFile(sf::String(part.attribute(L"path").as_string()).toAnsiString());
+			fa_bg.loadFromFile(sf::String(part.attribute(L"path").as_string()).toAnsiString());
+			setVar("bg", part.attribute(L"bg").as_string());
+			setVar("fg", part.attribute(L"fg").as_string());
+			fa_fg.setCurrentAnimation(getVar("fg").str);
+			fa_bg.setCurrentAnimation(getVar("bg").str);
+			auto os = tr::splitStr(part.attribute(L"offset").as_string(), " ");
+			offset = {
+				std::stof(os[0].toAnsiString()),
+				std::stof(os[1].toAnsiString())
+			};
+		}
+		else if (name == "value")
+		{
+			min = part.attribute(L"min").as_float();
+			max = part.attribute(L"max").as_float();
+			target = part.attribute(L"target").as_string();
+			value = 0;
+		}
+		else
+		{
+			setVar(part.name(),
+				sf::String(part.attribute(L"type").as_string()) +
+				" " + part.text().as_string()
+			);
+		}
+	}
+}
+
+void UI::Frame::Object::Progress::update()
+{
+	active = updateToggle(active, getVar("toggle"), bg.getGlobalBounds());
+	if (fa_bg.getCurrentAnim())
+	{
+		fa_bg.setCurrentAnimation(getVar("bg").str);
+		fa_bg.update();
+		fa_bg.send(bg, false, false);
+	}
+	if (fa_fg.getCurrentAnim())
+	{
+		fa_fg.setCurrentAnimation(getVar("fg").str);
+		fa_fg.update();
+		fa_fg.send(fg, false, false);
+	}
+	bg.setPosition(getObjectPosition(getVar("position"), active, bg.getPosition()));
+	bg.setOrigin(getObjectOrigin((sf::Vector2f)bg.getTextureRect().getSize(), getVar("origin-bg"), active, bg.getOrigin()));
+	bg.setScale(getObjectScale(
+		(sf::Vector2f)bg.getTextureRect().getSize(),
+		getVar("scale"),
+		active,
+		bg.getScale()
+	));
+	value = std::stof(parseText("{" + target + "}").toAnsiString());
+	fg.setPosition(bg.getGlobalBounds().getPosition() + offset);
+	fg.setOrigin(getObjectOrigin((sf::Vector2f)fg.getTextureRect().getSize(), getVar("origin-fg"), active, fg.getOrigin()));
+	fg.setScale(
+		bg.getScale().x * (value / (max - min)),
+		bg.getScale().y
+	);
+}
+
 UI::Frame::Object::Action::Action()
 {
 	event = condition = action = "";
@@ -341,6 +426,7 @@ UI::Frame::Object::Object()
 {
 	sprites.clear();
 	texts.clear();
+	bars.clear();
 	actions.clear();
 	name = "";
 	active = false;
@@ -351,6 +437,7 @@ UI::Frame::Object::Object(sf::String N, bool A)
 {
 	sprites.clear();
 	texts.clear();
+	bars.clear();
 	actions.clear();
 	name = N;
 	active = A;
@@ -369,6 +456,10 @@ void UI::Frame::Object::update()
 	for (int i = 0; i < texts.size(); i++)
 	{
 		texts[i].update();
+	}
+	for (int i = 0; i < bars.size(); i++)
+	{
+		bars[i].update();
 	}
 	for (int i = 0; i < actions.size(); i++)
 	{
@@ -643,6 +734,11 @@ void UI::Frame::Object::draw()
 {
 	for (int i = 0; i < sprites.size(); i++) { Window::draw(sprites[i].spr); }
 	for (int i = 0; i < texts.size(); i++) { Window::draw(texts[i].txt); }
+	for (int i = 0; i < bars.size(); i++)
+	{
+		Window::draw(bars[i].bg);
+		Window::draw(bars[i].fg);
+	}
 }
 
 UI::Frame::Object::Sprite *UI::Frame::Object::getSprite(sf::String name)
@@ -735,6 +831,7 @@ void UI::loadFromFile(std::string filename, bool reload)
 				auto name = sf::String(part.name());
 				if (name == "sprite") { obj.sprites.push_back(Frame::Object::Sprite(part)); }
 				else if (name == "text") { obj.texts.push_back(Frame::Object::Text(part)); }
+				else if (name == "progress") { obj.bars.push_back(Frame::Object::Progress(part)); }
 				else if (name == "toggle")
 				{
 					obj.toggle = sf::String(part.attribute(L"event").as_string());
