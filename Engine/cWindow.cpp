@@ -168,35 +168,28 @@ void Window::display()
 		for (int i = 0; i < credits.size(); i++)
 		{
 			count++;
-			if (credits[i].creators.size() > 1) count += credits[i].creators.size();
+			count += credits[i].creators.size();
 		}
 		float y_diff = getSize().y / (count + 1);
 		for (int i = 0; i < credits.size(); i++)
 		{
 			auto *g = &credits[i];
-			sf::Text txt(g->title + ":", font, 20);
+			sf::Text txt(g->title + ":", font, 24);
 			txt.setPosition(getSize().x / 2, y_diff * ++current);
 			txt.setFillColor(sf::Color::White);
-			float c = tr::clamp(tr::lerp(getVar("credit"), 255, getDeltaTime() * 5), 0, 255);
-			txt.setFillColor(sf::Color(c, c, c, c));
+			float c = tr::clamp(tr::lerp(getVar("credit"), 1, getDeltaTime() * 5), 0, 1);
+			txt.setFillColor(sf::Color(0, c * 196, c * 22, c * 255));
 			setVar("credit", c);
-			if (g->creators.size() == 1)
+			txt.setOrigin(txt.getLocalBounds().getSize() / 2.0f);
+			window.draw(txt);
+			for (int j = 0; j < g->creators.size(); j++)
 			{
-				txt.setString(txt.getString() + " " + g->creators[0]);
+				txt.setFillColor(sf::Color(c * 255, c * 255, c * 255, c * 255));
+				txt.setCharacterSize(20);
+				txt.setString(g->creators[j]);
 				txt.setOrigin(txt.getLocalBounds().getSize() / 2.0f);
+				txt.setPosition(getSize().x / 2, y_diff * ++current);
 				window.draw(txt);
-			}
-			else
-			{
-				txt.setOrigin(txt.getLocalBounds().getSize() / 2.0f);
-				window.draw(txt);
-				for (int j = 0; j < g->creators.size(); j++)
-				{
-					txt.setString(g->creators[j]);
-					txt.setOrigin(txt.getLocalBounds().getSize() / 2.0f);
-					txt.setPosition(getSize().x / 2, y_diff * ++current);
-					window.draw(txt);
-				}
 			}
 		}
 		if (Input::isKeyJustPressed(sf::Keyboard::Escape))
