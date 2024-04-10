@@ -74,7 +74,7 @@ void CSManager::setCutscene(sf::String name)
 	for (int i = 0; i < frames.size(); i++)
 	{
 		frames[i].frame.restart();
-		if (frames[i].name == name) { current = {0, i}; }
+		if (frames[i].name == name) { current = {0, i}; frames[i].frame.setCurrentAnimation(0); }
 	}
 }
 

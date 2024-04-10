@@ -172,13 +172,14 @@ sf::String UI::Frame::Object::Text::getText(sf::String appear, float speed)
 {
 	if (active)
 	{
-		setVar("icc", 1);
+		setVar("icc", 0);
 		if (appear == "set") { return parseText(activeTxt); }
 		else if (appear == "typing")
 		{
 			auto cc = getVar("acc") + Window::getDeltaTime() * speed;
-			if (cc < 1) cc = 1;
+			if (cc < 0) cc = 0;
 			setVar("acc", cc);
+			if (cc == 0) return "";
 			return parseText(activeTxt).substring(0, cc);
 		}
 	}
@@ -189,8 +190,9 @@ sf::String UI::Frame::Object::Text::getText(sf::String appear, float speed)
 		else if (appear == "typing")
 		{
 			auto cc = getVar("icc") + Window::getDeltaTime() * speed;
-			if (cc < 1) cc = 1;
+			if (cc < 0) cc = 0;
 			setVar("icc", cc);
+			if (cc == 0) return "";
 			return parseText(idleTxt).substring(0, cc);
 		}
 	}
@@ -665,28 +667,43 @@ void UI::Frame::Object::handle()
 		if (CSManager::active && !CSManager::current.x)
 		{
 			CSManager::music.setVolume(tr::clamp(CSManager::music.getVolume() + Window::getDeltaTime() * 100, 0, 100));
-			auto bgclr = tr::lerpClr(
-				{
-					(float)bg->spr.getColor().r, (float)bg->spr.getColor().g,
-					(float)bg->spr.getColor().b, (float)bg->spr.getColor().a
-				},
-				{255, 255, 255, 255},
-				Window::getDeltaTime() * 5
-			);
 			auto *cs = &CSManager::frames[CSManager::current.y];
 			auto change = cs->getChange(Talk::getCurrentDialogue()->getCurrentPhrase()->name);
+			auto c = bg->getVar("clr").num;
+			if (change->anim != cs->frame.getCurrentAnim()->name)
+			{
+				if ((int)c > 0)
+				{
+					c = tr::lerp(c, 0, Window::getDeltaTime() * 10);
+					txt->setVar("acc", 0);
+					if ((int)c <= 0)
+					{
+						cs->frame.setCurrentAnimation(change->anim);
+					}
+				}
+				else
+				{
+					cs->frame.setCurrentAnimation(change->anim);
+					c = tr::lerp(c, 255, Window::getDeltaTime() * 10);
+				}
+			}
+			else
+			{
+				cs->frame.setCurrentAnimation(change->anim);
+				c = tr::lerp(c, 255, Window::getDeltaTime() * 10);
+			}
 			if (change->skippable && Input::isMBJustPressed(sf::Mouse::Left))
 			{
 				txt->setVar("acc", txt->activeTxt.getSize());
 			}
-			cs->frame.setCurrentAnimation(change->anim);
 			cs->frame.update();
 			cs->frame.send(bg->spr, false, false);
 			bg->spr.scale(
 				Window::getSize().x / bg->spr.getGlobalBounds().width,
 				Window::getSize().y / bg->spr.getGlobalBounds().height
 			);
-			bg->spr.setColor({bgclr.x, bgclr.y, bgclr.z, bgclr.w});
+			bg->spr.setColor({c, c, c, c});
+			bg->setVar("clr", c);
 		}
 	}
 	else if (tr::strContains(handler, "acsMenu"))

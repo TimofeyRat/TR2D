@@ -37,7 +37,7 @@
 	</phrase>
 	<phrase name="eighth">
 		<speaker />
-		<text>Метку, которую поднимет тот, кто способен изменить мир."</text>
+		<text>Метку, которую поднимет тот, кто способен изменить мир.</text>
 		<reply name="continue"><text>[Дальше]</text><action>talk-setPhrase-end</action></reply>
 	</phrase>
 	<phrase name="end">
