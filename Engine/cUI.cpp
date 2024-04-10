@@ -72,6 +72,7 @@ void UI::Frame::Object::Sprite::parse(pugi::xml_node node)
 				part.text().get()
 			));
 		}
+		else if (name == "transparent") { spr.setColor({0, 0, 0, 0}); }
 		else
 		{
 			setVar(part.name(),
@@ -615,7 +616,7 @@ void UI::Frame::Object::handle()
 					(float)bg->spr.getColor().b, (float)bg->spr.getColor().a
 				},
 				{0, 0, 0, 0},
-				Window::getDeltaTime() * 10
+				Window::getDeltaTime() * 5
 			);
 			bg->spr.setColor({bgclr.x, bgclr.y, bgclr.z, bgclr.w});
 			if (CSManager::music.getVolume() > 0)
@@ -670,7 +671,7 @@ void UI::Frame::Object::handle()
 					(float)bg->spr.getColor().b, (float)bg->spr.getColor().a
 				},
 				{255, 255, 255, 255},
-				Window::getDeltaTime() * 10
+				Window::getDeltaTime() * 5
 			);
 			auto *cs = &CSManager::frames[CSManager::current.y];
 			auto change = cs->getChange(Talk::getCurrentDialogue()->getCurrentPhrase()->name);

@@ -43,7 +43,7 @@
 			<txt type="idle" appear="set">Здоровье:</txt>
 			<txt type="active" appear="set">Здоровье:</txt>
 			<position type="relative-set">0.5 0 0.5 0</position>
-			<origin type="relative-lerp">0.5 1 0.5 0</origin>
+			<origin type="relative-lerp">1 1 1 0</origin>
 			<color state="idle" type="lerp">255 255 255 0</color><outline state="idle" type="lerp">0 0 0 0</outline>
 			<color state="active" type="lerp">255 255 255 255</color><outline state="active" type="lerp">0 0 0 255</outline>
 		</text>

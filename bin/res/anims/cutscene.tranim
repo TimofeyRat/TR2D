@@ -1,3 +1,18 @@
-<animation name="intro" duration="1" repeat="0" scale="-1 -1">
-	<texture path="res/tex/cutscenes/intro.png" size="1024 576" start="0" count="1" />
+<animation name="intro_pyramids" duration="1" repeat="0" scale="-1 -1">
+	<texture path="res/tex/cutscenes/intro.png" size="128 72" start="0" count="1" />
+</animation>
+<animation name="intro_god" duration="1" repeat="0" scale="-1 -1">
+	<texture path="res/tex/cutscenes/intro.png" size="128 72" start="1" count="1" />
+</animation>
+<animation name="intro_godglobe" duration="1" repeat="0" scale="-1 -1">
+	<texture path="res/tex/cutscenes/intro.png" size="128 72" start="2" count="1" />
+</animation>
+<animation name="intro_agf" duration="1" repeat="0" scale="-1 -1">
+	<texture path="res/tex/cutscenes/intro.png" size="128 72" start="3" count="1" />
+</animation>
+<animation name="intro_star" duration="1" repeat="0" scale="-1 -1">
+	<texture path="res/tex/cutscenes/intro.png" size="128 72" start="4" count="1" />
+</animation>
+<animation name="intro_end" duration="1" repeat="0" scale="-1 -1">
+	<frame path="res/tex/cutscenes/intro.png" rect="1 1 1 1" />
 </animation>

@@ -1,4 +1,11 @@
 <frame_cutscene name="intro" anim="res/anims/cutscene.tranim" dialogue="res/dialogues/cutscene.trdialogue">
-	<change phrase="first" skippable="0" anim="intro" music="res/audio/music/Ambient.ogg" />
-	<change phrase="second" skippable="0" anim="intro" music="res/audio/music/Ambient.ogg" />
+	<change phrase="first" skippable="0" anim="intro_pyramides" music="res/audio/music/Ambient.ogg" />
+	<change phrase="second" skippable="0" anim="intro_god" music="res/audio/music/Ambient.ogg" />
+	<change phrase="third" skippable="0" anim="intro_god" music="res/audio/music/Ambient.ogg" />
+	<change phrase="fourth" skippable="0" anim="intro_godglobe" music="res/audio/music/Ambient.ogg" />
+	<change phrase="fifth" skippable="0" anim="intro_agf" music="res/audio/music/Ambient.ogg" />
+	<change phrase="sixth" skippable="0" anim="intro_god" music="res/audio/music/Ambient.ogg" />
+	<change phrase="seventh" skippable="0" anim="intro_star" music="res/audio/music/Ambient.ogg" />
+	<change phrase="eighth" skippable="0" anim="intro_star" music="res/audio/music/Ambient.ogg" />
+	<change phrase="end" skippable="0" anim="intro_end" music="res/audio/music/Ambient.ogg" />
 </cutscene>

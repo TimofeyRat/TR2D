@@ -3,16 +3,48 @@
 	<phrase name="first">
 		<speaker />
 		<text>Сотни лет назад, когда Египет ещё был великой страной...</text>
-		<reply name="continue">
-			<text>[Дальше]</text>
-			<action>talk-setPhrase-second</action>
-		</reply>
+		<reply name="continue"><text>[Дальше]</text><action>talk-setPhrase-second</action></reply>
 	</phrase>
 	<phrase name="second">
 		<speaker />
 		<text>Существовал бог по имени Евгений.</text>
+		<reply name="continue"><text>[Дальше]</text><action>talk-setPhrase-third</action></reply>
+	</phrase>
+	<phrase name="third">
+		<speaker />
+		<text>Единственный бог с русскими корнями. Откуда он появился - никто не знал.</text>
+		<reply name="continue"><text>[Дальше]</text><action>talk-setPhrase-fourth</action></reply>
+	</phrase>
+	<phrase name="fourth">
+		<speaker />
+		<text>Однажды он решил взглянуть на мир людской, и вновь удивился увиденному...</text>
+		<reply name="continue"><text>[Дальше]</text><action>talk-setPhrase-fifth</action></reply>
+	</phrase>
+	<phrase name="fifth">
+		<speaker />
+		<text>Злоба, жадность и вражда.</text>
+		<reply name="continue"><text>[Дальше]</text><action>talk-setPhrase-sixth</action></reply>
+	</phrase>
+	<phrase name="sixth">
+		<speaker />
+		<text>"Что же им мешает жить в мире, как нам, богам?"</text>
+		<reply name="continue"><text>[Дальше]</text><action>talk-setPhrase-seventh</action></reply>
+	</phrase>
+	<phrase name="seventh">
+		<speaker />
+		<text>С этими словами он бросил на землю небольшую звезду - метку...</text>
+		<reply name="continue"><text>[Дальше]</text><action>talk-setPhrase-eighth</action></reply>
+	</phrase>
+	<phrase name="eighth">
+		<speaker />
+		<text>Метку, которую поднимет тот, кто способен изменить мир."</text>
+		<reply name="continue"><text>[Дальше]</text><action>talk-setPhrase-end</action></reply>
+	</phrase>
+	<phrase name="end">
+		<speaker />
+		<text>Но в какую сторону он изменит этот мир?</text>
 		<reply name="continue">
-			<text>не верю</text>
+			<text>[Начать игру]</text>
 			<action>world-load-res/worlds/start.trworld</action>
 			<action>cutscene-stop</action>
 			<action>ui-load-res/ui/inventory.trui</action>
