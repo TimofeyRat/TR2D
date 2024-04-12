@@ -4,6 +4,7 @@
 		<speaker />
 		<text>Сотни лет назад, когда Египет ещё был великой страной...</text>
 		<reply name="continue"><text>[Дальше]</text><action>talk-setPhrase-second</action></reply>
+		<reply name="skip"><text>Ближе к делу.</text><action>talk-setPhrase-skip</action></reply>
 	</phrase>
 	<phrase name="second">
 		<speaker />
@@ -43,6 +44,16 @@
 	<phrase name="end">
 		<speaker />
 		<text>Но в какую сторону он изменит этот мир?</text>
+		<reply name="continue">
+			<text>[Начать игру]</text>
+			<action>world-load-res/worlds/start.trworld</action>
+			<action>cutscene-stop</action>
+			<action>ui-load-res/ui/inventory.trui</action>
+		</reply>
+	</phrase>
+	<phrase name="skip">
+		<speaker />
+		<text>Так вот, начинаем.</text>
 		<reply name="continue">
 			<text>[Начать игру]</text>
 			<action>world-load-res/worlds/start.trworld</action>

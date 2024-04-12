@@ -1,3 +1,4 @@
+<!-- INTRO -->
 <animation name="intro_pyramides" duration="1" repeat="0" scale="-1 -1">
 	<texture path="res/tex/cutscenes/intro.png" size="128 72" start="0" count="1" />
 </animation>

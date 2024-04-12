@@ -25,7 +25,6 @@
 			<action
 				event="mouse-click-Left"
 				condition="active-true">ui-load-res/ui/dialogue.trui;cutscene-start-intro</action>
-				<!-- condition="active-true">ui-load-res/ui/inventory.trui;world-load-res/worlds/start.trworld</action> -->
 			<texture path="res/anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
 			<position type="inherit-obj-rel">0 0 0 0 menu-startGame</position>
 			<origin type="relative">0.5 0.5 0.5 0.5</origin>

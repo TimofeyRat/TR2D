@@ -19,5 +19,6 @@
 	<variable name="sl" string="sl" /><variable name="sr" string="sr" />
 	<variable name="jl" string="jl" /><variable name="jr" string="jr" />
 	<variable name="fl" string="fl" /><variable name="fr" string="fr" />
+	<variable name="al" string="al" /><variable name="ar" string="ar" />
 	<variable name="scale" num="3.5" />
 </entity>
