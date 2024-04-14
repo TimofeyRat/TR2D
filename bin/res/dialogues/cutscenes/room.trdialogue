@@ -1,0 +1,19 @@
+<dialogue name="room">
+	<phrase name="start">
+		<speaker>Жадность</speaker>
+		<text>НАСАКЕ! Ты принёс деньги?</text>
+		<reply name="test">
+			<text>...</text>
+			<action>cutscene-setClip-next</action>
+			<action>talk-setPhrase-end</action>
+		</reply>
+	</phrase>
+	<phrase name="end">
+		<speaker>Насаке</speaker>
+		<text>Нет.</text>
+		<reply name="test">
+			<text>...</text>
+			<action>cutscene-stop</action>
+		</reply>
+	</phrase>
+</dialogue>

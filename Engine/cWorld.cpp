@@ -75,21 +75,28 @@ void WorldCL::EntityTrigger(sf::String entName, sf::String triggerName, bool sta
 	auto *lvl = World::getCurrentLevel();
 	auto *ent = lvl->getEntity(entName);
 	auto *trigger = lvl->getTrigger(triggerName);
-	if (entName == lvl->cam.owner)
+	if (entName != lvl->cam.owner) return;
+	
+	if (trigger->hasVar("enter") && start &&
+		(trigger->getVar("entered") < trigger->getVar("enters") || !trigger->hasVar("enters")))
 	{
-		if (ent->getHitbox().intersects(trigger->rect) &&
-			trigger->hasVar("cmd") &&
-			(trigger->getVar("used") < trigger->getVar("usages") ||
-			trigger->getVar("usages") == 0))
-		{
-			lvl->setVar("showInteraction", 1);
-			lvl->setVar("interactableTrigger", triggerName);
-		}
-		else
-		{
-			lvl->setVar("showInteraction", 0);
-			lvl->setVar("interactableTrigger", "");
-		}
+		auto cmd = tr::splitStr(trigger->getVar("enter"), "|");
+		for (int i = 0; i < cmd.size(); i++) { tr::execute(cmd[i]); }
+		if (trigger->hasVar("enters")) trigger->setVar("entered", trigger->getVar("entered") + 1);
+	}
+
+	if (trigger->hasVar("exit") && !start && !ent->getHitbox().intersects(trigger->rect) &&
+		(trigger->getVar("exited") < trigger->getVar("exits") || !trigger->hasVar("exits")))
+	{
+		auto cmd = tr::splitStr(trigger->getVar("exit"), "|");
+		for (int i = 0; i < cmd.size(); i++) { tr::execute(cmd[i]); }
+		if (trigger->hasVar("exits")) trigger->setVar("exited", trigger->getVar("exited") + 1);
+	}
+
+	if (trigger->hasVar("inter") && (trigger->getVar("used") < trigger->getVar("usages") || !trigger->hasVar("usages")))
+	{
+		lvl->setVar("showInteraction", ent->getHitbox().intersects(trigger->rect) && (CSManager::current.x ? !CSManager::active : true));
+		lvl->setVar("interactableTrigger", ent->getHitbox().intersects(trigger->rect) ? triggerName : "");
 	}
 }
 
@@ -253,7 +260,9 @@ void World::update()
 		music.play();
 	}
 	auto *lvl = getCurrentLevel();
-	if (lvl) lvl->update();
+	if (CSManager::active && CSManager::current.x) { CSManager::worlds[CSManager::current.y].update(); }
+	else lvl->cam.doUpdate = true;
+	lvl->update();
 }
 
 void World::draw()
@@ -271,7 +280,8 @@ World::Map::Map() { reset(); }
 void World::Map::draw(sf::RenderTarget *target)
 {
 	tile.setTexture(*tileTex);
-	tile.setScale(1, 1);
+	tile.setScale(scale, scale);
+
 	for (int x = 0; x < mapSize.x; x++)
 	{
 		for (int y = 0; y < mapSize.y; y++)
@@ -509,7 +519,7 @@ void World::Level::update()
 		if (getVar("showInteraction") && camOwner->getVar("interacting"))
 		{
 			auto *t = getTrigger(getVar("interactableTrigger"));
-			auto prompt = t->getVar("cmd").str;
+			auto prompt = t->getVar("inter").str;
 			if (!prompt.isEmpty())
 			{
 				auto cmd = tr::splitStr(prompt, "|");
@@ -641,6 +651,7 @@ World::Camera::Camera()
 	view = sf::View({0, 0, 0, 0});
 	owner = "";
 	offset = {0, 0};
+	doUpdate = true;
 }
 
 World::Camera::Camera(sf::Vector2f size, sf::Vector2f os, sf::String name)
@@ -648,10 +659,12 @@ World::Camera::Camera(sf::Vector2f size, sf::Vector2f os, sf::String name)
 	view = sf::View({0, 0, size.x, size.y});
 	offset = os;
 	owner = name;
+	doUpdate = true;
 }
 
 void World::Camera::update(sf::Vector2f mapSize)
 {
+	if (!doUpdate) return;
 	auto *e = World::lvls[World::currentLevel].getEntity(owner);
 	sf::Vector2f pos;
 	if (e == nullptr)
@@ -892,9 +905,9 @@ void tr::execute(sf::String cmd)
 	{
 		if (args[1] == "start")
 		{
-			if (!CSManager::frames.size()) { CSManager::init(); }
-			World::setActive(false);
+			if (!CSManager::frames.size() && !CSManager::worlds.size()) { CSManager::init(); }
 			CSManager::setCutscene(args[2]);
+			if (!CSManager::current.x) World::setActive(false);
 			CSManager::active = true;
 			Input::active = false;
 			Talk::loadFromFile(CSManager::getTalk());
@@ -909,6 +922,10 @@ void tr::execute(sf::String cmd)
 			World::setActive(true);
 			Input::active = true;
 			Talk::active = false;
+		}
+		else if (args[1] == "setClip")
+		{
+			CSManager::worlds[CSManager::current.y].currentChange = args[2];
 		}
 	}
 }

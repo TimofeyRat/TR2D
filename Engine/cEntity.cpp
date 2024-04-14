@@ -122,6 +122,12 @@ void Entity::draw(sf::RenderTarget *target)
 
 void Entity::updateAnim()
 {
+	if (getVar("dontUpdateAnim"))
+	{
+		if (s.hasAnimationEnded()) setVar("dontUpdateAnim", 0);
+		s.setCurrentAnimation(getVar("anim"));
+		return;
+	}
 	float moveX, moveY, bodyX, bodyY;
 	if (auto *b = rb.getBody())
 	{

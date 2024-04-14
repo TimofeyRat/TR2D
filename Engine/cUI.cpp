@@ -603,6 +603,7 @@ void UI::Frame::Object::handle()
 		auto *re2 = getText("re2");
 		auto *re3 = getText("re3");
 		auto *bg = getSprite("anim");
+		bool changed = false;
 		if (!Talk::active)
 		{
 			re1->activeTxt = re1->idleTxt = "";
@@ -626,47 +627,52 @@ void UI::Frame::Object::handle()
 				CSManager::music.setVolume(tr::clamp(CSManager::music.getVolume() - Window::getDeltaTime() * 100, 0, 100));
 			}
 			else CSManager::music.stop();
-			return;
 		}
-		//Phrase
-		auto *phrase = Talk::getCurrentDialogue()->getCurrentPhrase();
-		txt->activeTxt = txt->idleTxt = phrase->text;
-		//Speaker name
-		speaker->activeTxt = speaker->idleTxt = phrase->speaker;
-		auto clr = Talk::getNameColor(phrase->speaker);
-		speaker->activeClr = {clr.r, clr.g, clr.b, clr.a};
-		//Replies
-		if (phrase->replies.size() < 3) { re3->activeTxt = re3->idleTxt = ""; re3->setVar("acc", 1); re3->active = false; }
-		if (phrase->replies.size() < 2) { re2->activeTxt = re2->idleTxt = ""; re2->setVar("acc", 1); re2->active = false; }
-		if (phrase->replies.size() < 1) { re1->activeTxt = re1->idleTxt = ""; re1->setVar("acc", 1); re1->active = false; return; }
+		else
 		{
-			int cur = 0;
-			for (int i = 0; i < phrase->replies.size(); i++)
+			//Phrase
+			auto *phrase = Talk::getCurrentDialogue()->getCurrentPhrase();
+			txt->activeTxt = txt->idleTxt = phrase->text;
+			//Speaker name
+			speaker->activeTxt = speaker->idleTxt = phrase->speaker;
+			auto clr = Talk::getNameColor(phrase->speaker);
+			speaker->activeClr = {clr.r, clr.g, clr.b, clr.a};
+			//Replies
+			if (phrase->replies.size() < 3) { re3->activeTxt = re3->idleTxt = ""; re3->setVar("acc", 1); re3->active = false; }
+			if (phrase->replies.size() < 2) { re2->activeTxt = re2->idleTxt = ""; re2->setVar("acc", 1); re2->active = false; }
+			if (phrase->replies.size() < 1) { re1->activeTxt = re1->idleTxt = ""; re1->setVar("acc", 1); re1->active = false; return; }
+			else
 			{
-				if (!Talk::conditionCheck(phrase->replies[i].condition)) { continue; }
-				Text *re = nullptr;
-				if (cur == 0) re = re1;
-				else if (cur == 1) re = re2;
-				else if (cur == 2) re = re3;
-				else break;
-				cur++;
-				re->activeTxt = re->idleTxt = active ? phrase->replies[i].text : "";
-				re->active = re->txt.getGlobalBounds().contains(Input::getMousePos());
-				if (re->active && Input::isMBJustPressed(sf::Mouse::Left))
+				int cur = 0;
+				for (int i = 0; i < phrase->replies.size(); i++)
 				{
-					for (int j = 0; j < phrase->replies[i].actions.size(); j++)
+					if (!Talk::conditionCheck(phrase->replies[i].condition)) { continue; }
+					Text *re = nullptr;
+					if (cur == 0) re = re1;
+					else if (cur == 1) re = re2;
+					else if (cur == 2) re = re3;
+					else break;
+					cur++;
+					re->activeTxt = re->idleTxt = active ? phrase->replies[i].text : "";
+					re->active = re->txt.getGlobalBounds().contains(Input::getMousePos());
+					if (re->active && Input::isMBJustPressed(sf::Mouse::Left))
 					{
-						tr::execute(phrase->replies[i].actions[j]);
+						for (int j = 0; j < phrase->replies[i].actions.size(); j++)
+						{
+							tr::execute(phrase->replies[i].actions[j]);
+						}
+						txt->setVar("acc", 1);
+						txt->txt.setString("");
+						changed = true;
 					}
-					txt->setVar("acc", 1);
-					txt->txt.setString("");
 				}
 			}
 		}
 		//Background
-		if (CSManager::active && !CSManager::current.x)
+		if (!CSManager::active) { World::getCurrentLevel()->cam.doUpdate = true; return; }
+		CSManager::music.setVolume(tr::clamp(CSManager::music.getVolume() + Window::getDeltaTime() * 100, 0, 100));
+		if (!CSManager::current.x)
 		{
-			CSManager::music.setVolume(tr::clamp(CSManager::music.getVolume() + Window::getDeltaTime() * 100, 0, 100));
 			auto *cs = &CSManager::frames[CSManager::current.y];
 			auto change = cs->getChange(Talk::getCurrentDialogue()->getCurrentPhrase()->name);
 			auto c = bg->getVar("clr").num;
@@ -692,7 +698,7 @@ void UI::Frame::Object::handle()
 				cs->frame.setCurrentAnimation(change->anim);
 				c = tr::lerp(c, 255, Window::getDeltaTime() * 10);
 			}
-			if (change->skippable && Input::isMBJustPressed(sf::Mouse::Left))
+			if (change->skippable && Input::isMBJustPressed(sf::Mouse::Left) && !changed)
 			{
 				txt->setVar("acc", txt->activeTxt.getSize());
 			}
@@ -704,6 +710,12 @@ void UI::Frame::Object::handle()
 			);
 			bg->spr.setColor({c, c, c, c});
 			bg->setVar("clr", c);
+		}
+		else
+		{
+			bg->spr.setColor({0, 0, 0, 0});
+			auto c = CSManager::worlds[CSManager::current.y].getCurrentChange();
+			Talk::active = (c->startPhraseOnEnd ? c->current >= c->duration : true);
 		}
 	}
 	else if (tr::strContains(handler, "acsMenu"))

@@ -68,6 +68,7 @@ public:
 		sf::View view;
 		sf::String owner;
 		sf::Vector2f offset;
+		bool doUpdate;
 		Camera();
 		Camera(sf::Vector2f size, sf::Vector2f os, sf::String name);
 		void update(sf::Vector2f mapSize);

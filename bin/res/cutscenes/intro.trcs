@@ -9,4 +9,15 @@
 	<change phrase="eighth" skippable="0" anim="intro_star" music="res/audio/music/Ambient.ogg" />
 	<change phrase="end" skippable="0" anim="intro_end" music="res/audio/music/Ambient.ogg" />
 	<change phrase="skip" skippable="0" anim="intro_end" music="res/audio/music/Ambient.ogg" />
-</cutscene>
+</frame_cutscene>
+
+<world_cutscene name="room" dialogue="res/dialogues/cutscenes/room.trdialogue">
+	<clip name="start" duration="2" startPhraseOnEnd="1" phrase="start" music="res/audio/music/Ambient.ogg">
+		<move_ent name="Nasake" start="100 250" end="600 250" func="lerp" />
+		<anim_ent name="Nasake" animation="al" />
+		<move_cam pos="100 250 600 250 linear" />
+	</clip>
+	<clip name="next" duration="2" startPhraseOnEnd="0" phrase="end" music="res/audio/music/Ambient.ogg">
+		<move_cam pos="600 250 1000 250 linear" />
+	</clip>
+</world_cutscene>
