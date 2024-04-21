@@ -99,8 +99,8 @@ void Entity::update()
 	auto rect = s.generateHitbox();
 	rb.resize(rb.getBody()->GetWorld(), {!rect.width ? 1 : rect.width, !rect.height ? 1 : rect.height - 2});
 	s.setPosition({
-		rb.getPosition().x,
-		rb.getPosition().y - rect.height / 2 + (s.getPosition().y - rect.top)
+		rb.getPosition().x + (s.getBone(0)->pos.x - (rect.left + rect.width / 2)),
+		rb.getPosition().y + (s.getBone(0)->pos.y - (rect.top + rect.height / 2))
 	});
 	s.update();
 	setVar("posX", rb.getPosition().x);

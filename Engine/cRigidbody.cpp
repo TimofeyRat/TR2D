@@ -55,7 +55,7 @@ void Rigidbody::draw(sf::RenderTarget *target)
 	rs.setOrigin(size.x / 2, size.y / 2);
 	rs.setPosition(body->GetPosition().x * tr::M2P, body->GetPosition().y * tr::M2P);
 	rs.setFillColor({0, 0, 0, 0});
-	rs.setOutlineColor(sf::Color::Red);
+	rs.setOutlineColor(sf::Color::Green);
 	rs.setOutlineThickness(-2);
 	target->draw(rs);
 }

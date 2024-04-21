@@ -250,8 +250,22 @@ void CSManager::WorldCutscene::Change::update()
 		auto e = moves[i];
 		auto ent = lvl->getEntity(e.entName);
 		ent->getRigidbody()->getBody()->SetLinearVelocity({0, 0});
-		if (e.math == "lerp") { ent->setPosition(tr::lerpVec(e.start, e.target, current / duration)); }
-		else if (e.math == "set") { ent->setPosition(e.target); }
+		auto math = tr::splitStr(e.math, "-");
+		if (math[0] == "linear")
+		{
+			auto d = (math.size() == 2 ? std::stof(math[1].toAnsiString()) : duration);
+			ent->setPosition(tr::lerpVec(e.start, e.target, tr::clamp(current, 0, d) / d));
+		}
+		else if (math[0] == "move" && current < duration)
+		{
+			ent->setPosition(tr::lerpVec(e.start, e.target, current / duration));
+			auto pos = ent->getRigidbody()->getPosition();
+			auto vel = tr::clampVec(e.target - sf::Vector2f(pos.x, pos.y), {-1, -1}, {1, 1});
+			ent->setVar("dx", (int)vel.x);
+			ent->setVar("dy", (int)vel.y);
+			ent->getRigidbody()->getBody()->SetLinearVelocity({(int)vel.x, (int)vel.y});
+		}
+		else if (math[0] == "set") { ent->setPosition(e.target); }
 	}
 	for (int i = 0; i < anims.size(); i++)
 	{

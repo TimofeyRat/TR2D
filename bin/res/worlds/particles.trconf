@@ -17,6 +17,6 @@
 		<vertex x="6" y="14" /><vertex x="2" y="14" />
 		<vertex x="0" y="12" /><vertex x="0" y="10" />
 	</shape>
-	<physics friction="0" mass="0" restituion="0" angle="0" fixedAngle="1" dynamic="1" collisionGroup="-1" />
+	<physics dynamic="0" />
 	<effect name="HP" type="add" num="10" frequency="0.5" usages="4" />
 </particle>

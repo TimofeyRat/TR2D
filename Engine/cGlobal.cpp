@@ -112,5 +112,5 @@ sf::Glsl::Vec4 tr::lerpClr(sf::Glsl::Vec4 start, sf::Glsl::Vec4 end, float t)
 
 float tr::randBetween(float min, float max)
 {
-	return min + (float)rand() / RAND_MAX * (max - min + 1);
+	return min + (float)rand() / RAND_MAX * (max - min);
 }

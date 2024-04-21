@@ -173,6 +173,21 @@ void Script::Function::execute(Programmable *prog, Script *launcher)
 				auto var = tr::splitStr(cmd.args[0].value, ".");
 				tr::execute(getProg(var[0], prog)->getVar(var[1]).str);
 			}
+			else if (cmd.args[0] == Token(Token::String, "spawnParticle"))
+			{
+				tr::execute("spawnParticle " +
+					std::to_string(prog->getVar("spx").num) + " " +
+					std::to_string(prog->getVar("spy").num) + " " +
+					std::to_string(prog->getVar("epx").num) + " " +
+					std::to_string(prog->getVar("epy").num) + " " +
+					std::to_string(prog->getVar("svx").num) + " " +
+					std::to_string(prog->getVar("svy").num) + " " +
+					std::to_string(prog->getVar("evx").num) + " " +
+					std::to_string(prog->getVar("evy").num) + " " +
+					prog->getVar("name").str + " " +
+					std::to_string(prog->getVar("timer").num)
+				);
+			}
 			else tr::execute(cmd.args[0].value);
 		}
 	}
@@ -201,7 +216,6 @@ void Script::loadFromFile(std::string filename)
 	Function func;
 	for (int i = 0; i < t.size(); i++)
 	{
-		// std::cout << tokens[i].type << "|" << tokens[i].value.toAnsiString() << std::endl;
 		if (t[i].type == Token::Type::Function)
 		{
 			if (t[i + 1].type == Token::String) { func.name = t[i + 1].value; }

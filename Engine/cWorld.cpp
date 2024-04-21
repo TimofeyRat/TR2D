@@ -92,12 +92,6 @@ void WorldCL::EntityTrigger(sf::String entName, sf::String triggerName, bool sta
 		for (int i = 0; i < cmd.size(); i++) { tr::execute(cmd[i]); }
 		if (trigger->hasVar("exits")) trigger->setVar("exited", trigger->getVar("exited") + 1);
 	}
-
-	if (trigger->hasVar("inter") && (trigger->getVar("used") < trigger->getVar("usages") || !trigger->hasVar("usages")))
-	{
-		lvl->setVar("showInteraction", ent->getHitbox().intersects(trigger->rect) && (CSManager::current.x ? !CSManager::active : true));
-		lvl->setVar("interactableTrigger", ent->getHitbox().intersects(trigger->rect) ? triggerName : "");
-	}
 }
 
 void World::init()
@@ -228,6 +222,7 @@ void World::loadFromFile(std::string filename)
 		World::lvls.push_back(level);
 	}
 	active = true;
+	setCurrentLevel(lvls[0].name);
 }
 
 void World::update()
@@ -244,13 +239,13 @@ void World::update()
 	}
 	if (currentLevel != nextLevel)
 	{
-		brightness = tr::lerp(brightness, 0, 5 * Window::getDeltaTime());
+		brightness = tr::clamp(tr::lerp(brightness, 0, 5 * Window::getDeltaTime()), 0, 255);
 		if (brightness == tr::clamp(brightness, 0, 1))
 		{
 			currentLevel = nextLevel;
 		}
 	}
-	else if (brightness < 255) brightness = tr::lerp(brightness, 255, 5 * Window::getDeltaTime());
+	else if (brightness < 255) brightness = tr::clamp(tr::lerp(brightness, 255, 5 * Window::getDeltaTime()), 0, 255);
 	music.setVolume(brightness / 255 * musicVolume);
 	if (getCurrentLevel()->musicFilename != currentMusic)
 	{
@@ -486,7 +481,7 @@ void World::Level::update()
 			p->shape.move(p->speed * Window::getDeltaTime());
 			for (int j = 0; j < triggers.size(); j++)
 			{
-				if (triggers[j].rect.intersects(p->shape.getGlobalBounds()))
+				if (triggers[j].rect.intersects(p->shape.getGlobalBounds()) && triggers[j].getVar("collision").num != 0)
 				{
 					p->destroyed = true;
 					break;
@@ -516,6 +511,25 @@ void World::Level::update()
 	auto *camOwner = getEntity(cam.owner);
 	if (camOwner)
 	{
+		if (!getVar("interactableTrigger").str.isEmpty())
+		{
+			setVar("showInteraction", camOwner->getHitbox().intersects(getTrigger(getVar("interactableTrigger"))->rect));
+		}
+		for (int i = 0; i < triggers.size(); i++)
+		{
+			if (triggers[i].rect.intersects(camOwner->getHitbox()) &&
+				triggers[i].hasVar("inter") &&
+				(triggers[i].hasVar("usages") ? triggers[i].getVar("used") < triggers[i].getVar("usages") : true))
+			{
+				setVar("showInteraction", camOwner->getHitbox().intersects(triggers[i].rect) && (CSManager::current.x ? !CSManager::active : true));
+				setVar("interactableTrigger", camOwner->getHitbox().intersects(triggers[i].rect) ? triggers[i].getVar("name").str : "");
+			}
+			else
+			{
+				setVar("showInteraction", 0);
+				setVar("interactableTrigger", "");	
+			}
+		}
 		if (getVar("showInteraction") && camOwner->getVar("interacting"))
 		{
 			auto *t = getTrigger(getVar("interactableTrigger"));
@@ -682,7 +696,7 @@ void World::Camera::update(sf::Vector2f mapSize)
 	view.setCenter(tr::lerpVec(
 		view.getCenter(),
 		tr::clampVec(pos, min, max),
-		0.05
+		5 * Window::getDeltaTime()
 	));
 }
 
@@ -837,7 +851,7 @@ World::ParticleGenerator::ParticleGenerator(sf::String name, sf::String spawn, s
 
 void tr::execute(sf::String cmd)
 {
-	auto args = tr::splitStr(cmd, "-");
+	auto args = tr::splitStr(cmd, " ");
 	if (args[0] == "window")
 	{
 		if (args[1] == "close") { Window::close(); }
@@ -927,6 +941,21 @@ void tr::execute(sf::String cmd)
 		{
 			CSManager::worlds[CSManager::current.y].currentChange = args[2];
 		}
+	}
+	else if (args[0] == "spawnParticle")
+	{
+		sf::Vector2f pos = {
+			tr::randBetween(std::stof(args[1].toAnsiString()), std::stof(args[3].toAnsiString())),
+			tr::randBetween(std::stof(args[2].toAnsiString()), std::stof(args[4].toAnsiString()))
+		}, speed = {
+			tr::randBetween(std::stof(args[5].toAnsiString()), std::stof(args[7].toAnsiString())),
+			tr::randBetween(std::stof(args[6].toAnsiString()), std::stof(args[8].toAnsiString()))
+		};
+		auto lvl = World::getCurrentLevel();
+		auto part = ParticleSystem::createParticle(lvl->world, args[9], pos, speed);
+		part.life = std::stof(args[10].toAnsiString());
+		lvl->parts.push_back(part);
+		lvl->parts[lvl->parts.size() - 1].rb.setUserData("particle_" + std::to_string(lvl->parts.size() - 1));
 	}
 }
 

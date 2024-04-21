@@ -99,6 +99,33 @@ void Window::update()
 			window.setView(sf::View({0, 0, e.size.width, e.size.height}));
 			screen.create(e.size.width, e.size.height);
 		}
+		else if (e.type == sf::Event::KeyPressed)
+		{
+			if (e.key.code == sf::Keyboard::F11)
+			{
+				setVar("Fullscreen", !getVar("Fullscreen"));
+				if (vars.getVar("Fullscreen"))
+				{
+					window.create(
+						sf::VideoMode::getDesktopMode(),
+						vars.getVar("Title").str,
+						sf::Style::Fullscreen,
+						sf::ContextSettings(24, 0, 0, 3, 3)
+					);
+				}
+				else
+				{
+					window.create(
+						sf::VideoMode(vars.getVar("SizeX"), vars.getVar("SizeY")),
+						vars.getVar("Title").str,
+						sf::Style::Default,
+						sf::ContextSettings(24, 0, 0, 3, 3)
+					);
+					if (hasVar("PosX") && hasVar("PosY")) window.setPosition({getVar("PosX"), getVar("PosY")});
+				}
+				screen.create(getSize().x, getSize().y);
+			}
+		}
 		events.push_back(e);
 	}
 }

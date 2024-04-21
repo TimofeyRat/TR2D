@@ -9,9 +9,10 @@
 	<trigger pos_str="0.000000 480.000000" size_str="1152.000000 32.000000" name_str="ground" friction_num="1" static_num="1" collision_num="1" />
 	<trigger pos_str="1152.000000 0.000000" size_str="32.000000 480.000000" name_str="wall" friction_num="0" static_num="1" collision_num="1" />
 	<trigger pos_str="290.000000 325.000000" size_str="69.000000 153.000000" name_str="gotoSwamp" inter_str="world-setLevel-swamp" collision_num="0" />
-	<trigger pos_str="530.000000 390.000000" size_str="120.000000 90.000000" name_str="nightStand" inter_str="inv-addItem-item:lighter|inv-addItem-weapon:sticky_blade" usages_num="1" collision_num="0" />
-	<trigger pos_str="0 0" size_str="1152 480" name_str="cutscene" static_num="1" collision_num="0" enter_str="cutscene-start-room" enters_num="1" />
+	<trigger pos_str="530.000000 390.000000" size_str="120.000000 90.000000" name_str="nightStand" inter_str="inv addItem item:lighter|inv addItem weapon:sticky_blade" usages_num="1" collision_num="0" />
+	<trigger pos_str="0 0" size_str="1152 480" name_str="cutscene" static_num="1" collision_num="0" enter_str="cutscene start room" enters_num="1" />
 	<entity name="Nasake" pos="500.000000 370.000000" />
+	<entity name="Greed" pos="0 0" />
 	<control ent="Nasake" controller="keyboard" />
 </level>
 <level name="swamp">
@@ -23,7 +24,7 @@
 	<trigger pos_str="0.000000 608.000000" size_str="1280.000000 32.000000" name_str="ground" friction_num="1" static_num="1" collision_num="1" x_num="0" y_num="608" w_num="1280" h_num="32" />
 	<trigger pos_str="-32.000000 0.000000" size_str="32.000000 608.000000" name_str="wall" static_num="1" collision_num="1" x_num="-32" y_num="0" w_num="32" h_num="608" />
 	<trigger pos_str="1280.000000 0.000000" size_str="32.000000 608.000000" name_str="wall" static_num="1" collision_num="1" x_num="1280" y_num="0" w_num="32" h_num="608" />
-	<trigger pos_str="608.000000 448.000000" size_str="128.000000 160.000000" name_str="gotoRoom" cmd_str="world-setLevel-room" collision_num="0" x_num="608" y_num="448" w_num="128" h_num="160" />
+	<trigger pos_str="608.000000 448.000000" size_str="128.000000 160.000000" name_str="gotoRoom" cmd_str="world setLevel room" collision_num="0" x_num="608" y_num="448" w_num="128" h_num="160" />
 	<entity name="Eutihey" pos="300.000000 570.000000" />
 	<entity name="GreenElemental" pos="500.000000 570.000000" />
 	<entity name="Nasake" pos="750.000000 570.000000" />

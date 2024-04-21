@@ -1,19 +1,54 @@
 <dialogue name="room">
-	<phrase name="start">
+	<phrase name="1">
 		<speaker>Жадность</speaker>
-		<text>НАСАКЕ! Ты принёс деньги?</text>
-		<reply name="test">
-			<text>...</text>
-			<action>cutscene-setClip-next</action>
-			<action>talk-setPhrase-end</action>
+		<text>НАСАКЕЕЕ!</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>cutscene setClip 2</action>
+			<action>talk setPhrase 2</action>
 		</reply>
 	</phrase>
-	<phrase name="end">
+	<phrase name="2">
 		<speaker>Насаке</speaker>
-		<text>Нет.</text>
-		<reply name="test">
-			<text>...</text>
-			<action>cutscene-stop</action>
+		<text>Чего тебе?</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>cutscene setClip 3</action>
+			<action>talk setPhrase 3</action>
 		</reply>
 	</phrase>
+	<phrase name="3">
+		<speaker>Жадность</speaker>
+		<text>Деньги принёс?</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 4</action>
+		</reply>
+	</phrase>
+	<phrase name="4">
+		<speaker>Насаке</speaker>
+		<text>Нет. Я гулять иду, отвянь.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 5</action>
+		</reply>
+	</phrase>
+	<phrase name="5">
+		<speaker>Жадность</speaker>
+		<text>...Ты же знаешь, что сейчас будет?</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 6</action>
+		</reply>
+	</phrase>
+	<phrase name="6">
+		<speaker>Насаке</speaker>
+		<text>Да пошёл ты.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>cutscene setClip 4</action>
+			<action>talk setPhrase 7</action>
+		</reply>
+	</phrase>
+			<!-- <action>cutscene stop</action> -->
 </dialogue>
