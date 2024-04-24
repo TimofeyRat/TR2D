@@ -266,6 +266,18 @@ TR2D_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 TR2D_SOURCE_DIR:STATIC=C:/Projects/TR2D
 
+//Value Computed by CMake
+TRWindow_BINARY_DIR:STATIC=C:/Projects/TR2D/build
+
+//Value Computed by CMake
+TRWindow_IS_TOP_LEVEL:STATIC=ON
+
+//Dependencies for the target
+TRWindow_LIB_DEPENDS:STATIC=general;sfml-window;general;sfml-graphics;general;sfml-system;general;sfml-audio;
+
+//Value Computed by CMake
+TRWindow_SOURCE_DIR:STATIC=C:/Projects/TR2D
+
 
 ########################
 # INTERNAL cache entries

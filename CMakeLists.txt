@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.5.0)
 
-set(CMAKE_EXE_LINKER_FLAGS "-static")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
@@ -27,14 +26,9 @@ set(TR2D_SOURCES
 project(TR2D VERSION 2.0 LANGUAGES CXX)
 add_executable(TR2D TR2D.cpp ${TR2D_SOURCES})
 
-target_link_libraries(TR2D
-	sfml-window-s sfml-system-s opengl32 winmm gdi32
-	sfml-graphics-s sfml-system-s sfml-window-s opengl32 freetype
-	sfml-system-s winmm
-	sfml-audio-s sfml-system-s openal32 flac vorbisenc vorbisfile vorbis ogg
-	box2d)
+target_link_libraries(TR2D sfml-window sfml-graphics sfml-system sfml-audio box2d)
 
-target_compile_options(TR2D PUBLIC -w -static -D SFML_STATIC)
+target_compile_options(TR2D PUBLIC -w)
 
 project(MapEditor VERSION 0.1 LANGUAGES CXX)
 add_executable(MapEditor TRME.cpp

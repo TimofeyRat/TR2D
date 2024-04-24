@@ -58,6 +58,11 @@ void Rigidbody::draw(sf::RenderTarget *target)
 	rs.setOutlineColor(sf::Color::Green);
 	rs.setOutlineThickness(-2);
 	target->draw(rs);
+	sf::CircleShape center(2);
+	center.setOrigin(2, 2);
+	center.setFillColor(sf::Color::Green);
+	center.setPosition(getPosition().x, getPosition().y);
+	target->draw(center);
 }
 
 void Rigidbody::resize(b2World *world, b2Vec2 size)

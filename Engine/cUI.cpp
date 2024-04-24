@@ -624,7 +624,7 @@ void UI::Frame::Object::handle()
 			bg->spr.setColor({bgclr.x, bgclr.y, bgclr.z, bgclr.w});
 			if (CSManager::music.getVolume() > 0)
 			{
-				CSManager::music.setVolume(tr::clamp(CSManager::music.getVolume() - Window::getDeltaTime() * 100, 0, 100));
+				CSManager::music.setVolume(tr::clamp(CSManager::music.getVolume() - Window::getDeltaTime() * 100, 0, Window::getVar("musicVolume")));
 			}
 			else CSManager::music.stop();
 		}
@@ -670,7 +670,7 @@ void UI::Frame::Object::handle()
 		}
 		//Background
 		if (!CSManager::active) { World::getCurrentLevel()->cam.doUpdate = true; return; }
-		CSManager::music.setVolume(tr::clamp(CSManager::music.getVolume() + Window::getDeltaTime() * 100, 0, 100));
+		CSManager::music.setVolume(tr::clamp(CSManager::music.getVolume() + Window::getDeltaTime() * 100, 0, Window::getVar("musicVolume")));
 		if (!CSManager::current.x)
 		{
 			auto *cs = &CSManager::frames[CSManager::current.y];
@@ -757,6 +757,36 @@ void UI::Frame::Object::handle()
 			}
 		}
 		if (!setDesc) { desc->activeTxt = ""; desc->setVar("acc", 1); }
+	}
+	else if (tr::strContains(handler, "console"))
+	{
+		auto txt = getText("console");
+		if (Window::hasEvent(sf::Event::TextEntered))
+		{
+			auto text = txt->activeTxt;
+			auto code = Window::getEvent(sf::Event::TextEntered).text.unicode;
+			if (code == 8) { if (text.getSize() > 1) text.erase(text.getSize() - 1); }
+			else if (code == 9) { text += "\t"; }
+			else if (code == 13)
+			{
+				auto cmd = tr::splitStr(text.substring(1), ";");
+				for (int i = 0; i < cmd.size(); i++)
+				{
+					tr::execute(cmd[i]);
+				}
+				text = ">";
+			}
+			else if (code == 99 && Input::isKeyPressed(sf::Keyboard::LControl))
+			{
+				sf::Clipboard::setString(text.substring(1));
+			}
+			else if (code == 118 && Input::isKeyPressed(sf::Keyboard::LControl))
+			{
+				text += sf::Clipboard::getString();
+			}
+			else if (code != 27) { text += sf::String(code); }
+			txt->activeTxt = text;
+		}
 	}
 }
 
@@ -1053,7 +1083,8 @@ bool UI::updateToggle(bool active, sf::String toggle, sf::FloatRect hitbox)
 {
 	if (toggle.isEmpty()) { return active; }
 	auto args = tr::splitStr(toggle, "-");
-	if (tr::strContains(args[0], "mouseHover"))
+	if (tr::strContains(args[0], "always")) { return std::stoi(args[1].toAnsiString()); }
+	else if (tr::strContains(args[0], "mouseHover"))
 	{
 		return hitbox.contains(Input::getMousePos());
 	}

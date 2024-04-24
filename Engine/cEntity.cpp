@@ -92,7 +92,7 @@ void Entity::update()
 	}
 	auto scale = getVar("scale").num;
 	updateRB(scale);
-	s.setSpeed(getVar("speed")); s.setScale(scale);
+	s.setScale(scale);
 	updateAttack();
 	updateAnim();
 	s.updateBones();
@@ -128,6 +128,7 @@ void Entity::updateAnim()
 		s.setCurrentAnimation(getVar("anim"));
 		return;
 	}
+	s.setSpeed(getVar("speed"));
 	float moveX, moveY, bodyX, bodyY;
 	if (auto *b = rb.getBody())
 	{

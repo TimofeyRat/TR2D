@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = 
 
-CXX_FLAGS = -g -w -static -D SFML_STATIC
+CXX_FLAGS = -g -w
 

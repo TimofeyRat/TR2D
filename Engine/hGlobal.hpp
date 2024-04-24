@@ -85,6 +85,17 @@ namespace tr
 	// \param min Minimal value
 	// \param max Maximal value
 	float randBetween(float min, float max);
+
+	//Get point of Bezier curve.
+	// \param points Control points of the curve(including start and end)
+	// \param t Point to get(between 0 and 1)
+	sf::Vector2f getBezierPoint(std::vector<sf::Vector2f> points, float t);
+
+	//Generate visualization of Bezier curve.
+	// \param points Control points of the curve(including start and end)
+	// \param step Step between points(between 0 and 1)
+	// \param clr Color of line
+	sf::VertexArray generateBezier(std::vector<sf::Vector2f> points, float step, sf::Color clr);
 }
 
 #endif

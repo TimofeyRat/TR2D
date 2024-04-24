@@ -11,24 +11,31 @@
 	<change phrase="skip" skippable="0" anim="intro_end" music="res/audio/music/Ambient.ogg" />
 </frame_cutscene>
 
-<!-- 1060 410 -->
-
 <world_cutscene name="room" dialogue="res/dialogues/cutscenes/room.trdialogue">
-	<clip name="1" duration="2" startPhraseOnEnd="1" phrase="1" music="res/audio/music/Ambient.ogg">
-		<move_ent name="Nasake" start="0 0" end="1030 390" func="set" />
+	<clip name="1" duration="2" startPhraseOnEnd="1" phrase="0" music="res/audio/music/Ambient.ogg">
+		<move_ent name="Nasake" points="1030 390|1" />
 		<anim_ent name="Nasake" animation="room_inbed" />
-		<move_cam pos="100 250 752 240 lerp-2" size="0 0 800 450 set" />
+		<move_cam points="752 240|1" size="0 0 800 450 set" />
 	</clip>
-	<clip name="2" duration="2" startPhraseOnEnd="0" phrase="2" music="res/audio/music/Ambient.ogg">
-		<move_ent name="Greed" start="300 375" end="500 375" func="move" />
-		<move_ent name="Nasake" start="1030 390" end="1000 350" func="linear-1" />
+	<clip name="2" duration="2" startPhraseOnEnd="1" phrase="0" music="res/audio/music/Ambient.ogg">
+		<move_ent name="Greed" points="300 375|500 375|2" />
+		<move_ent name="Nasake" points="1030 400|1050 360|1000 360|1" />
+		<anim_ent name="Greed" animation="wr 0.5" stopOnEnd="1" />
 		<anim_ent name="Nasake" animation="room_getup" />
-		<move_cam pos="752 240 700 270 linear" size="800 450 960 540 lerp-2" />
+		<move_cam points="752 240|700 270|1" size="800 450 960 540 lerp-2" />
 	</clip>
-	<clip name="3" duration="1" startPhraseOnEnd="0" phrase="4" music="res/audio/music/Ambient.ogg">
-		<move_ent name="Greed" start="0 0" end="500 375" func="set" />
-		<move_ent name="Greed" start="500 375" end="500 375" func="move" />
-		<move_ent name="Nasake" start="1000 350" end="970 360" func="linear-1" />
+	<clip name="3" duration="1" startPhraseOnEnd="0" phrase="0" music="res/audio/music/Ambient.ogg">
+		<move_ent name="Greed" points="500 375|1" />
+		<move_ent name="Nasake" points="1000 350|970 360|1" />
 		<anim_ent name="Nasake" animation="room_stand" />
+	</clip>
+	<clip name="4" duration="1.2" startPhraseOnEnd="1" phrase="0" music="res/audio/music/Ambient.ogg">
+		<move_ent name="Greed" points="500 375|500 150|500 175|1" />
+		<move_ent name="Nasake" points="970 360|1" />
+		<anim_ent name="Nasake" animation="room_stand" />
+		<anim_ent name="Greed" animation="room_obsessed 1" />
+		<execute offset="1.1" count="1" freq="0">particleCurve 510_150|970_150|990_360 100 -5_-5_10_10 soul 5 10</execute>
+		<execute offset="1.1" count="1" freq="0">world playSound res/audio/sfx/bass.ogg 510 150 1000</execute>
+		<execute offset="1.1" count="1" freq="0">ent setNum Nasake HP 75</execute>
 	</clip>
 </world_cutscene>

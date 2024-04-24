@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
-<bone id="0" root="0" length="23" angle="90" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="4.500000 0" layer="1">30 18 9 23</bone>
-<bone id="1" root="1" length="18" angle="240" tex="res/tex/characters/nasake.png" scale="1 1" offset="180" origin="9.500000 18" layer="1">44 18 18 18</bone>
-<bone id="2" root="2" length="5" angle="90" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
+<bone id="0" root="0" length="23" angle="0" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="4.500000 0" layer="1">30 18 9 23</bone>
+<bone id="1" root="1" length="18" angle="180" tex="res/tex/characters/nasake.png" scale="1 1" offset="180" origin="9.500000 18" layer="1">25 0 18 18</bone>
+<bone id="2" root="2" length="5" angle="0" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
 <bone id="3" root="2" length="8.5" angle="90" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
-<bone id="4" root="2" length="10" angle="90" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 2" layer="0">25 19 -5 12</bone>
-<bone id="5" root="4" length="13" angle="90" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="3.500000 0" layer="0">26 31 -6 13</bone>
+<bone id="4" root="2" length="10" angle="-30" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 2" layer="0">25 19 -5 12</bone>
+<bone id="5" root="4" length="13" angle="25" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="3.500000 0" layer="0">26 31 -6 13</bone>
 <bone id="6" root="2" length="8.5" angle="-90" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
-<bone id="7" root="2" length="10" angle="90" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 2" layer="2">25 19 -5 12</bone>
-<bone id="8" root="7" length="13" angle="90" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="3.500000 0" layer="2">26 31 -6 13</bone>
+<bone id="7" root="2" length="10" angle="0" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 2" layer="2">25 19 -5 12</bone>
+<bone id="8" root="7" length="13" angle="0" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="3.500000 0" layer="2">26 31 -6 13</bone>
 <bone id="9" root="0" length="3" angle="90" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
 <bone id="10" root="0" length="8" angle="90" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 0" layer="0">32 41 5 9</bone>
 <bone id="11" root="10" length="8" angle="90" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 0" layer="0">32 50 5 8</bone>
 <bone id="12" root="11" length="5" angle="90" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="6.500000 0" layer="0">28 58 9 5</bone>
 <bone id="13" root="0" length="3" angle="-90" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
-<bone id="14" root="0" length="8" angle="160" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 0" layer="1">32 41 5 9</bone>
-<bone id="15" root="14" length="8" angle="50" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 0" layer="1">32 50 5 8</bone>
-<bone id="16" root="15" length="5" angle="0" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="6.500000 0" layer="1">28 58 9 5</bone>
+<bone id="14" root="0" length="8" angle="90" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 0" layer="1">32 41 5 9</bone>
+<bone id="15" root="14" length="8" angle="-10" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 0" layer="1">32 50 5 8</bone>
+<bone id="16" root="15" length="5" angle="-10" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="6.500000 0" layer="1">28 58 9 5</bone>
 <animation name="idle" duration="2.000000" repeat="true">
 	<change bone="7">
 		<frame timestamp="0.000000">
@@ -1780,7 +1780,7 @@
 	</change>
 	<change bone="7">
 		<frame timestamp="0.000000">
-			<rotate value="-10" />
+			<rotate />
 		</frame>
 	</change>
 	<change bone="5">
@@ -1796,7 +1796,7 @@
 			<rotate value="65" />
 		</frame>
 		<frame timestamp="1.000000">
-			<rotate value="35" />
+			<rotate />
 		</frame>
 	</change>
 	<change bone="10">

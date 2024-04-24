@@ -56,7 +56,7 @@ void WorldCL::ParticleTrigger(int partID, sf::String triggerName, bool start)
 {
 	auto *part = &World::getCurrentLevel()->parts[partID];
 	auto *trigger = World::getCurrentLevel()->getTrigger(triggerName);
-	part->destroyed = true;
+	if (part->colliding) part->destroyed = true;
 }
 
 void WorldCL::ParticleEntity(int partID, sf::String entName, bool start)
@@ -67,7 +67,7 @@ void WorldCL::ParticleEntity(int partID, sf::String entName, bool start)
 	{
 		ent->addEffect(part->effects[i]);
 	}
-	part->destroyed = true;
+	if (part->colliding) part->destroyed = true;
 }
 
 void WorldCL::EntityTrigger(sf::String entName, sf::String triggerName, bool start)
@@ -231,10 +231,7 @@ void World::update()
 	if (!active)
 	{
 		music.pause();
-		for (int i = 0; i < lvls[currentLevel].sounds.size(); i++)
-		{
-			lvls[currentLevel].sounds[i].sound.pause();
-		}
+		lvls[currentLevel].sounds.clear();
 		return;
 	}
 	if (currentLevel != nextLevel)
@@ -400,12 +397,7 @@ void World::Level::update()
 	for (int i = 0; i < sounds.size(); i++)
 	{
 		auto *s = &sounds[i].sound;
-		if (s->getStatus() == sf::Sound::Status::Paused) { s->play(); }
-		if (s->getStatus() == sf::Sound::Status::Stopped)
-		{
-			if (s->getPlayingOffset().asSeconds() > 0) sounds.erase(sounds.begin() + i);
-			else sounds[i].sound.play();
-		}
+		if (s->getPlayingOffset().asSeconds() >= s->getBuffer()->getDuration().asSeconds()) { sounds.erase(sounds.begin() + i); continue; }
 	}
 	for (int i = 0; i < partGens.size(); i++)
 	{
@@ -479,24 +471,27 @@ void World::Level::update()
 		if (!p->physics)
 		{
 			p->shape.move(p->speed * Window::getDeltaTime());
-			for (int j = 0; j < triggers.size(); j++)
+			if (p->colliding)
 			{
-				if (triggers[j].rect.intersects(p->shape.getGlobalBounds()) && triggers[j].getVar("collision").num != 0)
+				for (int j = 0; j < triggers.size(); j++)
 				{
-					p->destroyed = true;
-					break;
-				}
-			}
-			if (!p->destroyed) for (int j = 0; j < ents.size(); j++)
-			{
-				if (ents[j].getHitbox().intersects(p->shape.getGlobalBounds()))
-				{
-					for (int k = 0; k < p->effects.size(); k++)
+					if (triggers[j].rect.intersects(p->shape.getGlobalBounds()) && triggers[j].getVar("collision").num != 0)
 					{
-						ents[j].addEffect(p->effects[k]);
+						p->destroyed = true;
+						break;
 					}
-					p->destroyed = true;
-					break;
+				}
+				if (!p->destroyed) for (int j = 0; j < ents.size(); j++)
+				{
+					if (ents[j].getHitbox().intersects(p->shape.getGlobalBounds()))
+					{
+						for (int k = 0; k < p->effects.size(); k++)
+						{
+							ents[j].addEffect(p->effects[k]);
+						}
+						p->destroyed = true;
+						break;
+					}
 				}
 			}
 		}
@@ -585,10 +580,6 @@ void World::Level::draw(sf::RenderTarget *target)
 	cam.update(mapSize);
 	sf::Listener::setPosition(cam.view.getCenter().x, 0, cam.view.getCenter().y);
 	sf::FloatRect camRect = {cam.view.getCenter() - cam.view.getSize() / 2.0f, cam.view.getSize()};
-	for (int i = 0; i < ents.size(); i++)
-	{
-		if (ents[i].getHitbox().intersects(camRect)) ents[i].draw(&screen);
-	}
 	for (int i = 0; i < items.size(); i++)
 	{
 		items[i].draw(world);
@@ -608,6 +599,14 @@ void World::Level::draw(sf::RenderTarget *target)
 		}
 		p->shape.setOrigin(p->shape.getLocalBounds().getSize() / 2.0f);
 		if (p->shape.getGlobalBounds().intersects(camRect)) screen.draw(p->shape);
+	}
+	for (int i = 0; i < ents.size(); i++)
+	{
+		if (ents[i].getHitbox().intersects(camRect)) ents[i].draw(&screen);
+	}
+	if (Window::getVar("debug") && CSManager::active)
+	{
+		CSManager::drawDebug(&screen);
 	}
 	screen.display();
 	sf::Sprite spr(screen.getTexture());
@@ -855,9 +854,17 @@ void tr::execute(sf::String cmd)
 	if (args[0] == "window")
 	{
 		if (args[1] == "close") { Window::close(); }
-		if (args[1] == "showCredits")
+		else if (args[1] == "showCredits")
 		{
 			Window::setVar("showCredits", std::stoi(args[2].toAnsiString()));
+		}
+		else if (args[1] == "setStr")
+		{
+			Window::setVar(args[2], args[3]);
+		}
+		else if (args[1] == "setNum")
+		{
+			Window::setVar(args[2], std::stof(args[3].toAnsiString()));
 		}
 	}
 	else if (args[0] == "world")
@@ -917,7 +924,8 @@ void tr::execute(sf::String cmd)
 	}
 	else if (args[0] == "cutscene")
 	{
-		if (args[1] == "start")
+		if (args[1] == "init") { CSManager::init(); }
+		else if (args[1] == "start")
 		{
 			if (!CSManager::frames.size() && !CSManager::worlds.size()) { CSManager::init(); }
 			CSManager::setCutscene(args[2]);
@@ -956,6 +964,69 @@ void tr::execute(sf::String cmd)
 		part.life = std::stof(args[10].toAnsiString());
 		lvl->parts.push_back(part);
 		lvl->parts[lvl->parts.size() - 1].rb.setUserData("particle_" + std::to_string(lvl->parts.size() - 1));
+	}
+	else if (args[0] == "particleCurve")
+	{
+		auto points = tr::splitStr(args[1], "|");
+		std::vector<sf::Vector2f> curve;
+		for (int i = 0; i < points.size(); i++)
+		{
+			auto p = tr::splitStr(points[i], "_");
+			curve.push_back({
+				std::stof(p[0].toAnsiString()),
+				std::stof(p[1].toAnsiString())
+			});
+		}
+		auto speed = tr::splitStr(args[3], "_");
+		auto step = 1.0f / std::stof(args[2].toAnsiString());
+		auto name = args[4];
+		auto count = std::stof(args[5].toAnsiString());
+		auto life = std::stof(args[6].toAnsiString());
+		for (float t = 0; t <= 1; t += step)
+		{
+			auto pos = tr::getBezierPoint(curve, t);
+			auto lvl = World::getCurrentLevel();
+			for (int i = 0; i < count; i++)
+			{
+				sf::Vector2f s = {
+					tr::randBetween(std::stof(speed[0].toAnsiString()), std::stof(speed[2].toAnsiString())),
+					tr::randBetween(std::stof(speed[1].toAnsiString()), std::stof(speed[3].toAnsiString()))
+				};
+				auto part = ParticleSystem::createParticle(lvl->world, name, pos, s);
+				part.life = life;
+				lvl->parts.push_back(part);
+				lvl->parts[lvl->parts.size() - 1].rb.setUserData("particle_" + std::to_string(lvl->parts.size() - 1));
+			}
+		}
+	}
+	else if (args[0] == "assets")
+	{
+		if (args[1] == "init") { AssetManager::init(); }
+		else if (args[1] == "reload")
+		{
+			if (args[2] == "text") { AssetManager::reloadText(args[3]); }
+			else if (args[2] == "texture") { AssetManager::reloadTexture(args[3]); }
+			else if (args[2] == "sound") { AssetManager::reloadSound(args[3]); }
+			else if (args[2] == "font") { AssetManager::reloadFont(args[3]); }
+		}
+	}
+	else if (args[0] == "ent")
+	{
+		if (args[1] == "setNum")
+		{
+			World::getCurrentLevel()->getEntity(args[2])->setVar(args[3], std::stof(args[4].toAnsiString()));
+		}
+		else if (args[1] == "setStr")
+		{
+			World::getCurrentLevel()->getEntity(args[2])->setVar(args[3], args[4]);
+		}
+		else if (args[1] == "setPos")
+		{
+			World::getCurrentLevel()->getEntity(args[2])->setPosition({
+				std::stof(args[3].toAnsiString()),
+				std::stof(args[4].toAnsiString())
+			});
+		}
 	}
 }
 

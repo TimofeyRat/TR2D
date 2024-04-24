@@ -114,3 +114,30 @@ float tr::randBetween(float min, float max)
 {
 	return min + (float)rand() / RAND_MAX * (max - min);
 }
+
+sf::Vector2f tr::getBezierPoint(std::vector<sf::Vector2f> pts, float t)
+{
+	if (pts.size() == 0) { return {0, 0}; }
+	if (pts.size() == 1) { return pts[0]; }
+	if (pts.size() == 2) { return tr::lerpVec(pts[0], pts[1], t); }
+	if (pts.size() == 3)
+	{
+		return tr::lerpVec(
+			tr::lerpVec(pts[0], pts[1], t),
+			tr::lerpVec(pts[1], pts[2], t),
+			t
+		);
+	}
+	return {0, 0};
+}
+
+sf::VertexArray tr::generateBezier(std::vector<sf::Vector2f> points, float step, sf::Color clr)
+{
+	sf::VertexArray va(sf::LineStrip, 1.0f / step);
+	int current = 0;
+	for (float i = 0; i <= 1; i += step)
+	{
+		va[current++] = {tr::getBezierPoint(points, i), clr};
+	}
+	return va;
+}

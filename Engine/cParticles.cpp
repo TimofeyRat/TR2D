@@ -17,6 +17,7 @@ ParticleTemplate::ParticleTemplate()
 	rb = Rigidbody();
 	points.clear();
 	physics = true;
+	collide = true;
 }
 
 ParticleTemplate::ParticleTemplate(pugi::xml_node node)
@@ -64,7 +65,12 @@ void ParticleTemplate::parse(pugi::xml_node node)
 		}
 		else if (type == "physics")
 		{
-			physics = part.attribute(L"dynamic").as_bool();
+			if (part.attribute(L"dynamic").as_int() == -1)
+			{
+				physics = false;
+				collide = false;
+			}
+			else physics = part.attribute(L"dynamic").as_bool();
 			if (physics) rb.create({0, 0}, {1, 1},
 				part.attribute(L"friction").as_float(),
 				part.attribute(L"mass").as_float(),
@@ -108,6 +114,14 @@ Particle ParticleTemplate::toParticle()
 			clr.z = tr::randBetween(minClr.b, maxClr.b);
 			clr.w = tr::randBetween(minClr.a, maxClr.a);
 		}
+		if (clrType == "randSame")
+		{
+			float t = tr::randBetween(0, 1);
+			clr.x = minClr.r + (maxClr.r - minClr.r) * t;
+			clr.y = minClr.g + (maxClr.g - minClr.g) * t;
+			clr.z = minClr.b + (maxClr.b - minClr.b) * t;
+			clr.w = minClr.a + (maxClr.a - minClr.a) * t;
+		}
 		if (clrType == "set")
 		{
 			clr = {
@@ -124,6 +138,7 @@ Particle ParticleTemplate::toParticle()
 		part.fa.setCurrentAnimation(fa.getCurrentAnim()->name);
 		part.shape.setTexture(part.fa.getCurrentAnim()->texture);
 	}
+	part.colliding = collide;
 	part.physics = physics;
 	if (physics) part.rb = rb;
 	part.shape.setPointCount(points.size());
@@ -144,6 +159,7 @@ Particle::Particle()
 	timer = life = 0;
 	destroyed = false;
 	physics = true;
+	colliding = true;
 	speed = {0, 0};
 }
 

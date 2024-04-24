@@ -28,29 +28,42 @@ public:
 		{
 			struct MoveEnt
 			{
-				sf::String entName, math;
-				sf::Vector2f start, target;
+				sf::String entName;
+				float duration, offset;
+				std::vector<sf::Vector2f> curve;
 				MoveEnt();
-				MoveEnt(sf::String name, sf::Vector2f s, sf::Vector2f e, sf::String lerpFunc);
+				MoveEnt(sf::String name, std::vector<sf::Vector2f> points, float s);
 			};
 			struct MoveCam
 			{
-				sf::Vector2f startPos, endPos;
+				std::vector<sf::Vector2f> curve;
 				sf::Vector2f startSize, endSize;
-				sf::String posMath, sizeMath;
+				sf::String sizeMath;
+				float posDuration, offset;
 				MoveCam();
-				MoveCam(sf::Glsl::Vec4 pos, sf::Glsl::Vec4 size, sf::String posLerpFunc, sf::String sizeLerpFunc);
+				MoveCam(std::vector<sf::Vector2f> points, sf::Glsl::Vec4 size, sf::String sizeLerpFunc, float posSpeed);
 			};
 			struct AnimEnt
 			{
 				sf::String entName, animName;
+				bool stopOnEnd;
+				float offset;
 				AnimEnt();
-				AnimEnt(sf::String ent, sf::String anim);
+				AnimEnt(sf::String ent, sf::String anim, bool soe);
+			};
+			struct Execute
+			{
+				sf::String command;
+				int count, exec;
+				float timer, freq, offset;
+				Execute();
+				Execute(sf::String cmd, int count, float frequency);
 			};
 			MoveCam cam;
 			bool startPhraseOnEnd;
 			std::vector<MoveEnt> moves;
 			std::vector<AnimEnt> anims;
+			std::vector<Execute> exec;
 			sf::String name, musicPath;
 			float duration, current;
 			Change();
@@ -71,6 +84,7 @@ public:
 	static sf::String getTalk();
 	static bool active;
 	static sf::String getMusic(sf::String phrase);
+	static void drawDebug(sf::RenderTarget *target);
 	//x - type(0 - frame, 1 - world), y - index
 	static sf::Vector2i current;
 	static std::vector<FrameCutscene> frames;

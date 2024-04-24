@@ -50,5 +50,22 @@
 			<action>talk setPhrase 7</action>
 		</reply>
 	</phrase>
-			<!-- <action>cutscene stop</action> -->
+	<phrase name="7">
+		<speaker>Жадность</speaker>
+		<text>НЕ СМЕЙ ТАК РАЗГОВАРИВАТЬ СО МНОЙ!</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 8</action>
+		</reply>
+	</phrase>
+	<phrase name="8">
+		<speaker>Насаке</speaker>
+		<text>ДА ОТВАЛИ ТЫ УЖЕ!</text>
+		<reply name="next">
+			<text>[->]</text>
+			<!-- <action>cutscene setClip 5</action> -->
+			<!-- <action>talk setPhrase 8</action> -->
+			<action>cutscene stop</action>
+		</reply>
+	</phrase>
 </dialogue>

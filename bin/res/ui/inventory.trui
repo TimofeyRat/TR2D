@@ -2,6 +2,10 @@
 <frame name="inventory">
 	<object name="hotKeys">
 		<action event="key-click-Escape" condition="null">world setActive 0;ui load res/ui/mainMenu.trui</action>
+		<action event="key-click-F1" condition="null">ui setFrame console;input active 0</action>
+		<action event="key-click-F2" condition="null">assets reload text res/cutscenes/intro.trcs;cutscene init;cutscene start room;world load res/worlds/start.trworld</action>
+		<action event="key-click-F4" condition="null">assets init</action>
+		<action event="key-click-F5" condition="null">particleCurve 500_100|700_100|700_200 100 -5_-5_5_5 rainDrop 1 2</action>
 	</object>
 	<object name="inv">
 		<toggle event="key-click-E" />
@@ -120,9 +124,8 @@
 		<text name="debugger">
 			<toggle event="key-click-F3" />
 			<font path="res/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
-			<!-- <txt type="idle" appear="set">{Window-int-cursorX} {Window-int-cursorY}</txt> -->
-			<!-- <txt type="active" appear="set">{Window-int-cursorX} {Window-int-cursorY}</txt> -->
-			<txt type="active" appear="set">{Nasake-int-posX} {Nasake-int-posY}</txt>
+			<txt type="active" appear="set">{Window-int-cursorX} {Window-int-cursorY}</txt>
+			<!-- <txt type="active" appear="set">{Nasake-int-posX} {Nasake-int-posY}</txt> -->
 			<position type="inherit-txt-rel">1 1 1 1 inventory-Debug-FPS</position>
 			<origin type="relative-lerp">1 1 1 0</origin>
 			<color state="idle" type="lerp">255 255 255 255</color><outline state="idle" type="lerp">0 0 0 255</outline>
@@ -183,6 +186,27 @@
 			<position type="inherit-obj-rel">0.25 0 0.25 0 inventory-dialogue</position>
 			<origin type="relative">0.5 0.5 0.5 0.5</origin>
 			<color state="idle" type="lerp">255 255 255 127</color><outline state="idle" type="lerp">0 0 0 127</outline>
+			<color state="active" type="lerp">255 255 255 255</color><outline state="active" type="lerp">0 0 0 255</outline>
+		</text>
+	</object>
+</frame>
+<frame name="console">
+	<object name="keys">
+		<action event="key-click-Escape" condition="null">ui setFrame inventory;input active 1</action>
+		<action event="key-click-Enter" condition="null">ui setFrame inventory;input active 1</action>
+	</object>
+	<object name="console">
+		<position type="relative-set">0 1 0 1</position>
+		<update type="console" />
+		<toggle event="always-1" />
+		<text name="console">
+			<toggle event="obj-console-console" />
+			<font path="res/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
+			<txt type="idle" appear="set">></txt>
+			<txt type="active" appear="set">></txt>
+			<position type="relative-set">0 1 0 1</position>
+			<origin type="relative-lerp">0 0 0 2</origin>
+			<color state="idle" type="lerp">255 255 255 0</color><outline state="idle" type="lerp">0 0 0 0</outline>
 			<color state="active" type="lerp">255 255 255 255</color><outline state="active" type="lerp">0 0 0 255</outline>
 		</text>
 	</object>

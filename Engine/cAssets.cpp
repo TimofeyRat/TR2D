@@ -114,7 +114,7 @@ void AssetManager::init()
 		t.setFillColor({clr, clr, clr, clr});
 		t.setString("Loading resource " +
 			std::to_string(currentFileLoading) + "/" + std::to_string(fileCount) +
-			" (" + files[currentFileLoading] + ")...");
+			" (" + files[tr::clamp(currentFileLoading, 0, fileCount - 1)] + ")...");
 		t.setOrigin(t.getGlobalBounds().getSize() / 2.0f);
 		t.setPosition(Window::getSize() / 2.0f);
 

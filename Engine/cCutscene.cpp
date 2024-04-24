@@ -85,41 +85,69 @@ void CSManager::init()
 						{
 							if (sf::String(change.name()) == "move_cam")
 							{
-								auto ap = change.attribute(L"pos");
+								auto pts = tr::splitStr(change.attribute(L"points").as_string(), "|");
+								std::vector<sf::Vector2f> curve;
+								for (int i = 0; i < pts.size() - 1; i++)
+								{
+									auto p = tr::splitStr(pts[i], " ");
+									curve.push_back({
+										std::stof(p[0].toAnsiString()),
+										std::stof(p[1].toAnsiString())
+									});
+								}
 								auto as = change.attribute(L"size");
-								auto pos = ap.empty() ? std::vector<sf::String>() : tr::splitStr(ap.as_string(), " ");
 								auto size = as.empty() ? std::vector<sf::String>() : tr::splitStr(as.as_string(), " ");
 								c.cam = WorldCutscene::Change::MoveCam(
-									(ap.empty() ? sf::Glsl::Vec4(0, 0, 0, 0) :
-									sf::Glsl::Vec4(
-										std::stof(pos[0].toAnsiString()), std::stof(pos[1].toAnsiString()),
-										std::stof(pos[2].toAnsiString()), std::stof(pos[3].toAnsiString())
-									)),
+									curve,
 									(as.empty() ? sf::Glsl::Vec4(0, 0, 0, 0) :
 									sf::Glsl::Vec4(
 										std::stof(size[0].toAnsiString()), std::stof(size[1].toAnsiString()),
 										std::stof(size[2].toAnsiString()), std::stof(size[3].toAnsiString())
 									)),
-									(ap.empty() ? "" : pos[4]), (as.empty() ? "" : size[4])
+									(as.empty() ? "" : size[4]), std::stof(pts[pts.size()- 1].toAnsiString())
 								);
+								c.cam.offset = change.attribute(L"offset").as_float();
 							}
 							else if (sf::String(change.name()) == "move_ent")
 							{
-								auto sp = tr::splitStr(change.attribute(L"start").as_string(), " ");
-								auto ep = tr::splitStr(change.attribute(L"end").as_string(), " ");
-								c.moves.push_back(WorldCutscene::Change::MoveEnt(
+								auto pts = tr::splitStr(change.attribute(L"points").as_string(), "|");
+								std::vector<sf::Vector2f> curve;
+								for (int i = 0; i < pts.size() - 1; i++)
+								{
+									auto p = tr::splitStr(pts[i], " ");
+									curve.push_back({
+										std::stof(p[0].toAnsiString()),
+										std::stof(p[1].toAnsiString())
+									});
+								}
+								auto m = WorldCutscene::Change::MoveEnt(
 									change.attribute(L"name").as_string(),
-									{std::stof(sp[0].toAnsiString()), std::stof(sp[1].toAnsiString())},
-									{std::stof(ep[0].toAnsiString()), std::stof(ep[1].toAnsiString())},
-									change.attribute(L"func").as_string()
-								));
+									curve,
+									std::stof(pts[pts.size() - 1].toAnsiString())
+								);
+								m.offset = change.attribute(L"offset").as_float();
+								c.moves.push_back(m);
 							}
 							else if (sf::String(change.name()) == "anim_ent")
 							{
-								c.anims.push_back(WorldCutscene::Change::AnimEnt(
+								auto soe = change.attribute(L"stopOnEnd");
+								auto a = WorldCutscene::Change::AnimEnt(
 									change.attribute(L"name").as_string(),
-									change.attribute(L"animation").as_string()
-								));
+									change.attribute(L"animation").as_string(),
+									(soe.empty() ? false : soe.as_bool())
+								);
+								a.offset = change.attribute(L"offset").as_float();
+								c.anims.push_back(a);
+							}
+							else if (sf::String(change.name()) == "execute")
+							{
+								auto e = WorldCutscene::Change::Execute(
+									change.text().get(),
+									change.attribute(L"count").as_int(),
+									change.attribute(L"freq").as_float()
+								);
+								e.offset = change.attribute(L"offset").as_float();
+								c.exec.push_back(e);
 							}
 						}
 						wc.changes.push_back(c);
@@ -160,32 +188,33 @@ sf::String CSManager::getMusic(sf::String phrase)
 
 CSManager::WorldCutscene::Change::MoveEnt::MoveEnt()
 {
-	entName = math = "";
-	start = target = {0, 0};
+	entName = "";
+	duration = 0;
+	curve.clear();
 }
 
-CSManager::WorldCutscene::Change::MoveEnt::MoveEnt(sf::String name, sf::Vector2f s, sf::Vector2f e, sf::String lerp)
+CSManager::WorldCutscene::Change::MoveEnt::MoveEnt(sf::String name, std::vector<sf::Vector2f> pts, float lerp)
 {
 	entName = name;
-	math = lerp;
-	start = s;
-	target = e;
+	duration = lerp;
+	curve = pts;
 }
 
 CSManager::WorldCutscene::Change::MoveCam::MoveCam()
 {
-	startPos = endPos = startSize = endSize = {0, 0};
-	posMath = sizeMath = "";
+	curve.clear();
+	startSize = endSize = {0, 0};
+	sizeMath = "";
+	posDuration = 0;
 }
 
-CSManager::WorldCutscene::Change::MoveCam::MoveCam(sf::Glsl::Vec4 pos, sf::Glsl::Vec4 size, sf::String posLerp, sf::String sizeLerp)
+CSManager::WorldCutscene::Change::MoveCam::MoveCam(std::vector<sf::Vector2f> pts, sf::Glsl::Vec4 size, sf::String sizeLerp, float ps)
 {
-	startPos = {pos.x, pos.y};
-	endPos = {pos.z, pos.w};
+	curve = pts;
 	startSize = {size.x, size.y};
 	endSize = {size.z, size.w};
-	posMath = posLerp;
 	sizeMath = sizeLerp;
+	posDuration = ps;
 }
 
 CSManager::WorldCutscene::Change::AnimEnt::AnimEnt()
@@ -193,10 +222,25 @@ CSManager::WorldCutscene::Change::AnimEnt::AnimEnt()
 	entName = animName = "";
 }
 
-CSManager::WorldCutscene::Change::AnimEnt::AnimEnt(sf::String ent, sf::String anim)
+CSManager::WorldCutscene::Change::AnimEnt::AnimEnt(sf::String ent, sf::String anim, bool soe)
 {
 	entName = ent;
 	animName = anim;
+	stopOnEnd = soe;
+}
+
+CSManager::WorldCutscene::Change::Execute::Execute()
+{
+	command = "";
+	freq = count = exec = timer = 0;
+}
+
+CSManager::WorldCutscene::Change::Execute::Execute(sf::String cmd, int c, float frequency)
+{
+	command = cmd;
+	freq = frequency;
+	count = c;
+	exec = timer = 0;
 }
 
 CSManager::WorldCutscene::Change::Change()
@@ -225,7 +269,7 @@ void CSManager::WorldCutscene::Change::update()
 	if (current < duration)	current += Window::getDeltaTime();
 	auto lvl = World::getCurrentLevel();
 	//Update camera
-	if (!cam.sizeMath.isEmpty())
+	if (!cam.sizeMath.isEmpty() && cam.offset <= 0)
 	{
 		lvl->cam.doUpdate = false;
 		sf::Vector2f camSize;
@@ -235,44 +279,56 @@ void CSManager::WorldCutscene::Change::update()
 		else if (math[0] == "set") { camSize = cam.endSize; }
 		lvl->cam.view.setSize(camSize);
 	}
-	if (!cam.posMath.isEmpty())
+	if (cam.posDuration != 0 && cam.offset <= 0)
 	{
 		lvl->cam.doUpdate = false;
-		sf::Vector2f camPos;
-		auto math = tr::splitStr(cam.posMath, "-");
-		if (math[0] == "linear") { camPos = tr::lerpVec(cam.startPos, cam.endPos, current / duration); }
-		else if (math[0] == "lerp") { camPos = tr::lerpVec(lvl->cam.view.getCenter(), cam.endPos, Window::getDeltaTime() * std::stof(math[1].toAnsiString())); }
-		else if (math[0] == "set") { camPos = cam.endPos; }
-		lvl->cam.view.setCenter(camPos);
+		lvl->cam.view.setCenter(tr::getBezierPoint(cam.curve, tr::clamp(current / cam.posDuration, 0, 1)));
 	}
+	cam.offset -= Window::getDeltaTime();
 	for (int i = 0; i < moves.size(); i++)
 	{
 		auto e = moves[i];
+		e.offset -= Window::getDeltaTime();
+		if (e.offset > 0) continue;
 		auto ent = lvl->getEntity(e.entName);
 		ent->getRigidbody()->getBody()->SetLinearVelocity({0, 0});
-		auto math = tr::splitStr(e.math, "-");
-		if (math[0] == "linear")
-		{
-			auto d = (math.size() == 2 ? std::stof(math[1].toAnsiString()) : duration);
-			ent->setPosition(tr::lerpVec(e.start, e.target, tr::clamp(current, 0, d) / d));
-		}
-		else if (math[0] == "move" && current < duration)
-		{
-			ent->setPosition(tr::lerpVec(e.start, e.target, current / duration));
-			auto pos = ent->getRigidbody()->getPosition();
-			auto vel = tr::clampVec(e.target - sf::Vector2f(pos.x, pos.y), {-1, -1}, {1, 1});
-			ent->setVar("dx", (int)vel.x);
-			ent->setVar("dy", (int)vel.y);
-			ent->getRigidbody()->getBody()->SetLinearVelocity({(int)vel.x, (int)vel.y});
-		}
-		else if (math[0] == "set") { ent->setPosition(e.target); }
+		ent->setPosition(tr::getBezierPoint(e.curve, tr::clamp(current / e.duration, 0, 1)));
 	}
 	for (int i = 0; i < anims.size(); i++)
 	{
 		auto a = anims[i];
+		a.offset -= Window::getDeltaTime();
+		if (a.offset > 0) continue;
 		auto ent = lvl->getEntity(a.entName);
+		if (a.stopOnEnd && current >= duration) { ent->setVar("dontUpdateAnim", 0); continue; }
 		ent->setVar("dontUpdateAnim", 1);
-		ent->setVar("anim", a.animName);
+		auto anim = tr::splitStr(a.animName, " ");
+		ent->setVar("anim", anim[0]);
+		ent->getSkeleton()->setSpeed(anim.size() == 2 ? std::stof(anim[1].toAnsiString()) : 1);
+	}
+	for (int i = 0; i < exec.size(); i++)
+	{
+		auto e = &exec[i];
+		e->offset -= Window::getDeltaTime();
+		if (e->offset > 0) continue;
+		if (e->exec >= e->count) continue;
+		if (e->freq != 0)
+		{
+			if (e->timer >= e->freq)
+			{
+				auto c = tr::splitStr(e->command, ";");
+				for (int j = 0; j < c.size(); j++) tr::execute(c[j]);
+				e->timer = 0;
+				e->exec++;
+			}
+			e->timer += Window::getDeltaTime();
+		}
+		else
+		{
+			e->exec++;
+			auto c = tr::splitStr(e->command, ";");
+			for (int j = 0; j < c.size(); j++) tr::execute(c[j]);
+		}
 	}
 }
 
@@ -308,4 +364,17 @@ void CSManager::WorldCutscene::update()
 {
 	if (currentChange.isEmpty()) currentChange = changes[0].name;
 	getCurrentChange()->update();
+}
+
+void CSManager::drawDebug(sf::RenderTarget *target)
+{
+	if (current.x)
+	{
+		auto c = worlds[current.y].getCurrentChange();
+		target->draw(tr::generateBezier(c->cam.curve, 0.1, sf::Color::Blue));
+		for (int i = 0; i < c->moves.size(); i++)
+		{
+			target->draw(tr::generateBezier(c->moves[i].curve, 0.1, sf::Color::Red));
+		}
+	}
 }

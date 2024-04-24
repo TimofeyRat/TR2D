@@ -1,5 +1,5 @@
 <particle name="rainDrop">
-	<color type="rand" min="0 0 255 255" max="127 127 255 255" />
+	<color type="randSame" min="0 0 255 255" max="127 127 255 255" />
 	<shape>
 		<vertex x="4" y="0" /><vertex x="5" y="0" />
 		<vertex x="8" y="10" /><vertex x="8" y="12" />
@@ -19,4 +19,15 @@
 	</shape>
 	<physics dynamic="0" />
 	<effect name="HP" type="add" num="10" frequency="0.5" usages="4" />
+</particle>
+
+<particle name="soul">
+	<color type="randSame" min="0 0 0 255" max="127 127 127 255" />
+	<shape>
+		<vertex x="2" y="0" /><vertex x="6" y="0" />
+		<vertex x="8" y="2" /><vertex x="8" y="6" />
+		<vertex x="6" y="8" /><vertex x="2" y="8" />
+		<vertex x="0" y="6" /><vertex x="0" y="2" />
+	</shape>
+	<physics dynamic="-1" />
 </particle>
