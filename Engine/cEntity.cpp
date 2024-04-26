@@ -124,7 +124,7 @@ void Entity::updateAnim()
 {
 	if (getVar("dontUpdateAnim"))
 	{
-		if (s.hasAnimationEnded()) setVar("dontUpdateAnim", 0);
+		setVar("dontUpdateAnim", 0);
 		s.setCurrentAnimation(getVar("anim"));
 		return;
 	}

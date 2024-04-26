@@ -13,7 +13,6 @@
 		<text>Чего тебе?</text>
 		<reply name="next">
 			<text>[->]</text>
-			<action>cutscene setClip 3</action>
 			<action>talk setPhrase 3</action>
 		</reply>
 	</phrase>
@@ -27,7 +26,7 @@
 	</phrase>
 	<phrase name="4">
 		<speaker>Насаке</speaker>
-		<text>Нет. Я гулять иду, отвянь.</text>
+		<text>Нет. Я отдыхаю, отвянь.</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 5</action>
@@ -46,19 +45,28 @@
 		<text>Да пошёл ты.</text>
 		<reply name="next">
 			<text>[->]</text>
-			<action>cutscene setClip 4</action>
+			<action>cutscene setClip 3</action>
 			<action>talk setPhrase 7</action>
 		</reply>
 	</phrase>
 	<phrase name="7">
 		<speaker>Жадность</speaker>
-		<text>НЕ СМЕЙ ТАК РАЗГОВАРИВАТЬ СО МНОЙ!</text>
+		<text>Не смей...</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 8</action>
+			<action>cutscene setClip 4</action>
 		</reply>
 	</phrase>
 	<phrase name="8">
+		<speaker>Жадность</speaker>
+		<text>НЕ СМЕЙ ТАК РАЗГОВАРИВАТЬ СО МНОЙ!</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 9</action>
+		</reply>
+	</phrase>
+	<phrase name="9">
 		<speaker>Насаке</speaker>
 		<text>ДА ОТВАЛИ ТЫ УЖЕ!</text>
 		<reply name="next">

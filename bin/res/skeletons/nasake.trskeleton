@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
-<bone id="0" root="0" length="23" angle="0" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="4.500000 0" layer="1">30 18 9 23</bone>
-<bone id="1" root="1" length="18" angle="180" tex="res/tex/characters/nasake.png" scale="1 1" offset="180" origin="9.500000 18" layer="1">25 0 18 18</bone>
-<bone id="2" root="2" length="5" angle="0" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
+<bone id="0" root="0" length="23" angle="-45" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="4.500000 0" layer="1">30 18 9 23</bone>
+<bone id="1" root="1" length="18" angle="110" tex="res/tex/characters/nasake.png" scale="1 1" offset="180" origin="9.500000 18" layer="1">44 18 18 18</bone>
+<bone id="2" root="2" length="5" angle="-24" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
 <bone id="3" root="2" length="8.5" angle="90" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
-<bone id="4" root="2" length="10" angle="-30" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 2" layer="0">25 19 -5 12</bone>
-<bone id="5" root="4" length="13" angle="25" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="3.500000 0" layer="0">26 31 -6 13</bone>
+<bone id="4" root="2" length="10" angle="0" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 2" layer="0">25 19 -5 12</bone>
+<bone id="5" root="4" length="13" angle="10" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="3.500000 0" layer="0">26 31 -6 13</bone>
 <bone id="6" root="2" length="8.5" angle="-90" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
-<bone id="7" root="2" length="10" angle="0" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 2" layer="2">25 19 -5 12</bone>
-<bone id="8" root="7" length="13" angle="0" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="3.500000 0" layer="2">26 31 -6 13</bone>
+<bone id="7" root="2" length="10" angle="-5" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 2" layer="2">25 19 -5 12</bone>
+<bone id="8" root="7" length="13" angle="-5" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="3.500000 0" layer="2">26 31 -6 13</bone>
 <bone id="9" root="0" length="3" angle="90" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
-<bone id="10" root="0" length="8" angle="90" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 0" layer="0">32 41 5 9</bone>
-<bone id="11" root="10" length="8" angle="90" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 0" layer="0">32 50 5 8</bone>
-<bone id="12" root="11" length="5" angle="90" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="6.500000 0" layer="0">28 58 9 5</bone>
+<bone id="10" root="0" length="8" angle="80" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 0" layer="0">32 41 5 9</bone>
+<bone id="11" root="10" length="8" angle="-50" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 0" layer="0">32 50 5 8</bone>
+<bone id="12" root="11" length="5" angle="0" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="6.500000 0" layer="0">28 58 9 5</bone>
 <bone id="13" root="0" length="3" angle="-90" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
-<bone id="14" root="0" length="8" angle="90" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 0" layer="1">32 41 5 9</bone>
-<bone id="15" root="14" length="8" angle="-10" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 0" layer="1">32 50 5 8</bone>
-<bone id="16" root="15" length="5" angle="-10" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="6.500000 0" layer="1">28 58 9 5</bone>
+<bone id="14" root="0" length="8" angle="-50" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 0" layer="1">32 41 5 9</bone>
+<bone id="15" root="14" length="8" angle="-90" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="2.500000 0" layer="1">32 50 5 8</bone>
+<bone id="16" root="15" length="5" angle="-90" tex="res/tex/characters/nasake.png" scale="1 1" offset="0" origin="6.500000 0" layer="1">28 58 9 5</bone>
 <animation name="idle" duration="2.000000" repeat="true">
 	<change bone="7">
 		<frame timestamp="0.000000">
@@ -1775,7 +1775,7 @@
 			<rotate value="-40" />
 		</frame>
 		<frame timestamp="1.000000">
-			<rotate value="-30" />
+			<rotate value="-39" />
 		</frame>
 	</change>
 	<change bone="7">
@@ -1807,6 +1807,9 @@
 			<origin>2.500000 0</origin>
 			<root>0</root>
 		</frame>
+		<frame timestamp="1.000000">
+			<rotate value="90" />
+		</frame>
 	</change>
 	<change bone="11">
 		<frame timestamp="0.000000">
@@ -1816,6 +1819,9 @@
 			<origin>2.500000 0</origin>
 			<root>10</root>
 		</frame>
+		<frame timestamp="1.000000">
+			<rotate value="10" />
+		</frame>
 	</change>
 	<change bone="12">
 		<frame timestamp="0.000000">
@@ -1824,6 +1830,9 @@
 			<layer>0</layer>
 			<origin>6.500000 0</origin>
 			<root>11</root>
+		</frame>
+		<frame timestamp="1.000000">
+			<rotate value="10" />
 		</frame>
 	</change>
 	<change bone="16">
@@ -1847,7 +1856,7 @@
 			<root>0</root>
 		</frame>
 		<frame timestamp="1.000000">
-			<rotate value="90" />
+			<rotate value="50" />
 		</frame>
 	</change>
 	<change bone="15">
@@ -1869,6 +1878,345 @@
 		</frame>
 		<frame timestamp="1.000000">
 			<rotate />
+		</frame>
+	</change>
+</animation>
+<animation name="room_sit" duration="0.000000" repeat="false">
+	<change bone="1">
+		<frame timestamp="0.000000">
+			<rotate value="180" />
+		</frame>
+	</change>
+	<change bone="0">
+		<frame timestamp="1.000000">
+			<rotate />
+		</frame>
+	</change>
+	<change bone="4">
+		<frame timestamp="0.000000">
+			<rotate value="-40" />
+		</frame>
+	</change>
+	<change bone="7">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+	<change bone="5">
+		<frame timestamp="0.000000">
+			<rotate value="25" />
+		</frame>
+	</change>
+	<change bone="8">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+	<change bone="10">
+		<frame timestamp="0.000000">
+			<rotate value="90" />
+		</frame>
+	</change>
+	<change bone="11">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+		</frame>
+	</change>
+	<change bone="12">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+		</frame>
+	</change>
+	<change bone="16">
+		<frame timestamp="0.000000">
+			<rotate value="-10" />
+		</frame>
+	</change>
+	<change bone="14">
+		<frame timestamp="0.000000">
+			<rotate value="50" />
+		</frame>
+	</change>
+	<change bone="15">
+		<frame timestamp="0.000000">
+			<rotate value="-10" />
+		</frame>
+	</change>
+	<change bone="3" />
+	<change bone="2">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+</animation>
+<animation name="room_standup" duration="0.500000" repeat="false">
+	<change bone="1">
+		<frame timestamp="0.000000">
+			<rotate value="180" />
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="190" />
+		</frame>
+	</change>
+	<change bone="0">
+		<frame timestamp="1.000000">
+			<rotate />
+		</frame>
+	</change>
+	<change bone="4">
+		<frame timestamp="0.000000">
+			<rotate value="-40" />
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="-10" />
+		</frame>
+	</change>
+	<change bone="7">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="5" />
+		</frame>
+	</change>
+	<change bone="5">
+		<frame timestamp="0.000000">
+			<rotate value="25" />
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="-10" />
+		</frame>
+	</change>
+	<change bone="8">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="10" />
+		</frame>
+	</change>
+	<change bone="10">
+		<frame timestamp="0.000000">
+			<rotate value="90" />
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="20" />
+		</frame>
+	</change>
+	<change bone="11">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+		</frame>
+	</change>
+	<change bone="12">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate />
+		</frame>
+	</change>
+	<change bone="16">
+		<frame timestamp="0.000000">
+			<rotate value="-10" />
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate />
+		</frame>
+	</change>
+	<change bone="14">
+		<frame timestamp="0.000000">
+			<rotate value="50" />
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="-10" />
+		</frame>
+	</change>
+	<change bone="15">
+		<frame timestamp="0.000000">
+			<rotate value="-10" />
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="-20" />
+		</frame>
+	</change>
+	<change bone="3" />
+	<change bone="2">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+</animation>
+<animation name="room_fall" duration="0.500000" repeat="false">
+	<change bone="1">
+		<frame timestamp="0.000000">
+			<rotate value="190" />
+			<rect>44 18 18 18</rect>
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="110" />
+		</frame>
+	</change>
+	<change bone="0">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="-45" />
+		</frame>
+	</change>
+	<change bone="4">
+		<frame timestamp="0.000000">
+			<rotate value="-10" />
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate />
+		</frame>
+	</change>
+	<change bone="7">
+		<frame timestamp="0.000000">
+			<rotate value="5" />
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="-5" />
+		</frame>
+	</change>
+	<change bone="5">
+		<frame timestamp="0.000000">
+			<rotate value="-10" />
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="10" />
+		</frame>
+	</change>
+	<change bone="8">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="-5" />
+		</frame>
+	</change>
+	<change bone="10">
+		<frame timestamp="0.000000">
+			<rotate value="20" />
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="80" />
+		</frame>
+	</change>
+	<change bone="11">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="-50" />
+		</frame>
+	</change>
+	<change bone="12">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+	<change bone="16">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="-90" />
+		</frame>
+	</change>
+	<change bone="14">
+		<frame timestamp="0.000000">
+			<rotate value="-10" />
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="-50" />
+		</frame>
+	</change>
+	<change bone="15">
+		<frame timestamp="0.000000">
+			<rotate value="-20" />
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="-90" />
+		</frame>
+	</change>
+	<change bone="3" />
+	<change bone="2">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="-24" />
+		</frame>
+	</change>
+</animation>
+<animation name="room_down" duration="0.000000" repeat="false">
+	<change bone="1">
+		<frame timestamp="0.000000">
+			<rotate value="110" />
+		</frame>
+	</change>
+	<change bone="0">
+		<frame timestamp="0.000000">
+			<rotate value="-45" />
+		</frame>
+	</change>
+	<change bone="4">
+		<frame timestamp="0.500000">
+			<rotate />
+		</frame>
+	</change>
+	<change bone="7">
+		<frame timestamp="0.000000">
+			<rotate value="-5" />
+		</frame>
+	</change>
+	<change bone="5">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+		</frame>
+	</change>
+	<change bone="8">
+		<frame timestamp="0.000000">
+			<rotate value="-5" />
+		</frame>
+	</change>
+	<change bone="10">
+		<frame timestamp="0.000000">
+			<rotate value="80" />
+		</frame>
+	</change>
+	<change bone="11">
+		<frame timestamp="0.000000">
+			<rotate value="-50" />
+		</frame>
+	</change>
+	<change bone="12">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+	<change bone="16">
+		<frame timestamp="0.000000">
+			<rotate value="-90" />
+		</frame>
+	</change>
+	<change bone="14">
+		<frame timestamp="0.000000">
+			<rotate value="-50" />
+		</frame>
+	</change>
+	<change bone="15">
+		<frame timestamp="0.000000">
+			<rotate value="-90" />
+		</frame>
+	</change>
+	<change bone="3" />
+	<change bone="2">
+		<frame timestamp="0.000000">
+			<rotate value="-24" />
 		</frame>
 	</change>
 </animation>

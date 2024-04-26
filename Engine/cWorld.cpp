@@ -584,6 +584,10 @@ void World::Level::draw(sf::RenderTarget *target)
 	{
 		items[i].draw(world);
 	}
+	for (int i = 0; i < ents.size(); i++)
+	{
+		if (ents[i].getHitbox().intersects(camRect)) ents[i].draw(&screen);
+	}
 	for (int i = 0; i < parts.size(); i++)
 	{
 		auto *p = &parts[i];
@@ -599,10 +603,6 @@ void World::Level::draw(sf::RenderTarget *target)
 		}
 		p->shape.setOrigin(p->shape.getLocalBounds().getSize() / 2.0f);
 		if (p->shape.getGlobalBounds().intersects(camRect)) screen.draw(p->shape);
-	}
-	for (int i = 0; i < ents.size(); i++)
-	{
-		if (ents[i].getHitbox().intersects(camRect)) ents[i].draw(&screen);
 	}
 	if (Window::getVar("debug") && CSManager::active)
 	{
@@ -952,18 +952,39 @@ void tr::execute(sf::String cmd)
 	}
 	else if (args[0] == "spawnParticle")
 	{
-		sf::Vector2f pos = {
-			tr::randBetween(std::stof(args[1].toAnsiString()), std::stof(args[3].toAnsiString())),
-			tr::randBetween(std::stof(args[2].toAnsiString()), std::stof(args[4].toAnsiString()))
-		}, speed = {
-			tr::randBetween(std::stof(args[5].toAnsiString()), std::stof(args[7].toAnsiString())),
-			tr::randBetween(std::stof(args[6].toAnsiString()), std::stof(args[8].toAnsiString()))
-		};
-		auto lvl = World::getCurrentLevel();
-		auto part = ParticleSystem::createParticle(lvl->world, args[9], pos, speed);
-		part.life = std::stof(args[10].toAnsiString());
-		lvl->parts.push_back(part);
-		lvl->parts[lvl->parts.size() - 1].rb.setUserData("particle_" + std::to_string(lvl->parts.size() - 1));
+		if (args.size() == 12)
+		{
+			for (int i = 0; i < std::stoi(args[11].toAnsiString()); i++)
+			{
+				sf::Vector2f pos = {
+					tr::randBetween(std::stof(args[1].toAnsiString()), std::stof(args[3].toAnsiString())),
+					tr::randBetween(std::stof(args[2].toAnsiString()), std::stof(args[4].toAnsiString()))
+				}, speed = {
+					tr::randBetween(std::stof(args[5].toAnsiString()), std::stof(args[7].toAnsiString())),
+					tr::randBetween(std::stof(args[6].toAnsiString()), std::stof(args[8].toAnsiString()))
+				};
+				auto lvl = World::getCurrentLevel();
+				auto part = ParticleSystem::createParticle(lvl->world, args[9], pos, speed);
+				part.life = std::stof(args[10].toAnsiString());
+				lvl->parts.push_back(part);
+				lvl->parts[lvl->parts.size() - 1].rb.setUserData("particle_" + std::to_string(lvl->parts.size() - 1));
+			}
+		}
+		else
+		{
+			sf::Vector2f pos = {
+				tr::randBetween(std::stof(args[1].toAnsiString()), std::stof(args[3].toAnsiString())),
+				tr::randBetween(std::stof(args[2].toAnsiString()), std::stof(args[4].toAnsiString()))
+			}, speed = {
+				tr::randBetween(std::stof(args[5].toAnsiString()), std::stof(args[7].toAnsiString())),
+				tr::randBetween(std::stof(args[6].toAnsiString()), std::stof(args[8].toAnsiString()))
+			};
+			auto lvl = World::getCurrentLevel();
+			auto part = ParticleSystem::createParticle(lvl->world, args[9], pos, speed);
+			part.life = std::stof(args[10].toAnsiString());
+			lvl->parts.push_back(part);
+			lvl->parts[lvl->parts.size() - 1].rb.setUserData("particle_" + std::to_string(lvl->parts.size() - 1));
+		}
 	}
 	else if (args[0] == "particleCurve")
 	{

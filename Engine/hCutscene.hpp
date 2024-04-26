@@ -26,41 +26,49 @@ public:
 	{
 		struct Change
 		{
-			struct MoveEnt
+			struct Basis
+			{
+				float offset, ot;
+				float duration, current;
+				bool continueAfterEnd;
+				Basis(float os = 0, float d = 0, bool cae = false);
+				void basisUpdate();
+				bool isActive();
+				void resetBasis(float os = 0, float d = 0, bool cae = false);
+			};
+			struct MoveEnt : public Basis
 			{
 				sf::String entName;
-				float duration, offset;
 				std::vector<sf::Vector2f> curve;
 				MoveEnt();
-				MoveEnt(sf::String name, std::vector<sf::Vector2f> points, float s);
+				void update();
 			};
-			struct MoveCam
+			struct MoveCam : public Basis
 			{
-				std::vector<sf::Vector2f> curve;
+				std::vector<sf::Vector2f> pos;
 				sf::Vector2f startSize, endSize;
 				sf::String sizeMath;
-				float posDuration, offset;
 				MoveCam();
-				MoveCam(std::vector<sf::Vector2f> points, sf::Glsl::Vec4 size, sf::String sizeLerpFunc, float posSpeed);
+				void update();
 			};
-			struct AnimEnt
+			struct AnimEnt : public Basis
 			{
 				sf::String entName, animName;
-				bool stopOnEnd;
-				float offset;
+				float animSpeed;
 				AnimEnt();
-				AnimEnt(sf::String ent, sf::String anim, bool soe);
+				void update();
 			};
-			struct Execute
+			struct Execute : public Basis
 			{
 				sf::String command;
-				int count, exec;
-				float timer, freq, offset;
+				int count, executed;
+				float timer, freq;
 				Execute();
-				Execute(sf::String cmd, int count, float frequency);
+				void update();
+				void execute();
 			};
-			MoveCam cam;
 			bool startPhraseOnEnd;
+			std::vector<MoveCam> cam;
 			std::vector<MoveEnt> moves;
 			std::vector<AnimEnt> anims;
 			std::vector<Execute> exec;
