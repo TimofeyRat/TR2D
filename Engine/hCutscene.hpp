@@ -67,11 +67,24 @@ public:
 				void update();
 				void execute();
 			};
+			struct CurveEnts : public Basis
+			{
+				sf::String entA, entB;
+				bool created;
+				std::vector<sf::Vector2f> curve;
+				int count;
+				sf::String partName, math;
+				sf::Glsl::Vec4 speed;
+				float lt, s, l;
+				CurveEnts();
+				void update();
+			};
 			bool startPhraseOnEnd;
 			std::vector<MoveCam> cam;
 			std::vector<MoveEnt> moves;
 			std::vector<AnimEnt> anims;
 			std::vector<Execute> exec;
+			std::vector<CurveEnts> cents;
 			sf::String name, musicPath;
 			float duration, current;
 			Change();

@@ -19,6 +19,7 @@ struct Particle
 	bool destroyed, physics, colliding;
 	Particle();
 	void reset(b2World *world);
+	void update();
 };
 
 struct ParticleTemplate

@@ -169,6 +169,31 @@ void Particle::reset(b2World *world)
 	rb.getBody()->SetLinearVelocity({speed.x / tr::M2P, speed.y / tr::M2P});
 }
 
+void Particle::update()
+{
+	if (destroyed) return;
+	if (life > 0)
+	{
+		timer += Window::getDeltaTime();
+		if (timer >= life) { destroyed = true; return; }
+	}
+	shape.setOrigin(shape.getLocalBounds().getSize() / 2.0f);
+	if (!physics)
+	{
+		shape.move(speed * Window::getDeltaTime());
+		shape.setRotation(atan2f(speed.y, speed.x) * tr::RADTODEG);
+	}
+	else
+	{
+		shape.setPosition(rb.getPosition().x, rb.getPosition().y);
+		rb.getBody()->SetTransform(rb.getBody()->GetPosition(), atan2(
+			rb.getBody()->GetLinearVelocity().y,
+			rb.getBody()->GetLinearVelocity().x
+		) - 90 * tr::DEGTORAD);
+		shape.setRotation(rb.getAngle());
+	}
+}
+
 void ParticleSystem::init()
 {
 	templates.clear();

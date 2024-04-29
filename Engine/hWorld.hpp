@@ -120,6 +120,18 @@ public:
 		ParticleGenerator();
 		ParticleGenerator(sf::String name, sf::String spawn, sf::String vel, sf::Vector2f min, sf::Vector2f max, float timer, sf::FloatRect rect);
 	};
+	struct ParticleCurve : public Programmable
+	{
+		enum Type { TwoEnts, Standalone} type;
+		enum Math { Set, FadeIn, FadeLerp, Pulse } math;
+		std::vector<sf::Vector2f> curve;
+		std::vector<Particle> parts;
+		ParticleCurve();
+		void init(b2World *w, Type t, sf::String entA, sf::String entB, std::vector<sf::Vector2f> points, float count, sf::String name, sf::Glsl::Vec4 speed, float lifeTime, float s, float length, float d);
+		void join();
+		void update();
+		void draw(sf::RenderTarget *target);
+	};
 	struct Level : public Programmable
 	{
 		Map map;
@@ -132,6 +144,7 @@ public:
 		std::vector<ScriptObject> scripts;
 		std::vector<ParticleGenerator> partGens;
 		std::vector<Particle> parts;
+		std::vector<ParticleCurve> partCurves;
 		sf::String name;
 		sf::Texture *bgTex;
 		sf::Sprite bgSpr;

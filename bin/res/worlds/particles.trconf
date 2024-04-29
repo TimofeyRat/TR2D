@@ -22,6 +22,17 @@
 </particle>
 
 <particle name="soul">
+	<color type="randSame" min="127 127 127 255" max="255 255 255 255" />
+	<shape>
+		<vertex x="2" y="0" /><vertex x="6" y="0" />
+		<vertex x="8" y="2" /><vertex x="8" y="6" />
+		<vertex x="6" y="8" /><vertex x="2" y="8" />
+		<vertex x="0" y="6" /><vertex x="0" y="2" />
+	</shape>
+	<physics dynamic="-1" />
+</particle>
+
+<particle name="soulBG">
 	<color type="randSame" min="0 0 0 255" max="127 127 127 255" />
 	<shape>
 		<vertex x="2" y="0" /><vertex x="6" y="0" />

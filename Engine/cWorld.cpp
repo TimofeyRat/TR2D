@@ -340,6 +340,7 @@ void World::Level::reset()
 	scripts.clear();
 	partGens.clear();
 	parts.clear();
+	partCurves.clear();
 	bgBounds = {0, 0, 0, 0};
 	started = false;
 	if (world != nullptr) { delete world; }
@@ -463,35 +464,27 @@ void World::Level::update()
 	for (int i = 0; i < parts.size(); i++)
 	{
 		auto *p = &parts[i];
-		if (p->life > 0)
+		p->update();
+		if (!p->physics && p->colliding)
 		{
-			p->timer += Window::getDeltaTime();
-			if (p->timer >= p->life) { p->destroyed = true; }
-		}
-		if (!p->physics)
-		{
-			p->shape.move(p->speed * Window::getDeltaTime());
-			if (p->colliding)
+			for (int j = 0; j < triggers.size(); j++)
 			{
-				for (int j = 0; j < triggers.size(); j++)
+				if (triggers[j].rect.intersects(p->shape.getGlobalBounds()) && triggers[j].getVar("collision").num != 0)
 				{
-					if (triggers[j].rect.intersects(p->shape.getGlobalBounds()) && triggers[j].getVar("collision").num != 0)
-					{
-						p->destroyed = true;
-						break;
-					}
+					p->destroyed = true;
+					break;
 				}
-				if (!p->destroyed) for (int j = 0; j < ents.size(); j++)
+			}
+			if (!p->destroyed) for (int j = 0; j < ents.size(); j++)
+			{
+				if (ents[j].getHitbox().intersects(p->shape.getGlobalBounds()))
 				{
-					if (ents[j].getHitbox().intersects(p->shape.getGlobalBounds()))
+					for (int k = 0; k < p->effects.size(); k++)
 					{
-						for (int k = 0; k < p->effects.size(); k++)
-						{
-							ents[j].addEffect(p->effects[k]);
-						}
-						p->destroyed = true;
-						break;
+						ents[j].addEffect(p->effects[k]);
 					}
+					p->destroyed = true;
+					break;
 				}
 			}
 		}
@@ -502,22 +495,24 @@ void World::Level::update()
 			parts.pop_back();
 		}
 	}
+	for (int i = 0; i < partCurves.size(); i++)
+	{
+		partCurves[i].update();
+		if (partCurves[i].getVar("joined")) { partCurves.erase(partCurves.begin() + i); }
+	}
 	for (int i = 0; i < ents.size(); i++) { ents[i].update(); }
 	auto *camOwner = getEntity(cam.owner);
 	if (camOwner)
 	{
-		if (!getVar("interactableTrigger").str.isEmpty())
-		{
-			setVar("showInteraction", camOwner->getHitbox().intersects(getTrigger(getVar("interactableTrigger"))->rect));
-		}
 		for (int i = 0; i < triggers.size(); i++)
 		{
 			if (triggers[i].rect.intersects(camOwner->getHitbox()) &&
 				triggers[i].hasVar("inter") &&
-				(triggers[i].hasVar("usages") ? triggers[i].getVar("used") < triggers[i].getVar("usages") : true))
+				(triggers[i].hasVar("usages") ? (triggers[i].getVar("used") < triggers[i].getVar("usages")) : true))
 			{
-				setVar("showInteraction", camOwner->getHitbox().intersects(triggers[i].rect) && (CSManager::current.x ? !CSManager::active : true));
-				setVar("interactableTrigger", camOwner->getHitbox().intersects(triggers[i].rect) ? triggers[i].getVar("name").str : "");
+				setVar("showInteraction", (CSManager::current.x ? !CSManager::active : true));
+				setVar("interactableTrigger", triggers[i].getVar("name").str);
+				break;
 			}
 			else
 			{
@@ -536,10 +531,9 @@ void World::Level::update()
 				{
 					tr::execute(cmd[j]);
 				}
-				t->setVar("used", t->getVar("used") + 1);
+				if (t->hasVar("usages")) t->setVar("used", t->getVar("used") + 1);
 			}
 		}
-		camOwner->setVar("interacting", 0);
 		for (int j = 0; j < items.size(); j++)
 		{
 			for (int i = 0; i < items.size(); i++)
@@ -584,6 +578,10 @@ void World::Level::draw(sf::RenderTarget *target)
 	{
 		items[i].draw(world);
 	}
+	for (int i = 0; i < partCurves.size(); i++)
+	{
+		partCurves[i].draw(&screen);
+	}
 	for (int i = 0; i < ents.size(); i++)
 	{
 		if (ents[i].getHitbox().intersects(camRect)) ents[i].draw(&screen);
@@ -591,22 +589,21 @@ void World::Level::draw(sf::RenderTarget *target)
 	for (int i = 0; i < parts.size(); i++)
 	{
 		auto *p = &parts[i];
-		if (p->physics)
-		{
-			p->shape.setPosition(p->rb.getPosition().x, p->rb.getPosition().y);
-			p->rb.getBody()->SetTransform(p->rb.getBody()->GetPosition(), atan2(
-				p->rb.getBody()->GetLinearVelocity().y,
-				p->rb.getBody()->GetLinearVelocity().x
-			) - 90 * tr::DEGTORAD);
-			p->shape.setRotation(p->rb.getAngle());
-			p->rb.setUserData("particle_" + std::to_string(i));
-		}
-		p->shape.setOrigin(p->shape.getLocalBounds().getSize() / 2.0f);
 		if (p->shape.getGlobalBounds().intersects(camRect)) screen.draw(p->shape);
 	}
-	if (Window::getVar("debug") && CSManager::active)
+	if (Window::getVar("debug"))
 	{
-		CSManager::drawDebug(&screen);
+		for (int i = 0; i < triggers.size(); i++)
+		{
+			sf::RectangleShape rect(triggers[i].rect.getSize());
+			rect.setOrigin(rect.getSize() / 2.0f);
+			rect.setPosition(triggers[i].rb.getPosition().x, triggers[i].rb.getPosition().y);
+			rect.setFillColor({0, 0, 0, 0});
+			rect.setOutlineColor(sf::Color::Red);
+			rect.setOutlineThickness(-2);
+			target->draw(rect);
+		}
+		if (CSManager::active) CSManager::drawDebug(&screen);
 	}
 	screen.display();
 	sf::Sprite spr(screen.getTexture());
@@ -848,6 +845,103 @@ World::ParticleGenerator::ParticleGenerator(sf::String name, sf::String spawn, s
 	spawnRect = rect;
 }
 
+World::ParticleCurve::ParticleCurve()
+{
+	curve.clear();
+	parts.clear();
+	type = Standalone;
+	math = Set;
+	clear();
+}
+
+void World::ParticleCurve::init(b2World *w, World::ParticleCurve::Type t, sf::String entA, sf::String entB, std::vector<sf::Vector2f> points, float count, sf::String name, sf::Glsl::Vec4 speed, float lt, float s, float l, float d)
+{
+	type = t;
+	if (type == TwoEnts)
+	{
+		setVar("entA", entA);
+		setVar("entB", entB);
+		curve.push_back({0, 0});
+		curve.insert(curve.end(), points.begin(), points.end());
+		curve.push_back({0, 0});
+	}
+	if (type == Standalone) { curve = points; }
+	parts.resize(count);
+	for (int i = 0; i < count; i++)
+	{
+		parts[i] = ParticleSystem::createParticle(w, name, {0, 0}, {tr::randBetween(speed.x, speed.z), tr::randBetween(speed.y, speed.w)});
+		parts[i].life = lt;
+	}
+	setVar("speed", s);
+	setVar("length", l);
+	setVar("duration", d);
+}
+
+void World::ParticleCurve::join()
+{
+	if (getVar("joined")) return;
+	World::getCurrentLevel()->parts.insert(World::getCurrentLevel()->parts.end(), parts.begin(), parts.end());
+	setVar("joined", 1);
+}
+
+void World::ParticleCurve::update()
+{
+	setVar("time", getVar("time") + Window::getDeltaTime());
+	if (getVar("time") >= getVar("duration") && getVar("duration") > 0) { join(); setVar("joined", 1); return; }
+	if (type == TwoEnts)
+	{
+		curve[0] = World::getCurrentLevel()->getEntity(getVar("entA"))->getPosition();
+		curve[curve.size() - 1] = World::getCurrentLevel()->getEntity(getVar("entB"))->getPosition();
+	}
+	for (int i = 0; i < parts.size(); i++)
+	{
+		float t = (float)i / parts.size();
+		auto p = tr::getBezierPoint(curve, t);
+		if (parts[i].physics) { parts[i].rb.setPosition({p.x, p.y}); }
+		else { parts[i].shape.setPosition(p); }
+		parts[i].update();
+	}
+}
+
+void World::ParticleCurve::draw(sf::RenderTarget *target)
+{
+	int start, end;
+	switch (math)
+	{
+	case Set:
+		{
+			start = 0; end = parts.size();
+		} break;
+	case FadeIn:
+		{
+			if (getVar("count") < parts.size()) setVar("count", getVar("count") + getVar("speed") * Window::getDeltaTime());
+			else setVar("count", parts.size());
+			start = 0;
+			end = getVar("count");
+		} break;
+	case FadeLerp:
+		{
+			setVar("count", tr::lerp(getVar("count"), parts.size(), getVar("speed") * Window::getDeltaTime()));
+			start = 0;
+			end = getVar("count");
+		} break;
+	case Pulse:
+		{
+			setVar("pos", getVar("pos") + getVar("speed") * Window::getDeltaTime());
+			if (getVar("pos") > parts.size() + getVar("length")) { setVar("pos", -getVar("length")); }
+			start = getVar("pos") - getVar("length");
+			end = getVar("pos") + getVar("length");
+		} break;
+	default: break;
+	}
+	start = tr::clamp(start, 0, parts.size());
+	end = tr::clamp(end, 0, parts.size());
+	for (int i = start; i < end; i++)
+	{
+		if (!parts[i].destroyed) target->draw(parts[i].shape);
+	}
+}
+
 void tr::execute(sf::String cmd)
 {
 	auto args = tr::splitStr(cmd, " ");
@@ -1047,6 +1141,11 @@ void tr::execute(sf::String cmd)
 				std::stof(args[3].toAnsiString()),
 				std::stof(args[4].toAnsiString())
 			});
+		}
+		else if (args[1] == "addNum")
+		{
+			auto e = World::getCurrentLevel()->getEntity(args[2]);
+			e->setVar(args[3], e->getVar(args[3]) + std::stof(args[4].toAnsiString()));
 		}
 	}
 }

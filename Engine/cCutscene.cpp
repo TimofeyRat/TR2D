@@ -158,6 +158,39 @@ void CSManager::init()
 								);
 								c.exec.push_back(e);
 							}
+							else if (sf::String(change.name()) == "curve_ents")
+							{
+								WorldCutscene::Change::CurveEnts ce;
+								ce.entA = change.attribute(L"entA").as_string();
+								ce.entB = change.attribute(L"entB").as_string();
+								ce.created = false;
+								auto pts = tr::splitStr(change.attribute(L"points").as_string(), "|");
+								for (int i = 0; i < pts.size(); i++)
+								{
+									auto p = tr::splitStr(pts[i], " ");
+									ce.curve.push_back({
+										std::stof(p[0].toAnsiString()),
+										std::stof(p[1].toAnsiString())
+									});
+								}
+								ce.count = change.attribute(L"count").as_int();
+								ce.partName = change.attribute(L"particle").as_string();
+								auto s = tr::splitStr(change.attribute(L"partSpeed").as_string(), " ");
+								ce.speed = {
+									std::stof(s[0].toAnsiString()), std::stof(s[1].toAnsiString()),
+									std::stof(s[2].toAnsiString()), std::stof(s[3].toAnsiString())
+								};
+								ce.lt = change.attribute(L"lifeTime").as_float();
+								ce.s = change.attribute(L"effectSpeed").as_float();
+								ce.l = change.attribute(L"effectLength").as_float();
+								ce.math = change.attribute(L"effectType").as_string();
+								ce.resetBasis(
+									change.attribute(L"offset").as_float(),
+									change.attribute(L"duration").as_float(c.duration),
+									change.attribute(L"continueAfterEnd").as_bool(true)
+								);
+								c.cents.push_back(ce);
+							}
 						}
 						wc.changes.push_back(c);
 					}
@@ -311,6 +344,30 @@ void CSManager::WorldCutscene::Change::Execute::execute()
 	for (int j = 0; j < c.size(); j++) tr::execute(c[j]);
 }
 
+CSManager::WorldCutscene::Change::CurveEnts::CurveEnts() : Basis()
+{
+	created = false;
+	curve.clear();
+	count = 0;
+	partName = math = "";
+	speed = {0, 0, 0, 0};
+	lt = s = l = 0;
+}
+
+void CSManager::WorldCutscene::Change::CurveEnts::update()
+{
+	basisUpdate();
+	if (!isActive() || created) return;
+	World::ParticleCurve pc;
+	if (math == "set") pc.math = World::ParticleCurve::Set;
+	if (math == "fadeIn") pc.math = World::ParticleCurve::FadeIn;
+	if (math == "lerp") pc.math = World::ParticleCurve::FadeLerp;
+	if (math == "pulse") pc.math = World::ParticleCurve::Pulse;
+	pc.init(World::getCurrentLevel()->world, World::ParticleCurve::Type::TwoEnts, entA, entB, curve, count, partName, speed, lt, s, l, duration);
+	World::getCurrentLevel()->partCurves.push_back(pc);
+	created = true;
+}
+
 CSManager::WorldCutscene::Change::Change()
 {
 	startPhraseOnEnd = false;
@@ -318,6 +375,7 @@ CSManager::WorldCutscene::Change::Change()
 	moves.clear();
 	anims.clear();
 	exec.clear();
+	cents.clear();
 	name = musicPath = "";
 	duration = current = 0;
 }
@@ -329,6 +387,7 @@ CSManager::WorldCutscene::Change::Change(sf::String n, sf::String music, bool sp
 	moves.clear();
 	anims.clear();
 	exec.clear();
+	cents.clear();
 	name = n;
 	musicPath = music;
 	duration = len;
@@ -343,6 +402,7 @@ void CSManager::WorldCutscene::Change::update()
 	for (int i = 0; i < moves.size(); i++) moves[i].update();
 	for (int i = 0; i < anims.size(); i++) anims[i].update();
 	for (int i = 0; i < exec.size(); i++) exec[i].update();
+	for (int i = 0; i < cents.size(); i++) cents[i].update();
 }
 
 CSManager::WorldCutscene::WorldCutscene()
