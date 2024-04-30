@@ -56,7 +56,7 @@
 			<scale type="lerp">5 5 7 7</scale>
 		</sprite>
 		<text name="title">
-			<toggle event="btn-menu-startGame-btn" />
+			<toggle event="btn-menu-continueGame-btn" />
 			<font path="res/global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
 			<txt type="active" appear="set">Продолжить игру</txt>
 			<txt type="idle" appear="set">Продолжить игру</txt>
