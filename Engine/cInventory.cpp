@@ -271,3 +271,27 @@ void Inventory::updateGrid()
 	itemsCanvas.display();
 	invItems = itemsCanvas.getTexture();
 }
+
+void Inventory::save(pugi::xml_node node)
+{
+	for (int i = 0; i < inv.size(); i++)
+	{
+		auto e = node.append_child(L"entry");
+		e.append_attribute(L"count") = inv[i].count;
+		e.append_attribute(L"item") = sf::String(
+			inv[i].item.type + ":" + inv[i].item.id
+		).toWideString().c_str();
+	}
+}
+
+void Inventory::load(pugi::xml_node node)
+{
+	inv.clear();
+	for (auto e : node.children())
+	{
+		inv.push_back({
+			getItem(e.attribute(L"item").as_string()),
+			e.attribute(L"count").as_uint()
+		});
+	}
+}

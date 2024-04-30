@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<world file="res/worlds/start.trworld" currentLevel="room">
+	<level name="room" w_num="1152" h_num="480" showInteraction_num="0" interactableTrigger_num="0">
+		<entity name="Nasake" rotation_num="1" HP_num="75" handBone_num="8" neckBone_num="2" headBone_num="1" damageCooldown_num="1" speed_num="1" maxSpeed_num="1" speedX_num="35" speedY_num="2" wl_str="wl" wr_str="wr" il_str="idle" ir_str="idle" sl_str="sl" sr_str="sr" jl_str="jl" jr_str="jr" fl_str="fl" fr_str="fr" al_str="al" ar_str="ar" scale_num="3.5" dx_num="0" dy_num="0" jump_num="0" attack_num="0" interacting_num="0" baubleSpeed_num="1" onGround_num="1" moveX_num="0" moveY_num="0" attacking_num="0" anim_str="idle" posX_num="176.844238" posY_num="371.749786" noHurtTimer_num="82.4950867" damageCD_num="1" dontUpdateAnim_num="0" weaponCD_num="-10.595211" />
+		<entity name="Greed" rotation_num="1" HP_num="100" handBone_num="8" neckBone_num="2" headBone_num="1" damageCooldown_num="1" speed_num="0.5" maxSpeed_num="1" speedX_num="35" speedY_num="2" wl_str="wl" wr_str="wr" il_str="idle" ir_str="idle" sl_str="sl" sr_str="sr" jl_str="jl" jr_str="jr" fl_str="fl" fr_str="fr" al_str="al" ar_str="ar" scale_num="3.5" baubleSpeed_num="0" onGround_num="1" moveX_num="0" moveY_num="-1.97464267e-09" attacking_num="0" attack_num="0" anim_str="idle" posX_num="500" posY_num="371.749786" noHurtTimer_num="82.4950867" damageCD_num="1" dontUpdateAnim_num="0" />
+		<trigger pos_str="1152.000000 0.000000" size_str="32.000000 480.000000" name="wall" static_num="1" collision_num="1" x_num="1152" y_num="0" w_num="32" h_num="480" friction_num="0" />
+		<trigger pos_str="0.000000 480.000000" size_str="1152.000000 32.000000" name="ground" friction_num="1" static_num="1" collision_num="1" x_num="0" y_num="480" w_num="1152" h_num="32" />
+		<trigger pos_str="1152.000000 0.000000" size_str="32.000000 480.000000" name="wall" friction_num="0" static_num="1" collision_num="1" x_num="1152" y_num="0" w_num="32" h_num="480" />
+		<trigger pos_str="0.000000 256.000000" size_str="128.000000 220.000000" name="gotoSwamp" inter_str="world setLevel swamp|passthrough ent room-Nasake swamp-Nasake" collision_num="0" x_num="0" y_num="256" w_num="128" h_num="220" />
+		<trigger pos_str="0 0" size_str="1152 480" name="cutscene" static_num="1" collision_num="0" enter_str="cutscene start room" enters_num="1" x_num="0" y_num="0" w_num="1152" h_num="480" entered_num="1" />
+	</level>
+	<level name="swamp">
+		<entity name="Eutihey" rotation_num="1" HP_num="100" handBone_num="5" neckBone_num="2" headBone_num="1" damageCooldown_num="0.5" speed_num="0.5" maxSpeed_num="1" speedX_num="35" speedY_num="2" wl_str="wl" wr_str="wr" il_str="idle" ir_str="idle" sl_str="sl" sr_str="sr" jl_str="jl" jr_str="jr" fl_str="fl" fr_str="fr" al_str="al" ar_str="ar" scale_num="3.5" />
+		<entity name="GreenElemental" rotation_num="1" HP_num="10" damageCooldown_num="0.5" speed_num="0.5" maxSpeed_num="0.5" speedX_num="30" speedY_num="2" il_num="0" ir_num="0" wl_num="0" wr_num="0" scale_num="4" />
+		<entity name="Nasake" rotation_num="1" HP_num="100" handBone_num="8" neckBone_num="2" headBone_num="1" damageCooldown_num="1" speed_num="0.5" maxSpeed_num="1" speedX_num="35" speedY_num="2" wl_str="wl" wr_str="wr" il_str="idle" ir_str="idle" sl_str="sl" sr_str="sr" jl_str="jl" jr_str="jr" fl_str="fl" fr_str="fr" al_str="al" ar_str="ar" scale_num="3.5" />
+		<trigger pos_str="0.000000 608.000000" size_str="1280.000000 32.000000" name="ground" friction_num="1" static_num="1" collision_num="1" x_num="0" y_num="608" w_num="1280" h_num="32" />
+		<trigger pos_str="1280.000000 0.000000" size_str="32.000000 608.000000" name="wall" static_num="1" collision_num="1" x_num="1280" y_num="0" w_num="32" h_num="608" />
+		<trigger pos_str="1280.000000 0.000000" size_str="32.000000 608.000000" name="wall" static_num="1" collision_num="1" x_num="1280" y_num="0" w_num="32" h_num="608" />
+		<trigger pos_str="608.000000 448.000000" size_str="128.000000 160.000000" name="gotoRoom" cmd_str="world setLevel room" collision_num="0" x_num="608" y_num="448" w_num="128" h_num="160" />
+	</level>
+</world>
+<inventory weapon="sticky_blade" bauble="speed" />

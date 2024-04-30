@@ -48,6 +48,8 @@ public:
 	static sf::Glsl::Vec4 size;
 	static sf::Texture invItems;
 	static void updateGrid();
+	static void save(pugi::xml_node node);
+	static void load(pugi::xml_node node);
 private:
 	static sf::RenderTexture itemsCanvas;
 	static std::vector<Item> items;

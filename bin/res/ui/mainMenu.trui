@@ -42,6 +42,30 @@
 			<color state="idle" type="lerp">0 0 0 255</color>
 		</text>
 	</object>
+	<object name="continueGame">
+		<position type="relative-set">0.5 0.5 0.5 0.5</position>
+		<sprite name="btn">
+			<toggle event="mouseHover" />
+			<action
+				event="mouse-click-Left"
+				condition="active-true">ui load res/ui/inventory.trui;loadGame</action>
+				<!-- condition="active-true">ui-load-res/ui/dialogue.trui;cutscene-start-intro</action> -->
+			<texture path="res/anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
+			<position type="inherit-obj-rel">0 0 0 0 menu-continueGame</position>
+			<origin type="relative">0.5 0.5 0.5 0.5</origin>
+			<scale type="lerp">5 5 7 7</scale>
+		</sprite>
+		<text name="title">
+			<toggle event="btn-menu-startGame-btn" />
+			<font path="res/global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
+			<txt type="active" appear="set">Продолжить игру</txt>
+			<txt type="idle" appear="set">Продолжить игру</txt>
+			<position type="inherit-obj-rel">0 0 0 0 menu-continueGame</position>
+			<origin type="relative">0.5 0.5 0.5 0.5</origin>
+			<color state="active" type="lerp">255 255 255 255</color>
+			<color state="idle" type="lerp">0 0 0 255</color>
+		</text>
+	</object>
 	<object name="exit">
 		<position type="relative-set">0.5 0.8 0.5 0.8</position>
 		<sprite name="btn">

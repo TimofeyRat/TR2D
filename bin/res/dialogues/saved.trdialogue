@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<dialogue name="save">
+	<phrase name="save">
+		<speaker />
+		<text>Игра сохранена.</text>
+		<reply name="exit"><text>[->]</text><action>talk active 0</action></reply>
+	</phrase>
+</dialogue>

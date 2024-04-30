@@ -15,7 +15,7 @@ std::vector<World::Level> World::lvls;
 int World::currentLevel, World::nextLevel;
 sf::Music World::music;
 bool World::active;
-sf::String World::currentMusic;
+sf::String World::currentMusic, World::currentFile;
 float World::brightness, World::musicVolume;
 
 WorldCL::WorldCL() {}
@@ -120,6 +120,7 @@ void World::init()
 
 void World::loadFromFile(std::string filename)
 {
+	currentFile = filename;
 	init();
 	pugi::xml_document doc;
 	doc.load_string(AssetManager::getText(filename).toWideString().c_str());
@@ -380,6 +381,13 @@ void World::Level::update()
 		for (int i = 0; i < spawners.size(); i++)
 		{
 			getEntity(spawners[i].name)->setPosition(spawners[i].pos);
+		}
+		for (int i = 0; i < ents.size(); i++)
+		{
+			if (ents[i].getVar("posX") != 0 && ents[i].getVar("posY") != 0)
+			{
+				ents[i].setPosition({ents[i].getVar("posX"), ents[i].getVar("posY")});
+			}
 		}
 		setVar("w", map.getPixelSize().x);
 		setVar("h", map.getPixelSize().y);
@@ -825,6 +833,15 @@ void World::setCurrentLevel(sf::String name)
 	}
 }
 
+World::Level *World::getLevel(sf::String name)
+{
+	for (int i = 0; i < lvls.size(); i++)
+	{
+		if (lvls[i].name == name) return &lvls[i];
+	}
+	return nullptr;
+}
+
 World::ParticleGenerator::ParticleGenerator()
 {
 	spawnRect = {0, 0, 0, 0};
@@ -1148,6 +1165,46 @@ void tr::execute(sf::String cmd)
 			e->setVar(args[3], e->getVar(args[3]) + std::stof(args[4].toAnsiString()));
 		}
 	}
+	else if (args[0] == "saveGame")
+	{
+		std::cout << "Saving...\n";
+		pugi::xml_document doc;
+		World::saveGame(doc.append_child(L"world"));
+		auto inv = doc.append_child(L"inventory");
+		Inventory::save(inv);
+		inv.append_attribute(L"weapon") = World::getCameraOwner()->weapon.id.toWideString().c_str();
+		inv.append_attribute(L"bauble") = World::getCameraOwner()->bauble.id.toWideString().c_str();
+		doc.save_file(sf::String(AssetManager::path + "global/save.trconf").toWideString().c_str());
+	}
+	else if (args[0] == "loadGame")
+	{
+		std::cout << "Loading...\n";
+		AssetManager::reloadText(AssetManager::path + "global/save.trconf");
+		pugi::xml_document doc;
+		doc.load_string(AssetManager::getText(AssetManager::path + "global/save.trconf").toWideString().c_str());
+		World::loadGame(doc.child(L"world"));
+		auto inv = doc.child(L"inventory");
+		Inventory::load(inv);
+		World::getCameraOwner()->weapon = Inventory::getWeapon(inv.attribute(L"weapon").as_string());
+		World::getCameraOwner()->bauble = Inventory::getBauble(inv.attribute(L"bauble").as_string());
+	}
+	else if (args[0] == "passthrough")
+	{
+		if (args[1] == "ent")
+		{
+			auto src = tr::splitStr(args[2], "-");
+			auto tgt = tr::splitStr(args[3], "-");
+			auto ent = World::getLevel(tgt[0])->getEntity(tgt[1]);
+			auto vars = World::getLevel(src[0])->getEntity(src[1])->getVars();
+			for (int i = 0; i < vars.size(); i++)
+			{
+				ent->setVar(vars[i].name, vars[i].num);
+				ent->setVar(vars[i].name, vars[i].str);
+			}
+			ent->deleteVar("posX");
+			ent->deleteVar("posY");
+		}
+	}
 }
 
 World::Trigger *World::Level::getTrigger(sf::String name)
@@ -1157,4 +1214,86 @@ World::Trigger *World::Level::getTrigger(sf::String name)
 		if (triggers[i].getVar("name") == name) { return &triggers[i]; }
 	}
 	return nullptr;
+}
+
+void World::saveGame(pugi::xml_node world)
+{
+	world.append_attribute(L"file") = currentFile.toWideString().c_str();
+	world.append_attribute(L"currentLevel") = getCurrentLevel()->name.toWideString().c_str();
+	for (int k = 0; k < lvls.size(); k++)
+	{
+		auto lvl = &lvls[k];
+		auto l = world.append_child(L"level");
+		l.append_attribute(L"name") = lvl->name.toWideString().c_str();
+		auto lvlVars = lvl->getVars();
+		for (int i = 0; i < lvlVars.size(); i++)
+		{
+			auto v = lvlVars[i];
+			if (v.str.isEmpty()) l.append_attribute(sf::String(v.name + "_num").toWideString().c_str()) = v.num;
+			else l.append_attribute(sf::String(v.name + "_str").toWideString().c_str()) = v.str.toWideString().c_str();
+		}
+		for (int i = 0; i < lvl->ents.size(); i++)
+		{
+			auto ent = &lvl->ents[i];
+			auto e = l.append_child(L"entity");
+			e.append_attribute(L"name") = ent->name.toWideString().c_str();
+			auto vars = ent->getVars();
+			for (int j = 0; j < vars.size(); j++)
+			{
+				auto v = vars[j];
+				if (v.str.isEmpty()) e.append_attribute(sf::String(v.name + "_num").toWideString().c_str()) = v.num;
+				else e.append_attribute(sf::String(v.name + "_str").toWideString().c_str()) = v.str.toWideString().c_str();
+			}
+		}
+		for (int i = 0; i < lvl->triggers.size(); i++)
+		{
+			auto trig = &lvl->triggers[i];
+			auto t = l.append_child(L"trigger");
+			auto vars = trig->getVars();
+			for (int j = 0; j < vars.size(); j++)
+			{
+				auto v = vars[j];
+				if (v.name == "name") t.append_attribute(L"name") = v.str.toWideString().c_str();
+				else if (v.str.isEmpty()) t.append_attribute(sf::String(v.name + "_num").toWideString().c_str()) = v.num;
+				else t.append_attribute(sf::String(v.name + "_str").toWideString().c_str()) = v.str.toWideString().c_str();
+			}
+		}
+	}
+}
+
+void World::loadGame(pugi::xml_node world)
+{
+	init();
+	loadFromFile(pugi::as_utf8(world.attribute(L"file").as_string()));
+	setCurrentLevel(world.attribute(L"currentLevel").as_string());
+	for (auto l : world.children(L"level"))
+	{
+		auto lvl = getLevel(l.attribute(L"name").as_string());
+		for (auto data : l.attributes())
+		{
+			auto name = tr::splitStr(data.name(), "_");
+			if (name[1] == "str") { lvl->setVar(name[0], data.as_string()); }
+			else if (name[1] == "num") { lvl->setVar(name[0], data.as_float()); }
+		}
+		for (auto e : l.children(L"entity"))
+		{
+			auto ent = lvl->getEntity(e.attribute(L"name").as_string());
+			for (auto data : e.attributes())
+			{
+				auto name = tr::splitStr(data.name(), "_");
+				if (name[1] == "str") { ent->setVar(name[0], data.as_string()); }
+				else if (name[1] == "num") { ent->setVar(name[0], data.as_float()); }
+			}
+		}
+		for (auto t : l.children(L"trigger"))
+		{
+			auto trig = lvl->getTrigger(t.attribute(L"name").as_string());
+			for (auto data : t.attributes())
+			{
+				auto name = tr::splitStr(data.name(), "_");
+				if (name[1] == "str") { trig->setVar(name[0], data.as_string()); }
+				else if (name[1] == "num") { trig->setVar(name[0], data.as_float()); }
+			}
+		}
+	}
 }

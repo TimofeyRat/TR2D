@@ -5,7 +5,7 @@
 		<action event="key-click-F1" condition="null">ui setFrame console;input active 0</action>
 		<action event="key-click-F2" condition="null">assets reload text res/cutscenes/intro.trcs;cutscene init;cutscene start room;world load res/worlds/start.trworld</action>
 		<action event="key-click-F4" condition="null">assets init</action>
-		<action event="key-click-F5" condition="null">particleCurve 500_100|700_100|700_200 100 -5_-5_5_5 rainDrop 1 2</action>
+		<action event="key-click-F5" condition="null">saveGame</action>
 	</object>
 	<object name="inv">
 		<toggle event="key-click-E" />

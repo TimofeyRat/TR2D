@@ -6,9 +6,11 @@
 #include "hParticles.hpp"
 
 #include <SFML/Audio.hpp>
+#include <pugixml.hpp>
 #include <box2d/box2d.h>
 #include <string>
 #include <vector>
+
 
 class WorldCL : public b2ContactListener
 {
@@ -177,7 +179,10 @@ public:
 	static Entity *getCameraOwner();
 	static void throwItem(Inventory::Item itm, Entity *sender);
 	static Level *getCurrentLevel();
+	static Level *getLevel(sf::String name);
 	static void setCurrentLevel(sf::String name);
+	static void saveGame(pugi::xml_node node);
+	static void loadGame(pugi::xml_node node);
 #ifndef trMapEditor
 private:
 #endif
@@ -188,7 +193,7 @@ private:
 	static sf::RenderTexture screen;
 	static float brightness, musicVolume;
 	static bool active;
-	static sf::String currentMusic;
+	static sf::String currentMusic, currentFile;
 };
 
 #endif
