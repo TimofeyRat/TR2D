@@ -1187,6 +1187,9 @@ void tr::execute(sf::String cmd)
 		Inventory::load(inv);
 		World::getCameraOwner()->weapon = Inventory::getWeapon(inv.attribute(L"weapon").as_string());
 		World::getCameraOwner()->bauble = Inventory::getBauble(inv.attribute(L"bauble").as_string());
+		CSManager::active = false;
+		Input::active = true;
+		Talk::active = false;
 	}
 	else if (args[0] == "passthrough")
 	{
