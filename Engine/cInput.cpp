@@ -704,7 +704,7 @@ void Input::init()
 	active = true;
 	controls.clear();
 	pugi::xml_document file;
-	file.load_string(AssetManager::getText("res/global/settings.trconf").toWideString().c_str());
+	file.load_string(AssetManager::getText(AssetManager::path + "global/settings.trconf").toWideString().c_str());
 	for (auto controller : file.children())
 	{
 		if (sf::String(controller.name()) == "controller")

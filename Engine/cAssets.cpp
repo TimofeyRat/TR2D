@@ -5,6 +5,7 @@
 #include <fstream>
 #include <filesystem>
 
+sf::String AssetManager::path;
 std::vector<AssetManager::Texture> AssetManager::textures;
 std::vector<AssetManager::Text> AssetManager::texts;
 std::vector<AssetManager::Font> AssetManager::fonts;
@@ -97,12 +98,13 @@ AssetManager::Font::Font(sf::Font f, std::string file)
 
 void AssetManager::init()
 {
+	if (path[path.getSize() - 1] != '/') path += "/";
 	sf::Thread thread(&load);
 	thread.launch();
-	sf::Font f; f.loadFromFile("res/global/font.ttf");
+	sf::Font f; f.loadFromFile(path + "global/font.ttf");
 	sf::Text t("", f, 32);
 	float clr = 0;
-	auto files = iterateDir("res");
+	auto files = iterateDir(path);
 	auto fileCount = files.size();
 	while (currentFileLoading < fileCount)
 	{

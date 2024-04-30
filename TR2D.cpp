@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 	AssetManager::init();
 
 	Input::init();
-	UI::loadFromFile("res/ui/mainMenu.trui");
+	UI::loadFromFile(AssetManager::path + "ui/mainMenu.trui");
 
 	Window::resetTime();
 

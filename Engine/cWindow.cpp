@@ -27,7 +27,16 @@ Window::CreditsGroup::CreditsGroup(sf::String name)
 void Window::init(int argc, char *argv[])
 {
 	pugi::xml_document config;
-	config.load_file("res/global/settings.trconf");
+	{
+		auto assets = tr::splitStr(argv[1], "=");
+		if (assets[0] == "assets")
+		{
+			AssetManager::path = assets[1];
+			if (AssetManager::path[AssetManager::path.getSize() - 1] != '/') AssetManager::path += "/";
+		}
+		else AssetManager::path = "res/";
+	}
+	config.load_file(sf::String(AssetManager::path + "global/settings.trconf").toWideString().c_str());
 	credits.clear();
 	for (auto set : config.child(L"settings").children())
 	{
@@ -190,7 +199,7 @@ void Window::display()
 {
 	if (getVar("showCredits"))
 	{
-		auto font = *AssetManager::getFont("res/global/font.ttf");
+		auto font = *AssetManager::getFont(AssetManager::path + "global/font.ttf");
 		int count = 0, current = 0;
 		for (int i = 0; i < credits.size(); i++)
 		{
