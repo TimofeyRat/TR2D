@@ -203,6 +203,12 @@ public:
 			hitbox.setPosition(rect.getPosition() + rect.getSize() / 2.0f);
 		}
 	};
+	struct Control
+	{
+		sf::String ent, ctrl;
+		Control() { ent = ctrl = ""; }
+		Control(sf::String entity, sf::String control) { ent = entity; ctrl = control; }
+	};
 	struct Level
 	{
 		Map map;
@@ -213,6 +219,7 @@ public:
 		sf::String musicFile;
 		Camera cam;
 		std::vector<Spawner> spawns;
+		std::vector<Control> ctrl;
 		sf::Vector2f gravity;
 		std::vector<Trigger> triggers;
 		sf::FloatRect bgBounds;
@@ -227,6 +234,7 @@ public:
 			name = musicFile = "";
 			cam = Camera();
 			spawns.clear();
+			ctrl.clear();
 			gravity = {0, 0};
 			triggers.clear();
 			bgBounds = {0, 0, 0, 0};
@@ -352,6 +360,13 @@ public:
 				}
 				level.triggers.push_back(Trigger(prompt));
 			}
+			for (auto c : lvl.children(L"control"))
+			{
+				level.ctrl.push_back(Control(
+					c.attribute(L"ent").as_string(),
+					c.attribute(L"controller").as_string()
+				));
+			}
 			World::lvls.push_back(level);
 		}
 	}
@@ -439,6 +454,13 @@ public:
 					std::to_string(s->pos.x) + " " +
 					std::to_string(s->pos.y)
 				).c_str();
+			}
+			for (int j = 0; j < lvls[i].ctrl.size(); j++)
+			{
+				auto *c = &lvls[i].ctrl[j];
+				auto ctrl = level.append_child(L"control");
+				ctrl.append_attribute(L"ent") = c->ent.toWideString().c_str();
+				ctrl.append_attribute(L"controller") = c->ctrl.toWideString().c_str();
 			}
 		}
 		doc.save_file(pugi::as_wide(filename).c_str());
