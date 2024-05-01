@@ -6,7 +6,7 @@
 		<action event="key-click-F2" condition="null">assets reload text res/cutscenes/intro.trcs;cutscene init;cutscene start room;world load res/worlds/start.trworld</action>
 		<action event="key-click-F4" condition="null">assets init</action>
 		<action event="key-click-F5" condition="null">saveGame</action>
-		<action event="key-click-F6" condition="null">assets reload text res/global/world.frag;loadGame</action>
+		<action event="key-click-F6" condition="null">assets reload text res/global/world.frag;assets reload text res/global/light.frag;loadGame</action>
 	</object>
 	<object name="inv">
 		<toggle event="key-click-E" />

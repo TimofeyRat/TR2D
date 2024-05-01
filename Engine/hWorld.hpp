@@ -134,6 +134,14 @@ public:
 		void update();
 		void draw(sf::RenderTarget *target);
 	};
+	struct LightSource
+	{
+		sf::Color color;
+		sf::Vector2f position;
+		float radius, angle, field;
+		LightSource();
+		LightSource(sf::Color clr, sf::Vector2f pos, float r, float a, float f);
+	};
 	struct Level : public Programmable
 	{
 		Map map;
@@ -147,6 +155,7 @@ public:
 		std::vector<ParticleGenerator> partGens;
 		std::vector<Particle> parts;
 		std::vector<ParticleCurve> partCurves;
+		std::vector<LightSource> lights;
 		sf::String name;
 		sf::Texture *bgTex;
 		sf::Sprite bgSpr;
@@ -158,7 +167,7 @@ public:
 		b2World *world;
 		float musicVolume;
 		WorldCL cl;
-		sf::RenderTexture *bg;
+		sf::RenderTexture *bg, *lightMap;
 		Level();
 		~Level();
 		void reset();
@@ -195,7 +204,7 @@ private:
 	static float brightness, musicVolume;
 	static bool active;
 	static sf::String currentMusic, currentFile;
-	static sf::Shader mapShader, entsShader;
+	static sf::Shader mapShader, lightShader;
 };
 
 #endif

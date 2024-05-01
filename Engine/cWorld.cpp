@@ -8,6 +8,7 @@
 #include "hUI.hpp"
 #include "hCutscene.hpp"
 #include <iostream>
+#include <math.h>
 
 std::map<sf::String, sf::String> World::ents;
 sf::RenderTexture World::screen;
@@ -17,7 +18,7 @@ sf::Music World::music;
 bool World::active;
 sf::String World::currentMusic, World::currentFile;
 float World::brightness, World::musicVolume;
-sf::Shader World::mapShader, World::entsShader;
+sf::Shader World::mapShader, World::lightShader;
 
 WorldCL::WorldCL() {}
 
@@ -114,7 +115,7 @@ void World::init()
 	brightness = 0;
 	musicVolume = 100;
 	mapShader.loadFromMemory(AssetManager::getText(AssetManager::path + "global/world.frag").toAnsiString(), sf::Shader::Fragment);
-	entsShader.loadFromMemory(AssetManager::getText(AssetManager::path + "global/ents.frag").toAnsiString(), sf::Shader::Fragment);
+	lightShader.loadFromMemory(AssetManager::getText(AssetManager::path + "global/light.frag").toAnsiString(), sf::Shader::Fragment);
 	
 	Inventory::init();
 	ParticleSystem::init();
@@ -221,6 +222,23 @@ void World::loadFromFile(std::string filename)
 					std::stof(rect[0].toAnsiString()), std::stof(rect[1].toAnsiString()),
 					std::stof(rect[2].toAnsiString()), std::stof(rect[3].toAnsiString())
 				}
+			));
+		}
+		for (auto light : lvl.children(L"light"))
+		{
+			auto clr = tr::splitStr(light.attribute(L"color").as_string(), " ");
+			auto pos = tr::splitStr(light.attribute(L"pos").as_string(), " ");
+			level.lights.push_back(LightSource(
+				{
+					std::stof(clr[0].toAnsiString()), std::stof(clr[1].toAnsiString()),
+					std::stof(clr[2].toAnsiString()), std::stof(clr[3].toAnsiString())
+				},
+				{
+					std::stof(pos[0].toAnsiString()), std::stof(pos[1].toAnsiString())
+				},
+				light.attribute(L"radius").as_float(),
+				light.attribute(L"angle").as_float(),
+				light.attribute(L"field").as_float()
 			));
 		}
 		World::lvls.push_back(level);
@@ -345,6 +363,7 @@ void World::Level::reset()
 	partGens.clear();
 	parts.clear();
 	partCurves.clear();
+	lights.clear();
 	bgBounds = {0, 0, 0, 0};
 	started = false;
 	if (world != nullptr) { delete world; }
@@ -394,6 +413,7 @@ void World::Level::update()
 		}
 		setVar("w", map.getPixelSize().x);
 		setVar("h", map.getPixelSize().y);
+		//Render background
 		bg = new sf::RenderTexture();
 		bg->create(getVar("w"), getVar("h"));
 		bg->clear();
@@ -405,6 +425,32 @@ void World::Level::update()
 		bg->draw(bgSpr);
 		map.draw(bg);
 		bg->display();
+		//Render lights
+		lightMap = new sf::RenderTexture();
+		lightMap->create(getVar("w"), getVar("h"));
+		sf::RectangleShape basis((sf::Vector2f)lightMap->getSize());
+		std::vector<sf::Glsl::Vec2> lightPos;
+		std::vector<sf::Glsl::Vec4> lightClr;
+		std::vector<sf::Glsl::Vec3> lightData;
+		for (int i = 0; i < lights.size(); i++)
+		{
+			lightPos.push_back({
+				lights[i].position.x,
+				getVar("h") - lights[i].position.y
+			});
+			lightClr.push_back({
+				(float)lights[i].color.r / 255.0f,
+				(float)lights[i].color.g / 255.0f,
+				(float)lights[i].color.b / 255.0f,
+				(float)lights[i].color.a / 255.0f,
+			});
+			lightData.push_back({lights[i].radius, lights[i].angle, lights[i].field});
+		}
+		lightShader.setUniformArray("lightPos", lightPos.data(), fmin(lightPos.size(), 32));
+		lightShader.setUniformArray("lightClr", lightClr.data(), fmin(lightClr.size(), 32));
+		lightShader.setUniformArray("lightData", lightData.data(), fmin(lightData.size(), 32));
+		lightMap->draw(basis, &lightShader);
+		lightMap->display();
 		started = true;
 	}
 	world->SetGravity(gravity);
@@ -590,6 +636,7 @@ void World::Level::draw()
 	mapShader.setUniform("rand", (float)rand() / RAND_MAX);
 	mapShader.setUniform("texture", bg->getTexture());
 	mapShader.setUniform("camOwnerHP", getCameraOwner()->getVar("HP").num);
+	mapShader.setUniform("lightMap", lightMap->getTexture());
 	screen.draw(mapSpr, &mapShader);
 	cam.update(mapSize);
 	sf::Listener::setPosition(cam.view.getCenter().x, 0, cam.view.getCenter().y);
@@ -604,7 +651,7 @@ void World::Level::draw()
 	}
 	for (int i = 0; i < ents.size(); i++)
 	{
-		if (ents[i].getHitbox().intersects(camRect) && ents[i].name != cam.owner) ents[i].draw(&screen, &entsShader);
+		if (ents[i].getHitbox().intersects(camRect) && ents[i].name != cam.owner) ents[i].draw(&screen, &lightShader);
 	}
 	getCameraOwner()->draw(&screen);
 	for (int i = 0; i < parts.size(); i++)
@@ -970,6 +1017,22 @@ void World::ParticleCurve::draw(sf::RenderTarget *target)
 	{
 		if (!parts[i].destroyed) target->draw(parts[i].shape);
 	}
+}
+
+World::LightSource::LightSource()
+{
+	color = sf::Color::White;
+	position = {0, 0};
+	radius = angle = field = 0;
+}
+
+World::LightSource::LightSource(sf::Color clr, sf::Vector2f pos, float r, float a, float f)
+{
+	color = clr;
+	position = pos;
+	radius = r;
+	angle = a;
+	field = f;
 }
 
 void tr::execute(sf::String cmd)

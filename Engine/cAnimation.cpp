@@ -551,7 +551,7 @@ void Skeleton::draw(sf::RenderTarget *target, const sf::RenderStates &states)
 			b->spr.setOrigin(b->angle_origin.y, b->angle_origin.z);
 			b->spr.setColor(color);
 			b->spr.setScale(scale, scale);
-			target->draw(b->spr, states);
+			target->draw(b->spr);
 			if (debug)
 			{
 				auto r = b->spr.getGlobalBounds();
