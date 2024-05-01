@@ -102,7 +102,7 @@ public:
 	void loadFromFile(std::string filename);
 	void updateBones();
 	void update();
-	void draw(sf::RenderTarget *target);
+	void draw(sf::RenderTarget *target, const sf::RenderStates &states = sf::RenderStates::Default);
 	void drawBones(sf::RenderTarget *target);
 	Bone *getBone(int ID);
 	void setPosition(sf::Vector2f xy);

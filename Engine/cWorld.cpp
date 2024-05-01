@@ -17,6 +17,7 @@ sf::Music World::music;
 bool World::active;
 sf::String World::currentMusic, World::currentFile;
 float World::brightness, World::musicVolume;
+sf::Shader World::mapShader, World::entsShader;
 
 WorldCL::WorldCL() {}
 
@@ -112,6 +113,8 @@ void World::init()
 	currentMusic = "";
 	brightness = 0;
 	musicVolume = 100;
+	mapShader.loadFromMemory(AssetManager::getText(AssetManager::path + "global/world.frag").toAnsiString(), sf::Shader::Fragment);
+	entsShader.loadFromMemory(AssetManager::getText(AssetManager::path + "global/ents.frag").toAnsiString(), sf::Shader::Fragment);
 	
 	Inventory::init();
 	ParticleSystem::init();
@@ -261,7 +264,7 @@ void World::update()
 void World::draw()
 {
 	if (currentLevel < 0 || currentLevel >= lvls.size() || !active) return;
-	lvls[currentLevel].draw(&screen);
+	lvls[currentLevel].draw();
 }
 
 sf::RenderTexture *World::getScreen() { return &screen; }
@@ -270,7 +273,7 @@ sf::String World::getEntFile(sf::String name) { return ents[name]; }
 
 World::Map::Map() { reset(); }
 
-void World::Map::draw(sf::RenderTarget *target)
+void World::Map::draw(sf::RenderTarget *target, const sf::RenderStates &states)
 {
 	tile.setTexture(*tileTex);
 	tile.setScale(scale, scale);
@@ -282,7 +285,7 @@ void World::Map::draw(sf::RenderTarget *target)
 			if (tiles[x][y] == 0) { continue; }
 			tile.setTextureRect(tileRects[tiles[x][y] - 1]);
 			tile.setPosition(x * tileSize.x * scale, y * tileSize.y * scale);
-			target->draw(tile);
+			target->draw(tile, states);
 		}
 	}
 }
@@ -391,6 +394,17 @@ void World::Level::update()
 		}
 		setVar("w", map.getPixelSize().x);
 		setVar("h", map.getPixelSize().y);
+		bg = new sf::RenderTexture();
+		bg->create(getVar("w"), getVar("h"));
+		bg->clear();
+		if (bgTex != nullptr) bgSpr.setTexture(*bgTex, false);
+		bgSpr.setScale(
+			bgBounds.width / bgTex->getSize().x,
+			bgBounds.height / bgTex->getSize().y
+		);
+		bg->draw(bgSpr);
+		map.draw(bg);
+		bg->display();
 		started = true;
 	}
 	world->SetGravity(gravity);
@@ -567,18 +581,16 @@ void World::Level::update()
 	}
 }
 
-void World::Level::draw(sf::RenderTarget *target)
+void World::Level::draw()
 {
 	auto mapSize = map.getPixelSize();
 	if (screen.getSize() != (sf::Vector2u)mapSize) { screen.create(mapSize.x, mapSize.y); }
 	screen.clear();
-	if (bgTex != nullptr) bgSpr.setTexture(*bgTex, false);
-	bgSpr.setScale(
-		bgBounds.width / bgTex->getSize().x,
-		bgBounds.height / bgTex->getSize().y
-	);
-	target->draw(bgSpr);
-	map.draw(target);
+	sf::Sprite mapSpr(bg->getTexture());
+	mapShader.setUniform("rand", (float)rand() / RAND_MAX);
+	mapShader.setUniform("texture", bg->getTexture());
+	mapShader.setUniform("camOwnerHP", getCameraOwner()->getVar("HP").num);
+	screen.draw(mapSpr, &mapShader);
 	cam.update(mapSize);
 	sf::Listener::setPosition(cam.view.getCenter().x, 0, cam.view.getCenter().y);
 	sf::FloatRect camRect = {cam.view.getCenter() - cam.view.getSize() / 2.0f, cam.view.getSize()};
@@ -592,8 +604,9 @@ void World::Level::draw(sf::RenderTarget *target)
 	}
 	for (int i = 0; i < ents.size(); i++)
 	{
-		if (ents[i].getHitbox().intersects(camRect)) ents[i].draw(&screen);
+		if (ents[i].getHitbox().intersects(camRect) && ents[i].name != cam.owner) ents[i].draw(&screen, &entsShader);
 	}
+	getCameraOwner()->draw(&screen);
 	for (int i = 0; i < parts.size(); i++)
 	{
 		auto *p = &parts[i];
@@ -609,7 +622,7 @@ void World::Level::draw(sf::RenderTarget *target)
 			rect.setFillColor({0, 0, 0, 0});
 			rect.setOutlineColor(sf::Color::Red);
 			rect.setOutlineThickness(-2);
-			target->draw(rect);
+			screen.draw(rect);
 		}
 		if (CSManager::active) CSManager::drawDebug(&screen);
 	}

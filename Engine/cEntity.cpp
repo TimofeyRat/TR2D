@@ -111,10 +111,10 @@ void Entity::update()
 	setVar("damageCD", getVar("damageCooldown").num);
 }
 
-void Entity::draw(sf::RenderTarget *target)
+void Entity::draw(sf::RenderTarget *target, const sf::RenderStates &states)
 {
 	if (!isAlive()) { return; }
-	s.draw(target);
+	s.draw(target, states);
 	if (!getVar("moveX")) bauble.draw(this);
 	if (getVar("attacking")) weapon.draw(this);
 	if (Window::getVar("debug")) rb.draw(target);

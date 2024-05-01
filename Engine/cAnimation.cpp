@@ -536,7 +536,7 @@ void Skeleton::update()
 	anim->currentFrame += Window::getDeltaTime() * speed;
 }
 
-void Skeleton::draw(sf::RenderTarget *target)
+void Skeleton::draw(sf::RenderTarget *target, const sf::RenderStates &states)
 {
 	bool debug = Window::getVar("debug");
 	for (int l = 0; l < 3; l++)
@@ -551,7 +551,7 @@ void Skeleton::draw(sf::RenderTarget *target)
 			b->spr.setOrigin(b->angle_origin.y, b->angle_origin.z);
 			b->spr.setColor(color);
 			b->spr.setScale(scale, scale);
-			target->draw(b->spr);
+			target->draw(b->spr, states);
 			if (debug)
 			{
 				auto r = b->spr.getGlobalBounds();

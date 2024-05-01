@@ -28,7 +28,7 @@ public:
 	void loadFromNode(pugi::xml_node node);
 	void loadFromFile(sf::String file);
 	void update();
-	void draw(sf::RenderTarget *target);
+	void draw(sf::RenderTarget *target, const sf::RenderStates &states = sf::RenderStates::Default);
 	void setPosition(sf::Vector2f pos);
 	sf::Vector2f getPosition();
 	sf::FloatRect getHitbox();

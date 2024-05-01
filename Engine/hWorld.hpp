@@ -46,7 +46,7 @@ public:
 		std::string texFilename;
 		Map();
 		void reset();
-		void draw(sf::RenderTarget *target);
+		void draw(sf::RenderTarget *target, const sf::RenderStates &states = sf::RenderStates::Default);
 		void resize(int x, int y);
 		sf::Vector2f getPixelSize();
 		void computeRects()
@@ -158,11 +158,12 @@ public:
 		b2World *world;
 		float musicVolume;
 		WorldCL cl;
+		sf::RenderTexture *bg;
 		Level();
 		~Level();
 		void reset();
 		void update();
-		void draw(sf::RenderTarget *target);
+		void draw();
 		Entity *getEntity(sf::String name);
 		Trigger *getTrigger(sf::String name);
 	};
@@ -194,6 +195,7 @@ private:
 	static float brightness, musicVolume;
 	static bool active;
 	static sf::String currentMusic, currentFile;
+	static sf::Shader mapShader, entsShader;
 };
 
 #endif
