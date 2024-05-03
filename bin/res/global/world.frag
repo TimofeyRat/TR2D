@@ -17,6 +17,7 @@ void main()
 	ivec2 texSize = textureSize(texture, 0);
 	vec2 pos = gl_FragCoord.xy;
 	vec4 pixel = texture2D(texture, pos / texSize);
+	vec4 light = texture2D(lightMap, pos / texSize);
 	float greyscale = (pixel.r + pixel.g + pixel.b) / 3;
 	if (camOwnerHP > 75)
 	{
@@ -32,20 +33,15 @@ void main()
 		float chance = (50 - camOwnerHP) / 25;
 		if (rand > chance)
 		{
-			FragColor = clamp(vec4(greyscale) + noise4(pixel), vec4(0.1), vec4(1));
+			vec4 blackout = pixel + vec4(lerp(0, greyscale - pixel.r, 1.0), lerp(0, greyscale - pixel.g, 1.0), lerp(0, greyscale - pixel.b, 1.0), 0);
+			FragColor = clamp(blackout + noise4(pixel), vec4(0.1), vec4(1));
 		}
 	}
 	else if (camOwnerHP > 0)
 	{
 		float brightness = 1.0 - (25 - camOwnerHP) / 25;
-		FragColor = vec4(greyscale) * clamp(brightness, 0, 0.5);
+		vec4 blackout = pixel + vec4(lerp(0, greyscale - pixel.r, 1.0), lerp(0, greyscale - pixel.g, 1.0), lerp(0, greyscale - pixel.b, 1.0), 0);
+		FragColor = blackout * clamp(brightness, 0.5, 0.75);
 	}
-	vec4 light = texture2D(lightMap, pos / texSize);
-	// if (light.a == 0) FragColor = vec4(0.0);
-	// else
-	// {
-	// 	FragColor += light;
-	// 	FragColor.a = 1;
-	// }
 	FragColor *= light;
 }

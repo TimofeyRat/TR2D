@@ -18,7 +18,7 @@ sf::Music World::music;
 bool World::active;
 sf::String World::currentMusic, World::currentFile;
 float World::brightness, World::musicVolume;
-sf::Shader World::mapShader, World::lightShader;
+sf::Shader World::mapShader, World::lightShader, World::objectsShader, World::entShader;
 
 WorldCL::WorldCL() {}
 
@@ -114,9 +114,11 @@ void World::init()
 	currentMusic = "";
 	brightness = 0;
 	musicVolume = 100;
-	mapShader.loadFromMemory(AssetManager::getText(AssetManager::path + "global/world.frag").toAnsiString(), sf::Shader::Fragment);
-	lightShader.loadFromMemory(AssetManager::getText(AssetManager::path + "global/light.frag").toAnsiString(), sf::Shader::Fragment);
-	
+	mapShader.loadFromMemory(AssetManager::getText(AssetManager::path + "global/world.frag"), sf::Shader::Fragment);
+	lightShader.loadFromMemory(AssetManager::getText(AssetManager::path + "global/light.frag"), sf::Shader::Fragment);
+	objectsShader.loadFromMemory(AssetManager::getText(AssetManager::path + "global/objects.frag"), sf::Shader::Fragment);
+	entShader.loadFromMemory(AssetManager::getText(AssetManager::path + "global/ents.frag"), sf::Shader::Fragment);
+
 	Inventory::init();
 	ParticleSystem::init();
 	CSManager::init();
@@ -451,6 +453,12 @@ void World::Level::update()
 		lightShader.setUniformArray("lightData", lightData.data(), fmin(lightData.size(), 32));
 		lightMap->draw(basis, &lightShader);
 		lightMap->display();
+		//Objects layer
+		objects = new sf::RenderTexture();
+		objects->create(getVar("w"), getVar("h"));
+		//Entities layer
+		entsLayer = new sf::RenderTexture();
+		entsLayer->create(getVar("w"), getVar("h"));
 		started = true;
 	}
 	world->SetGravity(gravity);
@@ -633,31 +641,47 @@ void World::Level::draw()
 	if (screen.getSize() != (sf::Vector2u)mapSize) { screen.create(mapSize.x, mapSize.y); }
 	screen.clear();
 	sf::Sprite mapSpr(bg->getTexture());
-	mapShader.setUniform("rand", (float)rand() / RAND_MAX);
+	float random = (float)rand() / RAND_MAX;
+	auto camOwner = getCameraOwner();
+	mapShader.setUniform("rand", random);
 	mapShader.setUniform("texture", bg->getTexture());
-	mapShader.setUniform("camOwnerHP", getCameraOwner()->getVar("HP").num);
+	mapShader.setUniform("camOwnerHP", camOwner->getVar("HP").num);
 	mapShader.setUniform("lightMap", lightMap->getTexture());
 	screen.draw(mapSpr, &mapShader);
 	cam.update(mapSize);
 	sf::Listener::setPosition(cam.view.getCenter().x, 0, cam.view.getCenter().y);
 	sf::FloatRect camRect = {cam.view.getCenter() - cam.view.getSize() / 2.0f, cam.view.getSize()};
+	entsLayer->clear({0, 0, 0, 0});
+	objects->clear({0, 0, 0, 0});
+	std::vector<sf::Glsl::Vec4> entRects;
 	for (int i = 0; i < items.size(); i++)
 	{
-		items[i].draw(world);
+		items[i].draw(world, objects);
 	}
 	for (int i = 0; i < partCurves.size(); i++)
 	{
-		partCurves[i].draw(&screen);
+		partCurves[i].draw(objects);
 	}
 	for (int i = 0; i < ents.size(); i++)
 	{
-		if (ents[i].getHitbox().intersects(camRect) && ents[i].name != cam.owner) ents[i].draw(&screen, &lightShader);
+		if (ents[i].getHitbox().intersects(camRect) && ents[i].name != cam.owner)
+		{
+			ents[i].draw(entsLayer, &lightShader);
+			auto hitbox = ents[i].getHitbox();
+			entRects.push_back({
+				hitbox.left, hitbox.top, hitbox.width, hitbox.height
+			});
+		}
 	}
-	getCameraOwner()->draw(&screen);
+	camOwner->draw(entsLayer);
+	auto ownerRect = camOwner->getHitbox();
+	auto ownerVec4 = sf::Glsl::Vec4(
+		ownerRect.left, ownerRect.top, ownerRect.width, ownerRect.height
+	);
 	for (int i = 0; i < parts.size(); i++)
 	{
 		auto *p = &parts[i];
-		if (p->shape.getGlobalBounds().intersects(camRect)) screen.draw(p->shape);
+		if (p->shape.getGlobalBounds().intersects(camRect)) objects->draw(p->shape);
 	}
 	if (Window::getVar("debug"))
 	{
@@ -673,6 +697,41 @@ void World::Level::draw()
 		}
 		if (CSManager::active) CSManager::drawDebug(&screen);
 	}
+
+	objects->display();
+	objectsShader.setUniform("render", objects->getTexture());
+	objectsShader.setUniform("lightMap", lightMap->getTexture());
+	objectsShader.setUniform("camOwnerHP", camOwner->getVar("HP"));
+	objectsShader.setUniform("rand", random);
+	sf::Sprite objSpr(objects->getTexture());
+	screen.draw(objSpr, &objectsShader);
+	
+	entsLayer->display();
+	entShader.setUniform("render", entsLayer->getTexture());
+	entShader.setUniform("lightMap", lightMap->getTexture());
+	entShader.setUniform("camOwnerHP", camOwner->getVar("HP").num);
+	entShader.setUniform("camOwnerRect", ownerVec4);
+	entShader.setUniform("rand", random);
+	std::vector<sf::Glsl::Vec4> camOwnerBones;
+	std::vector<float> camOwnerBonesRot;
+	for (int i = 0; camOwner->getSkeleton()->getBone(i) != nullptr; i++)
+	{
+		auto b = camOwner->getSkeleton()->getBone(i);
+		auto global = b->spr.getGlobalBounds();
+		auto local = b->spr.getLocalBounds();
+		camOwnerBones.push_back({
+			global.left + global.width / 2,
+			global.top + global.height / 2,
+			local.width * b->spr.getScale().x, local.height * b->spr.getScale().y
+		});
+		camOwnerBonesRot.push_back(b->angle);
+	}
+	entShader.setUniformArray("camOwnerBones", camOwnerBones.data(), fmin(camOwnerBones.size(), 100));
+	entShader.setUniformArray("camOwnerBonesRot", camOwnerBonesRot.data(), fmin(camOwnerBonesRot.size(), 100));
+	entShader.setUniform("camOwnerBoneCount", (int)camOwnerBones.size());
+	sf::Sprite entSpr(entsLayer->getTexture());
+	screen.draw(entSpr, &entShader);
+
 	screen.display();
 	sf::Sprite spr(screen.getTexture());
 	spr.setColor({brightness, brightness, brightness, 255});
@@ -819,7 +878,7 @@ World::FallenItem::FallenItem(b2World *w, Inventory::ItemEntry entry, sf::Vector
 	cooldown.restart();
 }
 
-void World::FallenItem::draw(b2World *world)
+void World::FallenItem::draw(b2World *world, sf::RenderTarget *target)
 {
 	float scale = 2;
 	item.item.updateSpr();
@@ -830,7 +889,7 @@ void World::FallenItem::draw(b2World *world)
 	item.item.spr.setRotation(rb.getAngle());
 	item.item.spr.setOrigin((sf::Vector2f)item.item.spr.getTextureRect().getSize() / 2.0f);
 	item.item.spr.setScale(scale, scale);
-	screen.draw(item.item.spr);
+	target->draw(item.item.spr);
 	if (Window::getVar("debug"))
 	{
 		sf::RectangleShape rect;
@@ -839,7 +898,7 @@ void World::FallenItem::draw(b2World *world)
 		rect.setFillColor(sf::Color(0, 0, 0, 0));
 		rect.setOutlineColor(sf::Color::Red);
 		rect.setOutlineThickness(-2);
-		screen.draw(rect);
+		target->draw(rect);
 	}
 }
 

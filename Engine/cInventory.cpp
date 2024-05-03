@@ -289,9 +289,6 @@ void Inventory::load(pugi::xml_node node)
 	inv.clear();
 	for (auto e : node.children())
 	{
-		inv.push_back({
-			getItem(e.attribute(L"item").as_string()),
-			e.attribute(L"count").as_uint()
-		});
+		addItem(e.attribute(L"item").as_string(), e.attribute(L"count").as_uint());
 	}
 }

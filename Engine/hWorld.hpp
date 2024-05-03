@@ -89,7 +89,7 @@ public:
 		sf::Vector2f impulse;
 		FallenItem();
 		FallenItem(b2World *w, Inventory::ItemEntry entry, sf::Vector2f throwStart, sf::Vector2f impulse);
-		void draw(b2World *world);
+		void draw(b2World *world, sf::RenderTarget *target);
 	};
 	struct Control
 	{
@@ -167,7 +167,7 @@ public:
 		b2World *world;
 		float musicVolume;
 		WorldCL cl;
-		sf::RenderTexture *bg, *lightMap;
+		sf::RenderTexture *bg, *lightMap, *objects, *entsLayer;
 		Level();
 		~Level();
 		void reset();
@@ -204,7 +204,7 @@ private:
 	static float brightness, musicVolume;
 	static bool active;
 	static sf::String currentMusic, currentFile;
-	static sf::Shader mapShader, lightShader;
+	static sf::Shader mapShader, lightShader, objectsShader, entShader;
 };
 
 #endif
