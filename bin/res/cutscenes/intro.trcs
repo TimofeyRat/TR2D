@@ -40,7 +40,7 @@
 		<move_ent name="Greed" points="500 175" />
 		<anim_ent name="Greed" animation="room_attack" animSpeed="1" />
 		<anim_ent duration="0.2" name="Nasake" animation="room_fall" animSpeed="0" continueAfterEnd="0" />
-		<anim_ent offset="0.2" name="Nasake" animation="room_fall" animSpeed="1" />
+		<anim_ent offset="0.2" name="Nasake" animation="room_fall" animSpeed="1.5" />
 		<execute offset="1" count="5" frequency="0.4">ent addNum Nasake HP -5</execute>
 	</clip>
 	<clip name="5" duration="1" startPhraseOnEnd="0" music="res/audio/music/Ambient.ogg">
@@ -53,10 +53,13 @@
 	<clip name="6" duration="2" startPhraseOnEnd="0" music="res/audio/music/Ambient.ogg">
 		<anim_ent name="Greed" animation="ir" animSpeed="0" />
 		<anim_ent name="Nasake" animation="il2" animSpeed="0" />
+		<execute count="1" frequency="0">ent setNum Nasake HP 75</execute>
+		<execute count="10" frequency="0.1">ent addNum Nasake HP -2.5</execute>
 	</clip>
 	<clip name="7" duration="2" startPhraseOnEnd="0" music="res/audio/music/Ambient.ogg">
 		<anim_ent name="Greed" animation="ir" animSpeed="0" />
 		<anim_ent name="Nasake" animation="il" animSpeed="0" />
+		<execute count="10" frequency="0.1">ent addNum Nasake HP 2.5</execute>
 	</clip>
 	<clip name="8" duration="2" startPhraseOnEnd="0" music="res/audio/music/Ambient.ogg">
 		<anim_ent name="Greed" animation="ir" animSpeed="0" />
@@ -69,5 +72,18 @@
 		<anim_ent offset="4" name="Nasake" animation="il" animSpeed="0" />
 		<anim_ent name="Greed" animation="ir" animSpeed="0" continueAfterEnd="0" />
 		<anim_ent offset="3" name="Greed" animation="il" animSpeed="0" />
+	</clip>
+</world_cutscene>
+
+<world_cutscene name="street" dialogue="res/dialogues/cutscenes/street.trdialogue">
+	<clip name="1" duration="1" startPhraseOnEnd="1">
+		<move_ent duration="4" name="Nasake" points="0 530|400 530" />
+		<anim_ent duration="4" name="Nasake" animation="wr" animSpeed="0.75" continueAfterEnd="0" />
+		<anim_ent offset="4" name="Nasake" animation="ir" />
+		<move_cam points="600 370" size="0 0 960 540 set" />
+	</clip>
+	<clip name="2" duration="4" startPhraseOnEnd="0" waitAll="1">
+		<anim_ent name="Nasake" animation="ir2" animSpeed="0" />
+		<move_cam points="600 370|569 320" size="960 540 1138 640 linear" />
 	</clip>
 </world_cutscene>

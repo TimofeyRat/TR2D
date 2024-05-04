@@ -68,6 +68,7 @@ public:
 		}
 		void computeRects()
 		{
+			if (tileSize == sf::Vector2i(0, 0) || tileTex.getSize() == sf::Vector2u(0, 0)) return;
 			tileRects.clear();
 			const auto texX = tileTex.getSize().x / tileSize.x,
 				texY = tileTex.getSize().y / tileSize.y;
@@ -209,6 +210,26 @@ public:
 		Control() { ent = ctrl = ""; }
 		Control(sf::String entity, sf::String control) { ent = entity; ctrl = control; }
 	};
+	struct Light
+	{
+		sf::Vector2f pos;
+		sf::Color clr;
+		float radius, angle, field;
+		Light()
+		{
+			pos = {0, 0};
+			clr = sf::Color::White;
+			radius = angle = field = 0;
+		}
+		Light(sf::Vector2f position, sf::Color color, float r, float a, float f)
+		{
+			pos = position;
+			clr = color;
+			radius = r;
+			angle = a;
+			field = f;
+		}
+	};
 	struct Level
 	{
 		Map map;
@@ -222,6 +243,7 @@ public:
 		std::vector<Control> ctrl;
 		sf::Vector2f gravity;
 		std::vector<Trigger> triggers;
+		std::vector<Light> lights;
 		sf::FloatRect bgBounds;
 		float musicVolume;
 		Level() { reset(); }
@@ -239,6 +261,7 @@ public:
 			triggers.clear();
 			bgBounds = {0, 0, 0, 0};
 			musicVolume = 100;
+			lights.clear();
 		}
 		void draw(sf::RenderTarget *target)
 		{
@@ -299,7 +322,7 @@ public:
 			level.name = lvl.attribute(L"name").as_string();
 			auto map = lvl.child(L"map");
 			level.map.texPath = map.attribute(L"tex").as_string();
-			level.map.tileTex.loadFromFile(level.map.texPath);
+			if (!level.map.texPath.isEmpty()) level.map.tileTex.loadFromFile(level.map.texPath);
 			auto ts = tr::splitStr(map.attribute(L"tileSize").as_string(), " ");
 			level.map.tileSize = {std::stoi(ts[0].toAnsiString()), std::stoi(ts[1].toAnsiString())};
 			level.map.computeRects();
@@ -365,6 +388,21 @@ public:
 				level.ctrl.push_back(Control(
 					c.attribute(L"ent").as_string(),
 					c.attribute(L"controller").as_string()
+				));
+			}
+			for (auto l : lvl.children(L"light"))
+			{
+				auto pos = tr::splitStr(l.attribute(L"pos").as_string(), " ");
+				auto clr = tr::splitStr(l.attribute(L"color").as_string(), " ");
+				level.lights.push_back(Light(
+					{std::stof(pos[0].toAnsiString()), std::stof(pos[1].toAnsiString())},
+					{
+						std::stof(clr[0].toAnsiString()), std::stof(clr[1].toAnsiString()),
+						std::stof(clr[2].toAnsiString()), std::stof(clr[3].toAnsiString())
+					},
+					l.attribute(L"radius").as_float(),
+					l.attribute(L"angle").as_float(),
+					l.attribute(L"field").as_float()
 				));
 			}
 			World::lvls.push_back(level);
@@ -461,6 +499,21 @@ public:
 				auto ctrl = level.append_child(L"control");
 				ctrl.append_attribute(L"ent") = c->ent.toWideString().c_str();
 				ctrl.append_attribute(L"controller") = c->ctrl.toWideString().c_str();
+			}
+			for (int j = 0; j < lvls[i].lights.size(); j++)
+			{
+				auto *l = &lvls[i].lights[j];
+				auto light = level.append_child(L"light");
+				light.append_attribute(L"pos") = sf::String(
+					std::to_string(l->pos.x) + " " + std::to_string(l->pos.y)
+				).toWideString().c_str();
+				light.append_attribute(L"color") = sf::String(
+					std::to_string(l->clr.r) + " " + std::to_string(l->clr.g) + " " +
+					std::to_string(l->clr.b) + " " + std::to_string(l->clr.a)
+				).toWideString().c_str();
+				light.append_attribute(L"radius") = l->radius;
+				light.append_attribute(L"angle") = l->angle;
+				light.append_attribute(L"field") = l->field;
 			}
 		}
 		doc.save_file(pugi::as_wide(filename).c_str());
@@ -639,6 +692,7 @@ void execute()
 	if (currentInput == -1) { return; }
 	auto cmd = input.getString();
 	cmd = cmd.substring(1, cmd.getSize() - 2);
+	if (cmd.isEmpty()) { return; }
 	auto vars = tr::splitStr(cmd, " ");
 	if (currentMenu == UI_WORLDINFO)
 	{

@@ -1,0 +1,27 @@
+<dialogue name="room">
+	<phrase name="1">
+		<speaker>Насаке</speaker>
+		<text>Ну и где мне искать его босса?</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 2</action>
+		</reply>
+	</phrase>
+	<phrase name="2">
+		<speaker>Насаке</speaker>
+		<text>Лес-то огромный...</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>cutscene setClip 2</action>
+			<action>talk setPhrase 3</action>
+		</reply>
+	</phrase>
+	<phrase name="3">
+		<speaker>Насаке</speaker>
+		<text>Да и темнеть начинает...</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>cutscene stop</action>
+		</reply>
+	</phrase>
+</dialogue>

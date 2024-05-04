@@ -1180,13 +1180,18 @@ void tr::execute(sf::String cmd)
 			Input::active = false;
 			Talk::loadFromFile(CSManager::getTalk());
 			Talk::active = true;
-			CSManager::music.openFromFile(CSManager::getMusic(Talk::getCurrentDialogue()->getCurrentPhrase()->name));
-			CSManager::music.play();
+			auto music = CSManager::getMusic(Talk::getCurrentDialogue()->getCurrentPhrase()->name);
+			if (!music.isEmpty())
+			{
+				CSManager::music.openFromFile(music);
+				CSManager::music.play();
+			}
 		}
 		else if (args[1] == "active") { CSManager::active = std::stoi(args[2].toAnsiString()); }
 		else if (args[1] == "stop")
 		{
-			CSManager::active = false;
+			if (CSManager::current.x) { CSManager::shouldEnd = true; }
+			else { CSManager::active = false; }
 			World::setActive(true);
 			Input::active = true;
 			Talk::active = false;

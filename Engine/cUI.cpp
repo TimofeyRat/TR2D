@@ -715,7 +715,7 @@ void UI::Frame::Object::handle()
 		{
 			bg->spr.setColor({0, 0, 0, 0});
 			auto c = CSManager::worlds[CSManager::current.y].getCurrentChange();
-			Talk::active = (c->startPhraseOnEnd ? c->current >= c->duration : true);
+			if (!CSManager::shouldEnd) Talk::active = (c->startPhraseOnEnd ? c->current >= c->duration : true);
 		}
 	}
 	else if (tr::strContains(handler, "acsMenu"))

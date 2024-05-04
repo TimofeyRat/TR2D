@@ -30,7 +30,7 @@ public:
 			{
 				float offset, ot;
 				float duration, current;
-				bool continueAfterEnd;
+				bool continueAfterEnd, ended;
 				Basis(float os = 0, float d = 0, bool cae = false);
 				void basisUpdate();
 				bool isActive();
@@ -79,7 +79,7 @@ public:
 				CurveEnts();
 				void update();
 			};
-			bool startPhraseOnEnd;
+			bool startPhraseOnEnd, waitAll;
 			std::vector<MoveCam> cam;
 			std::vector<MoveEnt> moves;
 			std::vector<AnimEnt> anims;
@@ -103,7 +103,7 @@ public:
 	static void init();
 	static void setCutscene(sf::String name);
 	static sf::String getTalk();
-	static bool active;
+	static bool active, shouldEnd;
 	static sf::String getMusic(sf::String phrase);
 	static void drawDebug(sf::RenderTarget *target);
 	//x - type(0 - frame, 1 - world), y - index

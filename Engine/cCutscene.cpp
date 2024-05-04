@@ -9,7 +9,7 @@
 std::vector<CSManager::FrameCutscene> CSManager::frames;
 std::vector<CSManager::WorldCutscene> CSManager::worlds;
 sf::Vector2i CSManager::current;
-bool CSManager::active;
+bool CSManager::active, CSManager::shouldEnd;
 sf::Music CSManager::music;
 
 CSManager::FrameCutscene::Change::Change()
@@ -81,6 +81,7 @@ void CSManager::init()
 							clip.attribute(L"startPhraseOnEnd").as_bool(),
 							clip.attribute(L"duration").as_float()
 						);
+						c.waitAll = clip.attribute(L"waitAll").as_bool();
 						for (auto change : clip.children())
 						{
 							if (sf::String(change.name()) == "move_cam")
@@ -231,6 +232,7 @@ sf::String CSManager::getMusic(sf::String phrase)
 CSManager::WorldCutscene::Change::Basis::Basis(float os, float d, bool cae)
 {
 	resetBasis(os, d, cae);
+	ended = false;
 }
 
 void CSManager::WorldCutscene::Change::Basis::basisUpdate()
@@ -241,7 +243,7 @@ void CSManager::WorldCutscene::Change::Basis::basisUpdate()
 		if (ot < offset) return;
 	}
 	if (current < duration) current += Window::getDeltaTime();
-	else current = duration;
+	else { current = duration; ended = true; }
 }
 
 bool CSManager::WorldCutscene::Change::Basis::isActive()
@@ -403,6 +405,17 @@ void CSManager::WorldCutscene::Change::update()
 	for (int i = 0; i < anims.size(); i++) anims[i].update();
 	for (int i = 0; i < exec.size(); i++) exec[i].update();
 	for (int i = 0; i < cents.size(); i++) cents[i].update();
+	if (shouldEnd)
+	{
+		if (!waitAll) { shouldEnd = false; active = false; return; }
+		bool end = true;
+		for (int i = 0; i < cam.size(); i++) { if (!cam[i].ended) { end = false; break; } }
+		for (int i = 0; i < moves.size(); i++) { if (!moves[i].ended) { end = false; break; } }
+		for (int i = 0; i < anims.size(); i++) { if (!anims[i].ended) { end = false; break; } }
+		for (int i = 0; i < exec.size(); i++) { if (!anims[i].ended) { end = false; break; } }
+		for (int i = 0; i < cents.size(); i++) { if (!cents[i].ended) { end = false; break; } }
+		if (end) { shouldEnd = false; active = false; }
+	}
 }
 
 CSManager::WorldCutscene::WorldCutscene()

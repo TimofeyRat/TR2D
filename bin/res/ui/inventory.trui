@@ -3,10 +3,8 @@
 	<object name="hotKeys">
 		<action event="key-click-Escape" condition="null">world setActive 0;ui load res/ui/mainMenu.trui</action>
 		<action event="key-click-F1" condition="null">ui setFrame console;input active 0</action>
-		<action event="key-click-F2" condition="null">assets reload text res/cutscenes/intro.trcs;cutscene init;cutscene start room;world load res/worlds/start.trworld</action>
-		<action event="key-click-F4" condition="null">assets init</action>
 		<action event="key-click-F5" condition="null">saveGame</action>
-		<action event="key-click-F6" condition="null">assets reload text res/global/ents.frag;loadGame</action>
+		<action event="key-click-F6" condition="null">assets init;loadGame</action>
 	</object>
 	<object name="inv">
 		<toggle event="key-click-E" />
@@ -125,8 +123,8 @@
 		<text name="debugger">
 			<toggle event="key-click-F3" />
 			<font path="res/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
-			<!-- <txt type="active" appear="set">{Window-int-cursorX} {Window-int-cursorY}</txt> -->
-			<txt type="active" appear="set">{camOwner-int-interacting}</txt>
+			<txt type="active" appear="set">{Window-int-cursorX} {Window-int-cursorY}</txt>
+			<!-- <txt type="active" appear="set">{camOwner-int-interacting}</txt> -->
 			<!-- <txt type="active" appear="set">{Nasake-int-posX} {Nasake-int-posY}</txt> -->
 			<position type="inherit-txt-rel">1 1 1 1 inventory-Debug-FPS</position>
 			<origin type="relative-lerp">1 1 1 0</origin>
