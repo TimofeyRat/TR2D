@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<bone root="0" layer="0" length="18" angleOffset="180" />
+<texture name="headIdle" texture="res/tex/characters/komi.png" rect="0 0 20 18" />
+<animation name="idle" duration="2" repeat="true">
+	<change bone="0">
+		<frame timestamp="0" rotate="180" texture="headIdle" layer="-1" root="-1" origin="10.000000 18.000000" />
+		<frame timestamp="2" rotate="540" texture="" layer="-1" root="-1" origin="-1.000000 -1.000000" />
+	</change>
+</animation>

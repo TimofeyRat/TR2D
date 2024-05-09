@@ -46,4 +46,5 @@ set(CMAKE_MAKEFILE_PRODUCTS
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/TR2D.dir/DependInfo.cmake"
   "CMakeFiles/MapEditor.dir/DependInfo.cmake"
+  "CMakeFiles/SkeletonEditor.dir/DependInfo.cmake"
   )

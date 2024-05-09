@@ -141,6 +141,19 @@ MapEditor/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/build
 .PHONY : MapEditor/fast
 
+#=============================================================================
+# Target rules for targets named SkeletonEditor
+
+# Build rule for target.
+SkeletonEditor: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 SkeletonEditor
+.PHONY : SkeletonEditor
+
+# fast build rule for target.
+SkeletonEditor/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SkeletonEditor.dir\build.make CMakeFiles/SkeletonEditor.dir/build
+.PHONY : SkeletonEditor/fast
+
 Engine/cAnimation.obj: Engine/cAnimation.cpp.obj
 .PHONY : Engine/cAnimation.obj
 
@@ -274,6 +287,7 @@ Engine/cGlobal.obj: Engine/cGlobal.cpp.obj
 Engine/cGlobal.cpp.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cGlobal.cpp.obj
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cGlobal.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SkeletonEditor.dir\build.make CMakeFiles/SkeletonEditor.dir/Engine/cGlobal.cpp.obj
 .PHONY : Engine/cGlobal.cpp.obj
 
 Engine/cGlobal.i: Engine/cGlobal.cpp.i
@@ -283,6 +297,7 @@ Engine/cGlobal.i: Engine/cGlobal.cpp.i
 Engine/cGlobal.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cGlobal.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cGlobal.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SkeletonEditor.dir\build.make CMakeFiles/SkeletonEditor.dir/Engine/cGlobal.cpp.i
 .PHONY : Engine/cGlobal.cpp.i
 
 Engine/cGlobal.s: Engine/cGlobal.cpp.s
@@ -292,6 +307,7 @@ Engine/cGlobal.s: Engine/cGlobal.cpp.s
 Engine/cGlobal.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cGlobal.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/Engine/cGlobal.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SkeletonEditor.dir\build.make CMakeFiles/SkeletonEditor.dir/Engine/cGlobal.cpp.s
 .PHONY : Engine/cGlobal.cpp.s
 
 Engine/cInput.obj: Engine/cInput.cpp.obj
@@ -591,6 +607,30 @@ TRME.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\MapEditor.dir\build.make CMakeFiles/MapEditor.dir/TRME.cpp.s
 .PHONY : TRME.cpp.s
 
+TRSE.obj: TRSE.cpp.obj
+.PHONY : TRSE.obj
+
+# target to build an object file
+TRSE.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SkeletonEditor.dir\build.make CMakeFiles/SkeletonEditor.dir/TRSE.cpp.obj
+.PHONY : TRSE.cpp.obj
+
+TRSE.i: TRSE.cpp.i
+.PHONY : TRSE.i
+
+# target to preprocess a source file
+TRSE.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SkeletonEditor.dir\build.make CMakeFiles/SkeletonEditor.dir/TRSE.cpp.i
+.PHONY : TRSE.cpp.i
+
+TRSE.s: TRSE.cpp.s
+.PHONY : TRSE.s
+
+# target to generate assembly for a file
+TRSE.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\SkeletonEditor.dir\build.make CMakeFiles/SkeletonEditor.dir/TRSE.cpp.s
+.PHONY : TRSE.cpp.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -600,6 +640,7 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... MapEditor
+	@echo ... SkeletonEditor
 	@echo ... TR2D
 	@echo ... Engine/cAnimation.obj
 	@echo ... Engine/cAnimation.i
@@ -655,6 +696,9 @@ help:
 	@echo ... TRME.obj
 	@echo ... TRME.i
 	@echo ... TRME.s
+	@echo ... TRSE.obj
+	@echo ... TRSE.i
+	@echo ... TRSE.s
 .PHONY : help
 
 

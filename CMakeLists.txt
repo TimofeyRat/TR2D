@@ -47,3 +47,12 @@ target_link_libraries(MapEditor
 	sfml-audio-s sfml-system-s openal32 flac vorbisenc vorbisfile vorbis ogg)
 
 target_compile_options(MapEditor PUBLIC -w -static -D SFML_STATIC)
+
+project(SkeletonEditor VERSION 0.1 LANGUAGES CXX)
+add_executable(SkeletonEditor TRSE.cpp Engine/cGlobal.cpp Engine/pugixml.o)
+target_link_libraries(SkeletonEditor
+	sfml-window-s sfml-system-s opengl32 winmm gdi32
+	sfml-graphics-s sfml-system-s sfml-window-s opengl32 freetype
+	sfml-system-s winmm
+	sfml-audio-s sfml-system-s openal32 flac vorbisenc vorbisfile vorbis ogg)
+target_compile_options(SkeletonEditor PUBLIC -w -static -D SFML_STATIC)

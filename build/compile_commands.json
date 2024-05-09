@@ -142,5 +142,17 @@
   "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -o CMakeFiles\\MapEditor.dir\\Engine\\cWindow.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cWindow.cpp",
   "file": "C:/Projects/TR2D/Engine/cWindow.cpp",
   "output": "CMakeFiles/MapEditor.dir/Engine/cWindow.cpp.obj"
+},
+{
+  "directory": "C:/Projects/TR2D/build",
+  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -o CMakeFiles\\SkeletonEditor.dir\\TRSE.cpp.obj -c C:\\Projects\\TR2D\\TRSE.cpp",
+  "file": "C:/Projects/TR2D/TRSE.cpp",
+  "output": "CMakeFiles/SkeletonEditor.dir/TRSE.cpp.obj"
+},
+{
+  "directory": "C:/Projects/TR2D/build",
+  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -o CMakeFiles\\SkeletonEditor.dir\\Engine\\cGlobal.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cGlobal.cpp",
+  "file": "C:/Projects/TR2D/Engine/cGlobal.cpp",
+  "output": "CMakeFiles/SkeletonEditor.dir/Engine/cGlobal.cpp.obj"
 }
 ]
