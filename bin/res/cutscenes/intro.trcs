@@ -19,8 +19,8 @@
 	</clip>
 	<clip name="2" duration="1.25" startPhraseOnEnd="1" music="res/audio/music/Ambient.ogg">
 		<move_ent duration="2.4" name="Greed" points="300 375|500 375" />
-		<anim_ent duration="2.4" name="Greed" animation="wr" animSpeed="0.5" continueAfterEnd="0" />
-		<anim_ent offset="2.4" name="Greed" animation="ir" animSpeed="0" />
+		<anim_ent duration="2.4" name="Greed" animation="walkRight" animSpeed="0.5" continueAfterEnd="0" />
+		<anim_ent offset="2.4" name="Greed" animation="idleRight" animSpeed="0" />
 		<move_ent duration="0.5" name="Nasake" points="1030 400|1050 360|1000 360" />
 		<anim_ent duraiton="1" name="Nasake" animation="room_inbed2" animSpeed="2" continueAfterEnd="0" />
 		<move_ent offset="1" duration="1" name="Nasake" points="1000 360|970 370" />
