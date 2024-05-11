@@ -150,8 +150,18 @@ void UI::Frame::Object::Text::updateClr()
 		if (out == "set") { curOut = idleOut; }
 		else if (out == "lerp") { curOut = tr::lerpClr(curOut, idleOut, 5 * Window::getDeltaTime()); }
 	}
-	txt.setFillColor({curClr.x, curClr.y, curClr.z, curClr.w});
-	txt.setOutlineColor({curOut.x, curOut.y, curOut.z, curOut.w});
+	txt.setFillColor({
+		tr::clamp(curClr.x, 0, 255),
+		tr::clamp(curClr.y, 0, 255),
+		tr::clamp(curClr.z, 0, 255),
+		tr::clamp(curClr.w, 0, 255)
+	});
+	txt.setOutlineColor({
+		tr::clamp(curOut.x, 0, 255),
+		tr::clamp(curOut.y, 0, 255),
+		tr::clamp(curOut.z, 0, 255),
+		tr::clamp(curOut.w, 0, 255)
+	});
 }
 
 void UI::Frame::Object::Text::updateText()
