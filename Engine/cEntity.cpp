@@ -97,7 +97,7 @@ void Entity::update()
 	updateAnim();
 	s.updateBones();
 	auto rect = s.generateHitbox();
-	rb.resize(rb.getBody()->GetWorld(), {!rect.width ? 1 : rect.width, !rect.height ? 1 : rect.height - 2});
+	rb.resize(rb.getBody()->GetWorld(), {fmax(rect.width, 1), fmax(rect.height, 1)});
 	s.setPosition({
 		rb.getPosition().x + (s.getBone(0)->pos.x - (rect.left + rect.width / 2)),
 		rb.getPosition().y + (s.getBone(0)->pos.y - (rect.top + rect.height / 2))
@@ -105,8 +105,8 @@ void Entity::update()
 	s.update();
 	setVar("posX", rb.getPosition().x);
 	setVar("posY", rb.getPosition().y);
-	setVar("moveX", rb.getBody()->GetLinearVelocity().x);
-	setVar("moveY", rb.getBody()->GetLinearVelocity().y);
+	setVar("moveX", rb.getBody()->GetLinearVelocity().x * tr::M2P);
+	setVar("moveY", rb.getBody()->GetLinearVelocity().y * tr::M2P);
 	setVar("noHurtTimer", getVar("noHurtTimer") + Window::getDeltaTime());
 	setVar("damageCD", getVar("damageCooldown").num);
 }
@@ -132,8 +132,8 @@ void Entity::updateAnim()
 	float moveX, moveY, bodyX, bodyY;
 	if (auto *b = rb.getBody())
 	{
-		bodyX = b->GetLinearVelocity().x;
-		bodyY = b->GetLinearVelocity().y;
+		bodyX = b->GetLinearVelocity().x * tr::M2P;
+		bodyY = b->GetLinearVelocity().y * tr::M2P;
 	}
 	moveX = getVar("dx");
 	moveY = getVar("dy");
@@ -142,8 +142,8 @@ void Entity::updateAnim()
 	
 	if (moveX < 0) dx = -1;
 	if (moveX > 0) dx = 1;
-	if (bodyX < 0) { if (moveX >= 0) dx = -0.5; setVar("rotation", -1); }
-	if (bodyX > 0) { if (moveX <= 0) dx = 0.5; setVar("rotation", 1); }
+	if (bodyX < -getVar("sv")) { if (moveX >= 0) dx = -0.5; setVar("rotation", -1); }
+	if (bodyX > getVar("sv")) { if (moveX <= 0) dx = 0.5; setVar("rotation", 1); }
 	dy = getVar("onGround") ? 0 : bodyY;
 
 	sf::String anim;
@@ -210,7 +210,10 @@ void Entity::updateRB(float scale)
 	if (body)
 	{
 		auto triggers = World::getTriggers();
-		auto triggersCheck = sf::Vector2f(body->GetPosition().x * tr::M2P, body->GetPosition().y * tr::M2P + s.generateHitbox().height / 2 + 4);
+		auto triggersCheck = sf::Vector2f(
+			body->GetPosition().x * tr::M2P,
+			body->GetPosition().y * tr::M2P + s.generateHitbox().height / 2 + getVar("ogd") * scale
+		);
 		auto speed = getVar("speed") + getVar("baubleSpeed");
 		setVar("onGround", 0);
 		for (int i = 0; i < triggers.size(); i++)

@@ -22,15 +22,15 @@
 		<anim_ent duration="2.4" name="Greed" animation="wr" animSpeed="0.5" continueAfterEnd="0" />
 		<anim_ent offset="2.4" name="Greed" animation="ir" animSpeed="0" />
 		<move_ent duration="0.5" name="Nasake" points="1030 400|1050 360|1000 360" />
-		<anim_ent name="Nasake" animation="room_getup" animSpeed="2" />
+		<anim_ent duraiton="1" name="Nasake" animation="room_inbed2" animSpeed="2" continueAfterEnd="0" />
 		<move_ent offset="1" duration="1" name="Nasake" points="1000 360|970 370" />
-		<anim_ent offset="1" duration="1" name="Nasake" animation="room_stand" animSpeed="1" />
+		<anim_ent offset="1" duration="1" name="Nasake" animation="room_inbed3" animSpeed="1" />
 		<move_cam duration="2" points="752 240|672 240" size="800 450 960 540 linear" />
 	</clip>
 	<clip name="3" duration="1.5" startPhraseOnEnd="0" music="res/audio/music/Ambient.ogg">
 		<move_ent duration="1" name="Greed" points="500 375|500 150|500 175" />
 		<anim_ent name="Greed" animation="room_obsessed" animSpeed="1" />
-		<anim_ent name="Nasake" animation="room_standup" animSpeed="1" />
+		<anim_ent name="Nasake" animation="room_getup" animSpeed="1" />
 	</clip>
 	<clip name="4" duration="2" startPhraseOnEnd="1" music="res/audio/music/Ambient.ogg">
 		<curve_ents duration="5" entA="Greed" entB="Nasake" count="100" points="850 150" particle="soulBG" partSpeed="-10 -10 10 10" lifeTime="7"

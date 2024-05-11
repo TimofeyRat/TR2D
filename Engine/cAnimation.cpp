@@ -23,76 +23,6 @@ FrameAnimator::FrameAnimator()
 	currentAnimation = 0;
 }
 
-// void FrameAnimator::loadFromFile(std::string filename)
-// {
-// 	currentAnimation = 0;
-// 	anims.clear();
-// 	auto file = AssetManager::getText(filename);
-// 	Animation anim;
-// 	for (auto line : tr::splitStr(file, "\n"))
-// 	{
-// 		auto args = tr::splitStr(line, " ");
-// 		if (tr::strContains(args[0], "EndAnimation"))
-// 		{
-// 			anims.push_back(anim);
-// 		}
-// 		else if (tr::strContains(args[0], "Animation"))
-// 		{
-// 			anim = Animation();
-// 			anim.name = args[1];
-// 		}
-// 		else if (tr::strContains(args[0], "Texture"))
-// 		{
-// 			anim.texture = AssetManager::getTexture(args[1]);
-// 			int sizeX = std::stoi(args[2].toAnsiString()),
-// 				sizeY = std::stoi(args[3].toAnsiString()),
-// 				offset = std::stoi(args[4].toAnsiString()),
-// 				length = std::stoi(args[5].toAnsiString());
-// 			auto texCountX = anim.texture->getSize().x / sizeX;
-// 			for (int i = offset; i < offset + length; i++)
-// 			{
-// 				auto r = sf::IntRect(
-// 					sf::Vector2i(
-// 						sizeX * (i % texCountX),
-// 						sizeY * (i / texCountX)
-// 					),
-// 					sf::Vector2i(sizeX, sizeY)
-// 				);
-// 				anim.frames.push_back(r);
-// 				r.left += r.width;
-// 				r.width *= -1;
-// 				anim.frames_flip.push_back(r);
-// 			}
-// 		}
-// 		else if (tr::strContains(args[0], "Frame"))
-// 		{
-// 			anim.texture = AssetManager::getTexture(args[1]);
-// 			sf::IntRect frame;
-// 			frame.left = std::stof(args[2].toAnsiString());
-// 			frame.top = std::stof(args[3].toAnsiString());
-// 			frame.width = std::stof(args[4].toAnsiString());
-// 			frame.height = std::stof(args[5].toAnsiString());
-// 			anim.frames.push_back(frame);
-// 			frame.left += frame.width;
-// 			frame.width *= -1;
-// 			anim.frames_flip.push_back(frame);
-// 		}
-// 		else if (tr::strContains(args[0], "Duration"))
-// 		{
-// 			anim.duration = std::stof(args[1].toAnsiString());
-// 		}
-// 		else if (tr::strContains(args[0], "Scale"))
-// 		{
-// 			anim.scaleX = std::stof(args[1].toAnsiString());
-// 			anim.scaleY = std::stof(args[2].toAnsiString());
-// 		}
-// 		else if (tr::strContains(args[0], "Repeat"))
-// 		{
-// 			anim.repeat = std::stoi(args[1].toAnsiString());
-// 		}
-// 	}
-// }
-
 void FrameAnimator::loadFromFile(std::string filename)
 {
 	currentAnimation = 0;
@@ -251,37 +181,37 @@ void FrameAnimator::restart() { for (int i = 0; i  < anims.size(); i++) { anims[
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
 
+Skeleton::Texture::Texture()
+{
+	tex = nullptr;
+	name = "";
+	rect = {0, 0, 0, 0};
+}
+
+Skeleton::Texture::Texture(sf::String id, sf::String path, sf::IntRect tr)
+{
+	tex = AssetManager::getTexture(path);
+	name = id;
+	rect = tr;
+}
+
 Skeleton::Bone::Bone()
 {
-	id = root = layer = length = angle = 0;
+	root = layer = length = angle = 0;
 	pos = {0, 0};
-	tex = nullptr;
 	spr = sf::Sprite();
 	angle_origin = {0, 0, 0};
 }
 
-Skeleton::Bone::Bone(int ID,
-			int Root,
+Skeleton::Bone::Bone(int Root,
 			float Length,
-			float Angle,
-			std::string Tex,
-			sf::IntRect tRect,
 			sf::Vector3f ao,
 			int Layer)
 {
-	id = ID;
 	root = Root;
 	layer = Layer;
 	length = Length;
-	angle = Angle;
 	pos = {0, 0};
-	tex = nullptr;
-	if (!Tex.empty())
-	{
-		tex = AssetManager::getTexture(Tex);
-		spr = sf::Sprite(*tex);
-	}
-	if (tRect != sf::IntRect(0, 0, 0, 0)) { spr.setTextureRect(tRect); }
 	angle_origin = ao;
 }
 
@@ -296,7 +226,7 @@ sf::Vector2f Skeleton::Bone::getEnd(float scale)
 void Skeleton::Animation::Frame::init()
 {
 	r = -1;
-	tRect = {-1, -1, -1, -1};
+	tex = "";
 	layer = root = -1;
 	timestamp = 0;
 	origin = {-1, -1};
@@ -316,32 +246,13 @@ void Skeleton::Animation::Frame::parse(pugi::xml_node node)
 {
 	init();
 	timestamp = node.attribute(L"timestamp").as_float();
-	for (auto part : node.children())
-	{
-		auto name = sf::String(part.name());
-		if (name == "rotate")
-		{
-			r = part.attribute(L"value").as_float();
-		}
-		else if (name == "rect")
-		{
-			auto rect = tr::splitStr(part.text().as_string(), " ");
-			tRect = {
-				std::stof(rect[0].toAnsiString()), std::stof(rect[1].toAnsiString()),
-				std::stof(rect[2].toAnsiString()), std::stof(rect[3].toAnsiString())
-			};
-		}
-		else if (name == "layer") { layer = part.text().as_int(); }
-		else if (name == "origin")
-		{
-			auto o = tr::splitStr(part.text().as_string(), " ");
-			origin = {
-				std::stof(o[0].toAnsiString()),
-				std::stof(o[1].toAnsiString())
-			};
-		}
-		else if (name == "root") { root = part.text().as_int(); }
-	}
+	r = node.attribute(L"rotate").as_float();
+	auto tr = tr::splitStr(node.attribute(L"rect").as_string(L"-1 -1 -1 -1"), " ");
+	tex = node.attribute(L"texture").as_string();
+	layer = node.attribute(L"layer").as_int(-1);
+	root = node.attribute(L"root").as_int(-1);
+	auto o = tr::splitStr(node.attribute(L"origin").as_string(L"-1 -1"), " ");
+	origin = {std::stof(o[0].toAnsiString()), std::stof(o[1].toAnsiString())};
 }
 
 Skeleton::Animation::Changer::Changer()
@@ -434,6 +345,7 @@ Skeleton::Skeleton(std::string filename)
 
 void Skeleton::init()
 {
+	tex.clear();
 	bones.clear();
 	anims.clear();
 	currentAnim = 0;
@@ -457,17 +369,10 @@ void Skeleton::loadFromFile(std::string filename)
 			auto o = tr::splitStr(node.attribute(L"origin").as_string(), " ");
 			if (!o.size()) { o.resize(2, "0"); }
 			auto b = Bone(
-				node.attribute(L"id").as_int(),
 				node.attribute(L"root").as_int(),
 				node.attribute(L"length").as_float(),
-				node.attribute(L"angle").as_float(),
-				pugi::as_utf8(node.attribute(L"tex").as_string()),
 				{
-					std::stof(r[0].toAnsiString()), std::stof(r[1].toAnsiString()),
-					std::stof(r[2].toAnsiString()), std::stof(r[3].toAnsiString())
-				},
-				{
-					node.attribute(L"offset").as_float(),
+					node.attribute(L"angleOffset").as_float(),
 					std::stof(o[0].toAnsiString()),
 					std::stof(o[1].toAnsiString())
 				},
@@ -479,6 +384,18 @@ void Skeleton::loadFromFile(std::string filename)
 		{
 			anims.push_back(Animation(node));
 		}
+		else if (name == "texture")
+		{
+			auto tr = tr::splitStr(node.attribute(L"rect").as_string(L"0 0 0 0"), " ");
+			tex.push_back(Texture(
+				node.attribute(L"name").as_string(),
+				node.attribute(L"texture").as_string(),
+				{
+					std::stof(tr[0].toAnsiString()), std::stof(tr[1].toAnsiString()),
+					std::stof(tr[2].toAnsiString()), std::stof(tr[3].toAnsiString())
+				}
+			));
+		}
 	}
 }
 
@@ -486,7 +403,7 @@ void Skeleton::updateBones()
 {
 	for (int i = 0; i < bones.size(); i++)
 	{
-		if (bones[i].root != bones[i].id)
+		if (bones[i].root != i)
 		{
 			auto *r = getBone(bones[i].root);
 			if (r == nullptr) bones[i].pos = position;
@@ -515,7 +432,12 @@ void Skeleton::update()
 		auto *cur = change->getFrame(anim->currentFrame);
 		auto *next = change->getNextFrame(anim->currentFrame);
 		if (!cur) continue;
-		if (cur->tRect != sf::IntRect(-1, -1, -1, -1)) { b->spr.setTextureRect(cur->tRect); }
+		if (!cur->tex.isEmpty())
+		{
+			auto t = getTexture(cur->tex);
+			b->spr.setTexture(*t->tex);
+			b->spr.setTextureRect(t->rect);
+		}
 		if (cur->layer != -1) { b->layer = cur->layer; }
 		if (cur->origin != sf::Vector2f(-1, -1))
 		{
@@ -545,7 +467,6 @@ void Skeleton::draw(sf::RenderTarget *target, const sf::RenderStates &states)
 		{
 			auto *b = &bones[i];
 			if (b->layer != l) { continue; }
-			if (b->tex) b->spr.setTexture(*b->tex);
 			b->spr.setPosition(b->pos);
 			b->spr.setRotation(b->angle + b->angle_origin.x);
 			b->spr.setOrigin(b->angle_origin.y, b->angle_origin.z);
@@ -584,9 +505,15 @@ void Skeleton::drawBones(sf::RenderTarget *target)
 
 Skeleton::Bone *Skeleton::getBone(int ID)
 {
-	for (int i = 0; i < bones.size(); i++)
+	if (!bones.size() || ID != tr::clamp(ID, 0, bones.size() - 1)) return nullptr;
+	return &bones[ID];
+}
+
+Skeleton::Texture *Skeleton::getTexture(sf::String name)
+{
+	for (int i = 0; i < tex.size(); i++)
 	{
-		if (bones[i].id == ID) { return &bones[i]; }
+		if (tex[i].name == name) { return &tex[i]; }
 	}
 	return nullptr;
 }

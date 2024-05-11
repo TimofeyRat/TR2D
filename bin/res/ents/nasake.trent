@@ -13,12 +13,13 @@
 	<variable name="headBone" num="1" />
 	<variable name="damageCooldown" num="1" />
 	<variable name="speed" num="0.5" /><variable name="maxSpeed" num="1" />
-	<variable name="speedX" num="35" /><variable name="speedY" num="2" />
-	<variable name="wl" string="wl" /><variable name="wr" string="wr" />
-	<variable name="il" string="idle" /><variable name="ir" string="idle" />
-	<variable name="sl" string="sl" /><variable name="sr" string="sr" />
-	<variable name="jl" string="jl" /><variable name="jr" string="jr" />
-	<variable name="fl" string="fl" /><variable name="fr" string="fr" />
+	<variable name="speedX" num="35" /><variable name="sv" num="1" />
+	<variable name="speedY" num="2" /><variable name="ogd" num="2" />
+	<variable name="wl" string="walkLeft" /><variable name="wr" string="walkRight" />
+	<variable name="il" string="idleLeft" /><variable name="ir" string="idleRight" />
+	<variable name="sl" string="stopLeft" /><variable name="sr" string="stopRight" />
+	<variable name="jl" string="jumpLeft" /><variable name="jr" string="jumpRight" />
+	<variable name="fl" string="fallLeft" /><variable name="fr" string="fallRight" />
 	<variable name="al" string="al" /><variable name="ar" string="ar" />
 	<variable name="scale" num="3.5" />
 </entity>
