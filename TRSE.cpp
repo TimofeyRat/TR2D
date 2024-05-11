@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <iostream>
 #include <filesystem>
+#include <math.h>
 
 sf::RenderWindow window;
 float deltaTime, currentFrame;
@@ -12,6 +13,7 @@ int currentPage = 0, currentBone, currentTexture, currentAnimation, enterCommand
 sf::Vector2f mouse;
 sf::Text enter;
 bool typing, play = false;
+int nearest;
 
 //Pages
 #define PageCreate 0
@@ -26,14 +28,21 @@ bool typing, play = false;
 #define CreateBone 2
 #define CreateTexture 3
 #define CreateAnimation 4
+#define DeleteBone 5
+#define DeleteTexture 6
+#define DeleteAnimation 7
 
 //Page "Bone"
 #define BoneID 0
 #define BoneLength 1
 #define BoneLayer 2
 #define BoneAngle 3
-#define BoneTexture 4
-#define BoneAO 5
+#define BoneAO 4
+#define BoneRoot 5
+#define BoneNL 6
+#define BoneNR 7
+#define BoneNF 8
+#define BoneDF 9
 
 //Page "Texture"
 #define TextureID 0
@@ -46,18 +55,8 @@ bool typing, play = false;
 #define AnimationName 1
 #define AnimationDuration 2
 #define AnimationRepeat 3
-//Current time
-#define AnimationCT 4
-//Current bone
-#define AnimationBone 5
-//Nearest Left
-#define AnimationNL 6
-//Nearest Right
-#define AnimationNR 7
-//New change
-#define AnimationNF 8
-//Delete frame
-#define AnimationDF 9
+#define AnimationCopyStart 4
+#define AnimationCopyEnd 5
 
 //Page "Frame"
 #define FrameID 0
@@ -68,7 +67,7 @@ bool typing, play = false;
 #define FrameRoot 5
 #define FrameOrigin 6
 
-sf::String openWindow()
+sf::String openWindow(char* filter = "TR2D Skeleton (*.trskeleton)\0*.trskeleton\0")
 {
 	auto path = std::filesystem::current_path();
 	OPENFILENAME ofn;
@@ -80,7 +79,7 @@ sf::String openWindow()
 	ofn.lpstrFile = filename;
 	ofn.lpstrFile[0] = '\0';
 	ofn.nMaxFile = sizeof(filename);
-	ofn.lpstrFilter = "TR2D Skeleton (*.trskeleton)\0*.trskeleton\0";
+	ofn.lpstrFilter = filter;
 	ofn.nFilterIndex = 1;
 	ofn.lpstrFileTitle = NULL;
 	ofn.nMaxFileTitle = 0;
@@ -94,6 +93,7 @@ sf::String openWindow()
 		sf::String file = ofn.lpstrFile;
 		file.erase(0, path.string().length() + 1);
 		std::filesystem::current_path(path);
+		while (tr::strContains(file, "\\")) file.replace("\\", "/");
 		return file;
 	}
 	return "Fail";
@@ -125,6 +125,7 @@ sf::String saveWindow()
 		sf::String file = ofn.lpstrFile;
 		file.erase(0, path.string().length() + 1);
 		std::filesystem::current_path(path);
+		while (tr::strContains(file, "\\")) file.replace("\\", "/");
 		return file;
 	}
 	return "Fail"; 
@@ -161,14 +162,12 @@ public:
 		int root, layer;
 		float length, angle;
 		sf::Vector2f pos;
-		sf::String tex;
 		sf::Sprite spr;
 		sf::Vector3f angle_origin;
 		Bone()
 		{
 			root = layer = length = angle = 0;
 			pos = {0, 0};
-			tex = "";
 			spr = sf::Sprite();
 			angle_origin = {0, 0, 0};
 		}
@@ -179,7 +178,6 @@ public:
 			length = node.attribute(L"length").as_float();
 			angle = 0;
 			pos = {0, 0};
-			tex = "";
 			spr = sf::Sprite();
 			angle_origin.x = node.attribute(L"angleOffset").as_float();
 		}
@@ -279,6 +277,14 @@ public:
 				if (sf::String(part.name()) == "change")
 				{
 					changes.push_back(Changer(part));
+					std::sort(
+					changes.begin(),
+					changes.end(),
+					[](Changer a, Changer b)
+					{
+						return a.boneID < b.boneID;
+					}
+				);
 				}
 			}
 		}
@@ -309,6 +315,8 @@ public:
 		position = {0, 0};
 		color = sf::Color::White;
 		speed = scale = 1;
+
+		deltaTime = currentFrame = currentPage = currentBone = currentTexture = currentAnimation = enterCommandID = enterCommandPage = nearest = typing = play = 0;
 	}
 	void loadFromFile(std::string filename)
 	{
@@ -352,6 +360,7 @@ public:
 			auto t = &tex[i];
 			texture.append_attribute(L"name") = t->name.toWideString().c_str();
 			texture.append_attribute(L"texture") = t->path.toWideString().c_str();
+			if (t->rect != sf::IntRect(0, 0, 0, 0))
 			texture.append_attribute(L"rect") = sf::String(
 				std::to_string(t->rect.left) + " " + std::to_string(t->rect.top) + " " +
 				std::to_string(t->rect.width) + " " + std::to_string(t->rect.height)
@@ -374,11 +383,11 @@ public:
 					auto frame = change.append_child(L"frame");
 					auto f = &c->frames[k];
 					frame.append_attribute(L"timestamp") = f->timestamp;
-					frame.append_attribute(L"rotate") = f->r;
-					frame.append_attribute(L"texture") = f->tex.toWideString().c_str();
-					frame.append_attribute(L"layer") = f->layer;
-					frame.append_attribute(L"root") = f->root;
-					frame.append_attribute(L"origin") = sf::String(
+					if (f->r != 0) frame.append_attribute(L"rotate") = f->r;
+					if (!f->tex.isEmpty()) frame.append_attribute(L"texture") = f->tex.toWideString().c_str();
+					if (f->layer != -1) frame.append_attribute(L"layer") = f->layer;
+					if (f->root != -1) frame.append_attribute(L"root") = f->root;
+					if (f->origin != sf::Vector2f(-1, -1)) frame.append_attribute(L"origin") = sf::String(
 						std::to_string(f->origin.x) + " " +
 						std::to_string(f->origin.y)
 					).toWideString().c_str();
@@ -403,6 +412,7 @@ public:
 	void update()
 	{
 		updateBones();
+		currentAnim = currentAnimation;
 		auto anim = getCurrentAnim();
 		if (!anim) return;
 		anim->currentFrame = currentFrame;
@@ -416,7 +426,12 @@ public:
 			auto c = &anim->changes[i]; if (!c) continue;
 			auto b = getBone(c->boneID); if (!b) continue;
 			auto current = c->getFrame(anim->currentFrame); if (!current) continue;
-			if (!current->tex.isEmpty()) { b->tex = current->tex; }
+			if (!current->tex.isEmpty())
+			{
+				auto t = getTexture(current->tex);
+				b->spr.setTexture(t->tex);
+				b->spr.setTextureRect(t->rect);
+			}
 			if (current->layer != -1) b->layer = current->layer;
 			if (current->origin != sf::Vector2f(-1, -1))
 			{
@@ -444,16 +459,13 @@ public:
 			{
 				auto b = &bones[i];
 				if (b->layer != l) continue;
-				if (!b->tex.isEmpty())
-				{
-					auto t = getTexture(b->tex);
-					b->spr.setTexture(t->tex);
-					b->spr.setTextureRect(t->rect);
-				}
 				b->spr.setPosition(b->pos);
 				b->spr.setRotation(b->angle + b->angle_origin.x);
 				b->spr.setOrigin(b->angle_origin.y, b->angle_origin.z);
 				b->spr.setColor(color);
+				if (i == currentBone) { b->spr.setColor({200, 200, 200, 255}); }
+				else if (i == nearest) { b->spr.setColor({127, 127, 127, 255}); }
+				else { b->spr.setColor(sf::Color::White); }
 				b->spr.setScale(scale, scale);
 				target->draw(b->spr);
 			}
@@ -533,10 +545,11 @@ std::vector<sf::Text> ui;
 
 void reloadUI()
 {
-	if (currentPage == PageCreate) ui.resize(5, sf::Text("", font, 20));
-	if (currentPage == PageBone) ui.resize(6, sf::Text("", font, 20));
+	ui.clear();
+	if (currentPage == PageCreate) ui.resize(8, sf::Text("", font, 20));
+	if (currentPage == PageBone) ui.resize(10, sf::Text("", font, 20));
 	if (currentPage == PageTexture) ui.resize(4, sf::Text("", font, 20));
-	if (currentPage == PageAnimation) ui.resize(10, sf::Text("", font, 20));
+	if (currentPage == PageAnimation) ui.resize(6, sf::Text("", font, 20));
 	if (currentPage == PageFrame) ui.resize(7, sf::Text("", font, 20));
 }
 
@@ -549,6 +562,9 @@ void updateUI()
 		ui[2].setString("Create bone");
 		ui[3].setString("Create texture");
 		ui[4].setString("Create animation");
+		ui[5].setString("Delete bone");
+		ui[6].setString("Delete texture");
+		ui[7].setString("Delete animation");
 	}
 	if (currentPage == PageBone)
 	{
@@ -558,8 +574,21 @@ void updateUI()
 		ui[1].setString("Length: " + std::to_string(b->length));
 		ui[2].setString("Layer: " + std::to_string(b->layer));
 		ui[3].setString("Angle: " + std::to_string(b->angle));
-		ui[4].setString("Texture: " + b->tex);
 		ui[5].setString("Sprite angle offset:\n" + std::to_string(b->angle_origin.x));
+		ui[6].setString("Root: " + std::to_string(b->root));
+		if (auto a = skeleton.getCurrentAnim())
+		if (auto changer = a->getChanger(currentBone))
+		if (changer->frames.size())
+		{
+			ui[6].setString("Nearest frame before:\n" + std::to_string(
+				changer->getFrame(currentFrame)->timestamp
+			));
+			ui[7].setString("Nearest frame after:\n" + std::to_string(
+				changer->getNextFrame(currentFrame)->timestamp
+			));
+		}
+		ui[8].setString("New frame");
+		ui[9].setString("Delete frame");
 	}
 	if (currentPage == PageTexture)
 	{
@@ -580,20 +609,8 @@ void updateUI()
 		ui[1].setString("Name: " + skeleton.anims[currentAnimation].name);
 		ui[2].setString("Duration: " + std::to_string(skeleton.anims[currentAnimation].duration));
 		ui[3].setString("Repeat: " + std::to_string(skeleton.anims[currentAnimation].repeat));
-		ui[4].setString("Current time: " + std::to_string(currentFrame));
-		ui[5].setString("Bone: " + std::to_string(currentBone));
-		auto changer = skeleton.getCurrentAnim()->getChanger(currentBone);
-		if (changer != nullptr) if (changer->frames.size())
-		{
-			ui[6].setString("Nearest frame before:\n" + std::to_string(
-				changer->getFrame(currentFrame)->timestamp
-			));
-			ui[7].setString("Nearest frame after:\n" + std::to_string(
-				changer->getNextFrame(currentFrame)->timestamp
-			));
-		}
-		ui[8].setString("New frame");
-		ui[9].setString("Delete frame");
+		ui[4].setString("Copy start of other animation");
+		ui[5].setString("Copy end of other animation");
 	}
 	if (currentPage == PageFrame)
 	{
@@ -620,8 +637,16 @@ void execute(int page, int id)
 {
 	if (page == PageCreate)
 	{
-		if (id == OpenFile) skeleton.loadFromFile(openWindow());
-		if (id == Save) skeleton.saveAs(saveWindow());
+		if (id == OpenFile)
+		{
+			auto path = openWindow();
+			if (path != "Fail") skeleton.loadFromFile(path);
+		}
+		if (id == Save)
+		{
+			auto path = saveWindow();
+			if (path != "Fail") skeleton.saveAs(path);
+		}
 		if (id == CreateBone)
 		{
 			skeleton.bones.push_back({});
@@ -643,6 +668,9 @@ void execute(int page, int id)
 			currentPage = PageAnimation;
 			reloadUI();
 		}
+		if (id == DeleteBone) { typing = true; enter.setString("Delete bone|"); }
+		if (id == DeleteTexture) { typing = true; enter.setString("Delete texture|"); }
+		if (id == DeleteAnimation) { typing = true; enter.setString("Delete animation|"); }
 	}
 	if (page == PageBone)
 	{
@@ -650,24 +678,9 @@ void execute(int page, int id)
 		if (id == BoneLength) { typing = true; enter.setString("New length|"); }
 		if (id == BoneLayer) { typing = true; enter.setString("New layer|"); }
 		if (id == BoneAngle) { typing = true; enter.setString("New angle|"); }
-		if (id == BoneTexture) { typing = true; enter.setString("New texture|"); }
 		if (id == BoneAO) { typing = true; enter.setString("Sprite angle|"); }
-	}
-	if (page == PageTexture)
-	{
-		if (id == TextureID) { typing = true; enter.setString("Choose texture|"); }
-		if (id == TextureName) { typing = true; enter.setString("New name|"); }
-		if (id == TexturePath) { typing = true; enter.setString("New path|"); }
-		if (id == TextureRect) { typing = true; enter.setString("New rect|"); }
-	}
-	if (page == PageAnimation)
-	{
-		if (id == AnimationID) { typing = true; enter.setString("Select animation|"); }
-		if (id == AnimationName) { typing = true; enter.setString("New name|"); }
-		if (id == AnimationDuration) { typing = true; enter.setString("New duration|"); }
-		if (id == AnimationRepeat) { typing = true; enter.setString("Repeat(0/1)|");}
-		if (id == AnimationBone) { typing = true; enter.setString("Select Bone|"); }
-		if (id == AnimationNL)
+		if (id == BoneRoot) { typing = true; enter.setString("New root|"); }
+		if (id == BoneNL)
 		{
 			currentFrame = skeleton.getCurrentAnim()->
 				getChanger(currentBone)->
@@ -677,7 +690,7 @@ void execute(int page, int id)
 			skeleton.update();
 			play = p;
 		}
-		if (id == AnimationNR)
+		if (id == BoneNR)
 		{
 			currentFrame = skeleton.getCurrentAnim()->
 				getChanger(currentBone)->
@@ -687,13 +700,21 @@ void execute(int page, int id)
 			skeleton.update();
 			play = p;
 		}
-		if (id == AnimationNF)
+		if (id == BoneNF)
 		{
 			auto changer = skeleton.getCurrentAnim()->getChanger(currentBone);
 			if (!changer)
 			{
 				Skeleton::Animation::Changer c; c.boneID = currentBone;
 				skeleton.getCurrentAnim()->changes.push_back(c);
+				std::sort(
+					skeleton.getCurrentAnim()->changes.begin(),
+					skeleton.getCurrentAnim()->changes.end(),
+					[](Skeleton::Animation::Changer a, Skeleton::Animation::Changer b)
+					{
+						return a.boneID < b.boneID;
+					}
+				);
 				changer = skeleton.getCurrentAnim()->getChanger(currentBone);
 			}
 			Skeleton::Animation::Frame f;
@@ -709,7 +730,27 @@ void execute(int page, int id)
 			);
 			currentPage = PageFrame;
 		}
-		if (id == AnimationDF) { typing = true; enter.setString("ID of frame|"); }
+		if (id == BoneDF) { typing = true; enter.setString("Timestamp of frame|"); }
+	}
+	if (page == PageTexture)
+	{
+		if (id == TextureID) { typing = true; enter.setString("Select texture|"); }
+		if (id == TextureName) { typing = true; enter.setString("New name|"); }
+		if (id == TexturePath)
+		{
+			auto path = openWindow("Texture (*.png)\0*.png\0");
+			if (path != "Fail") skeleton.tex[currentTexture].path = path;
+		}
+		if (id == TextureRect) { typing = true; enter.setString("New rect|"); }
+	}
+	if (page == PageAnimation)
+	{
+		if (id == AnimationID) { typing = true; enter.setString("Select animation|"); }
+		if (id == AnimationName) { typing = true; enter.setString("New name|"); }
+		if (id == AnimationDuration) { typing = true; enter.setString("New duration|"); }
+		if (id == AnimationRepeat) { typing = true; enter.setString("Repeat(0/1)|"); }
+		if (id == AnimationCopyStart) { typing = true; enter.setString("Animation name|"); }
+		if (id == AnimationCopyEnd) { typing = true; enter.setString("Animation name|"); }
 	}
 	if (page == PageFrame)
 	{
@@ -717,7 +758,7 @@ void execute(int page, int id)
 		if (id == FrameTS) { typing = true; enter.setString("Time for bone changer|"); }
 		if (id == FrameRotate) { typing = true; enter.setString("Bone angle|"); }
 		if (id == FrameTex) { typing = true; enter.setString("Bone texture|"); }
-		if (id == FrameLayer) { typing = true; enter.setString("Bone layer"); }
+		if (id == FrameLayer) { typing = true; enter.setString("Bone layer|"); }
 		if (id == FrameRoot) { typing = true; enter.setString("Bone root|"); }
 		if (id == FrameOrigin) { typing = true; enter.setString("Bone origin|"); }
 	}
@@ -728,20 +769,76 @@ void executeEnter()
 {
 	auto input = enter.getString();
 	input = input.substring(input.find("|") + 1);
+	if (enterCommandPage == PageCreate)
+	{
+		if (enterCommandID == DeleteBone)
+		{
+			skeleton.bones.erase(skeleton.bones.begin() + std::stoi(input.toAnsiString()));
+			currentBone = 0;
+		}
+		if (enterCommandID == DeleteTexture)
+		{
+			for (int i = 0; i < skeleton.tex.size(); i++)
+			{
+				if (skeleton.tex[i].name == input)
+				{
+					skeleton.tex.erase(skeleton.tex.begin() + i);
+				}
+			}
+		}
+		if (enterCommandID == DeleteAnimation)
+		{
+			for (int i = 0; i < skeleton.anims.size(); i++)
+			{
+				if (skeleton.anims[i].name == input)
+				{
+					skeleton.anims.erase(skeleton.anims.begin() + i);
+				}
+			}
+		}
+	}
 	if (enterCommandPage == PageBone)
 	{
 		auto b = skeleton.getBone(currentBone);
-		if (enterCommandID == BoneID) { currentBone = std::stoi(input.toAnsiString()); }
+		if (enterCommandID == BoneID) { currentBone = tr::clamp(std::stoi(input.toAnsiString()), 0, skeleton.bones.size() - 1); }
 		if (enterCommandID == BoneLength) { b->length = std::stof(input.toAnsiString()); }
 		if (enterCommandID == BoneLayer) { b->layer = std::stoi(input.toAnsiString()); }
 		if (enterCommandID == BoneAngle) { b->angle = std::stof(input.toAnsiString()); }
-		if (enterCommandID == BoneTexture) { b->tex = input; }
 		if (enterCommandID == BoneAO) { b->angle_origin.x = std::stof(input.toAnsiString()); }
+		if (enterCommandID == BoneRoot) { b->root = std::stoi(input.toAnsiString()); }
+		if (enterCommandID == BoneDF)
+		{
+			if (auto a = skeleton.getCurrentAnim())
+			if (auto c = a->getChanger(currentBone))
+			{
+				for (int i = 0; i < c->frames.size(); i++)
+				{
+					if (c->frames[i].timestamp == std::stof(input.toAnsiString()))
+					{
+						c->frames.erase(c->frames.begin() + i);
+					}
+				}
+				std::sort(
+					c->frames.begin(),
+					c->frames.end(),
+					[](Skeleton::Animation::Frame a, Skeleton::Animation::Frame b)
+					{
+						return a.timestamp < b.timestamp;
+					}
+				);
+			}
+		}
 	}
 	if (enterCommandPage == PageTexture)
 	{
 		auto t = &skeleton.tex[currentTexture];
-		if (enterCommandID == TextureID) { currentTexture = std::stoi(input.toAnsiString()); }
+		if (enterCommandID == TextureID)
+		{
+			for (int i = 0; i < skeleton.tex.size(); i++)
+			{
+				if (skeleton.tex[i].name == input) { currentTexture = i; }
+			}
+		}
 		if (enterCommandID == TextureName) { t->name = input; }
 		if (enterCommandID == TexturePath) { t->path = input; t->tex.loadFromFile(input); }
 		if (enterCommandID == TextureRect)
@@ -756,31 +853,54 @@ void executeEnter()
 	if (enterCommandPage == PageAnimation)
 	{
 		auto a = &skeleton.anims[currentAnimation];
-		if (enterCommandID == AnimationID) { currentAnimation = std::stoi(input.toAnsiString()); }
+		if (enterCommandID == AnimationID) { currentAnimation = tr::clamp(std::stoi(input.toAnsiString()), 0, skeleton.anims.size() - 1); }
 		if (enterCommandID == AnimationName) { a->name = input; }
 		if (enterCommandID == AnimationDuration) { a->duration = std::stof(input.toAnsiString()); }
 		if (enterCommandID == AnimationRepeat) { a->repeat = std::stoi(input.toAnsiString()); }
-		if (enterCommandID == AnimationBone) { currentBone = std::stoi(input.toAnsiString()); }
-		if (enterCommandID == AnimationDF)
+		if (enterCommandID == AnimationCopyStart)
 		{
-			a->getChanger(currentBone)->frames.erase(
-				a->getChanger(currentBone)->frames.begin() +
-				std::stoi(input.toAnsiString())
-			);
-			std::sort(
-				a->getChanger(currentBone)->frames.begin(),
-				a->getChanger(currentBone)->frames.end(),
-				[](Skeleton::Animation::Frame a, Skeleton::Animation::Frame b)
-				{
-					return a.timestamp < b.timestamp;
-				}
-			);
+			Skeleton::Animation *a = nullptr;
+			for (int i = 0; i < skeleton.anims.size(); i++)
+			{
+				if (skeleton.anims[i].name == input) { a = &skeleton.anims[i]; break; }
+			}
+			if (!a) return;
+			auto anim = skeleton.getCurrentAnim();
+			anim->changes.clear();
+			for (int i = 0; i < a->changes.size(); i++)
+			{
+				auto c = a->changes[i];
+				c.frames.erase(c.frames.begin() + 1, c.frames.end());
+				anim->changes.push_back(c);
+			}
+		}
+		if (enterCommandID == AnimationCopyEnd)
+		{
+			Skeleton::Animation *a = nullptr;
+			for (int i = 0; i < skeleton.anims.size(); i++)
+			{
+				if (skeleton.anims[i].name == input) { a = &skeleton.anims[i]; break; }
+			}
+			if (!a) return;
+			auto anim = skeleton.getCurrentAnim();
+			anim->changes.clear();
+			for (int i = 0; i < a->changes.size(); i++)
+			{
+				auto c = a->changes[i];
+				c.frames.erase(c.frames.begin(), c.frames.end() - 1);
+				c.frames[0].timestamp = 0;
+				if (c.frames[0].layer == -1) c.frames[0].layer = a->changes[i].frames[0].layer;
+				if (c.frames[0].origin == sf::Vector2f(-1, -1)) c.frames[0].origin = a->changes[i].frames[0].origin;
+				if (c.frames[0].root == -1) c.frames[0].root = a->changes[i].frames[0].root;
+				if (c.frames[0].tex.isEmpty()) c.frames[0].tex = a->changes[i].frames[0].tex;
+				anim->changes.push_back(c);
+			}
 		}
 	}
 	if (enterCommandPage == PageFrame)
 	{
 		auto f = skeleton.getCurrentAnim()->getChanger(currentBone)->getFrame(currentFrame);
-		if (enterCommandID == FrameID) { currentBone = std::stoi(input.toAnsiString()); }
+		if (enterCommandID == FrameID) { currentBone = tr::clamp(std::stoi(input.toAnsiString()), 0, skeleton.bones.size()); }
 		if (enterCommandID == FrameTS)
 		{
 			f->timestamp = std::stof(input.toAnsiString());
@@ -811,10 +931,6 @@ void executeEnter()
 class Timeline
 {
 public:
-	static void update()
-	{
-		// 
-	}
 	static void draw()
 	{
 		//Background
@@ -849,12 +965,25 @@ public:
 		tp.setPosition(point.getPosition().x, lr.top - 15);
 		tp.setOrigin(tp.getLocalBounds().width / 2, tp.getLocalBounds().height);
 		window.draw(tp);
+		auto a = skeleton.getCurrentAnim();
+		auto c = a->getChanger(currentBone);
+		if (c != nullptr) for (int i = 0; i < c->frames.size(); i++)
+		{
+			point.setOrigin(0, 0);
+			point.setPosition(
+				(int)tr::clamp(lr.left + c->frames[i].timestamp / a->duration * lr.width, lr.left, lr.left + lr.width - 10),
+				lr.top
+			);
+			point.setFillColor(sf::Color::Green);
+			window.draw(point);
+		}
 		if (sf::FloatRect(lr.left - 15, lr.top - 15, lr.width + 30, lr.height + 30).contains(mouse))
 		{
 			//Hint
 			sf::Text hint("Precision: Shift(0.00), Control(0.0), Alt(0)", font, 20);
 			hint.setPosition(bg.getPosition());
 			window.draw(hint);
+			point.setOrigin(5, 0);
 			point.setPosition(
 				(int)tr::clamp(mouse.x, lr.left + 5, lr.left + lr.width - 5),
 				lr.top
@@ -886,6 +1015,22 @@ public:
 	}
 };
 
+int getNearestBone(sf::Vector2f pointer)
+{
+	auto rect = sf::FloatRect(0, 0, window.getSize().x / 4 * 3, window.getSize().y / 4 * 3);
+	if (!rect.contains(mouse)) { return -1; }
+	int nearest = -1;
+	float dist = 100000;
+	for (int i = 0; i < skeleton.bones.size(); i++)
+	{
+		auto b = skeleton.getBone(i);
+		sf::Vector2f delta = pointer - b->getEnd(0.5);
+		float d = sqrt(delta.x * delta.x + delta.y * delta.y);
+		if (d < dist) { nearest = i; dist = d; } 
+	}
+	return nearest;
+}
+
 int main()
 {
 	window.create(sf::VideoMode(1024, 576), "Skeleton Editor"); window.setVerticalSyncEnabled(true);
@@ -915,6 +1060,7 @@ int main()
 				window.setView(sf::View({0, 0, event.size.width, event.size.height}));
 				screen.create(event.size.width / 4 * 3, event.size.height / 4 * 3);
 				camera.setSize(event.size.width / 4 * 3, event.size.height / 4 * 3);
+				speed = 200;
 			}
 			else if (event.type == sf::Event::MouseButtonPressed)
 			{
@@ -961,23 +1107,49 @@ int main()
 			else if (event.type == sf::Event::MouseWheelScrolled)
 			{
 				auto zoom = event.mouseWheelScroll.delta;
-				if (zoom == -1) { camera.zoom(0.5); speed /= 2; }
-				if (zoom == 1) { camera.zoom(2); speed *= 2; }
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+				{
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt)) zoom *= 2;
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) zoom *= 5;
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) zoom *= 10;
+					if (auto a = skeleton.getCurrentAnim())
+					if (auto c = a->getChanger(currentBone))
+					if (auto f = c->getFrame(currentFrame)) f->r += zoom;
+				}
+				else
+				{
+					if (zoom == -1) { camera.zoom(0.5); speed /= 2; }
+					if (zoom == 1) { camera.zoom(2); speed *= 2; }
+				}
 			}
 		}
 		deltaTime = clock.restart().asSeconds();
 		mouse = (sf::Vector2f)sf::Mouse::getPosition(window);
-		if (!window.hasFocus()) continue;
 
-		float coff = 1;
-		if (!typing && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) coff *= 2;
-		if (!typing && sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) coff /= 2;
-		if (!typing && sf::Keyboard::isKeyPressed(sf::Keyboard::W)) camera.move(0, -speed * coff * deltaTime);
-		if (!typing && sf::Keyboard::isKeyPressed(sf::Keyboard::S)) camera.move(0, speed * coff * deltaTime);
-		if (!typing && sf::Keyboard::isKeyPressed(sf::Keyboard::A)) camera.move(-speed * coff * deltaTime, 0);
-		if (!typing && sf::Keyboard::isKeyPressed(sf::Keyboard::D)) camera.move(speed * coff * deltaTime, 0);
+		if (window.hasFocus())
+		{
+			float coff = 1;
+			if (!typing && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) coff *= 2;
+			if (!typing && sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) coff /= 2;
+			if (!typing && sf::Keyboard::isKeyPressed(sf::Keyboard::W)) camera.move(0, -speed * coff * deltaTime);
+			if (!typing && sf::Keyboard::isKeyPressed(sf::Keyboard::S)) camera.move(0, speed * coff * deltaTime);
+			if (!typing && sf::Keyboard::isKeyPressed(sf::Keyboard::A)) camera.move(-speed * coff * deltaTime, 0);
+			if (!typing && sf::Keyboard::isKeyPressed(sf::Keyboard::D)) camera.move(speed * coff * deltaTime, 0);
+		}
 
 		skeleton.update();
+		
+		nearest = getNearestBone(screen.mapPixelToCoords((sf::Vector2i)mouse));
+		if (nearest != -1)
+		if (window.hasFocus())
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		if (skeleton.bones[nearest].spr.getGlobalBounds().contains(screen.mapPixelToCoords((sf::Vector2i)mouse)) ||
+			skeleton.bones[nearest].spr.getLocalBounds().getSize() == sf::Vector2f(0, 0))
+		{
+			currentBone = nearest;
+			currentPage = PageBone;
+			reloadUI();
+		}
 
 		window.clear();
 		screen.clear({127, 127, 127, 255});
