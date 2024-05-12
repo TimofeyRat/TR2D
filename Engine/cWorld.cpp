@@ -1180,7 +1180,10 @@ void tr::execute(sf::String cmd)
 			Input::active = false;
 			Talk::loadFromFile(CSManager::getTalk());
 			Talk::active = true;
-			auto music = CSManager::getMusic(Talk::getCurrentDialogue()->getCurrentPhrase()->name);
+			sf::String music;
+			if (auto d = Talk::getCurrentDialogue())
+			if (auto p = d->getCurrentPhrase())
+				auto music = CSManager::getMusic(d->name);
 			if (!music.isEmpty())
 			{
 				CSManager::music.openFromFile(music);

@@ -1,7 +1,7 @@
 <frame_cutscene name="intro" anim="res/anims/cutscene.tranim" dialogue="res/dialogues/cutscenes/intro.trdialogue">
-	<change phrase="fidleRightst" skippable="0" anim="intro_pyramides" music="res/audio/music/Ambient.ogg" />
+	<change phrase="first" skippable="0" anim="intro_pyramides" music="res/audio/music/Ambient.ogg" />
 	<change phrase="second" skippable="0" anim="intro_god" music="res/audio/music/Ambient.ogg" />
-	<change phrase="thidleRightd" skippable="0" anim="intro_god" music="res/audio/music/Ambient.ogg" />
+	<change phrase="third" skippable="0" anim="intro_god" music="res/audio/music/Ambient.ogg" />
 	<change phrase="fourth" skippable="0" anim="intro_godglobe" music="res/audio/music/Ambient.ogg" />
 	<change phrase="fifth" skippable="0" anim="intro_agf" music="res/audio/music/Ambient.ogg" />
 	<change phrase="sixth" skippable="0" anim="intro_god" music="res/audio/music/Ambient.ogg" />

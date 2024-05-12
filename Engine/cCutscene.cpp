@@ -224,8 +224,14 @@ sf::String CSManager::getTalk()
 
 sf::String CSManager::getMusic(sf::String phrase)
 {
-	if (!current.x) { return frames[current.y].getChange(phrase)->musicPath; }
-	else { return worlds[current.y].getCurrentChange()->musicPath; }
+	if (!current.x && frames.size() && current.y == tr::clamp(current.y, 0, frames.size() - 1))
+	{
+		if (auto c = frames[current.y].getChange(phrase)) return c->musicPath;
+	}
+	else if (worlds.size())
+	{
+		if (auto c = worlds[current.y].getCurrentChange()) return c->musicPath;
+	}
 	return "";
 }
 

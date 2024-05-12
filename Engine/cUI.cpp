@@ -683,8 +683,10 @@ void UI::Frame::Object::handle()
 		CSManager::music.setVolume(tr::clamp(CSManager::music.getVolume() + Window::getDeltaTime() * 100, 0, Window::getVar("musicVolume")));
 		if (!CSManager::current.x)
 		{
-			auto *cs = &CSManager::frames[CSManager::current.y];
-			auto change = cs->getChange(Talk::getCurrentDialogue()->getCurrentPhrase()->name);
+			CSManager::FrameCutscene::Change *change = nullptr;
+			CSManager::FrameCutscene *cs = nullptr;
+			if (cs = &CSManager::frames[CSManager::current.y])
+			 	change = cs->getChange(Talk::getCurrentDialogue()->getCurrentPhrase()->name);
 			auto c = bg->getVar("clr").num;
 			if (change->anim != cs->frame.getCurrentAnim()->name)
 			{
