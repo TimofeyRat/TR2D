@@ -1,3 +1,3 @@
 windres res.rc -O coff -o Engine/tr2d.res
 g++ TR2D.cpp Engine/*.cpp .\Engine\tr2d.res .\Engine\pugixml.o -o bin/TR2D.exe -lsfml-window-s -lsfml-system-s -lopengl32 -lwinmm -lgdi32 -lsfml-graphics-s -lsfml-system-s -lsfml-window-s -lopengl32 -lfreetype -lsfml-system-s -lwinmm -lsfml-audio-s -lsfml-system-s -lopenal32 -lflac -lvorbisenc -lvorbisfile -lvorbis -logg -lbox2d -static -std=c++17 -D SFML_STATIC -mwindows -O3
-g++ TRSE.cpp .\Engine\pugixml.o -o bin/TRSE.exe -lsfml-window-s -lsfml-system-s -lopengl32 -lwinmm -lgdi32 -lsfml-graphics-s -lsfml-system-s -lsfml-window-s -lopengl32 -lfreetype -lsfml-system-s -lwinmm -static -std=c++17 -D SFML_STATIC -mwindows -O3
+g++ TRSE.cpp .\Engine\cGlobal.cpp .\Engine\tr2d.res .\Engine\pugixml.o -o bin/TRSE.exe -lsfml-window-s -lsfml-system-s -lopengl32 -lwinmm -lgdi32 -lsfml-graphics-s -lsfml-system-s -lsfml-window-s -lopengl32 -lfreetype -lsfml-system-s -lwinmm -static -std=c++17 -D SFML_STATIC -mwindows -O3

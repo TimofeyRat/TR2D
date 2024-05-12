@@ -131,6 +131,7 @@
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 17</action>
+			<action>cutscene setClip 8</action>
 		</reply>
 	</phrase>
 	<phrase name="17">
@@ -147,7 +148,7 @@
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 19</action>
-			<action>cutscene setClip 8</action>
+			<action>cutscene setClip 9</action>
 		</reply>
 	</phrase>
 	<phrase name="19">
@@ -164,6 +165,7 @@
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 21</action>
+			<action>cutscene setClip 10</action>
 		</reply>
 	</phrase>
 	<phrase name="21">
@@ -188,7 +190,7 @@
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 24</action>
-			<action>cutscene setClip 9</action>
+			<action>cutscene setClip 11</action>
 		</reply>
 	</phrase>
 	<phrase name="24">

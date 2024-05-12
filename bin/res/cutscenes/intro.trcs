@@ -1,7 +1,7 @@
 <frame_cutscene name="intro" anim="res/anims/cutscene.tranim" dialogue="res/dialogues/cutscenes/intro.trdialogue">
-	<change phrase="first" skippable="0" anim="intro_pyramides" music="res/audio/music/Ambient.ogg" />
+	<change phrase="fidleRightst" skippable="0" anim="intro_pyramides" music="res/audio/music/Ambient.ogg" />
 	<change phrase="second" skippable="0" anim="intro_god" music="res/audio/music/Ambient.ogg" />
-	<change phrase="third" skippable="0" anim="intro_god" music="res/audio/music/Ambient.ogg" />
+	<change phrase="thidleRightd" skippable="0" anim="intro_god" music="res/audio/music/Ambient.ogg" />
 	<change phrase="fourth" skippable="0" anim="intro_godglobe" music="res/audio/music/Ambient.ogg" />
 	<change phrase="fifth" skippable="0" anim="intro_agf" music="res/audio/music/Ambient.ogg" />
 	<change phrase="sixth" skippable="0" anim="intro_god" music="res/audio/music/Ambient.ogg" />
@@ -33,57 +33,70 @@
 		<anim_ent name="Nasake" animation="room_getup" animSpeed="1" />
 	</clip>
 	<clip name="4" duration="2" startPhraseOnEnd="1" music="res/audio/music/Ambient.ogg">
-		<curve_ents duration="5" entA="Greed" entB="Nasake" count="100" points="850 150" particle="soulBG" partSpeed="-10 -10 10 10" lifeTime="7"
-			effectType="fadeIn" effectSpeed="200" />
-		<curve_ents offset="1" duration="4" entA="Nasake" entB="Greed" count="100" points="850 150" particle="soul" partSpeed="0 0 0 0" lifeTime="4"
+		<curve_ents duration="5" entA="Greed" entB="Nasake" count="100" points="850 350" particle="soulBG" partSpeed="-10 -10 10 10" lifeTime="7"
+			effectType="fadeIn" effectSpeed="400" />
+		<curve_ents offset="0.5" duration="4" entA="Nasake" entB="Greed" count="100" points="850 350" particle="soul" partSpeed="0 0 0 0" lifeTime="4"
 			effectType="pulse" effectSpeed="100" effectLength="10" />
 		<move_ent name="Greed" points="500 175" />
-		<anim_ent name="Greed" animation="room_attack" animSpeed="1" />
-		<anim_ent duration="0.2" name="Nasake" animation="room_fall" animSpeed="0" continueAfterEnd="0" />
-		<anim_ent offset="0.2" name="Nasake" animation="room_fall" animSpeed="1.5" />
+		<anim_ent name="Greed" animation="room_obsessed2" animSpeed="2" />
+		<anim_ent duration="0.1" name="Nasake" animation="room_fall" animSpeed="0" continueAfterEnd="0" />
+		<anim_ent offset="0.1" name="Nasake" animation="room_fall" animSpeed="2" />
+		<move_ent offset="0.1" duration="1" name="Nasake" points="970 370|940 380" />
 		<execute offset="1" count="5" frequency="0.4">ent addNum Nasake HP -5</execute>
 	</clip>
 	<clip name="5" duration="1" startPhraseOnEnd="0" music="res/audio/music/Ambient.ogg">
 		<move_ent name="Greed" points="500 175|500 372" continueAfterEnd="0" />
-		<anim_ent name="Greed" animation="room_fly" animSpeed="0" continueAfterEnd="0" />
-		<anim_ent offset="1" name="Greed" animation="ir" animSpeed="0" />
-		<move_ent name="Nasake" points="970 380|940 380" />
+		<anim_ent name="Greed" animation="room_obsessed3" animSpeed="1" continueAfterEnd="0" />
+		<anim_ent offset="1" name="Greed" animation="idleRight" animSpeed="0" />
+		<move_ent name="Nasake" points="940 380|920 380" />
 		<anim_ent name="Nasake" animation="room_fall2" animSpeed="0.5" />
 	</clip>
 	<clip name="6" duration="2" startPhraseOnEnd="0" music="res/audio/music/Ambient.ogg">
-		<anim_ent name="Greed" animation="ir" animSpeed="0" />
-		<anim_ent name="Nasake" animation="il2" animSpeed="0" />
+		<anim_ent name="Greed" animation="idleRight" animSpeed="0" />
+		<anim_ent name="Nasake" animation="idleLeft2" animSpeed="0" />
 		<execute count="1" frequency="0">ent setNum Nasake HP 75</execute>
 		<execute count="10" frequency="0.1">ent addNum Nasake HP -2.5</execute>
 	</clip>
 	<clip name="7" duration="2" startPhraseOnEnd="0" music="res/audio/music/Ambient.ogg">
-		<anim_ent name="Greed" animation="ir" animSpeed="0" />
-		<anim_ent name="Nasake" animation="il" animSpeed="0" />
+		<anim_ent name="Greed" animation="idleRight" animSpeed="0" />
+		<anim_ent name="Nasake" animation="idleLeft" animSpeed="0" />
 		<execute count="10" frequency="0.1">ent addNum Nasake HP 2.5</execute>
 	</clip>
-	<clip name="8" duration="2" startPhraseOnEnd="0" music="res/audio/music/Ambient.ogg">
-		<anim_ent name="Greed" animation="ir" animSpeed="0" />
-		<anim_ent name="Nasake" animation="il" animSpeed="0" />
-		<execute offset="2" count="1">talk setPhrase 20</execute>
+	<clip name="8" duration="0.5" startPhraseOnEnd="0" music="res/audio/music/Ambient.ogg">
+		<anim_ent name="Greed" animation="idleRight" animSpeed="0" />
+		<move_ent name="Nasake" points="920 380|900 380|900 380" />
+		<anim_ent name="Nasake" animation="room_angry" animSpeed="1" />
 	</clip>
 	<clip name="9" duration="2" startPhraseOnEnd="0" music="res/audio/music/Ambient.ogg">
-		<move_ent duration="4" name="Nasake" points="940 380|400 380" />
-		<anim_ent duration="4" name="Nasake" animation="wl" animSpeed="0.75" continueAfterEnd="0" />
-		<anim_ent offset="4" name="Nasake" animation="il" animSpeed="0" />
-		<anim_ent name="Greed" animation="ir" animSpeed="0" continueAfterEnd="0" />
-		<anim_ent offset="3" name="Greed" animation="il" animSpeed="0" />
+		<anim_ent name="Greed" animation="idleRight" animSpeed="0" />
+		<anim_ent name="Nasake" animation="room_angry3" animSpeed="0" />
+		<execute offset="2" count="1">talk setPhrase 20</execute>
+	</clip>
+	<clip name="10" duration="0.5" startPhraseOnEnd="0" music="res/audio/music/Ambient.ogg">
+		<anim_ent name="Greed" animation="idleRight" animSpeed="0" />
+		<anim_ent name="Nasake" animation="room_angry2" animSpeed="1" />
+	</clip>
+	<clip name="11" duration="2" startPhraseOnEnd="0" music="res/audio/music/Ambient.ogg" waitAll="1">
+		<move_ent duration="4" name="Nasake" points="900 380|400 380" />
+		<anim_ent duration="4" name="Nasake" animation="walkLeft" animSpeed="0.75" continueAfterEnd="0" />
+		<anim_ent offset="4" name="Nasake" animation="idleLeft" animSpeed="0" />
+		<anim_ent name="Greed" animation="idleRight" animSpeed="0" continueAfterEnd="0" />
+		<anim_ent offset="3" name="Greed" animation="idleLeft" animSpeed="0" />
+		<execute count="1">ent setNum Nasake rotation -1</execute>
+		<execute count="1">ent setNum Greed rotation -1</execute>
 	</clip>
 </world_cutscene>
 
 <world_cutscene name="street" dialogue="res/dialogues/cutscenes/street.trdialogue">
 	<clip name="1" duration="1" startPhraseOnEnd="1">
 		<move_ent duration="4" name="Nasake" points="0 530|400 530" />
-		<anim_ent duration="4" name="Nasake" animation="wr" animSpeed="0.75" continueAfterEnd="0" />
-		<anim_ent offset="4" name="Nasake" animation="ir" />
+		<anim_ent duration="4" name="Nasake" animation="walkRight" animSpeed="0.75" continueAfterEnd="0" />
+		<anim_ent offset="4" name="Nasake" animation="idleRight" />
 		<move_cam points="600 370" size="0 0 960 540 set" />
 	</clip>
 	<clip name="2" duration="4" startPhraseOnEnd="0" waitAll="1">
-		<anim_ent name="Nasake" animation="ir2" animSpeed="0" />
+		<anim_ent name="Nasake" animation="idleRight2" animSpeed="0" />
 		<move_cam points="600 370|569 320" size="960 540 1138 640 linear" />
+		<execute count="1">ent setNum Nasake rotation 1</execute>
 	</clip>
 </world_cutscene>

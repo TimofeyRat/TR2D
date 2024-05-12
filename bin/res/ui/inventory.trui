@@ -3,6 +3,7 @@
 	<object name="hotKeys">
 		<action event="key-click-Escape" condition="null">world setActive 0;ui load res/ui/mainMenu.trui</action>
 		<action event="key-click-F1" condition="null">ui setFrame console;input active 0</action>
+		<action event="key-click-F2" condition="null">assets init;world load res/worlds/start.trworld</action>
 		<action event="key-click-F5" condition="null">saveGame</action>
 		<action event="key-click-F6" condition="null">assets init;loadGame</action>
 	</object>

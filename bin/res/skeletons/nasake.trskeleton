@@ -685,6 +685,7 @@
 <animation name="room_getup" duration="0.5" repeat="false">
 	<change bone="0">
 		<frame timestamp="0" rotate="180" texture="headLeft" layer="1" origin="10.000000 18.000000" />
+		<frame timestamp="0.5" rotate="190" />
 	</change>
 	<change bone="1">
 		<frame timestamp="0" rotate="10" texture="chestLeft" layer="1" origin="5.000000 0.000000" />
@@ -825,5 +826,435 @@
 	</change>
 	<change bone="17">
 		<frame timestamp="0" texture="footRight" layer="1" origin="3.000000 0.000000" />
+	</change>
+</animation>
+<animation name="idleLeft2" duration="0" repeat="false">
+	<change bone="0">
+		<frame timestamp="0" rotate="180" texture="headLeft2" layer="1" origin="10.000000 18.000000" />
+	</change>
+	<change bone="1">
+		<frame timestamp="0" texture="chestLeft" layer="1" origin="5.000000 0.000000" />
+	</change>
+	<change bone="2">
+		<frame timestamp="0" texture="torsoLeft" layer="1" origin="5.000000 0.000000" />
+	</change>
+	<change bone="3">
+		<frame timestamp="0" />
+	</change>
+	<change bone="5">
+		<frame timestamp="0" rotate="5" texture="armRight" layer="0" root="3" origin="2.500000 0.000000" />
+	</change>
+	<change bone="6">
+		<frame timestamp="0" rotate="10" texture="handRight" layer="0" origin="2.500000 0.000000" />
+	</change>
+	<change bone="8">
+		<frame timestamp="0" rotate="-10" texture="armRight" layer="2" root="3" origin="2.500000 0.000000" />
+	</change>
+	<change bone="9">
+		<frame timestamp="0" rotate="-5" texture="handRight" layer="2" origin="2.500000 0.000000" />
+	</change>
+	<change bone="11">
+		<frame timestamp="0" rotate="15" texture="hipLeft" layer="0" root="2" origin="3.000000 0.000000" />
+	</change>
+	<change bone="12">
+		<frame timestamp="0" rotate="10" texture="legLeft" layer="0" origin="3.000000 0.000000" />
+	</change>
+	<change bone="13">
+		<frame timestamp="0" texture="footLeft" layer="0" origin="7.000000 0.000000" />
+	</change>
+	<change bone="15">
+		<frame timestamp="0" rotate="-10" texture="hipLeft" layer="1" root="2" origin="3.000000 0.000000" />
+	</change>
+	<change bone="16">
+		<frame timestamp="0" rotate="-15" texture="legLeft" layer="1" origin="3.000000 0.000000" />
+	</change>
+	<change bone="17">
+		<frame timestamp="0" texture="footLeft" layer="1" origin="7.000000 0.000000" />
+	</change>
+</animation>
+<animation name="idleRight2" duration="0" repeat="false">
+	<change bone="0">
+		<frame timestamp="0" rotate="180" texture="headRight2" layer="1" origin="8.000000 18.000000" />
+	</change>
+	<change bone="1">
+		<frame timestamp="0" texture="chestRight" layer="1" origin="4.000000 0.000000" />
+	</change>
+	<change bone="2">
+		<frame timestamp="0" texture="torsoRight" layer="1" origin="3.000000 0.000000" />
+	</change>
+	<change bone="3">
+		<frame timestamp="0" />
+	</change>
+	<change bone="5">
+		<frame timestamp="0" rotate="-5" texture="armLeft" layer="0" root="3" origin="2.500000 0.000000" />
+	</change>
+	<change bone="6">
+		<frame timestamp="0" rotate="-10" texture="handLeft" layer="0" origin="2.500000 0.000000" />
+	</change>
+	<change bone="8">
+		<frame timestamp="0" rotate="10" texture="armLeft" layer="2" root="3" origin="2.500000 0.000000" />
+	</change>
+	<change bone="9">
+		<frame timestamp="0" rotate="5" texture="handLeft" layer="2" origin="2.500000 0.000000" />
+	</change>
+	<change bone="11">
+		<frame timestamp="0" rotate="-15" texture="hipRight" layer="0" root="2" origin="3.000000 0.000000" />
+	</change>
+	<change bone="12">
+		<frame timestamp="0" rotate="-10" texture="legRight" layer="0" origin="3.000000 0.000000" />
+	</change>
+	<change bone="13">
+		<frame timestamp="0" texture="footRight" layer="0" origin="3.000000 0.000000" />
+	</change>
+	<change bone="15">
+		<frame timestamp="0" rotate="10" texture="hipRight" layer="1" root="2" origin="3.000000 0.000000" />
+	</change>
+	<change bone="16">
+		<frame timestamp="0" rotate="15" texture="legRight" layer="1" origin="3.000000 0.000000" />
+	</change>
+	<change bone="17">
+		<frame timestamp="0" texture="footRight" layer="1" origin="3.000000 0.000000" />
+	</change>
+</animation>
+<animation name="room_fall" duration="2.25" repeat="false">
+	<change bone="0">
+		<frame timestamp="0" rotate="190" texture="headLeft" layer="1" origin="10.000000 18.000000" />
+		<frame timestamp="0.5" rotate="170" />
+		<frame timestamp="0.75" rotate="200" />
+		<frame timestamp="0.949999988" rotate="210" texture="headLeft2" />
+		<frame timestamp="1.25" rotate="220" />
+		<frame timestamp="1.75" rotate="200" />
+		<frame timestamp="2.25" rotate="140" />
+	</change>
+	<change bone="1">
+		<frame timestamp="0" texture="chestLeft" layer="1" origin="5.000000 0.000000" />
+		<frame timestamp="0.5" rotate="10" />
+		<frame timestamp="1" rotate="10" />
+		<frame timestamp="1.75" />
+		<frame timestamp="2.25" rotate="-20" />
+	</change>
+	<change bone="2">
+		<frame timestamp="0" texture="torsoLeft" layer="1" origin="5.000000 0.000000" />
+		<frame timestamp="0.5" rotate="10" />
+		<frame timestamp="1.75" rotate="10" />
+		<frame timestamp="2.25" rotate="-5" />
+	</change>
+	<change bone="3">
+		<frame timestamp="0" />
+		<frame timestamp="0.5" rotate="10" />
+		<frame timestamp="1" rotate="10" />
+		<frame timestamp="1.75" />
+		<frame timestamp="2.25" rotate="-20" />
+	</change>
+	<change bone="5">
+		<frame timestamp="0" rotate="-10" texture="armRight" layer="0" root="3" origin="2.500000 0.000000" />
+		<frame timestamp="0.5" rotate="20" />
+		<frame timestamp="0.949999988" />
+		<frame timestamp="1.20000005" rotate="-5" />
+		<frame timestamp="1.5" />
+		<frame timestamp="1.79999995" rotate="5" />
+	</change>
+	<change bone="6">
+		<frame timestamp="0" rotate="-5" texture="handRight" layer="0" origin="2.500000 0.000000" />
+		<frame timestamp="0.5" rotate="30" />
+		<frame timestamp="0.949999988" rotate="10" />
+		<frame timestamp="1.20000005" rotate="-5" />
+		<frame timestamp="1.5" rotate="5" />
+		<frame timestamp="1.79999995" rotate="20" />
+	</change>
+	<change bone="8">
+		<frame timestamp="0" rotate="5" texture="armRight" layer="2" root="3" origin="2.500000 0.000000" />
+		<frame timestamp="0.5" rotate="10" />
+		<frame timestamp="0.949999988" rotate="-10" />
+		<frame timestamp="1.20000005" rotate="-10" />
+		<frame timestamp="1.5" />
+		<frame timestamp="1.79999995" />
+	</change>
+	<change bone="9">
+		<frame timestamp="0" rotate="10" texture="handRight" layer="2" origin="2.500000 0.000000" />
+		<frame timestamp="0.5" rotate="40" layer="2" />
+		<frame timestamp="0.949999988" rotate="5" />
+		<frame timestamp="1.20000005" rotate="-5" />
+		<frame timestamp="1.5" rotate="10" />
+		<frame timestamp="1.79999995" rotate="15" />
+	</change>
+	<change bone="11">
+		<frame timestamp="0" rotate="15" texture="hipLeft" layer="0" root="2" origin="3.000000 0.000000" />
+		<frame timestamp="0.5" rotate="15" />
+		<frame timestamp="1.25" rotate="40" />
+		<frame timestamp="1.75" rotate="40" />
+		<frame timestamp="2.25" rotate="65" />
+	</change>
+	<change bone="12">
+		<frame timestamp="0" rotate="10" texture="legLeft" layer="0" origin="3.000000 0.000000" />
+		<frame timestamp="1.25" />
+		<frame timestamp="1.75" rotate="10" />
+		<frame timestamp="2.25" />
+	</change>
+	<change bone="13">
+		<frame timestamp="0" texture="footLeft" layer="0" origin="7.000000 0.000000" />
+		<frame timestamp="1.75" />
+	</change>
+	<change bone="15">
+		<frame timestamp="0" rotate="-10" texture="hipLeft" layer="1" root="2" origin="3.000000 0.000000" />
+		<frame timestamp="0.25" />
+		<frame timestamp="0.5" />
+		<frame timestamp="1.25" />
+		<frame timestamp="2.25" rotate="-20" />
+	</change>
+	<change bone="16">
+		<frame timestamp="0" rotate="-15" texture="legLeft" layer="1" origin="3.000000 0.000000" />
+		<frame timestamp="0.5" rotate="-15" />
+		<frame timestamp="1.25" rotate="-35" />
+		<frame timestamp="1.75" rotate="-35" />
+		<frame timestamp="2.25" rotate="-60" />
+	</change>
+	<change bone="17">
+		<frame timestamp="0" texture="footLeft" layer="1" origin="7.000000 0.000000" />
+		<frame timestamp="1.25" />
+		<frame timestamp="1.75" />
+	</change>
+</animation>
+<animation name="snap1" duration="0" repeat="false">
+	<change bone="0">
+		<frame timestamp="0" rotate="140" texture="headLeft2" layer="1" origin="10.000000 18.000000" />
+	</change>
+	<change bone="1">
+		<frame timestamp="0" texture="chestLeft" layer="1" origin="5.000000 0.000000" />
+	</change>
+	<change bone="2">
+		<frame timestamp="0" rotate="10" texture="torsoLeft" layer="1" origin="5.000000 0.000000" />
+	</change>
+	<change bone="3">
+		<frame timestamp="0" />
+	</change>
+	<change bone="5">
+		<frame timestamp="0" texture="armRight" layer="0" root="3" origin="2.500000 0.000000" />
+	</change>
+	<change bone="6">
+		<frame timestamp="0" rotate="5" texture="handRight" origin="2.500000 0.000000" />
+	</change>
+	<change bone="8">
+		<frame timestamp="0" texture="armRight" layer="2" root="3" origin="2.500000 0.000000" />
+	</change>
+	<change bone="9">
+		<frame timestamp="0" rotate="10" texture="handRight" layer="2" origin="2.500000 0.000000" />
+	</change>
+	<change bone="11">
+		<frame timestamp="0" rotate="15" texture="hipLeft" layer="0" root="2" origin="3.000000 0.000000" />
+	</change>
+	<change bone="12">
+		<frame timestamp="0" rotate="10" texture="legLeft" layer="0" origin="3.000000 0.000000" />
+	</change>
+	<change bone="13">
+		<frame timestamp="0" texture="footLeft" layer="0" origin="7.000000 0.000000" />
+	</change>
+	<change bone="15">
+		<frame timestamp="0" texture="hipLeft" layer="1" root="2" origin="3.000000 0.000000" />
+	</change>
+	<change bone="16">
+		<frame timestamp="0" rotate="-15" texture="legLeft" layer="1" origin="3.000000 0.000000" />
+	</change>
+	<change bone="17">
+		<frame timestamp="0" texture="footLeft" layer="1" origin="7.000000 0.000000" />
+	</change>
+</animation>
+<animation name="room_fall2" duration="0.5" repeat="false">
+	<change bone="0">
+		<frame timestamp="0" rotate="140" texture="headLeft" layer="1" origin="10.000000 18.000000" />
+		<frame timestamp="0.5" rotate="180" />
+	</change>
+	<change bone="1">
+		<frame timestamp="0" rotate="-20" texture="chestLeft" layer="1" origin="5.000000 0.000000" />
+		<frame timestamp="0.5" />
+	</change>
+	<change bone="2">
+		<frame timestamp="0" rotate="-5" texture="torsoLeft" layer="1" origin="5.000000 0.000000" />
+		<frame timestamp="0.5" />
+	</change>
+	<change bone="3">
+		<frame timestamp="0" rotate="-20" />
+		<frame timestamp="0.5" />
+	</change>
+	<change bone="5">
+		<frame timestamp="0" rotate="5" texture="armRight" layer="0" root="3" origin="2.500000 0.000000" />
+	</change>
+	<change bone="6">
+		<frame timestamp="0" rotate="20" texture="handRight" layer="0" origin="2.500000 0.000000" />
+		<frame timestamp="0.5" rotate="10" />
+	</change>
+	<change bone="8">
+		<frame timestamp="0" texture="armRight" layer="2" root="3" origin="2.500000 0.000000" />
+		<frame timestamp="0.5" rotate="-10" />
+	</change>
+	<change bone="9">
+		<frame timestamp="0" rotate="15" texture="handRight" layer="2" origin="2.500000 0.000000" />
+		<frame timestamp="0.5" rotate="-5" />
+	</change>
+	<change bone="11">
+		<frame timestamp="0" rotate="65" texture="hipLeft" layer="0" root="2" origin="3.000000 0.000000" />
+		<frame timestamp="0.5" rotate="15" />
+	</change>
+	<change bone="12">
+		<frame timestamp="0" texture="legLeft" layer="0" origin="3.000000 0.000000" />
+		<frame timestamp="0.5" rotate="10" />
+	</change>
+	<change bone="13">
+		<frame timestamp="0" texture="footLeft" layer="0" origin="7.000000 0.000000" />
+	</change>
+	<change bone="15">
+		<frame timestamp="0" rotate="-20" texture="hipLeft" layer="1" root="2" origin="3.000000 0.000000" />
+		<frame timestamp="0.5" rotate="-10" />
+	</change>
+	<change bone="16">
+		<frame timestamp="0" rotate="-60" texture="legLeft" layer="1" origin="3.000000 0.000000" />
+		<frame timestamp="0.5" rotate="-15" />
+	</change>
+	<change bone="17">
+		<frame timestamp="0" texture="footLeft" layer="1" origin="7.000000 0.000000" />
+	</change>
+</animation>
+<animation name="room_angry" duration="0.5" repeat="false">
+	<change bone="0">
+		<frame timestamp="0" rotate="180" texture="headLeft2" layer="1" origin="10.000000 18.000000" />
+	</change>
+	<change bone="1">
+		<frame timestamp="0" texture="chestLeft" layer="1" origin="5.000000 0.000000" />
+	</change>
+	<change bone="2">
+		<frame timestamp="0" texture="torsoLeft" layer="1" origin="5.000000 0.000000" />
+	</change>
+	<change bone="3">
+		<frame timestamp="0" />
+	</change>
+	<change bone="5">
+		<frame timestamp="0" rotate="5" texture="armRight" layer="0" root="3" origin="2.500000 0.000000" />
+		<frame timestamp="0.400000006" rotate="30" />
+		<frame timestamp="0.5" rotate="20" />
+	</change>
+	<change bone="6">
+		<frame timestamp="0" rotate="10" texture="handRight" layer="0" origin="2.500000 0.000000" />
+		<frame timestamp="0.400000006" rotate="140" />
+		<frame timestamp="0.5" rotate="100" />
+	</change>
+	<change bone="8">
+		<frame timestamp="0" rotate="-10" texture="armRight" layer="2" root="3" origin="2.500000 0.000000" />
+		<frame timestamp="0.400000006" rotate="40" />
+		<frame timestamp="0.5" rotate="-20" />
+	</change>
+	<change bone="9">
+		<frame timestamp="0" rotate="-5" texture="handRight" layer="2" origin="2.500000 0.000000" />
+		<frame timestamp="0.400000006" rotate="150" />
+		<frame timestamp="0.5" rotate="70" />
+	</change>
+	<change bone="11">
+		<frame timestamp="0" rotate="15" texture="hipLeft" layer="0" root="2" origin="3.000000 0.000000" />
+	</change>
+	<change bone="12">
+		<frame timestamp="0" rotate="10" texture="legLeft" layer="0" origin="3.000000 0.000000" />
+	</change>
+	<change bone="13">
+		<frame timestamp="0" texture="footLeft" layer="0" origin="7.000000 0.000000" />
+	</change>
+	<change bone="15">
+		<frame timestamp="0" rotate="-10" texture="hipLeft" layer="1" root="2" origin="3.000000 0.000000" />
+	</change>
+	<change bone="16">
+		<frame timestamp="0" rotate="-15" texture="legLeft" layer="1" origin="3.000000 0.000000" />
+	</change>
+	<change bone="17">
+		<frame timestamp="0" texture="footLeft" layer="1" origin="7.000000 0.000000" />
+	</change>
+</animation>
+<animation name="room_angry2" duration="0.5" repeat="false">
+	<change bone="0">
+		<frame timestamp="0" rotate="180" texture="headLeft" layer="1" origin="10.000000 18.000000" />
+	</change>
+	<change bone="1">
+		<frame timestamp="0" texture="chestLeft" layer="1" origin="5.000000 0.000000" />
+	</change>
+	<change bone="2">
+		<frame timestamp="0" texture="torsoLeft" layer="1" origin="5.000000 0.000000" />
+	</change>
+	<change bone="3">
+		<frame timestamp="0" />
+	</change>
+	<change bone="5">
+		<frame timestamp="0" rotate="20" texture="armRight" layer="0" root="3" origin="2.500000 0.000000" />
+		<frame timestamp="0.5" rotate="5" />
+	</change>
+	<change bone="6">
+		<frame timestamp="0" rotate="100" texture="handRight" layer="0" origin="2.500000 0.000000" />
+		<frame timestamp="0.5" rotate="10" />
+	</change>
+	<change bone="8">
+		<frame timestamp="0" rotate="-20" texture="armRight" layer="2" root="3" origin="2.500000 0.000000" />
+		<frame timestamp="0.5" rotate="-10" />
+	</change>
+	<change bone="9">
+		<frame timestamp="0" rotate="70" texture="handRight" layer="2" origin="2.500000 0.000000" />
+		<frame timestamp="0.5" rotate="-5" />
+	</change>
+	<change bone="11">
+		<frame timestamp="0" rotate="15" texture="hipLeft" layer="0" root="2" origin="3.000000 0.000000" />
+	</change>
+	<change bone="12">
+		<frame timestamp="0" rotate="10" texture="legLeft" layer="0" origin="3.000000 0.000000" />
+	</change>
+	<change bone="13">
+		<frame timestamp="0" texture="footLeft" layer="0" origin="7.000000 0.000000" />
+	</change>
+	<change bone="15">
+		<frame timestamp="0" rotate="-10" texture="hipLeft" layer="1" root="2" origin="3.000000 0.000000" />
+	</change>
+	<change bone="16">
+		<frame timestamp="0" rotate="-15" texture="legLeft" layer="1" origin="3.000000 0.000000" />
+	</change>
+	<change bone="17">
+		<frame timestamp="0" texture="footLeft" layer="1" origin="7.000000 0.000000" />
+	</change>
+</animation>
+<animation name="room_angry3" duration="0" repeat="false">
+	<change bone="0">
+		<frame timestamp="0" rotate="180" texture="headLeft2" layer="1" origin="10.000000 18.000000" />
+	</change>
+	<change bone="1">
+		<frame timestamp="0" texture="chestLeft" layer="1" origin="5.000000 0.000000" />
+	</change>
+	<change bone="2">
+		<frame timestamp="0" texture="torsoLeft" layer="1" origin="5.000000 0.000000" />
+	</change>
+	<change bone="3">
+		<frame timestamp="0" />
+	</change>
+	<change bone="5">
+		<frame timestamp="0" rotate="20" texture="armRight" layer="0" root="3" origin="2.500000 0.000000" />
+	</change>
+	<change bone="6">
+		<frame timestamp="0" rotate="100" texture="handRight" layer="0" origin="2.500000 0.000000" />
+	</change>
+	<change bone="8">
+		<frame timestamp="0" rotate="-20" texture="armRight" layer="2" root="3" origin="2.500000 0.000000" />
+	</change>
+	<change bone="9">
+		<frame timestamp="0" rotate="70" texture="handRight" layer="2" origin="2.500000 0.000000" />
+	</change>
+	<change bone="11">
+		<frame timestamp="0" rotate="15" texture="hipLeft" layer="0" root="2" origin="3.000000 0.000000" />
+	</change>
+	<change bone="12">
+		<frame timestamp="0" rotate="10" texture="legLeft" layer="0" origin="3.000000 0.000000" />
+	</change>
+	<change bone="13">
+		<frame timestamp="0" texture="footLeft" layer="0" origin="7.000000 0.000000" />
+	</change>
+	<change bone="15">
+		<frame timestamp="0" rotate="-10" texture="hipLeft" layer="1" root="2" origin="3.000000 0.000000" />
+	</change>
+	<change bone="16">
+		<frame timestamp="0" rotate="-15" texture="legLeft" layer="1" origin="3.000000 0.000000" />
+	</change>
+	<change bone="17">
+		<frame timestamp="0" texture="footLeft" layer="1" origin="7.000000 0.000000" />
 	</change>
 </animation>

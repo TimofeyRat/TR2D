@@ -245,12 +245,12 @@ public:
 				while (frames[f].timestamp <= timestamp) f++;
 				return &frames[tr::clamp(f - 1, 0, frames.size() - 1)];
 			}
-			Frame *getNextFrame(float timestamp)
+			Frame *getNextFrame(float timestamp, bool repeat)
 			{
 				if (!frames.size()) return nullptr;
 				int f = 0;
 				while (frames[f].timestamp <= timestamp) f++;
-				return f >= frames.size() ? &frames[0] : &frames[f];
+				return f >= frames.size() ? (repeat ? &frames[0] : &frames[frames.size() - 1]) : &frames[f];
 			}
 		};
 		std::vector<Changer> changes;
@@ -439,7 +439,7 @@ public:
 				b->angle_origin.z = current->origin.y;
 			}
 			if (current->root != -1) b->root = current->root;
-			auto next = c->getNextFrame(anim->currentFrame); if (!next) continue;
+			auto next = c->getNextFrame(anim->currentFrame, anim->repeat); if (!next) continue;
 			if (current->timestamp != next->timestamp)
 			{
 				auto angle = current->timestamp < next->timestamp ? next->r - current->r : current->r - next->r;
@@ -463,9 +463,12 @@ public:
 				b->spr.setRotation(b->angle + b->angle_origin.x);
 				b->spr.setOrigin(b->angle_origin.y, b->angle_origin.z);
 				b->spr.setColor(color);
-				if (i == currentBone) { b->spr.setColor({200, 200, 200, 255}); }
-				else if (i == nearest) { b->spr.setColor({127, 127, 127, 255}); }
-				else { b->spr.setColor(sf::Color::White); }
+				if (currentPage == PageFrame)
+				{
+					if (i == currentBone) { b->spr.setColor({255, 255, 255, 255}); }
+					else if (i == nearest) { b->spr.setColor({255, 255, 255, 200}); }
+					else { b->spr.setColor({255, 255, 255, 127}); }
+				}
 				b->spr.setScale(scale, scale);
 				target->draw(b->spr);
 			}
@@ -584,7 +587,7 @@ void updateUI()
 				changer->getFrame(currentFrame)->timestamp
 			));
 			ui[7].setString("Nearest frame after:\n" + std::to_string(
-				changer->getNextFrame(currentFrame)->timestamp
+				changer->getNextFrame(currentFrame, a->repeat)->timestamp
 			));
 		}
 		ui[8].setString("New frame");
