@@ -10,6 +10,9 @@
 struct AssetManager
 {
 public:
+	//Get all mods in game folder.
+	static std::vector<sf::String> getMods();
+	
 	//Read file without using the AssetManager.
 	static std::vector<sf::String> readFile(std::string path);
 	

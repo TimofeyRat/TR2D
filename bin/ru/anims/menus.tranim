@@ -1,0 +1,15 @@
+<animation name="menuBG" duration="2.5" repeat="0" scale="-1 -1">
+	<texture path="ru/tex/ui/menus/menuBG.png" size="144 64" start="0" count="5" />
+</animation>
+
+<animation name="menuEnd" duration="1" repeat="0" scale="-1 -1">
+	<frame path="ru/tex/ui/menus/menuBG.png" rect="0 256 144 64" />
+</animation>
+
+<animation name="idleBtn" duration="1" repeat="0" scale="-1 -1">
+	<frame path="ru/tex/ui/menus/menuBtn.png" rect="0 0 32 8" />
+</animation>
+
+<animation name="activeBtn" duration="1" repeat="0" scale="-1 -1">
+	<frame path="ru/tex/ui/menus/menuBtn.png" rect="0 8 32 8" />
+</animation>

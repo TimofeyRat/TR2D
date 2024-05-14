@@ -26,7 +26,6 @@ Window::CreditsGroup::CreditsGroup(sf::String name)
 
 void Window::init(int argc, char *argv[])
 {
-	pugi::xml_document config;
 	{
 		auto assets = tr::splitStr(argv[1], "=");
 		if (assets[0] == "assets")
@@ -36,6 +35,7 @@ void Window::init(int argc, char *argv[])
 		}
 		else AssetManager::path = "res/";
 	}
+	pugi::xml_document config;
 	config.load_file(sf::String(AssetManager::path + "global/settings.trconf").toWideString().c_str());
 	credits.clear();
 	for (auto set : config.child(L"settings").children())
@@ -71,7 +71,7 @@ void Window::init(int argc, char *argv[])
 		);
 		if (hasVar("PosX") && hasVar("PosY")) window.setPosition({getVar("PosX"), getVar("PosY")});
 	}
-	screen.create(getSize().x, getSize().y);
+	if (getSize().x && getSize().y) screen.create(getSize().x, getSize().y);
 	window.setVerticalSyncEnabled(vars.getVar("VSync"));
 	window.setActive();
 	if (vars.hasVar("Icon"))

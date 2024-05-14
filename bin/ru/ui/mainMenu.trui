@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<frame name="menu">
+	<object name="background">
+		<position type="relative-set">0 0 0 0</position>
+		<sprite name="bg">
+			<texture path="ru/anims/menus.tranim" activeAnim="menuBG" idleAnim="menuBG" />
+			<position type="inherit-obj-rel">0 0 0 0 menu-background</position>
+			<origin type="relative">0 0 0 0</origin>
+			<scale type="stretch" />
+		</sprite>
+		<text name="title">
+			<font path="ru/global/font.ttf" idleSize="32" idleOutline="2" activeSize="32" activeOutline="2" sizeChange="set" />
+			<txt type="idle" appear="typing-20">God's Star: Chapter One</txt>
+			<txt type="active" appear="typing-20">God's Star: Chapter One</txt>
+			<position type="relative-set">0.5 0.1 0.5 0.1</position>
+			<origin type="relative">0.5 0.5 0.5 0.5</origin>
+			<color state="idle" type="lerp">255 255 255 255</color><outline state="idle" type="lerp">0 0 0 255</outline>
+			<color state="active" type="lerp">255 255 255 255</color><outline state="active" type="lerp">0 0 0 255</outline>
+		</text>
+	</object>
+	<object name="startGame">
+		<position type="relative-set">0.5 0.25 0.5 0.25</position>
+		<sprite name="btn">
+			<toggle event="mouseHover" />
+			<action event="mouse-click-Left" condition="active-true">ui load ru/ui/dialogue.trui;cutscene start intro</action>
+				<!-- condition="active-true">ui load ru/ui/inventory.trui;world load ru/worlds/start.trworld</action> -->
+			<texture path="ru/anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
+			<position type="inherit-obj-rel">0 0 0 0 menu-startGame</position>
+			<origin type="relative">0.5 0.5 0.5 0.5</origin>
+			<scale type="lerp">5 5 7 7</scale>
+		</sprite>
+		<text name="title">
+			<toggle event="btn-menu-startGame-btn" />
+			<font path="ru/global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
+			<txt type="active" appear="set">Начать игру</txt>
+			<txt type="idle" appear="set">Начать игру</txt>
+			<position type="inherit-obj-rel">0 0 0 0 menu-startGame</position>
+			<origin type="relative">0.5 0.5 0.5 0.5</origin>
+			<color state="active" type="lerp">255 255 255 255</color>
+			<color state="idle" type="lerp">0 0 0 255</color>
+		</text>
+	</object>
+	<object name="continueGame">
+		<position type="relative-set">0.5 0.5 0.5 0.5</position>
+		<sprite name="btn">
+			<toggle event="mouseHover" />
+			<action
+				event="mouse-click-Left"
+				condition="active-true">ui load ru/ui/inventory.trui;loadGame</action>
+				<!-- condition="active-true">ui-load-ru/ui/dialogue.trui;cutscene-start-intro</action> -->
+			<texture path="ru/anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
+			<position type="inherit-obj-rel">0 0 0 0 menu-continueGame</position>
+			<origin type="relative">0.5 0.5 0.5 0.5</origin>
+			<scale type="lerp">5 5 7 7</scale>
+		</sprite>
+		<text name="title">
+			<toggle event="btn-menu-continueGame-btn" />
+			<font path="ru/global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
+			<txt type="active" appear="set">Продолжить игру</txt>
+			<txt type="idle" appear="set">Продолжить игру</txt>
+			<position type="inherit-obj-rel">0 0 0 0 menu-continueGame</position>
+			<origin type="relative">0.5 0.5 0.5 0.5</origin>
+			<color state="active" type="lerp">255 255 255 255</color>
+			<color state="idle" type="lerp">0 0 0 255</color>
+		</text>
+	</object>
+	<object name="exit">
+		<position type="relative-set">0.5 0.8 0.5 0.8</position>
+		<sprite name="btn">
+			<toggle event="mouseHover" />
+			<action
+				event="mouse-click-Left"
+				condition="active-true">window close</action>
+			<texture path="ru/anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
+			<position type="inherit-obj-rel">0 0 0 0 menu-exit</position>
+			<origin type="relative">0.5 0.5 0.5 0.5</origin>
+			<scale type="lerp">5 5 7 7</scale>
+		</sprite>
+		<text name="title">
+			<toggle event="btn-menu-exit-btn" />
+			<font path="ru/global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
+			<txt type="active" appear="set">Выйти из игры</txt>
+			<txt type="idle" appear="set">Выйти из игры</txt>
+			<position type="inherit-obj-rel">0 0 0 0 menu-exit</position>
+			<origin type="relative">0.5 0.5 0.5 0.5</origin>
+			<color state="active" type="lerp">255 255 255 255</color>
+			<color state="idle" type="lerp">0 0 0 255</color>
+		</text>
+	</object>
+	<object name="credits">
+		<position type="relative-set">1 1 1 1</position>
+		<text name="title">
+			<toggle event="mouseHover" />
+			<action
+				event="mouse-click-Left"
+				condition="active-true">window showCredits 1</action>
+			<font path="ru/global/font.ttf" idleSize="14" activeSize="14" activeOutline="2" idleOutline="2" sizeChange="set" />
+			<txt type="idle" appear="set">Авторы</txt>
+			<txt type="active" appear="set">Авторы</txt>
+			<position type="inherit-obj-rel">0 0 0 0 menu-credits</position>
+			<origin type="relative">1 1 1 1</origin>
+			<color state="active" type="lerp">0 0 0 255</color><outline state="active" type="lerp">255 255 255 255</outline>
+			<color state="idle" type="lerp">255 255 255 255</color><outline state="idle" type="lerp">0 0 0 255</outline>
+		</text>
+	</object>
+</frame>

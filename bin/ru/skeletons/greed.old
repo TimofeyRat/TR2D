@@ -1,0 +1,2091 @@
+<?xml version="1.0"?>
+<bone id="0" root="0" length="23" angle="0" tex="ru/tex/characters/greed.png" scale="1 1" offset="0" origin="4.500000 0" layer="1">39 18 -9 23</bone>
+<bone id="1" root="1" length="18" angle="180" tex="ru/tex/characters/greed.png" scale="1 1" offset="180" origin="8.500000 18" layer="1">43 0 -18 18</bone>
+<bone id="2" root="2" length="5" angle="0" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
+<bone id="3" root="2" length="8.5" angle="90" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
+<bone id="4" root="2" length="10" angle="-10" tex="ru/tex/characters/greed.png" scale="1 1" offset="0" origin="2.500000 2" layer="0">20 19 5 12</bone>
+<bone id="5" root="4" length="13" angle="-10" tex="ru/tex/characters/greed.png" scale="1 1" offset="0" origin="2.500000 0" layer="0">20 31 6 13</bone>
+<bone id="6" root="2" length="8.5" angle="-90" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
+<bone id="7" root="2" length="10" angle="10" tex="ru/tex/characters/greed.png" scale="1 1" offset="0" origin="2.500000 2" layer="2">20 19 5 12</bone>
+<bone id="8" root="7" length="13" angle="5" tex="ru/tex/characters/greed.png" scale="1 1" offset="0" origin="2.500000 0" layer="2">20 31 6 13</bone>
+<bone id="9" root="0" length="3" angle="90" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
+<bone id="10" root="0" length="8" angle="-10" tex="ru/tex/characters/greed.png" scale="1 1" offset="0" origin="2.500000 0" layer="0">37 41 -5 9</bone>
+<bone id="11" root="10" length="8" angle="-5" tex="ru/tex/characters/greed.png" scale="1 1" offset="0" origin="2.500000 0" layer="0">37 50 -5 8</bone>
+<bone id="12" root="11" length="5" angle="0" tex="ru/tex/characters/greed.png" scale="1 1" offset="0" origin="2.500000 0" layer="0">37 58 -9 5</bone>
+<bone id="13" root="0" length="3" angle="-90" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
+<bone id="14" root="0" length="8" angle="5" tex="ru/tex/characters/greed.png" scale="1 1" offset="0" origin="2.500000 0" layer="1">37 41 -5 9</bone>
+<bone id="15" root="14" length="8" angle="10" tex="ru/tex/characters/greed.png" scale="1 1" offset="0" origin="2.500000 0" layer="1">37 50 -5 8</bone>
+<bone id="16" root="15" length="5" angle="0" tex="ru/tex/characters/greed.png" scale="1 1" offset="0" origin="2.500000 0" layer="1">37 58 -9 5</bone>
+<animation name="idle" duration="2.000000" repeat="true">
+	<change bone="7">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>25 19 -5 12</rect>
+			<layer>1</layer>
+			<origin>2.500000 2</origin>
+			<root>6</root>
+		</frame>
+		<frame timestamp="1.000000">
+			<rotate value="-10" />
+		</frame>
+	</change>
+	<change bone="4">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>20 19 5 12</rect>
+			<layer>1</layer>
+			<origin>2.500000 2</origin>
+			<root>3</root>
+		</frame>
+		<frame timestamp="1.000000">
+			<rotate value="10" />
+		</frame>
+	</change>
+	<change bone="1">
+		<frame timestamp="0.000000">
+			<rotate value="180" />
+			<rect>0 0 22 18</rect>
+			<layer>1</layer>
+			<origin>11 18</origin>
+			<root>1</root>
+		</frame>
+	</change>
+	<change bone="0">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>4 18 14 23</rect>
+			<layer>0</layer>
+			<origin>7 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="5">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>20 31 6 13</rect>
+			<layer>2</layer>
+			<origin>2.500000 0</origin>
+			<root>4</root>
+		</frame>
+	</change>
+	<change bone="8">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>26 31 -6 13</rect>
+			<layer>2</layer>
+			<origin>3.500000 0</origin>
+			<root>7</root>
+		</frame>
+	</change>
+	<change bone="10">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>5 41 5 9</rect>
+			<layer>0</layer>
+			<origin>3 0</origin>
+			<root>9</root>
+		</frame>
+	</change>
+	<change bone="11">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>5 50 5 8</rect>
+			<layer>0</layer>
+			<origin>3 0</origin>
+			<root>10</root>
+		</frame>
+	</change>
+	<change bone="12">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>3 58 7 5</rect>
+			<layer>0</layer>
+			<origin>5 0</origin>
+			<root>11</root>
+		</frame>
+	</change>
+	<change bone="14">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>12 41 5 9</rect>
+			<layer>0</layer>
+			<origin>2 0</origin>
+			<root>13</root>
+		</frame>
+	</change>
+	<change bone="15">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>12 50 5 8</rect>
+			<layer>0</layer>
+			<origin>2 0</origin>
+			<root>14</root>
+		</frame>
+	</change>
+	<change bone="16">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>12 58 7 5</rect>
+			<layer>0</layer>
+			<origin>2 0</origin>
+			<root>15</root>
+		</frame>
+	</change>
+	<change bone="2">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+</animation>
+<animation name="wl" duration="1.200000" repeat="true">
+	<change bone="1">
+		<frame timestamp="0.000000">
+			<rotate value="180" />
+			<rect>25 0 18 18</rect>
+			<layer>1</layer>
+			<origin>9.500000 18</origin>
+			<root>1</root>
+		</frame>
+	</change>
+	<change bone="0">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>30 18 9 23</rect>
+			<layer>1</layer>
+			<origin>4.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="4">
+		<frame timestamp="0.000000">
+			<rotate value="-25" />
+			<rect>25 19 -5 12</rect>
+			<layer>0</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+		<frame timestamp="0.600000">
+			<rotate value="25" />
+		</frame>
+	</change>
+	<change bone="7">
+		<frame timestamp="0.000000">
+			<rotate value="25" />
+			<rect>25 19 -5 12</rect>
+			<layer>2</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+		<frame timestamp="0.600000">
+			<rotate value="-25" />
+		</frame>
+	</change>
+	<change bone="5">
+		<frame timestamp="0.000000">
+			<rotate value="-25" />
+			<rect>26 31 -6 13</rect>
+			<layer>0</layer>
+			<origin>3.500000 0</origin>
+			<root>4</root>
+		</frame>
+		<frame timestamp="0.600000">
+			<rotate value="40" />
+		</frame>
+	</change>
+	<change bone="8">
+		<frame timestamp="0.000000">
+			<rotate value="40" />
+			<rect>26 31 -6 13</rect>
+			<layer>2</layer>
+			<origin>3.500000 0</origin>
+			<root>7</root>
+		</frame>
+		<frame timestamp="0.600000">
+			<rotate value="-25" />
+		</frame>
+	</change>
+	<change bone="10">
+		<frame timestamp="0.000000">
+			<rotate value="45" />
+			<rect>32 41 5 9</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate value="15" />
+		</frame>
+		<frame timestamp="0.400000">
+			<rotate />
+		</frame>
+		<frame timestamp="0.600000">
+			<rotate value="-25" />
+		</frame>
+		<frame timestamp="0.800000">
+			<rotate value="5" />
+		</frame>
+		<frame timestamp="1.000000">
+			<rotate value="15" />
+		</frame>
+		<frame timestamp="1.200000">
+			<rotate value="45" />
+		</frame>
+	</change>
+	<change bone="11">
+		<frame timestamp="0.000000">
+			<rotate value="5" />
+			<rect>32 50 5 8</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>10</root>
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate />
+		</frame>
+		<frame timestamp="0.600000">
+			<rotate value="-45" />
+		</frame>
+		<frame timestamp="0.800000">
+			<rotate value="-50" />
+		</frame>
+		<frame timestamp="1.000000">
+			<rotate value="-80" />
+		</frame>
+		<frame timestamp="1.200000">
+			<rotate value="5" />
+		</frame>
+	</change>
+	<change bone="12">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>28 58 9 5</rect>
+			<layer>0</layer>
+			<origin>6.500000 0</origin>
+			<root>11</root>
+		</frame>
+	</change>
+	<change bone="16">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>28 58 9 5</rect>
+			<layer>1</layer>
+			<origin>6.500000 0</origin>
+			<root>15</root>
+		</frame>
+	</change>
+	<change bone="14">
+		<frame timestamp="0.000000">
+			<rotate value="-25" />
+			<rect>32 41 5 9</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate value="5" />
+		</frame>
+		<frame timestamp="0.400000">
+			<rotate value="15" />
+		</frame>
+		<frame timestamp="0.600000">
+			<rotate value="45" />
+		</frame>
+		<frame timestamp="0.800000">
+			<rotate value="15" />
+		</frame>
+		<frame timestamp="1.000000">
+			<rotate />
+		</frame>
+		<frame timestamp="1.200000">
+			<rotate value="-25" />
+		</frame>
+	</change>
+	<change bone="15">
+		<frame timestamp="0.000000">
+			<rotate value="-45" />
+			<rect>32 50 5 8</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>14</root>
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate value="-50" />
+		</frame>
+		<frame timestamp="0.400000">
+			<rotate value="-80" />
+		</frame>
+		<frame timestamp="0.600000">
+			<rotate value="5" />
+		</frame>
+		<frame timestamp="0.800000">
+			<rotate />
+		</frame>
+		<frame timestamp="1.200000">
+			<rotate value="-45" />
+		</frame>
+	</change>
+	<change bone="2">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+</animation>
+<animation name="wr" duration="1.200000" repeat="true">
+	<change bone="1">
+		<frame timestamp="0.000000">
+			<rotate value="180" />
+			<rect>43 0 -18 18</rect>
+			<layer>1</layer>
+			<origin>8.500000 18</origin>
+			<root>1</root>
+		</frame>
+	</change>
+	<change bone="0">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>39 18 -9 23</rect>
+			<layer>1</layer>
+			<origin>4.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="4">
+		<frame timestamp="0.000000">
+			<rotate value="25" />
+			<rect>20 19 5 12</rect>
+			<layer>0</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+		<frame timestamp="0.600000">
+			<rotate value="-25" />
+		</frame>
+	</change>
+	<change bone="7">
+		<frame timestamp="0.000000">
+			<rotate value="-25" />
+			<rect>20 19 5 12</rect>
+			<layer>2</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+		<frame timestamp="0.600000">
+			<rotate value="25" />
+		</frame>
+	</change>
+	<change bone="5">
+		<frame timestamp="0.000000">
+			<rotate value="25" />
+			<rect>20 31 6 13</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>4</root>
+		</frame>
+		<frame timestamp="0.600000">
+			<rotate value="-40" />
+		</frame>
+	</change>
+	<change bone="8">
+		<frame timestamp="0.000000">
+			<rotate value="-40" />
+			<rect>20 31 6 13</rect>
+			<layer>2</layer>
+			<origin>2.500000 0</origin>
+			<root>7</root>
+		</frame>
+		<frame timestamp="0.600000">
+			<rotate value="25" />
+		</frame>
+	</change>
+	<change bone="10">
+		<frame timestamp="0.000000">
+			<rotate value="-45" />
+			<rect>37 41 -5 9</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate value="-15" />
+		</frame>
+		<frame timestamp="0.400000">
+			<rotate />
+		</frame>
+		<frame timestamp="0.600000">
+			<rotate value="25" />
+		</frame>
+		<frame timestamp="0.800000">
+			<rotate value="-5" />
+		</frame>
+		<frame timestamp="1.000000">
+			<rotate value="-15" />
+		</frame>
+		<frame timestamp="1.200000">
+			<rotate value="-45" />
+		</frame>
+	</change>
+	<change bone="11">
+		<frame timestamp="0.000000">
+			<rotate value="-5" />
+			<rect>37 50 -5 8</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>10</root>
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate />
+		</frame>
+		<frame timestamp="0.600000">
+			<rotate value="45" />
+		</frame>
+		<frame timestamp="0.800000">
+			<rotate value="50" />
+		</frame>
+		<frame timestamp="1.000000">
+			<rotate value="80" />
+		</frame>
+		<frame timestamp="1.200000">
+			<rotate value="-5" />
+		</frame>
+	</change>
+	<change bone="12">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>37 58 -9 5</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>11</root>
+		</frame>
+	</change>
+	<change bone="16">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>37 58 -9 5</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>15</root>
+		</frame>
+	</change>
+	<change bone="14">
+		<frame timestamp="0.000000">
+			<rotate value="25" />
+			<rect>37 41 -5 9</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate value="-5" />
+		</frame>
+		<frame timestamp="0.400000">
+			<rotate value="-15" />
+		</frame>
+		<frame timestamp="0.600000">
+			<rotate value="-45" />
+		</frame>
+		<frame timestamp="0.800000">
+			<rotate value="-15" />
+		</frame>
+		<frame timestamp="1.000000">
+			<rotate />
+		</frame>
+		<frame timestamp="1.200000">
+			<rotate value="25" />
+		</frame>
+	</change>
+	<change bone="15">
+		<frame timestamp="0.000000">
+			<rotate value="45" />
+			<rect>37 50 -5 8</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>14</root>
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate value="50" />
+		</frame>
+		<frame timestamp="0.400000">
+			<rotate value="80" />
+		</frame>
+		<frame timestamp="0.600000">
+			<rotate value="-5" />
+		</frame>
+		<frame timestamp="0.800000">
+			<rotate />
+		</frame>
+		<frame timestamp="1.200000">
+			<rotate value="45" />
+		</frame>
+	</change>
+	<change bone="2">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+</animation>
+<animation name="sl" duration="0.000000" repeat="false">
+	<change bone="1">
+		<frame timestamp="0.000000">
+			<rotate value="180" />
+			<rect>25 0 18 18</rect>
+			<layer>1</layer>
+			<origin>9.500000 18</origin>
+			<root>1</root>
+		</frame>
+	</change>
+	<change bone="0">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>30 18 9 23</rect>
+			<layer>1</layer>
+			<origin>4.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="4">
+		<frame timestamp="0.000000">
+			<rotate value="20" />
+			<rect>25 19 -5 12</rect>
+			<layer>0</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+	</change>
+	<change bone="7">
+		<frame timestamp="0.000000">
+			<rotate value="-25" />
+			<rect>25 19 -5 12</rect>
+			<layer>2</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+	</change>
+	<change bone="5">
+		<frame timestamp="0.000000">
+			<rotate value="30" />
+			<rect>26 31 -6 13</rect>
+			<layer>0</layer>
+			<origin>3.500000 0</origin>
+			<root>4</root>
+		</frame>
+	</change>
+	<change bone="8">
+		<frame timestamp="0.000000">
+			<rotate value="35" />
+			<rect>26 31 -6 13</rect>
+			<layer>2</layer>
+			<origin>3.500000 0</origin>
+			<root>7</root>
+		</frame>
+	</change>
+	<change bone="10">
+		<frame timestamp="0.000000">
+			<rotate value="40" />
+			<rect>32 41 5 9</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="11">
+		<frame timestamp="0.000000">
+			<rotate value="20" />
+			<rect>32 50 5 8</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>10</root>
+		</frame>
+	</change>
+	<change bone="12">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>28 58 9 5</rect>
+			<layer>0</layer>
+			<origin>6.500000 0</origin>
+			<root>11</root>
+		</frame>
+	</change>
+	<change bone="16">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>28 58 9 5</rect>
+			<layer>1</layer>
+			<origin>6.500000 0</origin>
+			<root>15</root>
+		</frame>
+	</change>
+	<change bone="14">
+		<frame timestamp="0.000000">
+			<rotate value="-10" />
+			<rect>32 41 5 9</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="15">
+		<frame timestamp="0.000000">
+			<rotate value="-43" />
+			<rect>32 50 5 8</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>14</root>
+		</frame>
+	</change>
+	<change bone="2">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+</animation>
+<animation name="sr" duration="0.000000" repeat="false">
+	<change bone="1">
+		<frame timestamp="0.000000">
+			<rotate value="180" />
+			<rect>43 0 -18 18</rect>
+			<layer>1</layer>
+			<origin>8.500000 18</origin>
+			<root>1</root>
+		</frame>
+	</change>
+	<change bone="0">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>39 18 -9 23</rect>
+			<layer>1</layer>
+			<origin>4.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="4">
+		<frame timestamp="0.000000">
+			<rotate value="-20" />
+			<rect>20 19 5 12</rect>
+			<layer>0</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+	</change>
+	<change bone="7">
+		<frame timestamp="0.000000">
+			<rotate value="25" />
+			<rect>20 19 5 12</rect>
+			<layer>2</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+	</change>
+	<change bone="5">
+		<frame timestamp="0.000000">
+			<rotate value="-30" />
+			<rect>20 31 6 13</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>4</root>
+		</frame>
+	</change>
+	<change bone="8">
+		<frame timestamp="0.000000">
+			<rotate value="-35" />
+			<rect>20 31 6 13</rect>
+			<layer>2</layer>
+			<origin>2.500000 0</origin>
+			<root>7</root>
+		</frame>
+	</change>
+	<change bone="10">
+		<frame timestamp="0.000000">
+			<rotate value="-40" />
+			<rect>37 41 -5 9</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="11">
+		<frame timestamp="0.000000">
+			<rotate value="-20" />
+			<rect>37 50 -5 8</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>10</root>
+		</frame>
+	</change>
+	<change bone="12">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>37 58 -9 5</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>11</root>
+		</frame>
+	</change>
+	<change bone="16">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>37 58 -9 5</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>15</root>
+		</frame>
+	</change>
+	<change bone="14">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+			<rect>37 41 -5 9</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="15">
+		<frame timestamp="0.000000">
+			<rotate value="43" />
+			<rect>37 50 -5 8</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>14</root>
+		</frame>
+	</change>
+	<change bone="2">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+</animation>
+<animation name="jl" duration="0.000000" repeat="false">
+	<change bone="1">
+		<frame timestamp="0.000000">
+			<rotate value="180" />
+			<rect>25 0 18 18</rect>
+			<layer>1</layer>
+			<origin>9.500000 18</origin>
+			<root>1</root>
+		</frame>
+	</change>
+	<change bone="0">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>30 18 9 23</rect>
+			<layer>1</layer>
+			<origin>4.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="4">
+		<frame timestamp="0.000000">
+			<rotate value="20" />
+			<rect>25 19 -5 12</rect>
+			<layer>0</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+	</change>
+	<change bone="7">
+		<frame timestamp="0.000000">
+			<rotate value="-25" />
+			<rect>25 19 -5 12</rect>
+			<layer>2</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+	</change>
+	<change bone="5">
+		<frame timestamp="0.000000">
+			<rotate value="30" />
+			<rect>26 31 -6 13</rect>
+			<layer>0</layer>
+			<origin>3.500000 0</origin>
+			<root>4</root>
+		</frame>
+	</change>
+	<change bone="8">
+		<frame timestamp="0.000000">
+			<rotate value="35" />
+			<rect>26 31 -6 13</rect>
+			<layer>2</layer>
+			<origin>3.500000 0</origin>
+			<root>7</root>
+		</frame>
+	</change>
+	<change bone="10">
+		<frame timestamp="0.000000">
+			<rotate value="45" />
+			<rect>32 41 5 9</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="11">
+		<frame timestamp="0.000000">
+			<rotate value="-10" />
+			<rect>32 50 5 8</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>10</root>
+		</frame>
+	</change>
+	<change bone="12">
+		<frame timestamp="0.000000">
+			<rotate value="-10" />
+			<rect>28 58 9 5</rect>
+			<layer>0</layer>
+			<origin>6.500000 0</origin>
+			<root>11</root>
+		</frame>
+	</change>
+	<change bone="16">
+		<frame timestamp="0.000000">
+			<rotate value="-25" />
+			<rect>28 58 9 5</rect>
+			<layer>1</layer>
+			<origin>6.500000 0</origin>
+			<root>15</root>
+		</frame>
+	</change>
+	<change bone="14">
+		<frame timestamp="0.000000">
+			<rotate value="-5" />
+			<rect>32 41 5 9</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="15">
+		<frame timestamp="0.000000">
+			<rotate value="-20" />
+			<rect>32 50 5 8</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>14</root>
+		</frame>
+	</change>
+	<change bone="2">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+</animation>
+<animation name="jr" duration="0.000000" repeat="false">
+	<change bone="1">
+		<frame timestamp="0.000000">
+			<rotate value="180" />
+			<rect>43 0 -18 18</rect>
+			<layer>1</layer>
+			<origin>8.500000 18</origin>
+			<root>1</root>
+		</frame>
+	</change>
+	<change bone="0">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>39 18 -9 23</rect>
+			<layer>1</layer>
+			<origin>4.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="4">
+		<frame timestamp="0.000000">
+			<rotate value="-20" />
+			<rect>20 19 5 12</rect>
+			<layer>0</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+	</change>
+	<change bone="7">
+		<frame timestamp="0.000000">
+			<rotate value="25" />
+			<rect>20 19 5 12</rect>
+			<layer>2</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+	</change>
+	<change bone="5">
+		<frame timestamp="0.000000">
+			<rotate value="-30" />
+			<rect>20 31 6 13</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>4</root>
+		</frame>
+	</change>
+	<change bone="8">
+		<frame timestamp="0.000000">
+			<rotate value="-35" />
+			<rect>20 31 6 13</rect>
+			<layer>2</layer>
+			<origin>2.500000 0</origin>
+			<root>7</root>
+		</frame>
+	</change>
+	<change bone="10">
+		<frame timestamp="0.000000">
+			<rotate value="-45" />
+			<rect>37 41 -5 9</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="11">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+			<rect>37 50 -5 8</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>10</root>
+		</frame>
+	</change>
+	<change bone="12">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+			<rect>37 58 -9 5</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>11</root>
+		</frame>
+	</change>
+	<change bone="16">
+		<frame timestamp="0.000000">
+			<rotate value="25" />
+			<rect>37 58 -9 5</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>15</root>
+		</frame>
+	</change>
+	<change bone="14">
+		<frame timestamp="0.000000">
+			<rotate value="5" />
+			<rect>37 41 -5 9</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="15">
+		<frame timestamp="0.000000">
+			<rotate value="20" />
+			<rect>37 50 -5 8</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>14</root>
+		</frame>
+	</change>
+	<change bone="2">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+</animation>
+<animation name="fl" duration="0.500000" repeat="false">
+	<change bone="1">
+		<frame timestamp="0.000000">
+			<rotate value="180" />
+			<rect>25 0 18 18</rect>
+			<layer>1</layer>
+			<origin>9.500000 18</origin>
+			<root>1</root>
+		</frame>
+	</change>
+	<change bone="0">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>30 18 9 23</rect>
+			<layer>1</layer>
+			<origin>4.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="4">
+		<frame timestamp="0.000000">
+			<rotate value="20" />
+			<rect>25 19 -5 12</rect>
+			<layer>0</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+	</change>
+	<change bone="7">
+		<frame timestamp="0.000000">
+			<rotate value="-25" />
+			<rect>25 19 -5 12</rect>
+			<layer>2</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+	</change>
+	<change bone="5">
+		<frame timestamp="0.000000">
+			<rotate value="30" />
+			<rect>26 31 -6 13</rect>
+			<layer>0</layer>
+			<origin>3.500000 0</origin>
+			<root>4</root>
+		</frame>
+	</change>
+	<change bone="8">
+		<frame timestamp="0.000000">
+			<rotate value="35" />
+			<rect>26 31 -6 13</rect>
+			<layer>2</layer>
+			<origin>3.500000 0</origin>
+			<root>7</root>
+		</frame>
+	</change>
+	<change bone="10">
+		<frame timestamp="0.000000">
+			<rotate value="45" />
+			<rect>32 41 5 9</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="20" />
+		</frame>
+	</change>
+	<change bone="11">
+		<frame timestamp="0.000000">
+			<rotate value="-10" />
+			<rect>32 50 5 8</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>10</root>
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="10" />
+		</frame>
+	</change>
+	<change bone="12">
+		<frame timestamp="0.000000">
+			<rotate value="-10" />
+			<rect>28 58 9 5</rect>
+			<layer>0</layer>
+			<origin>6.500000 0</origin>
+			<root>11</root>
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="10" />
+		</frame>
+	</change>
+	<change bone="16">
+		<frame timestamp="0.000000">
+			<rotate value="-25" />
+			<rect>28 58 9 5</rect>
+			<layer>1</layer>
+			<origin>6.500000 0</origin>
+			<root>15</root>
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="-40" />
+		</frame>
+	</change>
+	<change bone="14">
+		<frame timestamp="0.000000">
+			<rotate value="-5" />
+			<rect>32 41 5 9</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="40" />
+		</frame>
+	</change>
+	<change bone="15">
+		<frame timestamp="0.000000">
+			<rotate value="-20" />
+			<rect>32 50 5 8</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>14</root>
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="-50" />
+		</frame>
+	</change>
+	<change bone="2">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+</animation>
+<animation name="fr" duration="0.500000" repeat="false">
+	<change bone="1">
+		<frame timestamp="0.000000">
+			<rotate value="180" />
+			<rect>43 0 -18 18</rect>
+			<layer>1</layer>
+			<origin>8.500000 18</origin>
+			<root>1</root>
+		</frame>
+	</change>
+	<change bone="0">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>39 18 -9 23</rect>
+			<layer>1</layer>
+			<origin>4.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="4">
+		<frame timestamp="0.000000">
+			<rotate value="-20" />
+			<rect>20 19 5 12</rect>
+			<layer>0</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+	</change>
+	<change bone="7">
+		<frame timestamp="0.000000">
+			<rotate value="25" />
+			<rect>20 19 5 12</rect>
+			<layer>2</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+	</change>
+	<change bone="5">
+		<frame timestamp="0.000000">
+			<rotate value="-30" />
+			<rect>20 31 6 13</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>4</root>
+		</frame>
+	</change>
+	<change bone="8">
+		<frame timestamp="0.000000">
+			<rotate value="-35" />
+			<rect>20 31 6 13</rect>
+			<layer>2</layer>
+			<origin>2.500000 0</origin>
+			<root>7</root>
+		</frame>
+	</change>
+	<change bone="10">
+		<frame timestamp="0.000000">
+			<rotate value="-45" />
+			<rect>37 41 -5 9</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="-20" />
+		</frame>
+	</change>
+	<change bone="11">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+			<rect>37 50 -5 8</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>10</root>
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="-10" />
+		</frame>
+	</change>
+	<change bone="12">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+			<rect>37 58 -9 5</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>11</root>
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="-10" />
+		</frame>
+	</change>
+	<change bone="16">
+		<frame timestamp="0.000000">
+			<rotate value="25" />
+			<rect>37 58 -9 5</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>15</root>
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="40" />
+		</frame>
+	</change>
+	<change bone="14">
+		<frame timestamp="0.000000">
+			<rotate value="5" />
+			<rect>37 41 -5 9</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="-40" />
+		</frame>
+	</change>
+	<change bone="15">
+		<frame timestamp="0.000000">
+			<rotate value="20" />
+			<rect>37 50 -5 8</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>14</root>
+		</frame>
+		<frame timestamp="0.500000">
+			<rotate value="50" />
+		</frame>
+	</change>
+	<change bone="2">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+</animation>
+<animation name="al" duration="0.600000" repeat="false">
+	<change bone="1">
+		<frame timestamp="0.000000">
+			<rotate value="180" />
+			<rect>25 0 18 18</rect>
+			<layer>1</layer>
+			<origin>9.500000 18</origin>
+			<root>1</root>
+		</frame>
+	</change>
+	<change bone="0">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>30 18 9 23</rect>
+			<layer>1</layer>
+			<origin>4.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="4">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>25 19 -5 12</rect>
+			<layer>0</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+	</change>
+	<change bone="7">
+		<frame timestamp="0.000000">
+			<rotate value="90" />
+			<rect>25 19 -5 12</rect>
+			<layer>2</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate value="120" />
+		</frame>
+		<frame timestamp="0.600000">
+			<rotate value="20" />
+		</frame>
+	</change>
+	<change bone="5">
+		<frame timestamp="0.000000">
+			<rotate value="180" />
+			<rect>26 31 -6 13</rect>
+			<layer>0</layer>
+			<origin>3.500000 0</origin>
+			<root>4</root>
+		</frame>
+	</change>
+	<change bone="8">
+		<frame timestamp="0.000000">
+			<rotate value="100" />
+			<rect>26 31 -6 13</rect>
+			<layer>2</layer>
+			<origin>3.500000 0</origin>
+			<root>7</root>
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate value="140" />
+		</frame>
+		<frame timestamp="0.600000">
+			<rotate value="30" />
+		</frame>
+	</change>
+	<change bone="10">
+		<frame timestamp="0.000000">
+			<rotate value="40" />
+			<rect>32 41 5 9</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="11">
+		<frame timestamp="0.000000">
+			<rotate value="20" />
+			<rect>32 50 5 8</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>10</root>
+		</frame>
+	</change>
+	<change bone="12">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>28 58 9 5</rect>
+			<layer>0</layer>
+			<origin>6.500000 0</origin>
+			<root>11</root>
+		</frame>
+	</change>
+	<change bone="16">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>28 58 9 5</rect>
+			<layer>1</layer>
+			<origin>6.500000 0</origin>
+			<root>15</root>
+		</frame>
+	</change>
+	<change bone="14">
+		<frame timestamp="0.000000">
+			<rotate value="-10" />
+			<rect>32 41 5 9</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="15">
+		<frame timestamp="0.000000">
+			<rotate value="-43" />
+			<rect>32 50 5 8</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>14</root>
+		</frame>
+	</change>
+	<change bone="2">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+</animation>
+<animation name="ar" duration="0.600000" repeat="false">
+	<change bone="1">
+		<frame timestamp="0.000000">
+			<rotate value="180" />
+			<rect>43 0 -18 18</rect>
+			<layer>1</layer>
+			<origin>8.500000 18</origin>
+			<root>1</root>
+		</frame>
+	</change>
+	<change bone="0">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>39 18 -9 23</rect>
+			<layer>1</layer>
+			<origin>4.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="4">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>20 19 5 12</rect>
+			<layer>0</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+	</change>
+	<change bone="7">
+		<frame timestamp="0.000000">
+			<rotate value="-90" />
+			<rect>20 19 5 12</rect>
+			<layer>2</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate value="-120" />
+		</frame>
+		<frame timestamp="0.600000">
+			<rotate value="-20" />
+		</frame>
+	</change>
+	<change bone="5">
+		<frame timestamp="0.000000">
+			<rotate value="-180" />
+			<rect>20 31 6 13</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>4</root>
+		</frame>
+	</change>
+	<change bone="8">
+		<frame timestamp="0.000000">
+			<rotate value="-100" />
+			<rect>20 31 6 13</rect>
+			<layer>2</layer>
+			<origin>2.500000 0</origin>
+			<root>7</root>
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate value="-140" />
+		</frame>
+		<frame timestamp="0.600000">
+			<rotate value="-30" />
+		</frame>
+	</change>
+	<change bone="10">
+		<frame timestamp="0.000000">
+			<rotate value="-40" />
+			<rect>37 41 -5 9</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="11">
+		<frame timestamp="0.000000">
+			<rotate value="-20" />
+			<rect>37 50 -5 8</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>10</root>
+		</frame>
+	</change>
+	<change bone="12">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>37 58 -9 5</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>11</root>
+		</frame>
+	</change>
+	<change bone="16">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>37 58 -9 5</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>15</root>
+		</frame>
+	</change>
+	<change bone="14">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+			<rect>37 41 -5 9</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="15">
+		<frame timestamp="0.000000">
+			<rotate value="43" />
+			<rect>37 50 -5 8</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>14</root>
+		</frame>
+	</change>
+	<change bone="2">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+</animation>
+<animation name="room_obsessed" duration="1.000000" repeat="false">
+	<change bone="1">
+		<frame timestamp="0.000000">
+			<rotate value="180" />
+			<rect>43 0 -18 18</rect>
+			<layer>1</layer>
+			<origin>8.500000 18</origin>
+			<root>1</root>
+		</frame>
+		<frame timestamp="1.000000">
+			<rotate value="200" />
+		</frame>
+		<frame timestamp="1.200000">
+			<rotate value="160" />
+		</frame>
+	</change>
+	<change bone="0">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>39 18 -9 23</rect>
+			<layer>1</layer>
+			<origin>4.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="4">
+		<frame timestamp="0.000000">
+			<rotate value="-20" />
+			<rect>20 19 5 12</rect>
+			<layer>0</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+		<frame timestamp="1.000000">
+			<rotate value="-30" />
+		</frame>
+		<frame timestamp="1.200000">
+			<rotate value="25" />
+		</frame>
+	</change>
+	<change bone="7">
+		<frame timestamp="0.000000">
+			<rotate value="25" />
+			<rect>20 19 5 12</rect>
+			<layer>2</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+		<frame timestamp="1.000000">
+			<rotate value="-5" />
+		</frame>
+	</change>
+	<change bone="5">
+		<frame timestamp="0.000000">
+			<rotate value="-30" />
+			<rect>20 31 6 13</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>4</root>
+		</frame>
+		<frame timestamp="1.000000">
+			<rotate value="-40" />
+		</frame>
+		<frame timestamp="1.200000">
+			<rotate value="20" />
+		</frame>
+	</change>
+	<change bone="8">
+		<frame timestamp="0.000000">
+			<rotate value="-35" />
+			<rect>20 31 6 13</rect>
+			<layer>2</layer>
+			<origin>2.500000 0</origin>
+			<root>7</root>
+		</frame>
+		<frame timestamp="1.000000">
+			<rotate value="-35" />
+		</frame>
+		<frame timestamp="1.200000">
+			<rotate value="20" />
+		</frame>
+	</change>
+	<change bone="10">
+		<frame timestamp="0.000000">
+			<rotate value="-45" />
+			<rect>37 41 -5 9</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+		<frame timestamp="1.200000">
+			<rotate value="-10" />
+		</frame>
+	</change>
+	<change bone="11">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+			<rect>37 50 -5 8</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>10</root>
+		</frame>
+		<frame timestamp="1.200000">
+			<rotate value="-5" />
+		</frame>
+	</change>
+	<change bone="12">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+			<rect>37 58 -9 5</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>11</root>
+		</frame>
+		<frame timestamp="1.200000">
+			<rotate value="20" />
+		</frame>
+	</change>
+	<change bone="16">
+		<frame timestamp="0.000000">
+			<rotate value="25" />
+			<rect>37 58 -9 5</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>15</root>
+		</frame>
+		<frame timestamp="1.000000">
+			<rotate />
+		</frame>
+		<frame timestamp="1.200000">
+			<rotate value="40" />
+		</frame>
+	</change>
+	<change bone="14">
+		<frame timestamp="0.000000">
+			<rotate value="5" />
+			<rect>37 41 -5 9</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+		<frame timestamp="1.000000">
+			<rotate value="-15" />
+		</frame>
+		<frame timestamp="1.200000">
+			<rotate value="10" />
+		</frame>
+	</change>
+	<change bone="15">
+		<frame timestamp="0.000000">
+			<rotate value="20" />
+			<rect>37 50 -5 8</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>14</root>
+		</frame>
+		<frame timestamp="1.000000">
+			<rotate />
+		</frame>
+		<frame timestamp="1.200000">
+			<rotate value="30" />
+		</frame>
+	</change>
+	<change bone="2">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+</animation>
+<animation name="room_attack" duration="0.200000" repeat="false">
+	<change bone="1">
+		<frame timestamp="0.000000">
+			<rotate value="200" />
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate value="160" />
+		</frame>
+	</change>
+	<change bone="0">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>39 18 -9 23</rect>
+			<layer>1</layer>
+			<origin>4.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="4">
+		<frame timestamp="0.000000">
+			<rotate value="-30" />
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate value="25" />
+		</frame>
+	</change>
+	<change bone="7">
+		<frame timestamp="0.000000">
+			<rotate value="-5" />
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate value="15" />
+		</frame>
+	</change>
+	<change bone="5">
+		<frame timestamp="0.000000">
+			<rotate value="-40" />
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate value="20" />
+		</frame>
+	</change>
+	<change bone="8">
+		<frame timestamp="0.000000">
+			<rotate value="-35" />
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate value="10" />
+		</frame>
+	</change>
+	<change bone="10">
+		<frame timestamp="0.000000">
+			<rotate value="-15" />
+			<rect>37 41 -5 9</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate value="-10" />
+		</frame>
+	</change>
+	<change bone="11">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+			<rect>37 50 -5 8</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>10</root>
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate value="-5" />
+		</frame>
+	</change>
+	<change bone="12">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+			<rect>37 58 -9 5</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>11</root>
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate value="20" />
+		</frame>
+	</change>
+	<change bone="16">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate value="40" />
+		</frame>
+	</change>
+	<change bone="14">
+		<frame timestamp="0.000000">
+			<rotate value="-15" />
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate value="10" />
+		</frame>
+	</change>
+	<change bone="15">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+		<frame timestamp="0.200000">
+			<rotate value="30" />
+		</frame>
+	</change>
+	<change bone="2">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+</animation>
+<animation name="room_fly" duration="0.000000" repeat="false">
+	<change bone="1">
+		<frame timestamp="0.000000">
+			<rotate value="160" />
+		</frame>
+	</change>
+	<change bone="0">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>39 18 -9 23</rect>
+			<layer>1</layer>
+			<origin>4.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="4">
+		<frame timestamp="0.000000">
+			<rotate value="25" />
+		</frame>
+	</change>
+	<change bone="7">
+		<frame timestamp="0.000000">
+			<rotate value="15" />
+		</frame>
+	</change>
+	<change bone="5">
+		<frame timestamp="0.000000">
+			<rotate value="20" />
+		</frame>
+	</change>
+	<change bone="8">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+		</frame>
+	</change>
+	<change bone="10">
+		<frame timestamp="0.000000">
+			<rotate value="-10" />
+		</frame>
+	</change>
+	<change bone="11">
+		<frame timestamp="0.000000">
+			<rotate value="-5" />
+		</frame>
+	</change>
+	<change bone="12">
+		<frame timestamp="0.000000">
+			<rotate value="20" />
+		</frame>
+	</change>
+	<change bone="16">
+		<frame timestamp="0.000000">
+			<rotate value="40" />
+		</frame>
+	</change>
+	<change bone="14">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+		</frame>
+	</change>
+	<change bone="15">
+		<frame timestamp="0.000000">
+			<rotate value="30" />
+		</frame>
+	</change>
+	<change bone="2">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+</animation>
+<animation name="il" duration="0.000000" repeat="false">
+	<change bone="1">
+		<frame timestamp="0.000000">
+			<rotate value="180" />
+			<rect>25 0 18 18</rect>
+			<layer>1</layer>
+			<origin>9.500000 18</origin>
+			<root>1</root>
+		</frame>
+	</change>
+	<change bone="0">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>30 18 9 23</rect>
+			<layer>1</layer>
+			<origin>4.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="4">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+			<rect>25 19 -5 12</rect>
+			<layer>0</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+	</change>
+	<change bone="7">
+		<frame timestamp="0.000000">
+			<rotate value="-10" />
+			<rect>25 19 -5 12</rect>
+			<layer>2</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+	</change>
+	<change bone="5">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+			<rect>26 31 -6 13</rect>
+			<layer>0</layer>
+			<origin>3.500000 0</origin>
+			<root>4</root>
+		</frame>
+	</change>
+	<change bone="8">
+		<frame timestamp="0.000000">
+			<rotate value="-5" />
+			<rect>26 31 -6 13</rect>
+			<layer>2</layer>
+			<origin>3.500000 0</origin>
+			<root>7</root>
+		</frame>
+	</change>
+	<change bone="10">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+			<rect>32 41 5 9</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="11">
+		<frame timestamp="0.000000">
+			<rotate value="5" />
+			<rect>32 50 5 8</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>10</root>
+		</frame>
+	</change>
+	<change bone="12">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>28 58 9 5</rect>
+			<layer>0</layer>
+			<origin>6.500000 0</origin>
+			<root>11</root>
+		</frame>
+	</change>
+	<change bone="16">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>28 58 9 5</rect>
+			<layer>1</layer>
+			<origin>6.500000 0</origin>
+			<root>15</root>
+		</frame>
+	</change>
+	<change bone="14">
+		<frame timestamp="0.000000">
+			<rotate value="-5" />
+			<rect>32 41 5 9</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="15">
+		<frame timestamp="0.000000">
+			<rotate value="-10" />
+			<rect>32 50 5 8</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>14</root>
+		</frame>
+	</change>
+	<change bone="2">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+</animation>
+<animation name="ir" duration="0.000000" repeat="false">
+	<change bone="1">
+		<frame timestamp="0.000000">
+			<rotate value="180" />
+			<rect>43 0 -18 18</rect>
+			<layer>1</layer>
+			<origin>8.500000 18</origin>
+			<root>1</root>
+		</frame>
+	</change>
+	<change bone="0">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>39 18 -9 23</rect>
+			<layer>1</layer>
+			<origin>4.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="4">
+		<frame timestamp="0.000000">
+			<rotate value="-10" />
+			<rect>20 19 5 12</rect>
+			<layer>0</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+	</change>
+	<change bone="7">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+			<rect>20 19 5 12</rect>
+			<layer>2</layer>
+			<origin>2.500000 2</origin>
+			<root>2</root>
+		</frame>
+	</change>
+	<change bone="5">
+		<frame timestamp="0.000000">
+			<rotate value="-10" />
+			<rect>20 31 6 13</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>4</root>
+		</frame>
+	</change>
+	<change bone="8">
+		<frame timestamp="0.000000">
+			<rotate value="5" />
+			<rect>20 31 6 13</rect>
+			<layer>2</layer>
+			<origin>2.500000 0</origin>
+			<root>7</root>
+		</frame>
+	</change>
+	<change bone="10">
+		<frame timestamp="0.000000">
+			<rotate value="-10" />
+			<rect>37 41 -5 9</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="11">
+		<frame timestamp="0.000000">
+			<rotate value="-5" />
+			<rect>37 50 -5 8</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>10</root>
+		</frame>
+	</change>
+	<change bone="12">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>37 58 -9 5</rect>
+			<layer>0</layer>
+			<origin>2.500000 0</origin>
+			<root>11</root>
+		</frame>
+	</change>
+	<change bone="16">
+		<frame timestamp="0.000000">
+			<rotate />
+			<rect>37 58 -9 5</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>15</root>
+		</frame>
+	</change>
+	<change bone="14">
+		<frame timestamp="0.000000">
+			<rotate value="5" />
+			<rect>37 41 -5 9</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>0</root>
+		</frame>
+	</change>
+	<change bone="15">
+		<frame timestamp="0.000000">
+			<rotate value="10" />
+			<rect>37 50 -5 8</rect>
+			<layer>1</layer>
+			<origin>2.500000 0</origin>
+			<root>14</root>
+		</frame>
+	</change>
+	<change bone="2">
+		<frame timestamp="0.000000">
+			<rotate />
+		</frame>
+	</change>
+</animation>

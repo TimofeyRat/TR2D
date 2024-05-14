@@ -1,0 +1,27 @@
+<animation name="invGrid" duration="1" repeat="1" scale="-1 -1">
+	<frame path="ru/tex/ui/inv/invCell.png" rect="0 0 11 11" />
+</animation>
+
+<animation name="invChosen" duration="1" repeat="1" scale="-1 -1">
+	<frame path="ru/tex/ui/inv/invChosen.png" rect="0 0 11 11" />
+</animation>
+
+<animation name="progressBG" duration="1" repeat="1" scale="-1 -1">
+	<frame path="ru/tex/ui/progress.png" rect="0 0 48 16" />
+</animation>
+
+<animation name="progressFG" duration="1" repeat="1" scale="-1 -1">
+	<frame path="ru/tex/ui/progress.png" rect="4 16 40 8" />
+</animation>
+
+<animation name="acsMenu0" duration="2" repeat="1" scale="-1 -1">
+	<texture path="ru/tex/ui/inv/acsMenu.png" size="22 22" start="0" count="2" />
+</animation>
+
+<animation name="acsMenu1" duration="2" repeat="1" scale="-1 -1">
+	<texture path="ru/tex/ui/inv/acsMenu.png" size="22 22" start="2" count="2" />
+</animation>
+
+<animation name="acsMenu2" duration="2" repeat="1" scale="-1 -1">
+	<texture path="ru/tex/ui/inv/acsMenu.png" size="22 22" start="4" count="2" />
+</animation>

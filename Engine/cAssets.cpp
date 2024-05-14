@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <filesystem>
+#include <pugixml.hpp>
+#include "hInput.hpp"
 
 sf::String AssetManager::path;
 std::vector<AssetManager::Texture> AssetManager::textures;
@@ -96,8 +98,75 @@ AssetManager::Font::Font(sf::Font f, std::string file)
 	font = f;
 }
 
+std::vector<sf::String> AssetManager::getMods()
+{
+	std::vector<sf::String> mods;
+	for (auto p : std::filesystem::directory_iterator(std::filesystem::current_path()))
+	{
+		auto path = p.path().string();
+		if (std::filesystem::exists(path + "/global/settings.trconf"))
+		{
+			path.erase(0, std::filesystem::current_path().string().length() + 1);
+			mods.push_back(path);
+		}
+	}
+	return mods;
+}
+
 void AssetManager::init()
 {
+	auto mods = getMods();
+	if (!mods.size()) { exit(0); }
+	else if (mods.size() == 1)
+	{
+		std::vector<char*> args; args.push_back((char*)"game"); args.push_back((char*)sf::String("assets=" + mods[0]).toAnsiString().c_str());
+		Window::init(0, args.data());
+	}
+	else
+	{
+		std::vector<char*> args; args.push_back((char*)"game"); args.push_back((char*)sf::String("assets=" + mods[0]).toAnsiString().c_str());
+		Window::init(0, args.data());
+		if (path[path.getSize() - 1] != '/') path += "/";
+		bool chosen = false;
+		sf::Font font;
+		font.loadFromFile(path + "global/font.ttf");
+		std::vector<sf::String> names;
+		for (int i = 0; i < mods.size(); i++)
+		{
+			pugi::xml_document file;
+			file.load_file(sf::String(mods[i] + "/global/settings.trconf").toWideString().c_str());
+			names.push_back(file.child(L"settings").child(L"modification").attribute(L"str").as_string());
+		}
+		while (!chosen)
+		{
+			Window::update();
+			if (!Window::isOpen()) { exit(0); }
+			sf::Text txt("List of mods:", font);
+			txt.setOrigin(txt.getGlobalBounds().width / 2, 0);
+			txt.setPosition(Window::getSize().x / 2, 0);
+
+			Window::clear();
+			Window::draw(txt);
+			for (int i = 0; i < mods.size(); i++)
+			{
+				txt.setString(names[i]);
+				txt.setPosition(Window::getSize().x / 2, (i + 1) * 40);
+				txt.setOrigin(txt.getGlobalBounds().width / 2, 0);
+				if (txt.getGlobalBounds().contains(Input::getMousePos()))
+				{
+					txt.setFillColor(sf::Color::Red);
+					if (Input::isMBJustPressed(sf::Mouse::Left))
+					{
+						path = mods[i];
+						chosen = true;
+					}
+				}
+				else txt.setFillColor(sf::Color::White);
+				Window::draw(txt);
+			}
+			Window::display();
+		}
+	}
 	if (path[path.getSize() - 1] != '/') path += "/";
 	sf::Thread thread(&load);
 	thread.launch();
@@ -129,7 +198,7 @@ void AssetManager::init()
 void AssetManager::load()
 {
 	reset();
-	auto files = iterateDir("res");
+	auto files = iterateDir(path);
 	auto fileCount = files.size();
 	currentFileLoading = 0;
 	for (auto file : files)
