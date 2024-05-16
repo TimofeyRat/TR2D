@@ -11,7 +11,7 @@ sf::RenderWindow window;
 sf::RenderTexture screen;
 float deltaTime;
 sf::Font font;
-int currentLevel, currentPage;
+int currentLevel, currentPage, currentTile;
 sf::Vector2f mouse;
 sf::Text enter;
 bool typing;
@@ -22,6 +22,7 @@ struct Level
 {
 	struct Map
 	{
+		sf::String tilePath;
 		sf::Texture tileTex;
 		sf::Vector2i tileSize;
 		std::vector<sf::IntRect> rects;
@@ -30,6 +31,7 @@ struct Level
 		sf::Vector2i mapSize;
 		Map()
 		{
+			tilePath = "";
 			tileTex = sf::Texture();
 			tileSize = {0, 0};
 			rects.clear();
@@ -60,6 +62,11 @@ struct Level
 		}
 		void draw()
 		{
+			sf::RectangleShape bounds({mapSize.x * tileSize.x * scale, mapSize.y * tileSize.y * scale});
+			bounds.setFillColor({0, 0, 0, 0});
+			bounds.setOutlineColor(sf::Color::Green);
+			bounds.setOutlineThickness(2);
+			screen.draw(bounds);
 			sf::Sprite tile(tileTex);
 			tile.setScale(scale, scale);
 			for (int x = 0; x < mapSize.x; x++)
@@ -68,7 +75,7 @@ struct Level
 				{
 					auto id = tiles[x][y];
 					if (!id) continue;
-					tile.setTextureRect(rects[id]);
+					tile.setTextureRect(rects[id - 1]);
 					tile.setPosition(x * tileSize.x * scale, y * tileSize.y * scale);
 					screen.draw(tile);
 				}
@@ -95,7 +102,7 @@ struct Level
 			for (auto p : std::filesystem::recursive_directory_iterator(assets.toAnsiString() + "ents/"))
 			{
 				pugi::xml_document ent;
-				auto path = p.path().string().substr(currentPath.getSize());
+				auto path = p.path().string();
 				ent.load_file(pugi::as_wide(path).c_str());
 				if (sf::String(ent.first_child().attribute(L"name").as_string()) == name)
 				{
@@ -183,7 +190,7 @@ struct Level
 	};
 	sf::String name;
 	sf::Texture bgTex;
-	sf::String bgPath;
+	sf::String bgPath, camOwner;
 	sf::FloatRect bgBounds;
 	sf::String music;
 	float musicVolume;
@@ -206,6 +213,7 @@ struct Level
 		ctrl.clear();
 		gravity = {0, 0};
 		bgPath = "";
+		camOwner = "";
 	}
 	void draw()
 	{
@@ -263,7 +271,8 @@ void loadFromFile(sf::String path)
 		Level level;
 		level.name = lvl.attribute(L"name").as_string();
 		auto map = lvl.child(L"map");
-		level.map.tileTex.loadFromFile(pugi::as_utf8(map.attribute(L"tex").as_string()));
+		level.map.tilePath = map.attribute(L"tex").as_string();
+		level.map.tileTex.loadFromFile(level.map.tilePath);
 		auto ts = tr::splitStr(map.attribute(L"tileSize").as_string(L"0 0"), " ");
 		level.map.tileSize = {
 			std::stoi(ts[0].toAnsiString()),
@@ -296,6 +305,7 @@ void loadFromFile(sf::String path)
 			std::stof(camSize[0].toAnsiString()), std::stof(camSize[1].toAnsiString()),
 			std::stof(camOS[0].toAnsiString()), std::stof(camOS[1].toAnsiString())
 		};
+		level.camOwner = lvl.child(L"camera").attribute(L"owner").as_string();
 		auto gravity = tr::splitStr(lvl.child(L"gravity").attribute(L"value").as_string(L"0 0"), " ");
 		level.gravity = {
 			std::stof(gravity[0].toAnsiString()),
@@ -352,19 +362,139 @@ void loadFromFile(sf::String path)
 	}
 }
 
+void save(sf::String file)
+{
+	pugi::xml_document doc;
+	for (int i = 0; i < lvls.size(); i++)
+	{
+		auto level = doc.append_child(L"level");
+		level.append_attribute(L"name") = lvls[i].name.toWideString().c_str();
+		//Map node
+		auto *m = &lvls[i].map;
+		auto map = level.append_child(L"map");
+		map.set_name(L"map");
+		map.append_attribute(L"size") = pugi::as_wide(
+			std::to_string(m->mapSize.x) + " " +
+			std::to_string(m->mapSize.y)
+		).c_str();
+		map.append_attribute(L"tex") = pugi::as_wide(m->tilePath).c_str();
+		map.append_attribute(L"scale") = m->scale;
+		map.append_attribute(L"tileSize") = pugi::as_wide(
+			std::to_string(m->tileSize.x) + " " +
+			std::to_string(m->tileSize.y)
+		).c_str();
+		sf::String tilemap;
+		for (int y = 0; y < m->mapSize.y; y++)
+		{
+			for (int x = 0; x < m->mapSize.x; x++)
+			{
+				tilemap += std::to_string(m->tiles[x][y]) + "x";
+			}
+		}
+		map.text() = tilemap.substring(0, tilemap.getSize() - 1).toWideString().c_str();
+		//Background node
+		auto bg = level.append_child(L"background");
+		bg.append_attribute(L"path") = lvls[i].bgPath.toWideString().c_str();
+		bg.append_attribute(L"bounds") = pugi::as_wide(
+			std::to_string(lvls[i].bgBounds.left) + " " + std::to_string(lvls[i].bgBounds.top) + " " +
+			std::to_string(lvls[i].bgBounds.width) + " " + std::to_string(lvls[i].bgBounds.height)
+		).c_str();
+		//Music node
+		level.append_child(L"music").append_attribute(L"path") = lvls[i].music.toWideString().c_str();
+		level.child(L"music").append_attribute(L"volume") = lvls[i].musicVolume;
+		//Camera node
+		auto cam = level.append_child(L"camera");
+		cam.append_attribute(L"size") = pugi::as_wide(
+			std::to_string(lvls[i].camera.left) + " " +
+			std::to_string(lvls[i].camera.top)
+		).c_str();
+		cam.append_attribute(L"offset") = pugi::as_wide(
+			std::to_string(lvls[i].camera.width) + " " +
+			std::to_string(lvls[i].camera.height)
+		).c_str();
+		cam.append_attribute(L"owner") = lvls[i].camOwner.toWideString().c_str();
+		//Gravity
+		level.append_child(L"gravity").append_attribute(L"value") = pugi::as_wide(
+			std::to_string(lvls[i].gravity.x) + " " +
+			std::to_string(lvls[i].gravity.y)
+		).c_str();
+		//Triggers
+		for (int j = 0; j < lvls[i].triggers.size(); j++)
+		{
+			auto *t = &lvls[i].triggers[j];
+			auto trigger = level.append_child(L"trigger");
+			for (auto v : t->getVars())
+			{
+				if (v.str.isEmpty())
+				{
+					trigger.append_attribute(sf::String(v.name + "_num").toWideString().c_str()) = v.num;
+				}
+				else
+				{
+					trigger.append_attribute(sf::String(v.name + "_str").toWideString().c_str()) = v.str.toWideString().c_str();
+				}
+			}
+		}
+		//Spawners
+		for (int j = 0; j < lvls[i].ents.size(); j++)
+		{
+			auto *s = &lvls[i].ents[j];
+			auto spawner = level.append_child(L"entity");
+			spawner.append_attribute(L"name") = s->name.toWideString().c_str();
+			spawner.append_attribute(L"pos") = pugi::as_wide(
+				std::to_string(s->position.x) + " " +
+				std::to_string(s->position.y)
+			).c_str();
+		}
+		for (int j = 0; j < lvls[i].ctrl.size(); j++)
+		{
+			auto *c = &lvls[i].ctrl[j];
+			auto ctrl = level.append_child(L"control");
+			ctrl.append_attribute(L"ent") = c->name.toWideString().c_str();
+			ctrl.append_attribute(L"controller") = c->ctrl.toWideString().c_str();
+		}
+		for (int j = 0; j < lvls[i].lights.size(); j++)
+		{
+			auto *l = &lvls[i].lights[j];
+			auto light = level.append_child(L"light");
+			light.append_attribute(L"pos") = sf::String(
+				std::to_string(l->pos.x) + " " + std::to_string(l->pos.y)
+			).toWideString().c_str();
+			light.append_attribute(L"color") = sf::String(
+				std::to_string(l->clr.r) + " " + std::to_string(l->clr.g) + " " +
+				std::to_string(l->clr.b) + " " + std::to_string(l->clr.a)
+			).toWideString().c_str();
+			light.append_attribute(L"radius") = l->radius;
+			light.append_attribute(L"angle") = l->angle;
+			light.append_attribute(L"field") = l->field;
+		}
+	}
+	doc.save_file(pugi::as_wide(file).c_str());
+}
+
 #define PageMain 0
+#define PageDraw 1
 
 //Main page
 #define MainOpen 0
 #define MainSave 1
-#define MainName 2
-#define MainLevels 3
-#define MainBG 4
-#define MainBounds 5
-#define MainMusic 6
-#define MainVolume 7
-#define MainGravity 8
-#define MainCamera 9
+#define MainNew 2
+#define MainDelete 3
+#define MainName 4
+#define MainLevels 5
+#define MainBG 6
+#define MainBounds 7
+#define MainMusic 8
+#define MainVolume 9
+#define MainGravity 10
+#define MainCamera 11
+
+//Drawing page
+#define DrawPixelSize 0
+#define DrawMap 1
+#define DrawTex 2
+#define DrawTile 3
+#define DrawScale 4
 
 sf::String openWindow(char* filter = "TR2D World (*.trworld)\0*.trworld\0")
 {
@@ -392,6 +522,7 @@ sf::String openWindow(char* filter = "TR2D World (*.trworld)\0*.trworld\0")
 		sf::String file = ofn.lpstrFile;
 		file.erase(0, path.string().length() + 1);
 		std::filesystem::current_path(path);
+		while (tr::strContains(currentPath, "\\")) currentPath.replace("\\", "/");
 		while (tr::strContains(file, "\\")) file.replace("\\", "/");
 		return file;
 	}
@@ -425,6 +556,7 @@ sf::String saveWindow()
 		file.erase(0, path.string().length() + 1);
 		std::filesystem::current_path(path);
 		currentPath = path.string();
+		while (tr::strContains(currentPath, "\\")) currentPath.replace("\\", "/");
 		while (tr::strContains(file, "\\")) file.replace("\\", "/");
 		return file;
 	}
@@ -436,7 +568,8 @@ std::vector<sf::Text> ui;
 void reloadUI()
 {
 	ui.clear();
-	if (currentPage == PageMain) { ui.resize(10, {"", font, 20}); }
+	if (currentPage == PageMain) { ui.resize(12, {"", font, 20}); }
+	if (currentPage == PageDraw) { ui.resize(5, {"", font, 20});}
 }
 
 void updateUI()
@@ -445,29 +578,50 @@ void updateUI()
 	{
 		ui[0].setString("Open world");
 		ui[1].setString("Save world");
+		ui[2].setString("New level");
+		ui[3].setString("Delete level");
 		if (!lvls.size()) return;
 		auto l = &lvls[currentLevel];
-		ui[2].setString("Level name:\n" + l->name);
-		ui[3].setString("Level count: " + std::to_string(lvls.size()));
-		ui[4].setString("Background path:\n" + l->bgPath);
-		ui[5].setString("Background bounds:\n" +
+		ui[4].setString("Level name:\n" + l->name);
+		ui[5].setString("Level count: " + std::to_string(lvls.size()));
+		ui[6].setString("Background path:\n" + l->bgPath);
+		ui[7].setString("Background bounds:\n" +
 			std::to_string((int)l->bgBounds.left) + " " +
 			std::to_string((int)l->bgBounds.top) + " " +
 			std::to_string((int)l->bgBounds.width) + " " +
 			std::to_string((int)l->bgBounds.height)
 		);
-		ui[6].setString("Music path:\n" + l->music);
-		ui[7].setString("Music volume: " + std::to_string((int)l->musicVolume));
-		ui[8].setString("Gravity: " +
+		ui[8].setString("Music path:\n" + l->music);
+		ui[9].setString("Music volume: " + std::to_string((int)l->musicVolume));
+		ui[10].setString("Gravity: " +
 			std::to_string(l->gravity.x) + " " +
 			std::to_string(l->gravity.y)
 		);
-		ui[9].setString("Camera size/offset:\n" +
+		ui[11].setString("Camera size/offset:\n" +
 			std::to_string((int)l->camera.left) + " " +
 			std::to_string((int)l->camera.top) + " " +
 			std::to_string((int)l->camera.width) + " " +
 			std::to_string((int)l->camera.height)
 		);
+	}
+	if (currentPage == PageDraw)
+	{
+		if (!lvls.size()) { currentPage = PageMain; reloadUI(); return; }
+		auto l = &lvls[currentLevel];
+		ui[0].setString("Pixel size:\n" +
+			std::to_string(l->map.mapSize.x * l->map.tileSize.x * l->map.scale) + " " +
+			std::to_string(l->map.mapSize.y * l->map.tileSize.y * l->map.scale)
+		);
+		ui[1].setString("Map size:\n" +
+			std::to_string(l->map.mapSize.x) + " " +
+			std::to_string(l->map.mapSize.y)
+		);
+		ui[2].setString("Tile texture:\n" + l->map.tilePath);
+		ui[3].setString("Tile size:\n" +
+			std::to_string(l->map.tileSize.x) + " " +
+			std::to_string(l->map.tileSize.y)
+		);
+		ui[4].setString("Scale: " + std::to_string(l->map.scale));
 	}
 }
 
@@ -486,16 +640,27 @@ void execute(int page, int btn)
 		{
 			auto path = saveWindow();
 			if (path == "Fail") { return; }
+			save(path);
+		}
+		if (btn == MainNew)
+		{
+			typing = true;
+			enter.setString("New level name:\n");
+		}
+		if (btn == MainDelete)
+		{
+			typing = true;
+			enter.setString("Level name:\n");
 		}
 		if (btn == MainName)
 		{
 			typing = true;
-			enter.setString("New trigger name:\n");
+			enter.setString("New level name:\n");
 		}
 		if (btn == MainLevels)
 		{
 			typing = true;
-			enter.setString("Choose level by ID:\n");
+			enter.setString("Choose level by name/ID:\n");
 		}
 		if (btn == MainBG)
 		{
@@ -528,15 +693,139 @@ void execute(int page, int btn)
 		if (btn == MainCamera)
 		{
 			typing = true;
-			enter.setString("Set new camera size and offset:\n");
+			enter.setString("Set new camera size or offset:\n");
 		}
-		if (typing) command = {page, btn};
 	}
+	if (page == PageDraw)
+	{
+		if (btn == DrawMap)
+		{
+			typing = true;
+			enter.setString("Set map size:\n");
+		}
+		if (btn == DrawTex)
+		{
+			auto path = openWindow("Texture (*.png)\0*.png\0");
+			if (path == "Fail") return;
+			lvls[currentLevel].map.tilePath = path;
+			lvls[currentLevel].map.tileTex.loadFromFile(path);
+			lvls[currentLevel].map.generateTiles();
+		}
+		if (btn == DrawTile)
+		{
+			typing = true;
+			enter.setString("Set tile size:\n");
+		}
+		if (btn == DrawScale)
+		{
+			typing = true;
+			enter.setString("Set scale:\n");
+		}
+	}
+	if (typing) command = {page, btn};
 }
 
 void cmd()
 {
-	// 
+	sf::String prompt = enter.getString();
+	prompt = prompt.substring(prompt.find("\n") + 1);
+	auto page = command.x, btn = command.y;
+	if (page == PageMain)
+	{
+		if (btn == MainNew)
+		{
+			Level l;
+			l.name = prompt;
+			lvls.push_back(l);
+			currentLevel = lvls.size() - 1;
+		}
+		if (btn == MainDelete)
+		{
+			for (int i = 0; i < lvls.size(); i++)
+			{
+				if (lvls[i].name == prompt) { lvls.erase(lvls.begin() + i); break; }
+			}
+			currentLevel = tr::clamp(currentLevel, 0, lvls.size() - 1);
+		}
+		if (btn == MainName)
+		{
+			lvls[currentLevel].name = prompt;
+		}
+		if (btn == MainLevels)
+		{
+			if (std::isdigit(prompt.toAnsiString()[0]))
+			{
+				currentLevel = tr::clamp(std::stoi(prompt.toAnsiString()), 0, lvls.size() - 1);
+			}
+			else for (int i = 0; i < lvls.size(); i++)
+			{
+				if (lvls[i].name == prompt) { currentLevel = i; break; }
+			}
+		}
+		if (btn == MainBounds)
+		{
+			auto b = tr::splitStr(prompt, " ");
+			if (b.size() != 4) return;
+			lvls[currentLevel].bgBounds = {
+				std::stof(b[0].toAnsiString()), std::stof(b[1].toAnsiString()),
+				std::stof(b[2].toAnsiString()), std::stof(b[3].toAnsiString())
+			};
+		}
+		if (btn == MainVolume)
+		{
+			lvls[currentLevel].musicVolume = std::stof(prompt.toAnsiString());
+		}
+		if (btn == MainGravity)
+		{
+			auto g = tr::splitStr(prompt, " ");
+			if (g.size() != 2) return;
+			lvls[currentLevel].gravity = {std::stof(g[0].toAnsiString()), std::stof(g[1].toAnsiString())};
+		}
+		if (btn == MainCamera)
+		{
+			auto args = tr::splitStr(prompt, " ");
+			if (args[0] == "size")
+			{
+				lvls[currentLevel].camera.left = std::stof(args[1].toAnsiString());
+				lvls[currentLevel].camera.top = std::stof(args[2].toAnsiString());
+			}
+			else if (args[0] == "offset")
+			{
+				lvls[currentLevel].camera.width = std::stof(args[1].toAnsiString());
+				lvls[currentLevel].camera.height = std::stof(args[2].toAnsiString());
+			}
+			else lvls[currentLevel].camera = {
+				std::stof(args[0].toAnsiString()), std::stof(args[1].toAnsiString()),
+				std::stof(args[2].toAnsiString()), std::stof(args[3].toAnsiString())
+			};
+		}
+	}
+	if (page == PageDraw)
+	{
+		if (btn == DrawMap)
+		{
+			auto s = tr::splitStr(prompt, " ");
+			if (s.size() != 2) return;
+			lvls[currentLevel].map.resize(
+				std::stoi(s[0].toAnsiString()),
+				std::stoi(s[1].toAnsiString())
+			);
+		}
+		if (btn == DrawTile)
+		{
+			auto s = tr::splitStr(prompt, " ");
+			if (s.size() != 2) return;
+			lvls[currentLevel].map.tileSize = {
+				std::stoi(s[0].toAnsiString()),
+				std::stoi(s[1].toAnsiString())
+			};
+			lvls[currentLevel].map.generateTiles();
+		}
+		if (btn == DrawScale)
+		{
+			lvls[currentLevel].map.scale = std::stof(prompt.toAnsiString());
+		}
+	}
 }
 
 int main()
@@ -558,6 +847,8 @@ int main()
 	}
 
 	reloadUI();
+
+	enter = {"", font, 20};
 
 	sf::Clock clock;
 	while (window.isOpen())
@@ -587,17 +878,64 @@ int main()
 					}
 				}
 			}
+			if (event.type == sf::Event::TextEntered && typing)
+			{
+				auto code = event.text.unicode;
+				if (code != 27 && code != 13 && code != 9 && code != 124 && code != 8) enter.setString(enter.getString() + sf::String(code));
+				if (code == 8)
+				{
+					auto str = enter.getString();
+					if (str.toAnsiString()[str.getSize() - 1] != '\n') { enter.setString(str.substring(0, str.getSize() - 1)); }
+				}
+			}
+			if (event.type == sf::Event::KeyPressed)
+			{
+				if (event.key.code == sf::Keyboard::Escape) { if (typing) enter.setString(""); typing = false; }
+				if (event.key.code == sf::Keyboard::Enter && typing)
+				{
+					cmd();
+					typing = false;
+					enter.setString("");
+				}
+				if (event.key.code == sf::Keyboard::Num1 && !typing) { currentPage = PageMain; reloadUI(); }
+				if (event.key.code == sf::Keyboard::Num2 && !typing) { currentPage = PageDraw; reloadUI(); }
+			}
+			if (event.type == sf::Event::MouseWheelScrolled)
+			{
+				auto delta = event.mouseWheelScroll.delta;
+				if (sf::FloatRect(0, 0, window.getSize().x / 4 * 3, window.getSize().y).contains(mouse) &&
+					currentPage == PageDraw)
+					currentTile = tr::clamp(currentTile + delta, 0, lvls[currentLevel].map.tiles.size() - 1);
+			}
 		}
 
-		if (window.hasFocus())
+		if (window.hasFocus() && !typing)
 		{
-			float speed = 200;
+			float speed = 400;
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) { speed *= 2; }
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) { speed /= 2; }
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { camera.move(-speed * deltaTime, 0); }
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { camera.move(speed * deltaTime, 0); }
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) { camera.move(0, -speed * deltaTime); }
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { camera.move(0, speed * deltaTime); }
-		}
 
+			if (currentPage == PageDraw)
+			{
+				auto l = &lvls[currentLevel];
+				if (sf::FloatRect(0, 0, window.getSize().x / 4 * 3, window.getSize().y).contains(mouse))
+				{
+					auto point = screen.mapPixelToCoords((sf::Vector2i)mouse);
+					sf::Vector2i tile = {
+						tr::clamp(point.x / (l->map.tileSize.x * l->map.scale), 0, l->map.mapSize.x - 1),
+						tr::clamp(point.y / (l->map.tileSize.y * l->map.scale), 0, l->map.mapSize.y - 1)
+					};
+					if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+					{
+						l->map.tiles[tile.x][tile.y] = currentTile;
+					}
+				}
+			}
+		}
 		
 		window.clear();
 		screen.setView(camera);
@@ -606,6 +944,22 @@ int main()
 		{
 			auto *lvl = &lvls[currentLevel];
 			lvl->draw();
+			if (sf::FloatRect(0, 0, window.getSize().x / 4 * 3, window.getSize().y).contains(mouse) &&
+				currentPage == PageDraw &&
+				currentTile > 0)
+			{
+				sf::Sprite spr(lvl->map.tileTex, lvl->map.rects[currentTile - 1]);
+				auto point = screen.mapPixelToCoords((sf::Vector2i)mouse);
+				sf::Vector2i tile = {
+					tr::clamp(point.x / (lvl->map.tileSize.x * lvl->map.scale), 0, lvl->map.mapSize.x - 1),
+					tr::clamp(point.y / (lvl->map.tileSize.y * lvl->map.scale), 0, lvl->map.mapSize.y - 1)
+				};
+				spr.setPosition(
+					tile.x * lvl->map.tileSize.x * lvl->map.scale,
+					tile.y * lvl->map.tileSize.y * lvl->map.scale
+				);
+				screen.draw(spr);
+			}
 		}
 		screen.display();
 		window.draw(sf::Sprite(screen.getTexture()));
@@ -617,6 +971,12 @@ int main()
 			if (ui[i].getGlobalBounds().contains(mouse)) { ui[i].setFillColor(sf::Color::Red); }
 			else ui[i].setFillColor(sf::Color::White);
 			window.draw(ui[i]);
+		}
+		if (typing)
+		{
+			enter.setPosition(window.getSize().x / 4 * 3, window.getSize().y - enter.getGlobalBounds().height - 10);
+			enter.setFillColor(sf::Color::White);
+			window.draw(enter);
 		}
 		window.display();
 	}
