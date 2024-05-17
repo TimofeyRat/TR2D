@@ -11,7 +11,13 @@ sf::RenderWindow window;
 sf::RenderTexture screen;
 float deltaTime;
 sf::Font font;
-int currentLevel, currentPage, currentTile;
+int currentLevel,
+	currentPage,
+	currentTile,
+	currentEnt,
+	currentTrigger,
+	currentCtrl,
+	currentLight;
 sf::Vector2f mouse;
 sf::Text enter;
 bool typing;
@@ -57,7 +63,11 @@ struct Level
 		}
 		void resize(int x, int y)
 		{
-			tiles.resize(x, std::vector<sf::Uint16>(y));
+			tiles.resize(x);
+			for (int i = 0; i < x; i++)
+			{
+				tiles[i].resize(y);
+			}
 			mapSize = {x, y};
 		}
 		void draw()
@@ -74,7 +84,7 @@ struct Level
 				for (int y = 0; y < mapSize.y; y++)
 				{
 					auto id = tiles[x][y];
-					if (!id) continue;
+					if (!id || id != tr::clamp(id, 0, rects.size() - 1)) continue;
 					tile.setTextureRect(rects[id - 1]);
 					tile.setPosition(x * tileSize.x * scale, y * tileSize.y * scale);
 					screen.draw(tile);
@@ -474,6 +484,10 @@ void save(sf::String file)
 
 #define PageMain 0
 #define PageDraw 1
+#define PageEnt 2
+#define PageTrigger 3
+#define PageControl 4
+#define PageLight 5
 
 //Main page
 #define MainOpen 0
@@ -495,6 +509,38 @@ void save(sf::String file)
 #define DrawTex 2
 #define DrawTile 3
 #define DrawScale 4
+
+//Spawners page
+#define Ents 0
+#define EntNew 1
+#define EntDelete 2
+#define EntName 3
+#define EntPos 4
+
+//Triggers page
+#define Triggers 0
+#define TriggerNew 1
+#define TriggerDelete 2
+#define TriggerName 3
+#define TriggerVars 4
+
+//Controls page
+#define Controls 0
+#define ControlNew 1
+#define ControlDelete 2
+#define ControlEnt 3
+#define ControlInput 4
+
+//Lights page
+#define Lights 0
+#define LightNew 1
+#define LightDelete 2
+#define LightID 3
+#define LightPos 4
+#define LightClr 5
+#define LightRadius 6
+#define LightAngle 7
+#define LightField 8
 
 sf::String openWindow(char* filter = "TR2D World (*.trworld)\0*.trworld\0")
 {
@@ -570,6 +616,10 @@ void reloadUI()
 	ui.clear();
 	if (currentPage == PageMain) { ui.resize(12, {"", font, 20}); }
 	if (currentPage == PageDraw) { ui.resize(5, {"", font, 20});}
+	if (currentPage == PageEnt) { ui.resize(5, {"", font, 20}); }
+	if (currentPage == PageTrigger) { ui.resize(5, {"", font, 20}); }
+	if (currentPage == PageControl) { ui.resize(5, {"", font, 20}); }
+	if (currentPage == PageLight) { ui.resize(9, {"", font, 20}); }
 }
 
 void updateUI()
@@ -623,6 +673,81 @@ void updateUI()
 		);
 		ui[4].setString("Scale: " + std::to_string(l->map.scale));
 	}
+	if (currentPage == PageEnt)
+	{
+		if (!lvls.size()) { currentPage = PageMain; reloadUI(); return; }
+		auto l = &lvls[currentLevel];
+		ui[0].setString("Spawners count: " + std::to_string(l->ents.size()));
+		ui[1].setString("New spawner");
+		ui[2].setString("Delete spawner");
+		if (!l->ents.size()) return;
+		auto e = &l->ents[currentEnt];
+		ui[3].setString("Entity:\n" + e->name);
+		ui[4].setString("Position:\n" +
+			std::to_string(e->position.x) + " " +
+			std::to_string(e->position.y)
+		);
+	}
+	if (currentPage == PageTrigger)
+	{
+		if (!lvls.size()) { currentPage = PageMain; reloadUI(); return; }
+		auto l = &lvls[currentLevel];
+		ui[0].setString("Triggers count: " + std::to_string(l->triggers.size()));
+		ui[1].setString("New trigger");
+		ui[2].setString("Delete trigger");
+		if (!l->triggers.size()) return;
+		auto t = &l->triggers[currentTrigger];
+		ui[3].setString("Trigger name:\n" + t->getVar("name").str);
+		sf::String vars = "Trigger vars:\n";
+		auto v = t->getVars();
+		for (int i = 0; i < v.size(); i++)
+		{
+			if (v[i].str == "name") continue;
+			if (!v[i].str.isEmpty())
+			{
+				vars += v[i].name + "(str): " + v[i].str + "\n";
+			}
+			vars += v[i].name + "(num): " + std::to_string(v[i].num) + "\n";
+		}
+		vars.erase(vars.getSize() - 1);
+		ui[4].setString(vars);
+	}
+	if (currentPage == PageControl)
+	{
+		if (!lvls.size()) { currentPage = PageMain; reloadUI(); return; }
+		auto l = &lvls[currentLevel];
+		ui[0].setString("Controls count: " + std::to_string(l->ctrl.size()));
+		ui[1].setString("New control");
+		ui[2].setString("Delete control");
+		if (!l->ctrl.size()) return;
+		auto c = &l->ctrl[currentCtrl];
+		ui[3].setString("Entity:\n" + c->name);
+		ui[4].setString("Controller:\n" + c->ctrl);
+	}
+	if (currentPage == PageLight)
+	{
+		if (!lvls.size()) { currentPage = PageMain; reloadUI(); return; }
+		auto lvl = &lvls[currentLevel];
+		ui[0].setString("Lights count: " + std::to_string(lvl->lights.size()));
+		ui[1].setString("New light");
+		ui[2].setString("Delete light");
+		if (!lvl->lights.size()) return;
+		auto l = &lvl->lights[currentLight];
+		ui[3].setString("Current light: " + std::to_string(currentLight));
+		ui[4].setString("Light position:\n" +
+			std::to_string(l->pos.x) + " " +
+			std::to_string(l->pos.y)
+		);
+		ui[5].setString("Light color:\n" +
+			std::to_string((int)l->clr.r) + " " +
+			std::to_string((int)l->clr.g) + " " +
+			std::to_string((int)l->clr.b) + " " +
+			std::to_string((int)l->clr.a)
+		);
+		ui[6].setString("Light radius: " + std::to_string(l->radius));
+		ui[7].setString("Light angle: " + std::to_string(l->angle));
+		ui[8].setString("Light field: " + std::to_string(l->field));
+	}
 }
 
 void execute(int page, int btn)
@@ -642,26 +767,10 @@ void execute(int page, int btn)
 			if (path == "Fail") { return; }
 			save(path);
 		}
-		if (btn == MainNew)
-		{
-			typing = true;
-			enter.setString("New level name:\n");
-		}
-		if (btn == MainDelete)
-		{
-			typing = true;
-			enter.setString("Level name:\n");
-		}
-		if (btn == MainName)
-		{
-			typing = true;
-			enter.setString("New level name:\n");
-		}
-		if (btn == MainLevels)
-		{
-			typing = true;
-			enter.setString("Choose level by name/ID:\n");
-		}
+		if (btn == MainNew) { typing = true; enter.setString("New level name:\n"); }
+		if (btn == MainDelete) { typing = true; enter.setString("Level name:\n"); }
+		if (btn == MainName) { typing = true; enter.setString("New level name:\n"); }
+		if (btn == MainLevels) { typing = true; enter.setString("Choose level by name/ID:\n"); }
 		if (btn == MainBG)
 		{
 			auto path = openWindow("Texture (*.png)\0*.png\0");
@@ -669,40 +778,20 @@ void execute(int page, int btn)
 			lvls[currentLevel].bgPath = path;
 			lvls[currentLevel].bgTex.loadFromFile(lvls[currentLevel].bgPath);
 		}
-		if (btn == MainBounds)
-		{
-			typing = true;
-			enter.setString("Set background bounds:\n");
-		}
+		if (btn == MainBounds) { typing = true; enter.setString("Set background bounds:\n"); }
 		if (btn == MainMusic)
 		{
 			auto path = openWindow("Music (*.ogg)\0*.ogg\0");
 			if (path == "Fail") return;
 			lvls[currentLevel].music = path;
 		}
-		if (btn == MainVolume)
-		{
-			typing = true;
-			enter.setString("Set music volume:\n");
-		}
-		if (btn == MainGravity)
-		{
-			typing = true;
-			enter.setString("Set level gravity:\n");
-		}
-		if (btn == MainCamera)
-		{
-			typing = true;
-			enter.setString("Set new camera size or offset:\n");
-		}
+		if (btn == MainVolume) { typing = true; enter.setString("Set music volume:\n"); }
+		if (btn == MainGravity) { typing = true; enter.setString("Set level gravity:\n"); }
+		if (btn == MainCamera) { typing = true; enter.setString("Set new camera size or offset:\n"); }
 	}
 	if (page == PageDraw)
 	{
-		if (btn == DrawMap)
-		{
-			typing = true;
-			enter.setString("Set map size:\n");
-		}
+		if (btn == DrawMap) { typing = true; enter.setString("Set map size:\n"); }
 		if (btn == DrawTex)
 		{
 			auto path = openWindow("Texture (*.png)\0*.png\0");
@@ -711,16 +800,40 @@ void execute(int page, int btn)
 			lvls[currentLevel].map.tileTex.loadFromFile(path);
 			lvls[currentLevel].map.generateTiles();
 		}
-		if (btn == DrawTile)
-		{
-			typing = true;
-			enter.setString("Set tile size:\n");
-		}
-		if (btn == DrawScale)
-		{
-			typing = true;
-			enter.setString("Set scale:\n");
-		}
+		if (btn == DrawTile) { typing = true; enter.setString("Set tile size:\n"); }
+		if (btn == DrawScale) { typing = true; enter.setString("Set scale:\n"); }
+	}
+	if (page == PageEnt)
+	{
+		if (btn == Ents) { typing = true; enter.setString("Select entity by name/ID:\n"); }
+		if (btn == EntNew) { typing = true; enter.setString("New entity name:\n"); }
+		if (btn == EntDelete) { typing = true; enter.setString("Entity name:\n"); }
+		if (btn == EntPos) { typing = true; enter.setString("Move entity to:\n"); }
+	}
+	if (page == PageTrigger)
+	{
+		if (btn == Triggers) { typing = true; enter.setString("Select trigger by name/ID:\n"); }
+		if (btn == TriggerNew) { typing = true; enter.setString("New trigger name:\n"); }
+		if (btn == TriggerDelete) { typing = true; enter.setString("Trigger name:\n"); }
+		if (btn == TriggerName) { typing = true; enter.setString("Set trigger name:\n"); }
+		if (btn == TriggerVars) { typing = true; enter.setString("Set variable value:\n"); }
+	}
+	if (page == PageControl)
+	{
+		if (btn == Controls) { typing = true; enter.setString("Select control by entity/ID:\n"); }
+		if (btn == ControlNew) { typing = true; enter.setString("New control entity and input:\n"); }
+		if (btn == ControlDelete) { typing = true; enter.setString("Control name/ID:\n"); }
+	}
+	if (page == PageLight)
+	{
+		if (btn == Lights || btn == LightID) { typing = true; enter.setString("Select light by ID:\n"); }
+		if (btn == LightNew) { typing = true; enter.setString("Enter radius of light:\n"); }
+		if (btn == LightDelete) { typing = true; enter.setString("Enter ID of light:\n"); }
+		if (btn == LightPos) { typing = true; enter.setString("Set light position:\n"); }
+		if (btn == LightClr) { typing = true; enter.setString("Set light color:\n"); }
+		if (btn == LightRadius) { typing = true; enter.setString("Set light radius:\n"); }
+		if (btn == LightAngle) { typing = true; enter.setString("Set light angle:\n"); }
+		if (btn == LightField) { typing = true; enter.setString("Set light field:\n"); }
 	}
 	if (typing) command = {page, btn};
 }
@@ -826,6 +939,198 @@ void cmd()
 			lvls[currentLevel].map.scale = std::stof(prompt.toAnsiString());
 		}
 	}
+	if (page == PageEnt)
+	{
+		auto l = &lvls[currentLevel];
+		if (btn == Ents)
+		{
+			if (std::isdigit(prompt.toAnsiString()[0]))
+			{
+				currentEnt = tr::clamp(std::stoi(prompt.toAnsiString()), 0, l->ents.size() - 1);
+			}
+			else for (int i = 0; i < l->ents.size(); i++)
+			{
+				if (l->ents[i].name == prompt)
+				{
+					currentEnt = i;
+					break;
+				}
+			}
+		}
+		if (btn == EntNew)
+		{
+			l->ents.push_back(Level::Spawner({0, 0}, prompt));
+			currentEnt = l->ents.size() - 1;
+		}
+		if (btn == EntDelete)
+		{
+			if (std::isdigit(prompt.toAnsiString()[0]))
+			{
+				l->ents.erase(l->ents.begin() + std::stoi(prompt.toAnsiString()));
+			}
+			else for (int i = 0; i < l->ents.size(); i++)
+			{
+				if (l->ents[i].name == prompt)
+				{
+					l->ents.erase(l->ents.begin() + i);
+					break;
+				}
+			}
+			currentEnt = tr::clamp(currentEnt, 0, l->ents.size() - 1);
+		}
+		if (btn == EntPos)
+		{
+			auto p = tr::splitStr(prompt, " ");
+			if (p.size() != 2) return;
+			l->ents[currentEnt].position = {
+				std::stof(p[0].toAnsiString()),
+				std::stof(p[1].toAnsiString())
+			};
+		}
+	}
+	if (page == PageTrigger)
+	{
+		auto l = &lvls[currentLevel];
+		if (btn == Triggers)
+		{
+			if (std::isdigit(prompt.toAnsiString()[0]))
+			{
+				currentTrigger = tr::clamp(std::stoi(prompt.toAnsiString()), 0, l->triggers.size() - 1);
+			}
+			else for (int i = 0; i < l->triggers.size(); i++)
+			{
+				if (l->triggers[i].getVar("name") == prompt)
+				{
+					currentTrigger = i;
+					break;
+				}
+			}
+		}
+		if (btn == TriggerNew)
+		{
+			Level::Trigger t;
+			t.setVar("name", prompt);
+			l->triggers.push_back(t);
+			currentTrigger = l->triggers.size() - 1;
+		}
+		if (btn == TriggerDelete)
+		{
+			if (std::isdigit(prompt.toAnsiString()[0]))
+			{
+				l->triggers.erase(l->triggers.begin() + std::stoi(prompt.toAnsiString()));
+			}
+			else for (int i = 0; i < l->triggers.size(); i++)
+			{
+				if (l->triggers[i].getVar("name") == prompt)
+				{
+					currentTrigger = i;
+					break;
+				}
+			}
+			currentTrigger = tr::clamp(currentTrigger, 0, l->triggers.size() - 1);
+		}
+		if (btn == TriggerName)
+		{
+			l->triggers[currentTrigger].setVar("name", prompt);
+		}
+		if (btn == TriggerVars)
+		{
+			auto t = tr::splitStr(prompt, " ");
+			if (std::isdigit(t[1].toAnsiString()[0]))
+			{
+				l->triggers[currentTrigger].setVar(t[0], std::stof(t[1].toAnsiString()));
+			}
+			else
+			{
+				l->triggers[currentTrigger].setVar(t[0], t[1]);
+			}
+		}
+	}
+	if (page == PageControl)
+	{
+		auto l = &lvls[currentLevel];
+		if (btn == Controls)
+		{
+			if (std::isdigit(prompt.toAnsiString()[0]))
+			{
+				currentCtrl = tr::clamp(std::stoi(prompt.toAnsiString()), 0, l->ctrl.size() - 1);
+			}
+			else for (int i = 0; i < l->ctrl.size(); i++)
+			{
+				if (l->ctrl[i].name == prompt) { currentCtrl = i; break; }
+			}
+		}
+		if (btn == ControlNew)
+		{
+			auto c = tr::splitStr(prompt, " ");
+			if (c.size() != 2) return;
+			l->ctrl.push_back(Level::Control(c[0], c[1]));
+			currentEnt = l->ents.size() - 1;
+		}
+		if (btn == ControlDelete)
+		{
+			if (std::isdigit(prompt.toAnsiString()[0]))
+			{
+				l->ctrl.erase(l->ctrl.begin() + std::stoi(prompt.toAnsiString()));
+			}
+			else for (int i = 0; i < l->ctrl.size(); i++)
+			{
+				if (l->ctrl[i].name == prompt) { l->ctrl.erase(l->ctrl.begin() + i); break; }
+			}
+			currentCtrl = tr::clamp(currentCtrl, 0, l->ctrl.size() - 1);
+		}
+	}
+	if (page == PageLight)
+	{
+		auto l = &lvls[currentLevel];
+		if (btn == Lights || btn == LightID)
+		{
+			currentLight = tr::clamp(std::stoi(prompt.toAnsiString()), 0, l->lights.size() - 1);
+		}
+		if (btn == LightNew)
+		{
+			Level::Light light({0, 0}, sf::Color::White, std::stof(prompt.toAnsiString()), 0, 360);
+			l->lights.push_back(light);
+			currentLight = l->lights.size() - 1;
+		}
+		if (btn == LightDelete)
+		{
+			l->lights.erase(l->lights.begin() + std::stoi(prompt.toAnsiString()));
+			currentLight = tr::clamp(currentLight, 0, l->lights.size());
+		}
+		if (btn == LightPos)
+		{
+			auto p = tr::splitStr(prompt, " ");
+			if (p.size() != 2) return;
+			l->lights[currentLight].pos = {
+				std::stof(p[0].toAnsiString()),
+				std::stof(p[1].toAnsiString())
+			};
+		}
+		if (btn == LightClr)
+		{
+			auto p = tr::splitStr(prompt, " ");
+			if (p.size() != 4) return;
+			l->lights[currentLight].clr = {
+				std::stof(p[0].toAnsiString()),
+				std::stof(p[1].toAnsiString()),
+				std::stof(p[2].toAnsiString()),
+				std::stof(p[3].toAnsiString())
+			};
+		}
+		if (btn == LightRadius)
+		{
+			l->lights[currentLight].radius = std::stof(prompt.toAnsiString());
+		}
+		if (btn == LightAngle)
+		{
+			l->lights[currentLight].angle = std::stof(prompt.toAnsiString());
+		}
+		if (btn == LightField)
+		{
+			l->lights[currentLight].field = std::stof(prompt.toAnsiString());
+		}
+	}
 }
 
 int main()
@@ -899,6 +1204,10 @@ int main()
 				}
 				if (event.key.code == sf::Keyboard::Num1 && !typing) { currentPage = PageMain; reloadUI(); }
 				if (event.key.code == sf::Keyboard::Num2 && !typing) { currentPage = PageDraw; reloadUI(); }
+				if (event.key.code == sf::Keyboard::Num3 && !typing) { currentPage = PageEnt; reloadUI(); }
+				if (event.key.code == sf::Keyboard::Num4 && !typing) { currentPage = PageTrigger; reloadUI(); }
+				if (event.key.code == sf::Keyboard::Num5 && !typing) { currentPage = PageControl; reloadUI(); }
+				if (event.key.code == sf::Keyboard::Num6 && !typing) { currentPage = PageLight; reloadUI(); }
 			}
 			if (event.type == sf::Event::MouseWheelScrolled)
 			{
@@ -911,13 +1220,40 @@ int main()
 
 		if (window.hasFocus() && !typing)
 		{
-			float speed = 400;
+			float speed = 250;
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) { speed *= 2; }
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)) { speed /= 2; }
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { camera.move(-speed * deltaTime, 0); }
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { camera.move(speed * deltaTime, 0); }
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) { camera.move(0, -speed * deltaTime); }
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { camera.move(0, speed * deltaTime); }
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q) && lvls.size())
+			{
+				auto l = &lvls[currentLevel];
+				auto point = screen.mapPixelToCoords((sf::Vector2i)mouse);
+				if (currentPage == PageDraw)
+				{
+					sf::Vector2i tile = {
+						tr::clamp(point.x / (l->map.tileSize.x * l->map.scale), 0, UINT16_MAX),
+						tr::clamp(point.y / (l->map.tileSize.y * l->map.scale), 0, UINT16_MAX)
+					};
+					l->map.resize(tile.x, tile.y);
+				}
+				if (currentPage == PageEnt)
+				{
+					l->ents[currentEnt].position = point;
+				}
+				if (currentPage == PageTrigger)
+				{
+					l->triggers[currentTrigger].rect.left = point.x;
+					l->triggers[currentTrigger].rect.top = point.y;
+				}
+				if (currentPage == PageLight)
+				{
+					l->lights[currentLight].pos = point;
+				}
+			}
 
 			if (currentPage == PageDraw)
 			{
