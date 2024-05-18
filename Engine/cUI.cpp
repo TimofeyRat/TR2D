@@ -371,7 +371,8 @@ void UI::Frame::Object::Progress::update()
 		active,
 		bg.getScale()
 	));
-	value = std::stof(parseText("{" + target + "}").toAnsiString());
+	auto v = parseText("{" + target + "}");
+	value = std::stof(std::isdigit(v.toAnsiString()[0]) ? v.toAnsiString() : "0");
 	fg.setPosition(bg.getGlobalBounds().getPosition() + offset);
 	fg.setOrigin(getObjectOrigin((sf::Vector2f)fg.getTextureRect().getSize(), getVar("origin-fg"), active, fg.getOrigin()));
 	fg.setScale(
@@ -641,7 +642,9 @@ void UI::Frame::Object::handle()
 		else
 		{
 			//Phrase
-			auto *phrase = Talk::getCurrentDialogue()->getCurrentPhrase();
+			Talk::Dialogue::Phrase *phrase = nullptr;
+			if (auto d = Talk::getCurrentDialogue()) phrase = d->getCurrentPhrase();
+			if (!phrase) return;
 			txt->activeTxt = txt->idleTxt = phrase->text;
 			//Speaker name
 			speaker->activeTxt = speaker->idleTxt = phrase->speaker;

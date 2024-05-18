@@ -60,26 +60,27 @@ Talk::Dialogue::Phrase *Talk::Dialogue::getCurrentPhrase()
 			return &phrases[i];
 		}
 	}
+	return nullptr;
 }
 
 void Talk::init()
 {
 	dialogues.clear();
-	currentDialogue = "";
 	active = false;
 	loadNameColors();
+	for (auto d : AssetManager::getTexts(".trdialogue")) { loadFromFile(d); }
+	currentDialogue = "";
 }
 
 void Talk::loadFromFile(std::string filename)
 {
-	init();
 	pugi::xml_document document;
 	document.load_string(AssetManager::getText(filename).toWideString().c_str());
-	for (auto dialogue = document.first_child(); dialogue != pugi::xml_node(); dialogue = dialogue.next_sibling())
+	for (auto dialogue : document.children())
 	{
 		if (sf::String(dialogue.name()) != "dialogue") { continue; }
 		Dialogue d(dialogue.attribute(L"name").as_string());
-		for (auto phrase = dialogue.first_child(); phrase != pugi::xml_node(); phrase = phrase.next_sibling())
+		for (auto phrase : dialogue.children())
 		{
 			if (sf::String(phrase.name()) != "phrase") { continue; }
 			Dialogue::Phrase p(
@@ -87,7 +88,7 @@ void Talk::loadFromFile(std::string filename)
 				phrase.child_value(L"text"),
 				phrase.child_value(L"speaker")
 			);
-			for (auto reply = phrase.first_child(); reply != pugi::xml_node(); reply = reply.next_sibling())
+			for (auto reply : phrase.children())
 			{
 				if (sf::String(reply.name()) != "reply") { continue; }
 				auto r = Dialogue::Phrase::Reply(
@@ -95,7 +96,7 @@ void Talk::loadFromFile(std::string filename)
 					reply.child_value(L"text"),
 					reply.attribute(L"condition").as_string()
 				);
-				for (auto action = reply.first_child(); action != pugi::xml_node(); action = action.next_sibling())
+				for (auto action : reply.children())
 				{
 					if (sf::String(action.name()) != "action") { continue; }
 					r.actions.push_back(action.text().get());
@@ -119,6 +120,7 @@ Talk::Dialogue *Talk::getCurrentDialogue()
 			return &dialogues[i];
 		}
 	}
+	return nullptr;
 }
 
 bool Talk::conditionCheck(sf::String condition)

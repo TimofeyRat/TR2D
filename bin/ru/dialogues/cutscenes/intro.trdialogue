@@ -56,9 +56,222 @@
 		<text>Так вот, начинаем.</text>
 		<reply name="continue">
 			<text>[Начать игру]</text>
-			<action>world load ru/worlds/start.trworld</action>
 			<action>cutscene stop</action>
+			<action>world load ru/worlds/start.trworld</action>
 			<action>ui load ru/ui/inventory.trui</action>
+		</reply>
+	</phrase>
+</dialogue>
+
+<dialogue name="room">
+	<phrase name="1">
+		<speaker>Жадность</speaker>
+		<text>НАСАКЕЕЕ!</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>cutscene setClip 2</action>
+			<action>talk setPhrase 2</action>
+		</reply>
+	</phrase>
+	<phrase name="2">
+		<speaker>Насаке</speaker>
+		<text>Чего тебе?</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 3</action>
+		</reply>
+	</phrase>
+	<phrase name="3">
+		<speaker>Жадность</speaker>
+		<text>Деньги принёс?</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 4</action>
+		</reply>
+	</phrase>
+	<phrase name="4">
+		<speaker>Насаке</speaker>
+		<text>Нет. Я отдыхаю, отвянь.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 5</action>
+		</reply>
+	</phrase>
+	<phrase name="5">
+		<speaker>Жадность</speaker>
+		<text>...Ты же знаешь, что сейчас будет?</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 6</action>
+		</reply>
+	</phrase>
+	<phrase name="6">
+		<speaker>Насаке</speaker>
+		<text>Да пошёл ты.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>cutscene setClip 3</action>
+			<action>talk setPhrase 7</action>
+		</reply>
+	</phrase>
+	<phrase name="7">
+		<speaker>Жадность</speaker>
+		<text>Не смей...</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 8</action>
+			<action>cutscene setClip 4</action>
+		</reply>
+	</phrase>
+	<phrase name="8">
+		<speaker>Жадность</speaker>
+		<text>НЕ СМЕЙ ТАК РАЗГОВАРИВАТЬ СО МНОЙ!</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>cutscene setClip 5</action>
+			<action>talk setPhrase 9</action>
+		</reply>
+	</phrase>
+	<phrase name="9">
+		<speaker>Насаке</speaker>
+		<text>ДА ОТВАЛИ ТЫ УЖЕ!</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 10</action>
+		</reply>
+	</phrase>
+	<phrase name="10">
+		<speaker>Насаке</speaker>
+		<text>И без тебя плохо.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 11</action>
+		</reply>
+	</phrase>
+	<phrase name="11">
+		<speaker>Насаке</speaker>
+		<text>Гнев заставил кота убить... Мразота.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 12</action>
+			<action>cutscene setClip 6</action>
+		</reply>
+	</phrase>
+	<phrase name="12">
+		<speaker>Насаке</speaker>
+		<text>Желающий часть вещей забрал...</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 13</action>
+		</reply>
+	</phrase>
+	<phrase name="13">
+		<speaker>Насаке</speaker>
+		<text>И ты ещё тут.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 14</action>
+		</reply>
+	</phrase>
+	<phrase name="14">
+		<speaker>Жадность</speaker>
+		<text>Я всё слышал.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 15</action>
+			<action>cutscene setClip 7</action>
+		</reply>
+	</phrase>
+	<phrase name="15">
+		<speaker>Насаке</speaker>
+		<text>Чего?</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 16</action>
+		</reply>
+	</phrase>
+	<phrase name="16">
+		<speaker>Жадность</speaker>
+		<text>Ты забылся. Я - это ты. Я слышу твои мысли.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 17</action>
+			<action>cutscene setClip 8</action>
+		</reply>
+	</phrase>
+	<phrase name="17">
+		<speaker>Насаке</speaker>
+		<text>ОТ ТЕБЯ ВООБЩЕ РЕАЛЬНО ИЗБАВИТЬСЯ, ИЛИ КАК?</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 18</action>
+		</reply>
+	</phrase>
+	<phrase name="18">
+		<speaker>Жадность</speaker>
+		<text>Неа.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 19</action>
+			<action>cutscene setClip 9</action>
+		</reply>
+	</phrase>
+	<phrase name="19">
+		<speaker>Жадность</speaker>
+		<text>Только если избавиться от моего босса...</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 20</action>
+		</reply>
+	</phrase>
+	<phrase name="20">
+		<speaker>Жадность</speaker>
+		<text>Допустим, что нет.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 21</action>
+			<action>cutscene setClip 10</action>
+		</reply>
+	</phrase>
+	<phrase name="21">
+		<speaker>Насаке</speaker>
+		<text>Босса? И где он?</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 22</action>
+		</reply>
+	</phrase>
+	<phrase name="22">
+		<speaker>Жадность</speaker>
+		<text>Какой босс? Нет никакого босса...</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 23</action>
+		</reply>
+	</phrase>
+	<phrase name="23">
+		<speaker>Насаке</speaker>
+		<text>Да-да, так я тебе и поверил.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 24</action>
+			<action>cutscene setClip 11</action>
+		</reply>
+	</phrase>
+	<phrase name="24">
+		<speaker>Жадность</speaker>
+		<text>Э, ты куда?</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 25</action>
+		</reply>
+	</phrase>
+	<phrase name="25">
+		<speaker>Насаке</speaker>
+		<text>Прогуляюсь на свежем воздухе. Бывай.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>cutscene stop</action>
 		</reply>
 	</phrase>
 </dialogue>

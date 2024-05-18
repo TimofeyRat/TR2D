@@ -1,0 +1,84 @@
+<dialogue name="doorNasake">
+	<phrase name="1">
+		<speaker>Насаке</speaker>
+		<text>Это моя квартира.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 2</action>
+		</reply>
+	</phrase>
+	<phrase name="2">
+		<speaker>Насаке</speaker>
+		<text>Мне нет смысла возвращаться туда.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk active 0</action>
+			<action>input active 1</action>
+		</reply>
+	</phrase>
+</dialogue>
+<dialogue name="doorSuicide">
+	<phrase name="1">
+		<speaker>Насаке</speaker>
+		<text>Эта квартира пустует.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 2</action>
+		</reply>
+	</phrase>
+	<phrase name="2">
+		<speaker>Насаке</speaker>
+		<text>Сосед не выдержал и вышел в окно. Слабак.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk active 0</action>
+			<action>input active 1</action>
+		</reply>
+	</phrase>
+</dialogue>
+<dialogue name="doorDrunk">
+	<phrase name="1">
+		<speaker>Насаке</speaker>
+		<text>Эта квартира пустует.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 2</action>
+		</reply>
+	</phrase>
+	<phrase name="2">
+		<speaker>Насаке</speaker>
+		<text>Её владелец спился. Как будто ничего другого нет...</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk active 0</action>
+			<action>input active 1</action>
+		</reply>
+	</phrase>
+</dialogue>
+<dialogue name="doorNice">
+	<phrase name="1">
+		<speaker>Насаке</speaker>
+		<text>Эта квартира пустует.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 2</action>
+		</reply>
+	</phrase>
+	<phrase name="2">
+		<speaker>Насаке</speaker>
+		<text>Соседка в другой город на время уехала, как я слышал.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk setPhrase 3</action>
+		</reply>
+	</phrase>
+	<phrase name="3">
+		<speaker>Насаке</speaker>
+		<text>Хоть кто-то нормальный.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk active 0</action>
+			<action>input active 1</action>
+		</reply>
+	</phrase>
+</dialogue>

@@ -584,7 +584,8 @@ void World::Level::update()
 		{
 			if (triggers[i].rect.intersects(camOwner->getHitbox()) &&
 				triggers[i].hasVar("inter") &&
-				(triggers[i].hasVar("usages") ? (triggers[i].getVar("used") < triggers[i].getVar("usages")) : true))
+				(triggers[i].hasVar("usages") ? (triggers[i].getVar("used") < triggers[i].getVar("usages")) : true) &&
+				Input::active)
 			{
 				setVar("showInteraction", (CSManager::current.x ? !CSManager::active : true));
 				setVar("interactableTrigger", triggers[i].getVar("name").str);
@@ -645,7 +646,7 @@ void World::Level::draw()
 	auto camOwner = getCameraOwner();
 	mapShader.setUniform("rand", random);
 	mapShader.setUniform("texture", bg->getTexture());
-	mapShader.setUniform("camOwnerHP", camOwner->getVar("HP").num);
+	if (camOwner) mapShader.setUniform("camOwnerHP", camOwner->getVar("HP").num);
 	mapShader.setUniform("lightMap", lightMap->getTexture());
 	screen.draw(mapSpr, &mapShader);
 	cam.update(mapSize);
@@ -673,8 +674,8 @@ void World::Level::draw()
 			});
 		}
 	}
-	camOwner->draw(entsLayer);
-	auto ownerRect = camOwner->getHitbox();
+	if (camOwner) camOwner->draw(entsLayer);
+	auto ownerRect = camOwner ? camOwner->getHitbox() : sf::FloatRect(0, 0, 0, 0);
 	auto ownerVec4 = sf::Glsl::Vec4(
 		ownerRect.left, ownerRect.top, ownerRect.width, ownerRect.height
 	);
@@ -701,7 +702,7 @@ void World::Level::draw()
 	objects->display();
 	objectsShader.setUniform("render", objects->getTexture());
 	objectsShader.setUniform("lightMap", lightMap->getTexture());
-	objectsShader.setUniform("camOwnerHP", camOwner->getVar("HP"));
+	if (camOwner) objectsShader.setUniform("camOwnerHP", camOwner->getVar("HP"));
 	objectsShader.setUniform("rand", random);
 	sf::Sprite objSpr(objects->getTexture());
 	screen.draw(objSpr, &objectsShader);
@@ -709,12 +710,12 @@ void World::Level::draw()
 	entsLayer->display();
 	entShader.setUniform("render", entsLayer->getTexture());
 	entShader.setUniform("lightMap", lightMap->getTexture());
-	entShader.setUniform("camOwnerHP", camOwner->getVar("HP").num);
+	if (camOwner) entShader.setUniform("camOwnerHP", camOwner->getVar("HP").num);
 	entShader.setUniform("camOwnerRect", ownerVec4);
 	entShader.setUniform("rand", random);
 	std::vector<sf::Glsl::Vec4> camOwnerBones;
 	std::vector<float> camOwnerBonesRot;
-	for (int i = 0; camOwner->getSkeleton()->getBone(i) != nullptr; i++)
+	if (camOwner) for (int i = 0; camOwner->getSkeleton()->getBone(i) != nullptr; i++)
 	{
 		auto b = camOwner->getSkeleton()->getBone(i);
 		auto global = b->spr.getGlobalBounds();
@@ -1135,14 +1136,20 @@ void tr::execute(sf::String cmd)
 		if (args[1] == "setPhrase")
 		{
 			Talk::getCurrentDialogue()->currentPhrase = args[2];
+			Talk::active = 1;
 		}
 		else if (args[1] == "setDialogue")
 		{
 			Talk::currentDialogue = args[2];
+			Talk::active = 1;
 		}
 		else if (args[1] == "active")
 		{
 			Talk::active = std::stoi(args[2].toAnsiString());
+		}
+		else if (args[1] == "init")
+		{
+			Talk::init();
 		}
 		else if (args[1] == "load")
 		{
@@ -1178,7 +1185,7 @@ void tr::execute(sf::String cmd)
 			if (!CSManager::current.x) World::setActive(false);
 			CSManager::active = true;
 			Input::active = false;
-			Talk::loadFromFile(CSManager::getTalk());
+			Talk::currentDialogue = CSManager::getTalk();
 			Talk::active = true;
 			sf::String music;
 			if (auto d = Talk::getCurrentDialogue())
@@ -1306,6 +1313,12 @@ void tr::execute(sf::String cmd)
 		{
 			auto e = World::getCurrentLevel()->getEntity(args[2]);
 			e->setVar(args[3], e->getVar(args[3]) + std::stof(args[4].toAnsiString()));
+		}
+		else if (args[1] == "setAnim")
+		{
+			auto e = World::getCurrentLevel()->getEntity(args[2]);
+			e->setVar("anim", args[3]);
+			e->setVar("dontUpdateAnim", 1);
 		}
 	}
 	else if (args[0] == "saveGame")

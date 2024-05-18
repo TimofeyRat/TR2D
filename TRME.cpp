@@ -1,3 +1,4 @@
+#include <math.h>
 #include <SFML/Graphics.hpp>
 #include <windows.h>
 #include <filesystem>
@@ -166,6 +167,9 @@ struct Level
 		}
 		void update()
 		{
+			hitbox.setFillColor({0, 0, 0, 0});
+			hitbox.setOutlineColor(sf::Color::Red);
+			hitbox.setOutlineThickness(-2);
 			hitbox.setSize(rect.getSize());
 			hitbox.setRotation(getVar("angle"));
 			hitbox.setOrigin(rect.getSize() / 2.0f);
@@ -1246,8 +1250,10 @@ int main()
 				}
 				if (currentPage == PageTrigger)
 				{
-					l->triggers[currentTrigger].rect.left = point.x;
-					l->triggers[currentTrigger].rect.top = point.y;
+					auto t = &l->triggers[currentTrigger];
+					t->rect.left = point.x - t->rect.width / 2;
+					t->rect.top = point.y - t->rect.height / 2;
+					t->setVar("pos", std::to_string((int)t->rect.left) + " " + std::to_string((int)t->rect.top));
 				}
 				if (currentPage == PageLight)
 				{
@@ -1255,6 +1261,34 @@ int main()
 				}
 			}
 
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && lvls.size())
+			{
+				auto l = &lvls[currentLevel];
+				auto point = screen.mapPixelToCoords((sf::Vector2i)mouse);
+				if (currentPage == PageDraw)
+				{
+					sf::Vector2i tile = {
+						tr::clamp(point.x / (l->map.tileSize.x * l->map.scale), 0, UINT16_MAX),
+						tr::clamp(point.y / (l->map.tileSize.y * l->map.scale), 0, UINT16_MAX)
+					};
+					l->map.resize(tile.x, tile.y);
+				}
+				if (currentPage == PageTrigger)
+				{
+					auto t = &l->triggers[currentTrigger];
+					t->rect.width = abs(point.x - t->rect.left);
+					t->rect.height = abs(point.y - t->rect.top);
+					t->setVar("size", std::to_string((int)t->rect.width) + " " + std::to_string((int)t->rect.height));
+				}
+				if (currentPage == PageLight)
+				{
+					auto light = &l->lights[currentLight];
+					auto dx = point.x - light->pos.x;
+					auto dy = point.y - light->pos.y;
+					light->radius = sqrt(dx * dx + dy * dy);
+				}
+			}
+			
 			if (currentPage == PageDraw)
 			{
 				auto l = &lvls[currentLevel];

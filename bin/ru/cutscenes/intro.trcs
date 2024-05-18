@@ -1,4 +1,4 @@
-<frame_cutscene name="intro" anim="ru/anims/cutscene.tranim" dialogue="ru/dialogues/cutscenes/intro.trdialogue">
+<frame_cutscene name="intro" anim="ru/anims/cutscene.tranim" dialogue="intro">
 	<change phrase="first" skippable="0" anim="intro_pyramides" music="ru/audio/music/Ambient.ogg" />
 	<change phrase="second" skippable="0" anim="intro_god" music="ru/audio/music/Ambient.ogg" />
 	<change phrase="third" skippable="0" anim="intro_god" music="ru/audio/music/Ambient.ogg" />
@@ -11,7 +11,7 @@
 	<change phrase="skip" skippable="0" anim="intro_end" music="ru/audio/music/Ambient.ogg" />
 </frame_cutscene>
 
-<world_cutscene name="room" dialogue="ru/dialogues/cutscenes/room.trdialogue">
+<world_cutscene name="room" dialogue="room">
 	<clip name="1" duration="2" startPhraseOnEnd="1" music="ru/audio/music/Ambient.ogg">
 		<move_ent name="Nasake" points="1030 390" />
 		<anim_ent name="Nasake" animation="room_inbed" />
