@@ -87,7 +87,7 @@
 	</clip>
 </world_cutscene>
 
-<world_cutscene name="street" dialogue="ru/dialogues/cutscenes/street.trdialogue">
+<world_cutscene name="street" dialogue="street">
 	<clip name="1" duration="1" startPhraseOnEnd="1">
 		<move_ent duration="4" name="Nasake" points="0 530|400 530" />
 		<anim_ent duration="4" name="Nasake" animation="walkRight" animSpeed="0.75" continueAfterEnd="0" />

@@ -28,7 +28,7 @@
 	</phrase>
 	<phrase name="2">
 		<speaker>Насаке</speaker>
-		<text>Сосед не выдержал и вышел в окно. Слабак.</text>
+		<text>Самый тихий сосед здесь был, а в какой-то момент пропал.</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk active 0</action>
