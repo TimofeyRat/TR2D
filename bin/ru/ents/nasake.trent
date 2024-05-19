@@ -20,6 +20,6 @@
 	<variable name="sl" string="stopLeft" /><variable name="sr" string="stopRight" />
 	<variable name="jl" string="jumpLeft" /><variable name="jr" string="jumpRight" />
 	<variable name="fl" string="fallLeft" /><variable name="fr" string="fallRight" />
-	<variable name="al" string="al" /><variable name="ar" string="ar" />
+	<variable name="il-fist" string="idleLeftFist" /><variable name="ir-fist" string="idleRightFist" />
 	<variable name="scale" num="3.5" />
 </entity>

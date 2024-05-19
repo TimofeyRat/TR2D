@@ -10,4 +10,8 @@
 	<effect name="HP" type="add" num="-10" frequency="0.5" usages="4" />
 </weapon>
 
-<item id="item:lighter" name="Зажигалка" countable="0" useable="0" anim="ru/anims/items.tranim" />
+<item id="weapon:lighter" name="Зажигалка" countable="0" useable="0" anim="ru/anims/items.tranim" />
+
+<weapon id="lighter" type="fist">
+	<effect name="HP" type="add" num="-5" frequency="0.5" usages="4" />
+</weapon>

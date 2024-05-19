@@ -13,7 +13,7 @@ Weapon::Weapon()
 	origin = {0, 0};
 	rotation = 0;
 	scale = 1;
-	meleeOrRange = false;
+	type = "";
 };
 
 void Weapon::draw(Entity *owner)
@@ -25,8 +25,11 @@ void Weapon::draw(Entity *owner)
 	spr.setRotation(owner->getSkeleton()->getBoneAngle(boneName) + rotation * rot);
 	spr.setOrigin(origin);
 	spr.setScale(scale * rot, scale);
-	fa.update();
-	fa.send(spr, false, false);
+	if (fa.getCurrentAnim())
+	{
+		fa.update();
+		fa.send(spr, false, false);
+	}
 	World::getScreen()->draw(spr);
 	if (Window::getVar("debug"))
 	{

@@ -16,7 +16,7 @@ public:
 	sf::Clock timer;
 	sf::Vector2f origin;
 	float rotation, scale;
-	bool meleeOrRange;
+	sf::String type;
 	Weapon();
 	void draw(Entity *owner);
 };

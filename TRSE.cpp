@@ -1042,7 +1042,15 @@ int main()
 	sf::View camera = screen.getView();
 	camera.setCenter(0, 0);
 
-	font.loadFromFile("res/global/font.ttf");
+	for (auto p : std::filesystem::directory_iterator(std::filesystem::current_path()))
+	{
+		auto path = p.path().string();
+		if (std::filesystem::exists(path + "/global/settings.trconf"))
+		{
+			path.erase(0, std::filesystem::current_path().string().length() + 1);
+			font.loadFromFile(path + "/global/font.ttf");
+		}
+	}
 
 	enter = {"", font, 20};
 	enter.setFillColor(sf::Color::White);

@@ -155,7 +155,10 @@ void Entity::updateAnim()
 	if (dy < 0) { auto r = getVar("rotation").num; if (r < 0) anim = "jl"; if (r > 0) anim = "jr"; } //Jump
 	if (dy > 0) { auto r = getVar("rotation").num; if (r < 0) anim = "fl"; if (r > 0) anim = "fr"; } //Fall
 	if (getVar("attacking")) { auto r = getVar("rotation").num; if (r < 0) anim = "al"; if (r > 0) anim = "ar"; } //Attack
+	auto state = getVar("state").str;
+	if (!state.isEmpty() && hasVar(anim + "-" + state)) { anim += "-" + state; }
 	s.setCurrentAnimation(getVar(anim));
+	setVar("codeAnim", anim);
 	setVar("anim", getVar(anim).str);
 }
 
@@ -244,9 +247,11 @@ void Entity::updateAttack()
 	{
 		setVar("attacking", 0);
 		setVar("attack", 0);
+		setVar("state", "");
 		return;
 	}
-	if (s.hasAnimationEnded() && getVar("attacking")) { setVar("attacking", 0); }
+	else setVar("state", weapon.type);
+	if (s.hasAnimationEnded() && getVar("attacking")) { setVar("attacking", 0); setVar("state", ""); }
 	setVar("weaponCD", weapon.useDelay - weapon.timer.getElapsedTime().asSeconds());
 	if (getVar("attack") && getVar("weaponCD") <= 0)
 	{

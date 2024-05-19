@@ -115,17 +115,18 @@ void Inventory::init()
 			{
 				Weapon wpn;
 				wpn.id = node.attribute(L"id").as_string();
-				wpn.fa.loadFromFile(pugi::as_utf8(node.attribute(L"anim").as_string()));
+				sf::String anim = node.attribute(L"anim").as_string();
+				if (!anim.isEmpty()) wpn.fa.loadFromFile(anim);
 				wpn.fa.setCurrentAnimation(wpn.id);
 				wpn.useDelay = node.attribute(L"delay").as_float();
-				auto origin = tr::splitStr(node.attribute(L"origin").as_string(), " ");
+				auto origin = tr::splitStr(node.attribute(L"origin").as_string(L"0 0"), " ");
 				wpn.origin = {
 					std::stof(origin[0].toAnsiString()),
 					std::stof(origin[1].toAnsiString())
 				};
 				wpn.rotation = node.attribute(L"rotation").as_float();
 				wpn.scale = node.attribute(L"scale").as_float();
-				wpn.meleeOrRange = (sf::String(node.attribute(L"type").as_string()) == "range");
+				wpn.type = node.attribute(L"type").as_string();
 				for (auto effect : node.children())
 				{
 					if (sf::String(effect.name()) == "effect")
