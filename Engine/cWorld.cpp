@@ -416,43 +416,48 @@ void World::Level::update()
 		setVar("w", map.getPixelSize().x);
 		setVar("h", map.getPixelSize().y);
 		//Render background
-		bg = new sf::RenderTexture();
-		bg->create(getVar("w"), getVar("h"));
-		bg->clear();
+		sf::RenderTexture render;
+		render.create(getVar("w"), getVar("h"));
+		render.clear({0, 0, 0, 0});
 		if (bgTex != nullptr) bgSpr.setTexture(*bgTex, false);
 		bgSpr.setScale(
 			bgBounds.width / bgTex->getSize().x,
 			bgBounds.height / bgTex->getSize().y
 		);
-		bg->draw(bgSpr);
-		map.draw(bg);
-		bg->display();
+		render.draw(bgSpr);
+		map.draw(&render);
+		render.display();
+		auto temp = render.getTexture().copyToImage();
+		temp.flipVertically();
+		bg.loadFromImage(temp);
 		//Render lights
-		lightMap = new sf::RenderTexture();
-		lightMap->create(getVar("w"), getVar("h"));
-		sf::RectangleShape basis((sf::Vector2f)lightMap->getSize());
-		std::vector<sf::Glsl::Vec2> lightPos;
-		std::vector<sf::Glsl::Vec4> lightClr;
-		std::vector<sf::Glsl::Vec3> lightData;
+		render.clear({0, 0, 0, 0});
+		sf::RectangleShape basis((sf::Vector2f)render.getSize());
+		std::vector<sf::Glsl::Vec2> lightPos(32, {0, 0});
+		std::vector<sf::Glsl::Vec4> lightClr(32, {0, 0, 0, 0});
+		std::vector<sf::Glsl::Vec3> lightData(32, {0, 0, 0});
 		for (int i = 0; i < lights.size(); i++)
 		{
-			lightPos.push_back({
+			lightPos[i] = {
 				lights[i].position.x,
 				getVar("h") - lights[i].position.y
-			});
-			lightClr.push_back({
+			};
+			lightClr[i] = {
 				(float)lights[i].color.r / 255.0f,
 				(float)lights[i].color.g / 255.0f,
 				(float)lights[i].color.b / 255.0f,
 				(float)lights[i].color.a / 255.0f,
-			});
-			lightData.push_back({lights[i].radius, lights[i].angle, lights[i].field});
+			};
+			lightData[i] = {lights[i].radius, lights[i].angle, lights[i].field};
 		}
-		lightShader.setUniformArray("lightPos", lightPos.data(), fmin(lightPos.size(), 32));
-		lightShader.setUniformArray("lightClr", lightClr.data(), fmin(lightClr.size(), 32));
-		lightShader.setUniformArray("lightData", lightData.data(), fmin(lightData.size(), 32));
-		lightMap->draw(basis, &lightShader);
-		lightMap->display();
+		lightShader.setUniformArray("lightPos", lightPos.data(), 32);
+		lightShader.setUniformArray("lightClr", lightClr.data(), 32);
+		lightShader.setUniformArray("lightData", lightData.data(), 32);
+		render.draw(basis, &lightShader);
+		render.display();
+		temp = render.getTexture().copyToImage();
+		temp.flipVertically();
+		lightMap.loadFromImage(temp);
 		//Objects layer
 		objects = new sf::RenderTexture();
 		objects->create(getVar("w"), getVar("h"));
@@ -641,13 +646,13 @@ void World::Level::draw()
 	auto mapSize = map.getPixelSize();
 	if (screen.getSize() != (sf::Vector2u)mapSize) { screen.create(mapSize.x, mapSize.y); }
 	screen.clear();
-	sf::Sprite mapSpr(bg->getTexture());
+	sf::Sprite mapSpr(bg);
 	float random = (float)rand() / RAND_MAX;
 	auto camOwner = getCameraOwner();
 	mapShader.setUniform("rand", random);
-	mapShader.setUniform("texture", bg->getTexture());
+	mapShader.setUniform("texture", bg);
 	if (camOwner) mapShader.setUniform("camOwnerHP", camOwner->getVar("HP").num);
-	mapShader.setUniform("lightMap", lightMap->getTexture());
+	mapShader.setUniform("lightMap", lightMap);
 	screen.draw(mapSpr, &mapShader);
 	cam.update(mapSize);
 	sf::Listener::setPosition(cam.view.getCenter().x, 0, cam.view.getCenter().y);
@@ -701,15 +706,15 @@ void World::Level::draw()
 
 	objects->display();
 	objectsShader.setUniform("render", objects->getTexture());
-	objectsShader.setUniform("lightMap", lightMap->getTexture());
+	objectsShader.setUniform("lightMap", lightMap);
 	if (camOwner) objectsShader.setUniform("camOwnerHP", camOwner->getVar("HP"));
 	objectsShader.setUniform("rand", random);
 	sf::Sprite objSpr(objects->getTexture());
 	screen.draw(objSpr, &objectsShader);
-	
+
 	entsLayer->display();
 	entShader.setUniform("render", entsLayer->getTexture());
-	entShader.setUniform("lightMap", lightMap->getTexture());
+	entShader.setUniform("lightMap", lightMap);
 	if (camOwner) entShader.setUniform("camOwnerHP", camOwner->getVar("HP").num);
 	entShader.setUniform("camOwnerRect", ownerVec4);
 	entShader.setUniform("rand", random);
@@ -1345,7 +1350,7 @@ void tr::execute(sf::String cmd)
 		World::getCameraOwner()->bauble = Inventory::getBauble(inv.attribute(L"bauble").as_string());
 		CSManager::active = false;
 		Input::active = true;
-		Talk::active = false;
+		Talk::init();
 	}
 	else if (args[0] == "passthrough")
 	{

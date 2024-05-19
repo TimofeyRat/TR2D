@@ -910,6 +910,7 @@ CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.obj: C:/Projects/TR2D/Engine/cCutscene.
   C:/Projects/TR2D/Engine/hCutscene.hpp \
   C:/Projects/TR2D/Engine/hEntity.hpp \
   C:/Projects/TR2D/Engine/hGlobal.hpp \
+  C:/Projects/TR2D/Engine/hInput.hpp \
   C:/Projects/TR2D/Engine/hInventory.hpp \
   C:/Projects/TR2D/Engine/hParticles.hpp \
   C:/Projects/TR2D/Engine/hProgrammable.hpp \

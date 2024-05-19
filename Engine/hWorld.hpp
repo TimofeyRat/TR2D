@@ -167,7 +167,8 @@ public:
 		b2World *world;
 		float musicVolume;
 		WorldCL cl;
-		sf::RenderTexture *bg, *lightMap, *objects, *entsLayer;
+		sf::Texture bg, lightMap;
+		sf::RenderTexture *objects, *entsLayer;
 		Level();
 		~Level();
 		void reset();
