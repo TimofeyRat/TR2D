@@ -9,7 +9,7 @@
 	</phrase>
 	<phrase name="2">
 		<speaker>Насаке</speaker>
-		<text>Лес-то огромный...</text>
+		<text>Город-то огромный...</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>cutscene setClip 2</action>

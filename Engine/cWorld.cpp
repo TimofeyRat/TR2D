@@ -465,6 +465,7 @@ void World::Level::update()
 		entsLayer = new sf::RenderTexture();
 		entsLayer->create(getVar("w"), getVar("h"));
 		started = true;
+		Window::resetTime();
 	}
 	world->SetGravity(gravity);
 	world->Step(Window::getDeltaTime(), 12, 8);
