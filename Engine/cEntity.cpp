@@ -243,15 +243,14 @@ void Entity::updateRB(float scale)
 
 void Entity::updateAttack()
 {
+	setVar("state", weapon.type);
 	if (weapon.id == "null")
 	{
 		setVar("attacking", 0);
 		setVar("attack", 0);
-		setVar("state", "");
 		return;
 	}
-	else setVar("state", weapon.type);
-	if (s.hasAnimationEnded() && getVar("attacking")) { setVar("attacking", 0); setVar("state", ""); }
+	if (s.hasAnimationEnded() && getVar("attacking")) { setVar("attacking", 0); }
 	setVar("weaponCD", weapon.useDelay - weapon.timer.getElapsedTime().asSeconds());
 	if (getVar("attack") && getVar("weaponCD") <= 0)
 	{

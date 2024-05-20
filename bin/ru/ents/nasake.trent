@@ -21,5 +21,6 @@
 	<variable name="jl" string="jumpLeft" /><variable name="jr" string="jumpRight" />
 	<variable name="fl" string="fallLeft" /><variable name="fr" string="fallRight" />
 	<variable name="il-fist" string="idleLeftFist" /><variable name="ir-fist" string="idleRightFist" />
+	<variable name="al-fist" string="attackLeftFist" /><variable name="ar-fist" string="attackRightFist" />
 	<variable name="scale" num="3.5" />
 </entity>
