@@ -3,6 +3,7 @@
 #include "hGlobal.hpp"
 #include "hWindow.hpp"
 #include "hUI.hpp"
+#include "hCutscene.hpp"
 
 #include <iostream>
 
@@ -98,10 +99,13 @@ void Entity::update()
 	s.updateBones();
 	auto rect = s.generateHitbox();
 	rb.resize(rb.getBody()->GetWorld(), {fmax(rect.width, 1), fmax(rect.height, 1)});
-	s.setPosition({
+	s.setPosition(CSManager::active ? sf::Vector2f(
 		rb.getPosition().x + (s.getBone(0)->pos.x - (rect.left + rect.width / 2)),
 		rb.getPosition().y + (s.getBone(0)->pos.y - (rect.top + rect.height / 2))
-	});
+	) : sf::Vector2f(
+		rb.getPosition().x,
+		rb.getPosition().y - rect.height / 2 + (s.getPosition().y - rect.top)
+	));
 	s.update();
 	setVar("posX", rb.getPosition().x);
 	setVar("posY", rb.getPosition().y);
@@ -210,35 +214,34 @@ void Entity::applyEffects()
 void Entity::updateRB(float scale)
 {
 	auto *body = rb.getBody();
-	if (body)
+	if (!body) return;
+
+	auto triggers = World::getTriggers();
+	auto triggersCheck = sf::Vector2f(
+		body->GetPosition().x * tr::M2P,
+		body->GetPosition().y * tr::M2P + s.generateHitbox().height / 2 + getVar("ogd") * scale
+	);
+	auto speed = getVar("speed") + getVar("baubleSpeed");
+	setVar("onGround", 0);
+	for (int i = 0; i < triggers.size(); i++)
 	{
-		auto triggers = World::getTriggers();
-		auto triggersCheck = sf::Vector2f(
-			body->GetPosition().x * tr::M2P,
-			body->GetPosition().y * tr::M2P + s.generateHitbox().height / 2 + getVar("ogd") * scale
-		);
-		auto speed = getVar("speed") + getVar("baubleSpeed");
-		setVar("onGround", 0);
-		for (int i = 0; i < triggers.size(); i++)
+		if (triggers[i]->rb.getBody()->GetFixtureList()->TestPoint({triggersCheck.x / tr::M2P, triggersCheck.y / tr::M2P}) &&
+			triggers[i]->getVar("name").str == "ground")
 		{
-			if (triggers[i]->rb.getBody()->GetFixtureList()->TestPoint({triggersCheck.x / tr::M2P, triggersCheck.y / tr::M2P}) &&
-				triggers[i]->getVar("name").str == "ground")
-			{
-				setVar("onGround", 1);
-			}
+			setVar("onGround", 1);
 		}
-		auto x = body->GetLinearVelocity().x, dx = getVar("dx").num, maxSpeed = getVar("maxSpeed").num * speed * scale;
-		if (getVar("attacking")) { maxSpeed /= 2; }
-		else
-		{
-			body->ApplyForceToCenter({dx * getVar("speedX") * speed * scale, 0}, true);
-			if (getVar("onGround") && getVar("dy")) body->SetLinearVelocity({body->GetLinearVelocity().x, getVar("dy") * getVar("speedY") * scale});
-		}
-		if (body->GetLinearVelocity().x > maxSpeed) { body->SetLinearVelocity({maxSpeed, body->GetLinearVelocity().y}); }
-		else if (body->GetLinearVelocity().x < -maxSpeed) { body->SetLinearVelocity({-maxSpeed, body->GetLinearVelocity().y}); }
-		setVar("moveX", body->GetLinearVelocity().x);
-		setVar("moveY", body->GetLinearVelocity().y);
 	}
+	auto x = body->GetLinearVelocity().x, dx = getVar("dx").num, maxSpeed = getVar("maxSpeed").num * speed * scale;
+	if (getVar("attacking")) { maxSpeed /= 2; }
+	else
+	{
+		body->ApplyForceToCenter({dx * getVar("speedX") * speed * scale, 0}, true);
+		if (getVar("onGround") && getVar("dy")) body->SetLinearVelocity({body->GetLinearVelocity().x, getVar("dy") * getVar("speedY") * scale});
+	}
+	if (body->GetLinearVelocity().x > maxSpeed) { body->SetLinearVelocity({maxSpeed, body->GetLinearVelocity().y}); }
+	else if (body->GetLinearVelocity().x < -maxSpeed) { body->SetLinearVelocity({-maxSpeed, body->GetLinearVelocity().y}); }
+	setVar("moveX", body->GetLinearVelocity().x);
+	setVar("moveY", body->GetLinearVelocity().y);
 }
 
 void Entity::updateAttack()
