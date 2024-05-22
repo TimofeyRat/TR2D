@@ -80,8 +80,8 @@
 		<text name="title">
 			<toggle event="btn-menu-loadGame-btn" />
 			<font path="ru/global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
-			<txt type="active" appear="set">Продолжить игру</txt>
-			<txt type="idle" appear="set">Продолжить игру</txt>
+			<txt type="active" appear="set">Загрузить игру</txt>
+			<txt type="idle" appear="set">Загрузить игру</txt>
 			<position type="inherit-obj-rel">0 0 0 0 menu-loadGame</position>
 			<origin type="relative">0.5 0.5 0.5 0.5</origin>
 			<color state="active" type="lerp">255 255 255 255</color>

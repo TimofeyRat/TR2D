@@ -16,7 +16,7 @@ Weapon::Weapon()
 	type = "";
 };
 
-void Weapon::draw(Entity *owner)
+void Weapon::draw(sf::RenderTarget *target, Entity *owner)
 {
 	float rot = owner->getVar("rotation");
 	auto boneName = owner->getVar("handBone").num;
@@ -30,7 +30,7 @@ void Weapon::draw(Entity *owner)
 		fa.update();
 		fa.send(spr, false, false);
 	}
-	World::getScreen()->draw(spr);
+	target->draw(spr);
 	if (Window::getVar("debug"))
 	{
 		sf::RectangleShape rect;
@@ -40,7 +40,7 @@ void Weapon::draw(Entity *owner)
 		rect.setFillColor(sf::Color(0, 0, 0, 0));
 		rect.setOutlineColor(sf::Color::Red);
 		rect.setOutlineThickness(-2);
-		World::getScreen()->draw(rect);
+		target->draw(rect);
 	}
 }
 
@@ -59,7 +59,7 @@ Bauble::Bauble()
 	idleOrActive = true;
 }
 
-void Bauble::draw(Entity *owner)
+void Bauble::draw(sf::RenderTarget *target, Entity *owner)
 {
 	float rot = owner->getVar("rotation");
 	auto boneName = owner->getVar(bone).num;
@@ -71,7 +71,7 @@ void Bauble::draw(Entity *owner)
 	spr.setScale(scale * rot, scale);
 	fa.update();
 	fa.send(spr, false, false);
-	World::getScreen()->draw(spr);
+	target->draw(spr);
 	if (Window::getVar("debug"))
 	{
 		sf::RectangleShape rect;
@@ -81,6 +81,6 @@ void Bauble::draw(Entity *owner)
 		rect.setFillColor(sf::Color(0, 0, 0, 0));
 		rect.setOutlineColor(sf::Color::Red);
 		rect.setOutlineThickness(-2);
-		World::getScreen()->draw(rect);
+		target->draw(rect);
 	}
 }

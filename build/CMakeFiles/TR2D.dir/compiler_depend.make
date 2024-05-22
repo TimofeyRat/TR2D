@@ -1591,6 +1591,7 @@ CMakeFiles/TR2D.dir/Engine/cEntity.cpp.obj: C:/Projects/TR2D/Engine/cEntity.cpp 
   C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/wctype.h \
   C:/Projects/TR2D/Engine/hAnimation.hpp \
   C:/Projects/TR2D/Engine/hAssets.hpp \
+  C:/Projects/TR2D/Engine/hCutscene.hpp \
   C:/Projects/TR2D/Engine/hEntity.hpp \
   C:/Projects/TR2D/Engine/hGlobal.hpp \
   C:/Projects/TR2D/Engine/hInventory.hpp \

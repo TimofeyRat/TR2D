@@ -118,9 +118,12 @@ void Entity::update()
 void Entity::draw(sf::RenderTarget *target, const sf::RenderStates &states)
 {
 	if (!isAlive()) { return; }
-	s.draw(target, states);
-	if (!getVar("moveX")) bauble.draw(this);
-	if (getVar("attacking")) weapon.draw(this);
+	for (int i = 0; i < 3; i++)
+	{
+		s.drawLayer(i, target, states);
+		if (getVar("baubleLayer").num == i && bauble.id != "null" && !getVar("moveX")) bauble.draw(target, this);
+		if (getVar("weaponLayer").num == i && weapon.id != "null" && getVar("attacking")) weapon.draw(target, this);
+	}
 	if (Window::getVar("debug")) rb.draw(target);
 }
 

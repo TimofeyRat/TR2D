@@ -107,6 +107,7 @@ public:
 	void updateBones();
 	void update();
 	void draw(sf::RenderTarget *target, const sf::RenderStates &states = sf::RenderStates::Default);
+	void drawLayer(int layer, sf::RenderTarget *target, const sf::RenderStates &states = sf::RenderStates::Default);
 	void drawBones(sf::RenderTarget *target);
 	Bone *getBone(int ID);
 	Texture *getTexture(sf::String name);

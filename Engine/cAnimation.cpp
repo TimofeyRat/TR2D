@@ -458,6 +458,33 @@ void Skeleton::update()
 	anim->currentFrame += Window::getDeltaTime() * speed;
 }
 
+void Skeleton::drawLayer(int layer, sf::RenderTarget *target, const sf::RenderStates &states)
+{
+	bool debug = Window::getVar("debug");
+	for (int i = 0; i < bones.size(); i++)
+	{
+		auto *b = &bones[i];
+		if (b->layer != layer) continue;
+		b->spr.setPosition(b->pos);
+		b->spr.setRotation(b->angle + b->angle_origin.x);
+		b->spr.setOrigin(b->angle_origin.y, b->angle_origin.z);
+		b->spr.setColor(color);
+		b->spr.setScale(scale, scale);
+		target->draw(b->spr);
+		if (debug)
+		{
+			auto r = b->spr.getGlobalBounds();
+			sf::RectangleShape rect(r.getSize());
+			rect.setPosition(r.getPosition());
+			rect.setFillColor({0, 0, 0, 0});
+			rect.setOutlineColor(sf::Color::Red);
+			rect.setOutlineThickness(-2);
+			target->draw(rect);
+		}
+	}
+	if (debug) drawBones(target);
+}
+
 void Skeleton::draw(sf::RenderTarget *target, const sf::RenderStates &states)
 {
 	bool debug = Window::getVar("debug");

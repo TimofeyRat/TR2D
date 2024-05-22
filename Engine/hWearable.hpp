@@ -18,7 +18,7 @@ public:
 	float rotation, scale;
 	sf::String type;
 	Weapon();
-	void draw(Entity *owner);
+	void draw(sf::RenderTarget *target, Entity *owner);
 };
 
 class Bauble
@@ -34,7 +34,7 @@ public:
 	float rotation, scale;
 	bool idleOrActive;
 	Bauble();
-	void draw(Entity *owner);
+	void draw(sf::RenderTarget *target, Entity *owner);
 };
 
 #endif
