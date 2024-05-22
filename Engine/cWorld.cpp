@@ -200,14 +200,6 @@ void World::loadFromFile(std::string filename)
 				control.attribute(L"controller").as_string()
 			));
 		}
-		for (auto script : lvl.children(L"script"))
-		{
-			level.scripts.push_back(ScriptObject(
-				pugi::as_utf8(script.attribute(L"file").as_string()),
-				script.attribute(L"mainFunc").as_string(),
-				script.attribute(L"executor").as_string()
-			));
-		}
 		for (auto gen : lvl.children(L"particles"))
 		{
 			auto min = tr::splitStr(gen.attribute(L"min").as_string(), " ");
@@ -362,7 +354,6 @@ void World::Level::reset()
 	controls.clear();
 	ents.clear();
 	spawners.clear();
-	scripts.clear();
 	partGens.clear();
 	parts.clear();
 	partCurves.clear();
@@ -512,26 +503,6 @@ void World::Level::update()
 				}
 			}
 		}
-	}
-	for (int i = 0; i < scripts.size(); i++)
-	{
-		if (tr::strContains(scripts[i].executor, "trigger"))
-		{
-			auto t = tr::splitStr(scripts[i].executor, "_")[1];
-			for (int j = 0; j < triggers.size(); j++)
-			{
-				if (triggers[j].getVar("name") == t) { scripts[i].src.execute(scripts[i].mainFunc, &triggers[j]); }
-			}
-		}
-		else if (scripts[i].executor != "world")
-		{
-			auto executors = tr::splitStr(scripts[i].executor, ";");
-			for (int j = 0; j < executors.size(); j++)
-			{
-				scripts[i].src.execute(scripts[i].mainFunc, getEntity(executors[j]));
-			}
-		}
-		else scripts[i].src.execute(scripts[i].mainFunc, this);
 	}
 	for (int i = 0; i < controls.size(); i++)
 	{
@@ -954,19 +925,6 @@ World::Spawner::Spawner(sf::String ent, sf::Vector2f xy)
 {
 	name = ent;
 	pos = xy;
-}
-
-World::ScriptObject::ScriptObject()
-{
-	src = Script();
-	mainFunc = executor = "";
-}
-
-World::ScriptObject::ScriptObject(std::string filename, sf::String MAIN, sf::String owner)
-{
-	src = Script(filename);
-	mainFunc = MAIN;
-	executor = owner;
 }
 
 World::Level *World::getCurrentLevel() { return &lvls[currentLevel]; }
@@ -1392,6 +1350,18 @@ void tr::execute(sf::String cmd)
 			tgt->weapon = src->weapon;
 			tgt->bauble = src->bauble;
 		}
+	}
+	else if (args[0] == "spawnEnt")
+	{
+		auto l = World::getCurrentLevel();
+		l->ents.push_back(Entity(World::getEntFile(args[1])));
+		auto e = &l->ents[l->ents.size() - 1];
+		e->getRigidbody()->reset(l->world);
+		e->getRigidbody()->setUserData(sf::String("ent_") + e->name);
+		e->setPosition({
+			std::stof(args[2].toAnsiString()),
+			std::stof(args[3].toAnsiString())
+		});
 	}
 }
 

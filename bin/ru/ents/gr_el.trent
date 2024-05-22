@@ -1,4 +1,4 @@
-<entity name="GreenElemental" skeleton="ru/skeletons/gr_el.trskeleton">
+<entity name="GreenElemental" skeleton="ru/skeletons/nasake.trskeleton">
 	<physics
 		friction="0.5"
 		mass="1"
@@ -11,7 +11,7 @@
 	<variable name="damageCooldown" num="0.5" />
 	<variable name="speed" num="0.5" /><variable name="maxSpeed" num="0.5" />
 	<variable name="speedX" num="30" /><variable name="speedY" num="2" />
-	<variable name="il" str="il" /><variable name="ir" str="ir" />
-	<variable name="wl" str="il" /><variable name="wr" str="ir" />
+	<variable name="il" str="idleLeft" /><variable name="ir" str="idleRight" />
+	<variable name="wl" str="idleLeft" /><variable name="wr" str="idleRight" />
 	<variable name="scale" num="4" />
 </entity>

@@ -18,7 +18,6 @@ set(TR2D_SOURCES
 	Engine/cWearable.cpp
 	Engine/cWindow.cpp
 	Engine/cWorld.cpp
-	Engine/cScript.cpp
 	Engine/cParticles.cpp
 	Engine/cCutscene.cpp
 	Engine/pugixml.o)

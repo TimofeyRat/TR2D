@@ -264,24 +264,10 @@ CMakeFiles/TR2D.dir/Engine/cWorld.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/TR2D.dir/Engine/cWorld.cpp.s"
 	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Projects\TR2D\Engine\cWorld.cpp -o CMakeFiles\TR2D.dir\Engine\cWorld.cpp.s
 
-CMakeFiles/TR2D.dir/Engine/cScript.cpp.obj: CMakeFiles/TR2D.dir/flags.make
-CMakeFiles/TR2D.dir/Engine/cScript.cpp.obj: C:/Projects/TR2D/Engine/cScript.cpp
-CMakeFiles/TR2D.dir/Engine/cScript.cpp.obj: CMakeFiles/TR2D.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/TR2D.dir/Engine/cScript.cpp.obj"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TR2D.dir/Engine/cScript.cpp.obj -MF CMakeFiles\TR2D.dir\Engine\cScript.cpp.obj.d -o CMakeFiles\TR2D.dir\Engine\cScript.cpp.obj -c C:\Projects\TR2D\Engine\cScript.cpp
-
-CMakeFiles/TR2D.dir/Engine/cScript.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/TR2D.dir/Engine/cScript.cpp.i"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Projects\TR2D\Engine\cScript.cpp > CMakeFiles\TR2D.dir\Engine\cScript.cpp.i
-
-CMakeFiles/TR2D.dir/Engine/cScript.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/TR2D.dir/Engine/cScript.cpp.s"
-	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Projects\TR2D\Engine\cScript.cpp -o CMakeFiles\TR2D.dir\Engine\cScript.cpp.s
-
 CMakeFiles/TR2D.dir/Engine/cParticles.cpp.obj: CMakeFiles/TR2D.dir/flags.make
 CMakeFiles/TR2D.dir/Engine/cParticles.cpp.obj: C:/Projects/TR2D/Engine/cParticles.cpp
 CMakeFiles/TR2D.dir/Engine/cParticles.cpp.obj: CMakeFiles/TR2D.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/TR2D.dir/Engine/cParticles.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/TR2D.dir/Engine/cParticles.cpp.obj"
 	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TR2D.dir/Engine/cParticles.cpp.obj -MF CMakeFiles\TR2D.dir\Engine\cParticles.cpp.obj.d -o CMakeFiles\TR2D.dir\Engine\cParticles.cpp.obj -c C:\Projects\TR2D\Engine\cParticles.cpp
 
 CMakeFiles/TR2D.dir/Engine/cParticles.cpp.i: cmake_force
@@ -295,7 +281,7 @@ CMakeFiles/TR2D.dir/Engine/cParticles.cpp.s: cmake_force
 CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.obj: CMakeFiles/TR2D.dir/flags.make
 CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.obj: C:/Projects/TR2D/Engine/cCutscene.cpp
 CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.obj: CMakeFiles/TR2D.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.obj"
 	C:\PROGRA~1\mingw64\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.obj -MF CMakeFiles\TR2D.dir\Engine\cCutscene.cpp.obj.d -o CMakeFiles\TR2D.dir\Engine\cCutscene.cpp.obj -c C:\Projects\TR2D\Engine\cCutscene.cpp
 
 CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.i: cmake_force
@@ -322,7 +308,6 @@ TR2D_OBJECTS = \
 "CMakeFiles/TR2D.dir/Engine/cWearable.cpp.obj" \
 "CMakeFiles/TR2D.dir/Engine/cWindow.cpp.obj" \
 "CMakeFiles/TR2D.dir/Engine/cWorld.cpp.obj" \
-"CMakeFiles/TR2D.dir/Engine/cScript.cpp.obj" \
 "CMakeFiles/TR2D.dir/Engine/cParticles.cpp.obj" \
 "CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.obj"
 
@@ -344,7 +329,6 @@ C:/Projects/TR2D/bin/TR2D.exe: CMakeFiles/TR2D.dir/Engine/cUI.cpp.obj
 C:/Projects/TR2D/bin/TR2D.exe: CMakeFiles/TR2D.dir/Engine/cWearable.cpp.obj
 C:/Projects/TR2D/bin/TR2D.exe: CMakeFiles/TR2D.dir/Engine/cWindow.cpp.obj
 C:/Projects/TR2D/bin/TR2D.exe: CMakeFiles/TR2D.dir/Engine/cWorld.cpp.obj
-C:/Projects/TR2D/bin/TR2D.exe: CMakeFiles/TR2D.dir/Engine/cScript.cpp.obj
 C:/Projects/TR2D/bin/TR2D.exe: CMakeFiles/TR2D.dir/Engine/cParticles.cpp.obj
 C:/Projects/TR2D/bin/TR2D.exe: CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.obj
 C:/Projects/TR2D/bin/TR2D.exe: C:/Projects/TR2D/Engine/pugixml.o
@@ -352,7 +336,7 @@ C:/Projects/TR2D/bin/TR2D.exe: CMakeFiles/TR2D.dir/build.make
 C:/Projects/TR2D/bin/TR2D.exe: CMakeFiles/TR2D.dir/linkLibs.rsp
 C:/Projects/TR2D/bin/TR2D.exe: CMakeFiles/TR2D.dir/objects1.rsp
 C:/Projects/TR2D/bin/TR2D.exe: CMakeFiles/TR2D.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Linking CXX executable C:\Projects\TR2D\bin\TR2D.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Projects\TR2D\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Linking CXX executable C:\Projects\TR2D\bin\TR2D.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\TR2D.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

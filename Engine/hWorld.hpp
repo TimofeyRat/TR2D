@@ -2,7 +2,6 @@
 #define trWorld
 
 #include "hEntity.hpp"
-#include "hScript.hpp"
 #include "hParticles.hpp"
 
 #include <SFML/Audio.hpp>
@@ -104,14 +103,6 @@ public:
 		Spawner();
 		Spawner(sf::String ent, sf::Vector2f xy);
 	};
-	struct ScriptObject
-	{
-		Script src;
-		sf::String mainFunc;
-		sf::String executor;
-		ScriptObject();
-		ScriptObject(std::string filename, sf::String MAIN, sf::String owner);
-	};
 	struct ParticleGenerator
 	{
 		sf::String temp;
@@ -151,7 +142,6 @@ public:
 		std::vector<SoundPlayer> sounds;
 		std::vector<FallenItem> items;
 		std::vector<Control> controls;
-		std::vector<ScriptObject> scripts;
 		std::vector<ParticleGenerator> partGens;
 		std::vector<Particle> parts;
 		std::vector<ParticleCurve> partCurves;
