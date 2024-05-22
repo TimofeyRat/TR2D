@@ -14,6 +14,7 @@
 	<variable name="baubleLayer" num="1" />
 	<variable name="headBone" num="1" />
 	<variable name="damageCooldown" num="1" />
+	<variable name="group" num="0" />
 	<variable name="speed" num="0.5" /><variable name="maxSpeed" num="1" />
 	<variable name="speedX" num="35" /><variable name="sv" num="1" />
 	<variable name="speedY" num="2" /><variable name="ogd" num="2" />

@@ -775,6 +775,7 @@ void UI::Frame::Object::handle()
 	}
 	else if (tr::strContains(handler, "console"))
 	{
+		Input::active = false;
 		auto txt = getText("console");
 		if (Window::hasEvent(sf::Event::TextEntered))
 		{

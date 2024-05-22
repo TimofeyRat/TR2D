@@ -89,7 +89,7 @@
 
 <world_cutscene name="street" dialogue="street">
 	<clip name="1" duration="1" startPhraseOnEnd="1">
-		<move_ent duration="4" name="Nasake" points="0 2230|400 2230" />
+		<move_ent duration="4" name="Nasake" points="0 2230|800 2230" />
 		<anim_ent duration="4" name="Nasake" animation="walkRight" animSpeed="0.75" continueAfterEnd="0" />
 		<anim_ent offset="4" name="Nasake" animation="idleRight" />
 		<move_cam points="960 2110" size="0 0 960 540 set" />

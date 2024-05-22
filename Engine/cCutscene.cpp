@@ -414,7 +414,7 @@ void CSManager::WorldCutscene::Change::update()
 	for (int i = 0; i < cents.size(); i++) cents[i].update();
 	if (shouldEnd)
 	{
-		if (!waitAll) { Input::active = false; shouldEnd = false; active = false; return; }
+		if (!waitAll) { shouldEnd = false; active = false; return; }
 		bool end = true;
 		for (int i = 0; i < cam.size(); i++) { if (!cam[i].ended) { end = false; break; } }
 		for (int i = 0; i < moves.size(); i++) { if (!moves[i].ended) { end = false; break; } }

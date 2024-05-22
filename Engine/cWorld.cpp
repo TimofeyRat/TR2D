@@ -279,6 +279,7 @@ void World::update()
 	if (CSManager::active && CSManager::current.x) { CSManager::worlds[CSManager::current.y].update(); }
 	else lvl->cam.doUpdate = true;
 	lvl->update();
+	Input::active = !CSManager::active;
 }
 
 void World::draw()
@@ -591,6 +592,7 @@ void World::Level::update()
 			{
 				if (i == j) continue;
 				if (ents[j].getHitbox().intersects(ents[i].weapon.spr.getGlobalBounds()))
+				if (ents[j].getVar("group").num != ents[i].getVar("group").num)
 				if (ents[j].getVar("noHurtTimer") >= ents[j].getVar("damageCD"))
 				{
 					for (int k = 0; k < ents[i].weapon.effects.size(); k++)
@@ -1375,17 +1377,20 @@ void tr::execute(sf::String cmd)
 	{
 		if (args[1] == "ent")
 		{
-			auto src = tr::splitStr(args[2], "-");
-			auto tgt = tr::splitStr(args[3], "-");
-			auto ent = World::getLevel(tgt[0])->getEntity(tgt[1]);
-			auto vars = World::getLevel(src[0])->getEntity(src[1])->getVars();
+			auto srcPath = tr::splitStr(args[2], "-");
+			auto tgtPath = tr::splitStr(args[3], "-");
+			auto src = World::getLevel(srcPath[0])->getEntity(srcPath[1]);
+			auto tgt = World::getLevel(tgtPath[0])->getEntity(tgtPath[1]);
+			auto vars = src->getVars();
 			for (int i = 0; i < vars.size(); i++)
 			{
-				ent->setVar(vars[i].name, vars[i].num);
-				ent->setVar(vars[i].name, vars[i].str);
+				tgt->setVar(vars[i].name, vars[i].num);
+				tgt->setVar(vars[i].name, vars[i].str);
 			}
-			ent->deleteVar("posX");
-			ent->deleteVar("posY");
+			tgt->deleteVar("posX");
+			tgt->deleteVar("posY");
+			tgt->weapon = src->weapon;
+			tgt->bauble = src->bauble;
 		}
 	}
 }
