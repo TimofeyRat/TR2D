@@ -582,7 +582,25 @@ void World::Level::update()
 		partCurves[i].update();
 		if (partCurves[i].getVar("joined")) { partCurves.erase(partCurves.begin() + i); }
 	}
-	for (int i = 0; i < ents.size(); i++) { ents[i].update(); }
+	for (int i = 0; i < ents.size(); i++)
+	{
+		ents[i].update();
+		if (ents[i].weapon.id != "null" && ents[i].getVar("attacking"))
+		{
+			if (ents[i].weapon.effects.size()) for (int j = 0; j < ents.size(); j++)
+			{
+				if (i == j) continue;
+				if (ents[j].getHitbox().intersects(ents[i].weapon.spr.getGlobalBounds()))
+				if (ents[j].getVar("noHurtTimer") >= ents[j].getVar("damageCD"))
+				{
+					for (int k = 0; k < ents[i].weapon.effects.size(); k++)
+					{
+						ents[j].addEffect(ents[i].weapon.effects[k]);
+					}
+				}
+			}
+		}
+	}
 	auto *camOwner = getEntity(cam.owner);
 	if (camOwner)
 	{

@@ -206,6 +206,7 @@ void Entity::applyEffects()
 			if (e->var.name == "HP" && e->var.num < 0)
 			{
 				setVar("hurtEffect", 255);
+				setVar("noHurtTimer", 0);
 			}
 			e->timer.restart();
 			e->used++;

@@ -125,7 +125,7 @@
 			<toggle event="key-click-F3" />
 			<font path="ru/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
 			<!-- <txt type="active" appear="set">{Window-int-cursorX} {Window-int-cursorY}</txt> -->
-			<txt type="active" appear="set">{camOwner-int-attacking} {camOwner-int-weaponLayer}</txt>
+			<txt type="active" appear="set">{Greed-num-HP}</txt>
 			<!-- <txt type="active" appear="set">{lvl-str-interactableTrigger}</txt> -->
 			<!-- <txt type="active" appear="set">{Nasake-int-posX} {Nasake-int-posY}</txt> -->
 			<position type="inherit-txt-rel">1 1 1 1 inventory-Debug-FPS</position>

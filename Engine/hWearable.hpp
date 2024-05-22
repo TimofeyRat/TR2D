@@ -2,6 +2,7 @@
 #define trWearable
 
 #include "hInventory.hpp"
+#include "hParticles.hpp"
 
 class Entity;
 

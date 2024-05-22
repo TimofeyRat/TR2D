@@ -330,9 +330,8 @@ CMakeFiles/TR2D.dir/TR2D.cpp.obj: C:\Projects\TR2D\TR2D.cpp \
  C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/box2d/b2_wheel_joint.h \
  C:\Projects\TR2D\Engine/hInventory.hpp \
  C:\Projects\TR2D\Engine/hWearable.hpp \
- C:\Projects\TR2D\Engine/hScript.hpp \
  C:\Projects\TR2D\Engine/hParticles.hpp \
- C:\Projects\TR2D\Engine/hInput.hpp \
+ C:\Projects\TR2D\Engine/hScript.hpp C:\Projects\TR2D\Engine/hInput.hpp \
  C:\Projects\TR2D\Engine/hInventory.hpp \
  C:\Projects\TR2D\Engine/hDialogue.hpp \
  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.2.0/include/c++/iostream \
