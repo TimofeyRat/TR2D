@@ -12,6 +12,7 @@ std::vector<CSManager::WorldCutscene> CSManager::worlds;
 sf::Vector2i CSManager::current;
 bool CSManager::active, CSManager::shouldEnd;
 sf::Music CSManager::music;
+sf::String CSManager::currentMusic;
 
 CSManager::FrameCutscene::Change::Change()
 {
@@ -39,6 +40,7 @@ CSManager::FrameCutscene::Change* CSManager::FrameCutscene::getChange(sf::String
 
 void CSManager::init()
 {
+	music.setVolume(0);
 	active = false;
 	frames.clear();
 	worlds.clear();

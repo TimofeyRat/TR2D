@@ -259,19 +259,40 @@ void World::update()
 		}
 	}
 	else if (brightness < 255) brightness = tr::clamp(tr::lerp(brightness, 255, 5 * Window::getDeltaTime()), 0, 255);
-	music.setVolume(brightness / 255 * musicVolume);
-	if (getCurrentLevel()->musicFilename != currentMusic)
+	sf::String cutsceneMusic;
+	if (auto d = Talk::getCurrentDialogue())
+	if (auto p = d->getCurrentPhrase())
+		cutsceneMusic = CSManager::getMusic(p->name);
+	if (CSManager::active && !cutsceneMusic.isEmpty())
+	{
+		if (currentMusic != cutsceneMusic)
+		{
+			music.setVolume(tr::clamp(music.getVolume() - Window::getDeltaTime() * 100, 0, Window::getVar("musicVolume")));
+		}
+		else
+		{
+			music.setVolume(tr::clamp(music.getVolume() + Window::getDeltaTime() * 100, 0, Window::getVar("musicVolume")));
+		}
+		if (music.getVolume() == 0)
+		{
+			currentMusic = cutsceneMusic;
+			if (!currentMusic.isEmpty()) music.openFromFile(currentMusic);
+			music.play();
+		}
+	}
+	else if (getCurrentLevel()->musicFilename != currentMusic)
 	{
 		currentMusic = getCurrentLevel()->musicFilename;
 		music.openFromFile(currentMusic);
 		musicVolume = getCurrentLevel()->musicVolume * Window::getVar("musicVolume") / 100.0f;
 		music.play();
 	}
+	if (getCurrentLevel()->musicFilename == currentMusic && !CSManager::active) music.setVolume(brightness / 255 * musicVolume);
 	auto *lvl = getCurrentLevel();
 	if (CSManager::active && CSManager::current.x) { CSManager::worlds[CSManager::current.y].update(); }
 	else lvl->cam.doUpdate = true;
 	lvl->update();
-	Input::active = !CSManager::active;
+	Input::active = !CSManager::active && !Talk::active;
 }
 
 void World::draw()
@@ -1171,15 +1192,6 @@ void tr::execute(sf::String cmd)
 			Input::active = false;
 			Talk::currentDialogue = CSManager::getTalk();
 			Talk::active = true;
-			sf::String music;
-			if (auto d = Talk::getCurrentDialogue())
-			if (auto p = d->getCurrentPhrase())
-				auto music = CSManager::getMusic(d->name);
-			if (!music.isEmpty())
-			{
-				CSManager::music.openFromFile(music);
-				CSManager::music.play();
-			}
 		}
 		else if (args[1] == "active") { CSManager::active = std::stoi(args[2].toAnsiString()); }
 		else if (args[1] == "stop")

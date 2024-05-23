@@ -100,6 +100,7 @@ public:
 		void update();
 	};
 	static sf::Music music;
+	static sf::String currentMusic;
 	static void init();
 	static void setCutscene(sf::String name);
 	static sf::String getTalk();

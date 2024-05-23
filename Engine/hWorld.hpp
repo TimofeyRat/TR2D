@@ -184,9 +184,6 @@ public:
 	static void setCurrentLevel(sf::String name);
 	static void saveGame(pugi::xml_node node);
 	static void loadGame(pugi::xml_node node);
-#ifndef trMapEditor
-private:
-#endif
 	static std::map<sf::String, sf::String> ents;
 	static sf::Music music;
 	static std::vector<Level> lvls;

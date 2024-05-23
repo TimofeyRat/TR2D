@@ -633,11 +633,6 @@ void UI::Frame::Object::handle()
 				Window::getDeltaTime() * 5
 			);
 			bg->spr.setColor({bgclr.x, bgclr.y, bgclr.z, bgclr.w});
-			if (CSManager::music.getVolume() > 0)
-			{
-				CSManager::music.setVolume(tr::clamp(CSManager::music.getVolume() - Window::getDeltaTime() * 100, 0, Window::getVar("musicVolume")));
-			}
-			else CSManager::music.stop();
 		}
 		else
 		{
@@ -682,8 +677,15 @@ void UI::Frame::Object::handle()
 			}
 		}
 		//Background
-		if (!CSManager::active) { World::getCurrentLevel()->cam.doUpdate = true; return; }
-		CSManager::music.setVolume(tr::clamp(CSManager::music.getVolume() + Window::getDeltaTime() * 100, 0, Window::getVar("musicVolume")));
+		if (!CSManager::active)
+		{
+			World::getCurrentLevel()->cam.doUpdate = true;
+			CSManager::music.setVolume(tr::clamp(
+				CSManager::music.getVolume() - Window::getDeltaTime() * 10,
+				0, Window::getVar("musicVolume")
+			));
+			return;
+		}
 		if (!CSManager::current.x)
 		{
 			CSManager::FrameCutscene::Change *change = nullptr;
@@ -691,6 +693,33 @@ void UI::Frame::Object::handle()
 			if (cs = &CSManager::frames[CSManager::current.y])
 			 	change = cs->getChange(Talk::getCurrentDialogue()->getCurrentPhrase()->name);
 			auto c = bg->getVar("clr").num;
+			if (CSManager::currentMusic != change->musicPath)
+			{
+				CSManager::music.setVolume(tr::clamp(
+					CSManager::music.getVolume() - Window::getDeltaTime() * 10,
+					0, Window::getVar("musicVolume")
+				));
+			}
+			else
+			{
+				CSManager::music.setVolume(tr::clamp(
+					CSManager::music.getVolume() + Window::getDeltaTime() * 10,
+					0, Window::getVar("musicVolume")
+				));
+			}
+			if (CSManager::music.getVolume() == 0)
+			{
+				CSManager::currentMusic = change->musicPath;
+				if (!CSManager::currentMusic.isEmpty()) CSManager::music.openFromFile(CSManager::currentMusic);
+				CSManager::music.play();
+			}
+			if (!CSManager::currentMusic.isEmpty())
+			{
+				CSManager::music.setVolume(tr::clamp(
+					CSManager::music.getVolume() + Window::getDeltaTime() * 10,
+					0, Window::getVar("musicVolume")
+				));
+			}
 			if (change->anim != cs->frame.getCurrentAnim()->name)
 			{
 				if ((int)c > 0)
@@ -731,6 +760,10 @@ void UI::Frame::Object::handle()
 			bg->spr.setColor({0, 0, 0, 0});
 			auto c = CSManager::worlds[CSManager::current.y].getCurrentChange();
 			if (!CSManager::shouldEnd) Talk::active = (c->startPhraseOnEnd ? c->current >= c->duration : true);
+			CSManager::music.setVolume(tr::clamp(
+				CSManager::music.getVolume() - Window::getDeltaTime() * 10,
+				0, Window::getVar("musicVolume")
+			));
 		}
 	}
 	else if (tr::strContains(handler, "acsMenu"))
