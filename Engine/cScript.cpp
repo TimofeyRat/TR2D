@@ -5,6 +5,8 @@
 #include "hWindow.hpp"
 #include <iostream>
 
+Programmable* Script::currentExecutor;
+
 Script::Script()
 {
 	started = false;
@@ -14,6 +16,8 @@ Script::Script()
 	lua_register(state, "setNum", setNum);
 	lua_register(state, "exec", exec);
 	lua_register(state, "getDeltaTime", getDeltaTime);
+	lua_register(state, "getExecNum", getExecutorNum);
+	lua_register(state, "setExecNum", setExecutorNum);
 }
 
 int Script::getNum(lua_State *L)
@@ -39,15 +43,15 @@ int Script::getNum(lua_State *L)
 
 int Script::setNum(lua_State *L)
 {
-	auto path = tr::splitStr(lua_tostring(L, -1), " ");
+	auto path = tr::splitStr(lua_tostring(L, -2), " ");
 	if (path[0] == "ent")
 	{
-		World::getCurrentLevel()->getEntity(path[1])->setVar(path[2], lua_tonumber(L, -2));
+		World::getCurrentLevel()->getEntity(path[1])->setVar(path[2], lua_tonumber(L, -1));
 	}
 	if (path[0] == "lvl")
 	{
-		if (path[1] == "current") World::getCurrentLevel()->setVar(path[2], lua_tonumber(L, -2));
-		else World::getLevel(path[1])->setVar(path[2], lua_tonumber(L, -2));
+		if (path[1] == "current") World::getCurrentLevel()->setVar(path[2], lua_tonumber(L, -1));
+		else World::getLevel(path[1])->setVar(path[2], lua_tonumber(L, -1));
 	}
 	return 0;
 }
@@ -58,11 +62,24 @@ int Script::exec(lua_State *L)
 	return 0;
 }
 
+int Script::getExecutorNum(lua_State *L)
+{
+	lua_pushnumber(L, currentExecutor->getVar(lua_tostring(L, -1)));
+	return 1;
+}
+
+int Script::setExecutorNum(lua_State *L)
+{
+	currentExecutor->setVar(lua_tostring(L, -2), lua_tonumber(L, -1));
+	return 0;
+}
+
 int Script::getDeltaTime(lua_State *L) { lua_pushnumber(L, Window::getDeltaTime()); return 1; }
 
 void Script::load(sf::String path) { code = AssetManager::getText(path); }
 void Script::execute(sf::String func)
 {
+	if (code.isEmpty()) { return; }
 	int r = luaL_dostring(state, code.toAnsiString().c_str());
 	if (r != LUA_OK)
 	{

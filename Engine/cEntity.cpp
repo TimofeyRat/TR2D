@@ -45,6 +45,8 @@ void Entity::loadFromNode(pugi::xml_node character)
 {
 	name = character.attribute(L"name").as_string();
 	s.loadFromFile(pugi::as_utf8(character.attribute(L"skeleton").as_string()));
+	sf::String src = character.attribute(L"script").as_string();
+	if (!src.isEmpty()) script.load(src);
 	clear();
 	setVar("rotation", 1);
 	for (auto node : character.children())
@@ -72,6 +74,8 @@ void Entity::loadFromNode(pugi::xml_node character)
 void Entity::update()
 {
 	if (!isAlive()) { return; }
+	Script::currentExecutor = this;
+	script.execute("main");
 	setVar("baubleSpeed", 0);
 	if (bauble.id != "null")
 	{

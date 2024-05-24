@@ -6,12 +6,14 @@
 #include "hRigidbody.hpp"
 #include "hInventory.hpp"
 #include "hWearable.hpp"
+#include "hScript.hpp"
 
 class Entity : public Programmable
 {
 private:
 	Skeleton s;
 	Rigidbody rb;
+	Script script;
 	void updateAnim();
 	std::vector<Inventory::Effect> effects;
 	void applyEffects();
