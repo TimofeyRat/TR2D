@@ -9,6 +9,7 @@
 		collisionGroup="-1" />
 	<variable name="HP" num="10" />
 	<variable name="damageCooldown" num="0.5" />
+	<variable name="group" num="1" />
 	<variable name="speed" num="0.5" /><variable name="maxSpeed" num="0.5" />
 	<variable name="speedX" num="30" /><variable name="speedY" num="2" />
 	<variable name="il" str="idleLeft" /><variable name="ir" str="idleRight" />

@@ -19,7 +19,7 @@
 	<variable name="speedX" num="35" /><variable name="sv" num="1" />
 	<variable name="speedY" num="2" /><variable name="ogd" num="2" />
 	<variable name="wl" string="walkLeft" /><variable name="wr" string="walkRight" />
-	<variable name="il" string="idleLeft" /><variable name="ir" string="idleRight" />
+	<variable name="il" string="idle" /><variable name="ir" string="idle" />
 	<variable name="sl" string="stopLeft" /><variable name="sr" string="stopRight" />
 	<variable name="jl" string="jumpLeft" /><variable name="jr" string="jumpRight" />
 	<variable name="fl" string="fallLeft" /><variable name="fr" string="fallRight" />

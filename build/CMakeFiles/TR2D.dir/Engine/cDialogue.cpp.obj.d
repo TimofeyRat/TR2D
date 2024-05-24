@@ -333,6 +333,12 @@ CMakeFiles/TR2D.dir/Engine/cDialogue.cpp.obj: \
  C:\Projects\TR2D\Engine\hInventory.hpp \
  C:\Projects\TR2D\Engine\hWearable.hpp \
  C:\Projects\TR2D\Engine\hParticles.hpp \
+ C:\Projects\TR2D\Engine\hScript.hpp \
+ C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/lua.h \
+ C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/luaconf.h \
+ C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/lualib.h \
+ C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/lua.h \
+ C:/Program\ Files/mingw64/x86_64-w64-mingw32/include/lauxlib.h \
  C:\Projects\TR2D\Engine\hWindow.hpp \
  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.2.0/include/c++/iostream \
  C:/Program\ Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.2.0/include/c++/istream \

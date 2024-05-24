@@ -2,6 +2,7 @@
 #define trWorld
 
 #include "hEntity.hpp"
+#include "hScript.hpp"
 #include "hParticles.hpp"
 
 #include <SFML/Audio.hpp>
@@ -133,6 +134,13 @@ public:
 		LightSource();
 		LightSource(sf::Color clr, sf::Vector2f pos, float r, float a, float f);
 	};
+	struct ScriptExecutor
+	{
+		Script source;
+		sf::String func;
+		ScriptExecutor();
+		ScriptExecutor(sf::String path, sf::String function);
+	};
 	struct Level : public Programmable
 	{
 		Map map;
@@ -146,6 +154,7 @@ public:
 		std::vector<Particle> parts;
 		std::vector<ParticleCurve> partCurves;
 		std::vector<LightSource> lights;
+		std::vector<ScriptExecutor> scripts;
 		sf::String name;
 		sf::Texture *bgTex;
 		sf::Sprite bgSpr;
@@ -160,7 +169,6 @@ public:
 		sf::Texture bg, lightMap;
 		sf::RenderTexture *objects, *entsLayer;
 		Level();
-		~Level();
 		void reset();
 		void update();
 		void draw();

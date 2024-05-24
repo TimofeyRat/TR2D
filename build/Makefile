@@ -436,6 +436,30 @@ Engine/cRigidbody.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cRigidbody.cpp.s
 .PHONY : Engine/cRigidbody.cpp.s
 
+Engine/cScript.obj: Engine/cScript.cpp.obj
+.PHONY : Engine/cScript.obj
+
+# target to build an object file
+Engine/cScript.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cScript.cpp.obj
+.PHONY : Engine/cScript.cpp.obj
+
+Engine/cScript.i: Engine/cScript.cpp.i
+.PHONY : Engine/cScript.i
+
+# target to preprocess a source file
+Engine/cScript.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cScript.cpp.i
+.PHONY : Engine/cScript.cpp.i
+
+Engine/cScript.s: Engine/cScript.cpp.s
+.PHONY : Engine/cScript.s
+
+# target to generate assembly for a file
+Engine/cScript.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\TR2D.dir\build.make CMakeFiles/TR2D.dir/Engine/cScript.cpp.s
+.PHONY : Engine/cScript.cpp.s
+
 Engine/cUI.obj: Engine/cUI.cpp.obj
 .PHONY : Engine/cUI.obj
 
@@ -651,6 +675,9 @@ help:
 	@echo ... Engine/cRigidbody.obj
 	@echo ... Engine/cRigidbody.i
 	@echo ... Engine/cRigidbody.s
+	@echo ... Engine/cScript.obj
+	@echo ... Engine/cScript.i
+	@echo ... Engine/cScript.s
 	@echo ... Engine/cUI.obj
 	@echo ... Engine/cUI.i
 	@echo ... Engine/cUI.s

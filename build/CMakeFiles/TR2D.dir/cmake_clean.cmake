@@ -25,6 +25,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/TR2D.dir/Engine/cProgrammable.cpp.obj.d"
   "CMakeFiles/TR2D.dir/Engine/cRigidbody.cpp.obj"
   "CMakeFiles/TR2D.dir/Engine/cRigidbody.cpp.obj.d"
+  "CMakeFiles/TR2D.dir/Engine/cScript.cpp.obj"
+  "CMakeFiles/TR2D.dir/Engine/cScript.cpp.obj.d"
   "CMakeFiles/TR2D.dir/Engine/cUI.cpp.obj"
   "CMakeFiles/TR2D.dir/Engine/cUI.cpp.obj.d"
   "CMakeFiles/TR2D.dir/Engine/cWearable.cpp.obj"

@@ -123,6 +123,7 @@ void Rigidbody::reloadFixture()
 	if (fixture != nullptr) { body->DestroyFixture(fixture); }
 	fixDef.shape = &shape;
 	fixture = body->CreateFixture(&fixDef);
+	if (!userData.isEmpty()) { body->GetUserData().pointer = (uintptr_t)&userData; }
 }
 
 void Rigidbody::setUserData(sf::String data)
@@ -130,4 +131,9 @@ void Rigidbody::setUserData(sf::String data)
 	userData = data;
 	bodyDef.userData.pointer = (uintptr_t)&userData;
 	if (body) body->GetUserData().pointer = (uintptr_t)&userData;
+}
+
+sf::String Rigidbody::getUserData()
+{
+	return userData;
 }

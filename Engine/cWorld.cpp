@@ -235,6 +235,13 @@ void World::loadFromFile(std::string filename)
 				light.attribute(L"field").as_float()
 			));
 		}
+		for (auto script : lvl.children(L"script"))
+		{
+			level.scripts.push_back({
+				script.attribute(L"path").as_string(),
+				script.attribute(L"mainFunc").as_string()
+			});
+		}
 		World::lvls.push_back(level);
 	}
 	active = true;
@@ -350,14 +357,21 @@ sf::Vector2f World::Map::getPixelSize()
 	);
 }
 
+World::ScriptExecutor::ScriptExecutor()
+{
+	source = Script();
+	func = "";
+}
+
+World::ScriptExecutor::ScriptExecutor(sf::String path, sf::String main)
+{
+	source.load(path);
+	func = main;
+}
+
 World::Level::Level()
 {
 	world = nullptr;
-	reset();
-}
-
-World::Level::~Level()
-{
 	reset();
 }
 
@@ -379,9 +393,9 @@ void World::Level::reset()
 	parts.clear();
 	partCurves.clear();
 	lights.clear();
+	scripts.clear();
 	bgBounds = {0, 0, 0, 0};
 	started = false;
-	if (world != nullptr) { delete world; }
 	musicVolume = 100;
 	clear();
 	cl = WorldCL();
@@ -575,8 +589,14 @@ void World::Level::update()
 		partCurves[i].update();
 		if (partCurves[i].getVar("joined")) { partCurves.erase(partCurves.begin() + i); }
 	}
+	for (int i = 0; i < scripts.size(); i++) { scripts[i].source.execute(scripts[i].func); }
 	for (int i = 0; i < ents.size(); i++)
 	{
+		if (ents[i].getRigidbody()->getUserData().isEmpty())
+		{
+			ents[i].getRigidbody()->reset(world);
+			ents[i].getRigidbody()->setUserData("ent_" + ents[i].name);
+		}
 		ents[i].update();
 		if (ents[i].weapon.id != "null" && ents[i].getVar("attacking"))
 		{
@@ -1368,8 +1388,6 @@ void tr::execute(sf::String cmd)
 		auto l = World::getCurrentLevel();
 		l->ents.push_back(Entity(World::getEntFile(args[1])));
 		auto e = &l->ents[l->ents.size() - 1];
-		e->getRigidbody()->reset(l->world);
-		e->getRigidbody()->setUserData(sf::String("ent_") + e->name);
 		e->setPosition({
 			std::stof(args[2].toAnsiString()),
 			std::stof(args[3].toAnsiString())
