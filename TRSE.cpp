@@ -577,8 +577,8 @@ void updateUI()
 		ui[1].setString("Length: " + std::to_string(b->length));
 		ui[2].setString("Layer: " + std::to_string(b->layer));
 		ui[3].setString("Angle: " + std::to_string(b->angle));
-		ui[5].setString("Sprite angle offset:\n" + std::to_string(b->angle_origin.x));
-		ui[6].setString("Root: " + std::to_string(b->root));
+		ui[4].setString("Sprite angle offset:\n" + std::to_string(b->angle_origin.x));
+		ui[5].setString("Root: " + std::to_string(b->root));
 		if (auto a = skeleton.getCurrentAnim())
 		if (auto changer = a->getChanger(currentBone))
 		if (changer->frames.size())
@@ -685,9 +685,9 @@ void execute(int page, int id)
 		if (id == BoneRoot) { typing = true; enter.setString("New root|"); }
 		if (id == BoneNL)
 		{
-			currentFrame = skeleton.getCurrentAnim()->
-				getChanger(currentBone)->
-				getFrame(currentFrame)->timestamp;
+			if (auto anim = skeleton.getCurrentAnim())
+			if (auto changer = anim->getChanger(currentBone))
+			if (auto frame = changer->getFrame(currentFrame)) currentFrame = frame->timestamp;
 			bool p = play;
 			play = false;
 			skeleton.update();
@@ -1082,7 +1082,11 @@ int main()
 						if (ui[i].getGlobalBounds().contains({
 							event.mouseButton.x,
 							event.mouseButton.y
-						})) execute(currentPage, i);
+						}))
+						{
+							execute(currentPage, i);
+							std::cout << currentPage << "|" << i << std::endl;
+						}
 					}
 				}
 			}

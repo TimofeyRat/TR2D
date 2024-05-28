@@ -1,4 +1,4 @@
-<entity name="GreenElemental" skeleton="ru/skeletons/nasake.trskeleton" script="ru/scripts/gr_el.lua">
+<entity name="GreenElemental" skeleton="ru/skeletons/gr_el.trskeleton" script="ru/scripts/gr_el.lua" weapon="lighter" >
 	<physics
 		friction="0.5"
 		mass="1"
@@ -9,10 +9,17 @@
 		collisionGroup="-1" />
 	<variable name="HP" num="10" />
 	<variable name="damageCooldown" num="0.5" />
+	<variable name="handBone" num="1" />
+	<variable name="weaponLayer" num="1" />
 	<variable name="group" num="1" />
-	<variable name="speed" num="0.5" /><variable name="maxSpeed" num="0.5" />
-	<variable name="speedX" num="30" /><variable name="speedY" num="2" />
-	<variable name="il" str="idleLeft" /><variable name="ir" str="idleRight" />
-	<variable name="wl" str="idleLeft" /><variable name="wr" str="idleRight" />
-	<variable name="scale" num="4" />
+	<variable name="damageCooldown" num="0.5" />
+	<variable name="speed" num="0.5" /><variable name="maxSpeed" num="1" />
+	<variable name="speedX" num="20" /><variable name="speedY" num="2" />
+	<variable name="il" string="idleLeft" /><variable name="ir" string="idleRight" />
+	<variable name="wl" string="idleLeft" /><variable name="wr" string="idleRight" />
+	<variable name="sl" string="idleLeft" /><variable name="sr" string="idleRight" />
+	<variable name="jl" string="idleLeft" /><variable name="jr" string="idleRight" />
+	<variable name="fl" string="idleLeft" /><variable name="fr" string="idleRight" />
+	<variable name="al-fist" string="attackLeft" /><variable name="ar-fist" string="attackRight" />
+	<variable name="scale" num="8" /><variable name="ogd" num="1" />
 </entity>

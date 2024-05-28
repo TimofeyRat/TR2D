@@ -9,6 +9,7 @@
 #include "hCutscene.hpp"
 
 #include <iostream>
+#include <filesystem>
 
 sf::String UI::currentFrame, UI::currentFile;
 std::vector<UI::Frame> UI::frames;
@@ -427,13 +428,38 @@ bool UI::Frame::Object::Action::isAvailable(bool objActive)
 	for (int i = 0; i < conds.size(); i++)
 	{
 		auto args = tr::splitStr(conds[i], "-");
-		if (args[0] == "null") return true;
-		else if (args[0] == "active")
+		if (args[0] == "active")
 		{
-			if ((args[1] == "true" && objActive) || (args[1] == "false" && !objActive)) return true;
+			if (!(
+				(args[1] == "true" && objActive) ||
+				(args[1] == "false" && !objActive)
+			)) return false;
+		}
+		else if (args[0] == "worldActive")
+		{
+			if (!(
+				(args[1] == "true" && World::active) ||
+				(args[1] == "false" && !World::active)
+			)) return false;
+		}
+		else if (args[0] == "worldLoaded")
+		{
+			auto active = !World::currentFile.isEmpty();
+			if (!(
+				(args[1] == "true" && active) ||
+				(args[1] == "false" && !active)
+			)) return false;
+		}
+		else if (args[0] == "fileExists")
+		{
+			auto exists = std::filesystem::exists(args[1].toAnsiString());
+			if (!(
+				(exists && args[2] == "true") ||
+				(!exists && args[2] == "false")
+			)) return false;
 		}
 	}
-	return false;
+	return true;
 }
 
 UI::Frame::Object::Object()

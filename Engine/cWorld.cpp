@@ -592,6 +592,7 @@ void World::Level::update()
 	for (int i = 0; i < scripts.size(); i++) { scripts[i].source.execute(scripts[i].func); }
 	for (int i = 0; i < ents.size(); i++)
 	{
+		if (!ents[i].isAlive()) continue;
 		if (ents[i].getRigidbody()->getUserData().isEmpty())
 		{
 			ents[i].getRigidbody()->reset(world);

@@ -47,7 +47,7 @@
 			<toggle event="mouseHover" />
 			<action
 				event="mouse-click-Left"
-				condition="active-true">ui load ru/ui/inventory.trui;world setActive 1</action>
+				condition="active-true;worldLoaded-true">ui load ru/ui/inventory.trui;world setActive 1</action>
 				<!-- condition="active-true">ui-load-ru/ui/dialogue.trui;cutscene-start-intro</action> -->
 			<texture path="ru/anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
 			<position type="inherit-obj-rel">0 0 0 0 menu-continueGame</position>
@@ -71,7 +71,7 @@
 			<toggle event="mouseHover" />
 			<action
 				event="mouse-click-Left"
-				condition="active-true">ui load ru/ui/inventory.trui;talk init;loadGame</action>
+				condition="active-true;fileExists-ru/global/save.trconf-true">ui load ru/ui/inventory.trui;talk init;loadGame</action>
 				<!-- condition="active-true">ui-load-ru/ui/dialogue.trui;cutscene-start-intro</action> -->
 			<texture path="ru/anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
 			<position type="inherit-obj-rel">0 0 0 0 menu-loadGame</position>

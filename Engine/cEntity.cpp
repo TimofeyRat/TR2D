@@ -47,6 +47,8 @@ void Entity::loadFromNode(pugi::xml_node character)
 	s.loadFromFile(pugi::as_utf8(character.attribute(L"skeleton").as_string()));
 	sf::String src = character.attribute(L"script").as_string();
 	if (!src.isEmpty()) script.load(src);
+	weapon = Inventory::getWeapon(character.attribute(L"weapon").as_string());
+	bauble = Inventory::getBauble(character.attribute(L"bauble").as_string());
 	clear();
 	setVar("rotation", 1);
 	for (auto node : character.children())
@@ -240,7 +242,7 @@ void Entity::updateRB(float scale)
 		}
 	}
 	auto x = body->GetLinearVelocity().x, dx = getVar("dx").num, maxSpeed = getVar("maxSpeed").num * speed * scale;
-	if (getVar("attacking")) { maxSpeed /= 2; }
+	if (getVar("attacking") && hasVar("slowOnAttack") && getVar("slowOnAttack")) { maxSpeed /= 2; }
 	else
 	{
 		body->ApplyForceToCenter({dx * getVar("speedX") * speed * scale, 0}, true);
