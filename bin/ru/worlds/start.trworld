@@ -10,7 +10,7 @@
 	<trigger pos_str="1152.000000 0.000000" size_str="32.000000 480.000000" name_str="wall" friction_num="0" static_num="1" collision_num="1" x_num="1152" y_num="0" w_num="32" h_num="480" />
 	<trigger pos_str="0.000000 256.000000" size_str="128.000000 220.000000" name_str="gotoHouse" inter_str="world setLevel house1|passthrough ent room-Nasake house1-Nasake" collision_num="0" x_num="0" y_num="256" w_num="128" h_num="220" />
 	<trigger pos_str="0 0" size_str="1152 480" name_str="cutscene" static_num="1" collision_num="0" enter_str="cutscene start room" enters_num="1" x_num="0" y_num="0" w_num="1152" h_num="480" />
-	<trigger name_str="nightstand" pos_str="530 390" size_str="118 86" inter_str="inv addItem weapon:lighter| world playSound ru/audio/sfx/addItem.wav 589 433 1000" usages_num="1" />
+	<trigger name_str="nightstand" pos_str="530 390" size_str="118 86" inter_str='inv addItem weapon:lighter|world playSound ru/audio/sfx/addItem.wav 589 433 1000|window showHint "Press [E] to open inventory." 5' usages_num="1" />
 	<entity name="Nasake" pos="500.000000 370.000000" />
 	<entity name="Greed" pos="0.000000 0.000000" />
 	<control ent="Nasake" controller="keyboard" />

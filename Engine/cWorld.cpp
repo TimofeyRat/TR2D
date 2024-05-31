@@ -184,12 +184,16 @@ void World::loadFromFile(std::string filename)
 				auto name = tr::splitStr(attr.name(), "_");
 				if (name[1] == "str")
 				{
-					prompt += name[0] + "=str=\"" + attr.as_string() + "\";";
+					prompt += name[0] + "=str=" + attr.as_string() + ";";
 				}
 				if (name[1] == "num")
 				{
 					prompt += name[0] + "=num=" + attr.as_string() + ";";
 				}
+			}
+			if (!trigger.text().empty())
+			{
+				prompt += sf::String("inter=str=") + trigger.text().as_string();
 			}
 			level.triggers.push_back(Trigger(prompt));
 		}
@@ -1140,6 +1144,11 @@ void tr::execute(sf::String cmd)
 		else if (args[1] == "setNum")
 		{
 			Window::setVar(args[2], std::stof(args[3].toAnsiString()));
+		}
+		else if (args[1] == "showHint")
+		{
+			Window::setVar("hint", args[2]);
+			Window::setVar("hintTimer", std::stof(args[3].toAnsiString()));
 		}
 	}
 	else if (args[0] == "world")

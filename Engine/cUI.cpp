@@ -863,6 +863,17 @@ void UI::Frame::Object::handle()
 			txt->activeTxt = text;
 		}
 	}
+	else if (tr::strContains(handler, "hint"))
+	{
+		auto hint = Window::getVar("hint").str;
+		auto timer = Window::getVar("hintTimer").num;
+		if (timer <= 0) { Window::setVar("hint", ""); }
+		Window::setVar("hintTimer", timer - Window::getDeltaTime());
+
+		auto txt = getText("hint");
+		txt->activeTxt = hint;
+		txt->idleTxt = hint;
+	}
 }
 
 void UI::Frame::Object::draw()
@@ -1191,6 +1202,11 @@ bool UI::updateToggle(bool active, sf::String toggle, sf::FloatRect hitbox)
 	{
 		auto *txt = getFrame(args[1])->getObject(args[2])->getText(args[3]);
 		return txt->txt.getString().getSize() == txt->activeTxt.getSize() && txt->active;
+	}
+	else if (tr::strContains(args[0], "txtNotEmpty"))
+	{
+		auto *txt = getFrame(args[1])->getObject(args[2])->getText(args[3]);
+		return !txt->txt.getString().isEmpty();
 	}
 	else if (tr::strContains(args[0], "btn"))
 	{

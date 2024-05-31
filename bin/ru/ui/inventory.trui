@@ -99,11 +99,34 @@
 	</object>
 	<object name="hint">
 		<toggle event="lvl-showInteraction" />
+		<update type="hint" />
 		<text name="hint">
+			<toggle event="txtNotEmpty-inventory-hint-hint" />
+			<font path="ru/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
+			<txt type="idle" appear="set" />
+			<txt type="active" appear="set" />
+			<position type="relative-set">0.5 1 0.5 1</position>
+			<origin type="relative-lerp">0.5 0 0.5 1</origin>
+			<color state="idle" type="lerp">255 255 255 255</color><outline state="idle" type="lerp">0 0 0 255</outline>
+			<color state="active" type="lerp">255 255 255 255</color><outline state="active" type="lerp">0 0 0 255</outline>
+		</text>
+		<text name="interaction">
 			<toggle event="obj-inventory-hint" />
 			<font path="ru/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
 			<txt type="idle" appear="set">Нажмите [{input-main-interacting}] для взаимодействия.</txt>
 			<txt type="active" appear="set">Нажмите [{input-main-interacting}] для взаимодействия.</txt>
+			<position type="relative-set">0.5 1 0.5 1</position>
+			<origin type="relative-lerp">0.5 0 0.5 1</origin>
+			<color state="idle" type="lerp">255 255 255 255</color><outline state="idle" type="lerp">0 0 0 255</outline>
+			<color state="active" type="lerp">255 255 255 255</color><outline state="active" type="lerp">0 0 0 255</outline>
+		</text>
+	</object>
+	<object name="debug">
+		<text name="debug">
+			<toggle event="key-click-F3" />
+			<font path="ru/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
+			<txt type="idle" appear="set" />
+			<txt type="active" appear="set">{Window-num-hintTimer}</txt>
 			<position type="relative-set">0.5 1 0.5 1</position>
 			<origin type="relative-lerp">0.5 0 0.5 1</origin>
 			<color state="idle" type="lerp">255 255 255 255</color><outline state="idle" type="lerp">0 0 0 255</outline>
