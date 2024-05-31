@@ -1,4 +1,4 @@
-<entity name="Nasake" skeleton="ru/skeletons/nasake.trskeleton">
+<entity name="Nasake" skeleton="ru/skeletons/nasake.trskeleton" script="ru/scripts/nasake.lua">
 	<physics
 		friction="0.5"
 		mass="1"
@@ -25,5 +25,6 @@
 	<variable name="fl" string="fallLeft" /><variable name="fr" string="fallRight" />
 	<variable name="il-fist" string="idleLeftFist" /><variable name="ir-fist" string="idleRightFist" />
 	<variable name="al-fist" string="attackLeftFist" /><variable name="ar-fist" string="attackRightFist" />
-	<variable name="scale" num="3.5" /><variable name="slowOnAttack" num="1" />
+	<variable name="scale" num="3.5" />
+	<variable name="attackSound" string="ru/audio/sfx/hit.ogg" />
 </entity>

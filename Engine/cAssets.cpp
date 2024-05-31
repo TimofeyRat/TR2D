@@ -219,7 +219,7 @@ void AssetManager::load()
 		{
 			textures.push_back(Texture(file));
 		}
-		else if (tr::strContains(file, ".ogg"))
+		else if (tr::strContains(file, ".ogg") || tr::strContains(file, ".wav") || tr::strContains(file, ".mp3"))
 		{
 			sounds.push_back(Sound(file));
 		}

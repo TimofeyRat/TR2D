@@ -689,6 +689,8 @@ void World::Level::draw()
 	mapShader.setUniform("lightMap", lightMap);
 	screen.draw(mapSpr, &mapShader);
 	cam.update(mapSize);
+	setVar("camX", cam.view.getCenter().x);
+	setVar("camY", cam.view.getCenter().y);
 	sf::Listener::setPosition(cam.view.getCenter().x, 0, cam.view.getCenter().y);
 	sf::FloatRect camRect = {cam.view.getCenter() - cam.view.getSize() / 2.0f, cam.view.getSize()};
 	entsLayer->clear({0, 0, 0, 0});

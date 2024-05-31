@@ -127,6 +127,7 @@ void Inventory::init()
 				wpn.rotation = node.attribute(L"rotation").as_float();
 				wpn.scale = node.attribute(L"scale").as_float();
 				wpn.type = node.attribute(L"type").as_string();
+				wpn.showOnIdle = node.attribute(L"showOnIdle").as_bool();
 				for (auto effect : node.children())
 				{
 					if (sf::String(effect.name()) == "effect")

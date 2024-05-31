@@ -18,6 +18,8 @@ Script::Script()
 	lua_register(state, "getDeltaTime", getDeltaTime);
 	lua_register(state, "getExecNum", getExecutorNum);
 	lua_register(state, "setExecNum", setExecutorNum);
+	lua_register(state, "getExecStr", getExecutorStr);
+	lua_register(state, "setExecStr", setExecutorStr);
 }
 
 int Script::getNum(lua_State *L)
@@ -71,6 +73,18 @@ int Script::getExecutorNum(lua_State *L)
 int Script::setExecutorNum(lua_State *L)
 {
 	currentExecutor->setVar(lua_tostring(L, -2), lua_tonumber(L, -1));
+	return 0;
+}
+
+int Script::getExecutorStr(lua_State *L)
+{
+	lua_pushstring(L, currentExecutor->getVar(lua_tostring(L, -1)).str.toAnsiString().c_str());
+	return 1;
+}
+
+int Script::setExecutorStr(lua_State *L)
+{
+	currentExecutor->setVar(lua_tostring(L, -2), lua_tostring(L, -1));
 	return 0;
 }
 

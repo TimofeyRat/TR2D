@@ -18,6 +18,7 @@ public:
 	sf::Vector2f origin;
 	float rotation, scale;
 	sf::String type;
+	bool showOnIdle;
 	Weapon();
 	void draw(sf::RenderTarget *target, Entity *owner);
 };

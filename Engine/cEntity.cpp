@@ -128,7 +128,7 @@ void Entity::draw(sf::RenderTarget *target, const sf::RenderStates &states)
 	{
 		s.drawLayer(i, target, states);
 		if (getVar("baubleLayer").num == i && bauble.id != "null" && !getVar("moveX")) bauble.draw(target, this);
-		if (getVar("weaponLayer").num == i && weapon.id != "null" && getVar("attacking")) weapon.draw(target, this);
+		if (getVar("weaponLayer").num == i && weapon.id != "null" && (weapon.showOnIdle || getVar("attacking"))) weapon.draw(target, this);
 	}
 	if (Window::getVar("debug")) rb.draw(target);
 }
@@ -257,6 +257,7 @@ void Entity::updateRB(float scale)
 void Entity::updateAttack()
 {
 	setVar("state", weapon.type);
+	setVar("attacked", 0);
 	if (weapon.id == "null")
 	{
 		setVar("attacking", 0);
@@ -269,6 +270,7 @@ void Entity::updateAttack()
 	{
 		setVar("attacking", 1);
 		weapon.timer.restart();
+		setVar("attacked", 1);
 	}
 }
 

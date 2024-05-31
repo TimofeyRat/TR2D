@@ -14,6 +14,7 @@ Weapon::Weapon()
 	rotation = 0;
 	scale = 1;
 	type = "";
+	showOnIdle = false;
 };
 
 void Weapon::draw(sf::RenderTarget *target, Entity *owner)
