@@ -136,6 +136,61 @@ bool Input::isJoyJustPressed(sf::Uint32 id, sf::Uint32 btn)
 	return e.type == sf::Event::JoystickButtonPressed && e.joystickButton.joystickId == id && e.joystickButton.button == button;
 }
 
+bool Input::isKeyJustReleased(sf::Keyboard::Key key)
+{
+	return Window::getEvent(sf::Event::KeyReleased).key.code == key;
+}
+
+bool Input::isMBJustReleased(sf::Mouse::Button btn)
+{
+	auto e = Window::getEvent(sf::Event::MouseButtonReleased);
+	return e.type == sf::Event::MouseButtonReleased && e.mouseButton.button == btn;
+}
+
+bool Input::isJoyJustReleased(sf::Uint32 id, sf::Uint32 btn)
+{
+	auto vendor = getVendor(id);
+	auto button = sf::Joystick::getButtonCount(id);
+	auto e1 = Window::getEvent(sf::Event::JoystickMoved).joystickMove;
+	if (vendor == xVendor)
+	{
+		switch (btn)
+		{
+			case jSouth: button = xA; break;
+			case jNorth: button = xY; break;
+			case jWest: button = xX; break;
+			case jEast: button = xB; break;
+			case jLB: button = xLB; break;
+			case jRB: button = xRB; break;
+			case jLT:
+				return e1.joystickId == id && e1.axis == sf::Joystick::Z && e1.position > 5;
+				break;
+			case jRT:
+				return e1.joystickId == id && e1.axis == sf::Joystick::Z && e1.position < 5;
+				break;
+			case jShare: button = xShare; break;
+			case jLS: button = xLS; break;
+			case jRS: button = xRS; break;
+		}
+	}
+	if (vendor == dsVendor)
+	{
+		switch (btn)
+		{
+			case jSouth: button = dsCross; break;
+			case jNorth: button = dsTriangle; break;
+			case jWest: button = dsSquare; break;
+			case jEast: button = dsCircle; break;
+			case jLB: button = dsL1; break;
+			case jRB: button = dsR1; break;
+			case jLT: button = dsL2; break;
+			case jRT: button = dsR2; break;
+		}
+	}
+	auto e = Window::getEvent(sf::Event::JoystickButtonReleased);
+	return e.type == sf::Event::JoystickButtonReleased && e.joystickButton.joystickId == id && e.joystickButton.button == button;
+}
+
 sf::Vector2u Input::getPressedJoyButton()
 {
 	auto e = Window::waitEvent(sf::Event::JoystickButtonPressed).joystickButton;

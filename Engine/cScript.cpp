@@ -109,3 +109,12 @@ void Script::execute(sf::String func)
 	lua_getglobal(state, func.toAnsiString().c_str());
 	lua_call(state, 0, 0);
 }
+
+Programmable *Script::getProgrammable(sf::String name)
+{
+	auto path = tr::splitStr(name, "-");
+	if (path[0] == "Window") return Window::getProgrammable();
+	if (path[0] == "camOwner") return World::getCameraOwner();
+	if (path[0] == "lvl") return World::getCurrentLevel();
+	else return World::getCurrentLevel()->getEntity(path[1]);
+}

@@ -102,6 +102,9 @@ public:
 	static bool isMBJustPressed(sf::Mouse::Button btn);
 	static bool isJoyPressed(sf::Uint32 id, sf::Uint32 btn);
 	static bool isJoyJustPressed(sf::Uint32 id, sf::Uint32 btn);
+	static bool isKeyJustReleased(sf::Keyboard::Key key);
+	static bool isMBJustReleased(sf::Mouse::Button btn);
+	static bool isJoyJustReleased(sf::Uint32 id, sf::Uint32 btn);
 	static float getJoyAxis(sf::Uint32 id, sf::Uint32 axis);
 	static int getVendor(sf::Uint32 id);
 	static bool isJoyConnected(sf::Uint32 id);

@@ -270,6 +270,7 @@ void World::update()
 		}
 	}
 	else if (brightness < 255) brightness = tr::clamp(tr::lerp(brightness, 255, 5 * Window::getDeltaTime()), 0, 255);
+	musicVolume = getCurrentLevel()->musicVolume * Window::getVar("musicVolume") / 100.0f;
 	sf::String cutsceneMusic;
 	if (auto d = Talk::getCurrentDialogue())
 	if (auto p = d->getCurrentPhrase())
@@ -295,7 +296,6 @@ void World::update()
 	{
 		currentMusic = getCurrentLevel()->musicFilename;
 		music.openFromFile(currentMusic);
-		musicVolume = getCurrentLevel()->musicVolume * Window::getVar("musicVolume") / 100.0f;
 		music.play();
 	}
 	if (getCurrentLevel()->musicFilename == currentMusic && !CSManager::active) music.setVolume(brightness / 255 * musicVolume);

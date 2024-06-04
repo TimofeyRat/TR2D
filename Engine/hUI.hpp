@@ -74,6 +74,7 @@ public:
 			void draw();
 			Sprite *getSprite(sf::String name);
 			Text *getText(sf::String name);
+			Progress *getProgress(sf::String name);
 			void handle();
 		};
 		std::vector<Object> objects;

@@ -874,6 +874,23 @@ void UI::Frame::Object::handle()
 		txt->activeTxt = hint;
 		txt->idleTxt = hint;
 	}
+	else if (tr::strContains(handler, "scroller"))
+	{
+		auto bar = getProgress("scroller");
+		if (bar->bg.getGlobalBounds().contains(Input::getMousePos()) &&
+			Input::isMBJustPressed(sf::Mouse::Left)) { bar->active = true; }
+		if (Input::isMBJustReleased(sf::Mouse::Left)) { bar->active = false; }
+		if (!bar->active) return;
+
+		auto mx = Input::getMousePos().x;
+		auto bx = bar->bg.getGlobalBounds().left;
+		auto range = bar->max - bar->min;
+
+		bar->value = tr::clamp((mx - bx) / bar->bg.getGlobalBounds().width * range, bar->min, bar->max);
+
+		auto path = tr::splitStr(bar->target, "-");
+		Script::getProgrammable(bar->target)->setVar(path[2], bar->value);
+	}
 }
 
 void UI::Frame::Object::draw()
@@ -901,6 +918,15 @@ UI::Frame::Object::Text *UI::Frame::Object::getText(sf::String name)
 	for (int i = 0; i < texts.size(); i++)
 	{
 		if (texts[i].getVar("name") == name) { return &texts[i]; }
+	}
+	return nullptr;
+}
+
+UI::Frame::Object::Progress *UI::Frame::Object::getProgress(sf::String name)
+{
+	for (int i = 0; i < bars.size(); i++)
+	{
+		if (bars[i].getVar("name") == name) { return &bars[i]; }
 	}
 	return nullptr;
 }
@@ -1238,14 +1264,11 @@ sf::String UI::parseText(sf::String txt)
 	while (tr::strContains(result, "{"))
 	{
 		auto start = result.find("{"), end = result.find("}");
-		auto var = tr::splitStr(result.substring(start + 1, end - start - 1), "-");
+		auto path = result.substring(start + 1, end - start - 1);
+		auto var = tr::splitStr(path, "-");
 		sf::String value;
-		Programmable *prog = nullptr;
-		if (var[0] == "Window") prog = Window::getProgrammable();
-		else if (var[0] == "camOwner") prog = World::getCameraOwner();
-		else if (var[0] == "lvl") { prog = World::getCurrentLevel(); }
-		else if (var[0] == "input") { prog = Window::getProgrammable(); value = Input::getControl(var[1])->getKeyByVar(var[2])->toString(); }
-		else prog = World::getCurrentLevel()->getEntity(var[0]);
+		Programmable *prog = Script::getProgrammable(path);
+		if (var[0] == "input" && !prog) { prog = Window::getProgrammable(); value = Input::getControl(var[1])->getKeyByVar(var[2])->toString(); }
 		if (prog == nullptr) { result.replace(start, end - start + 1, "?"); continue; }
 		if (var[1] == "str") value = prog->getVar(var[2]);
 		else if (var[1] == "int") value = std::to_string((int)prog->getVar(var[2]).num);

@@ -1,158 +1,158 @@
 [
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -o CMakeFiles\\TR2D.dir\\TR2D.cpp.obj -c C:\\Projects\\TR2D\\TR2D.cpp",
-  "file": "C:/Projects/TR2D/TR2D.cpp",
-  "output": "CMakeFiles/TR2D.dir/TR2D.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -o CMakeFiles/TR2D.dir/TR2D.cpp.o -c /home/tim/Projects/TR2D/TR2D.cpp",
+  "file": "/home/tim/Projects/TR2D/TR2D.cpp",
+  "output": "CMakeFiles/TR2D.dir/TR2D.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -o CMakeFiles\\TR2D.dir\\Engine\\cAnimation.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cAnimation.cpp",
-  "file": "C:/Projects/TR2D/Engine/cAnimation.cpp",
-  "output": "CMakeFiles/TR2D.dir/Engine/cAnimation.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -o CMakeFiles/TR2D.dir/Engine/cAnimation.cpp.o -c /home/tim/Projects/TR2D/Engine/cAnimation.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cAnimation.cpp",
+  "output": "CMakeFiles/TR2D.dir/Engine/cAnimation.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -o CMakeFiles\\TR2D.dir\\Engine\\cAssets.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cAssets.cpp",
-  "file": "C:/Projects/TR2D/Engine/cAssets.cpp",
-  "output": "CMakeFiles/TR2D.dir/Engine/cAssets.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -o CMakeFiles/TR2D.dir/Engine/cAssets.cpp.o -c /home/tim/Projects/TR2D/Engine/cAssets.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cAssets.cpp",
+  "output": "CMakeFiles/TR2D.dir/Engine/cAssets.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -o CMakeFiles\\TR2D.dir\\Engine\\cDialogue.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cDialogue.cpp",
-  "file": "C:/Projects/TR2D/Engine/cDialogue.cpp",
-  "output": "CMakeFiles/TR2D.dir/Engine/cDialogue.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -o CMakeFiles/TR2D.dir/Engine/cDialogue.cpp.o -c /home/tim/Projects/TR2D/Engine/cDialogue.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cDialogue.cpp",
+  "output": "CMakeFiles/TR2D.dir/Engine/cDialogue.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -o CMakeFiles\\TR2D.dir\\Engine\\cEntity.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cEntity.cpp",
-  "file": "C:/Projects/TR2D/Engine/cEntity.cpp",
-  "output": "CMakeFiles/TR2D.dir/Engine/cEntity.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -o CMakeFiles/TR2D.dir/Engine/cEntity.cpp.o -c /home/tim/Projects/TR2D/Engine/cEntity.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cEntity.cpp",
+  "output": "CMakeFiles/TR2D.dir/Engine/cEntity.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -o CMakeFiles\\TR2D.dir\\Engine\\cGlobal.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cGlobal.cpp",
-  "file": "C:/Projects/TR2D/Engine/cGlobal.cpp",
-  "output": "CMakeFiles/TR2D.dir/Engine/cGlobal.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -o CMakeFiles/TR2D.dir/Engine/cGlobal.cpp.o -c /home/tim/Projects/TR2D/Engine/cGlobal.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cGlobal.cpp",
+  "output": "CMakeFiles/TR2D.dir/Engine/cGlobal.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -o CMakeFiles\\TR2D.dir\\Engine\\cInput.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cInput.cpp",
-  "file": "C:/Projects/TR2D/Engine/cInput.cpp",
-  "output": "CMakeFiles/TR2D.dir/Engine/cInput.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -o CMakeFiles/TR2D.dir/Engine/cInput.cpp.o -c /home/tim/Projects/TR2D/Engine/cInput.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cInput.cpp",
+  "output": "CMakeFiles/TR2D.dir/Engine/cInput.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -o CMakeFiles\\TR2D.dir\\Engine\\cInventory.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cInventory.cpp",
-  "file": "C:/Projects/TR2D/Engine/cInventory.cpp",
-  "output": "CMakeFiles/TR2D.dir/Engine/cInventory.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -o CMakeFiles/TR2D.dir/Engine/cInventory.cpp.o -c /home/tim/Projects/TR2D/Engine/cInventory.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cInventory.cpp",
+  "output": "CMakeFiles/TR2D.dir/Engine/cInventory.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -o CMakeFiles\\TR2D.dir\\Engine\\cProgrammable.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cProgrammable.cpp",
-  "file": "C:/Projects/TR2D/Engine/cProgrammable.cpp",
-  "output": "CMakeFiles/TR2D.dir/Engine/cProgrammable.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -o CMakeFiles/TR2D.dir/Engine/cProgrammable.cpp.o -c /home/tim/Projects/TR2D/Engine/cProgrammable.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cProgrammable.cpp",
+  "output": "CMakeFiles/TR2D.dir/Engine/cProgrammable.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -o CMakeFiles\\TR2D.dir\\Engine\\cRigidbody.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cRigidbody.cpp",
-  "file": "C:/Projects/TR2D/Engine/cRigidbody.cpp",
-  "output": "CMakeFiles/TR2D.dir/Engine/cRigidbody.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -o CMakeFiles/TR2D.dir/Engine/cRigidbody.cpp.o -c /home/tim/Projects/TR2D/Engine/cRigidbody.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cRigidbody.cpp",
+  "output": "CMakeFiles/TR2D.dir/Engine/cRigidbody.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -o CMakeFiles\\TR2D.dir\\Engine\\cUI.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cUI.cpp",
-  "file": "C:/Projects/TR2D/Engine/cUI.cpp",
-  "output": "CMakeFiles/TR2D.dir/Engine/cUI.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -o CMakeFiles/TR2D.dir/Engine/cUI.cpp.o -c /home/tim/Projects/TR2D/Engine/cUI.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cUI.cpp",
+  "output": "CMakeFiles/TR2D.dir/Engine/cUI.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -o CMakeFiles\\TR2D.dir\\Engine\\cWearable.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cWearable.cpp",
-  "file": "C:/Projects/TR2D/Engine/cWearable.cpp",
-  "output": "CMakeFiles/TR2D.dir/Engine/cWearable.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -o CMakeFiles/TR2D.dir/Engine/cWearable.cpp.o -c /home/tim/Projects/TR2D/Engine/cWearable.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cWearable.cpp",
+  "output": "CMakeFiles/TR2D.dir/Engine/cWearable.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -o CMakeFiles\\TR2D.dir\\Engine\\cWindow.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cWindow.cpp",
-  "file": "C:/Projects/TR2D/Engine/cWindow.cpp",
-  "output": "CMakeFiles/TR2D.dir/Engine/cWindow.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -o CMakeFiles/TR2D.dir/Engine/cWindow.cpp.o -c /home/tim/Projects/TR2D/Engine/cWindow.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cWindow.cpp",
+  "output": "CMakeFiles/TR2D.dir/Engine/cWindow.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -o CMakeFiles\\TR2D.dir\\Engine\\cWorld.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cWorld.cpp",
-  "file": "C:/Projects/TR2D/Engine/cWorld.cpp",
-  "output": "CMakeFiles/TR2D.dir/Engine/cWorld.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -o CMakeFiles/TR2D.dir/Engine/cWorld.cpp.o -c /home/tim/Projects/TR2D/Engine/cWorld.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cWorld.cpp",
+  "output": "CMakeFiles/TR2D.dir/Engine/cWorld.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -o CMakeFiles\\TR2D.dir\\Engine\\cParticles.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cParticles.cpp",
-  "file": "C:/Projects/TR2D/Engine/cParticles.cpp",
-  "output": "CMakeFiles/TR2D.dir/Engine/cParticles.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -o CMakeFiles/TR2D.dir/Engine/cParticles.cpp.o -c /home/tim/Projects/TR2D/Engine/cParticles.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cParticles.cpp",
+  "output": "CMakeFiles/TR2D.dir/Engine/cParticles.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -o CMakeFiles\\TR2D.dir\\Engine\\cCutscene.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cCutscene.cpp",
-  "file": "C:/Projects/TR2D/Engine/cCutscene.cpp",
-  "output": "CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -o CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.o -c /home/tim/Projects/TR2D/Engine/cCutscene.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cCutscene.cpp",
+  "output": "CMakeFiles/TR2D.dir/Engine/cCutscene.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -o CMakeFiles\\TR2D.dir\\Engine\\cScript.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cScript.cpp",
-  "file": "C:/Projects/TR2D/Engine/cScript.cpp",
-  "output": "CMakeFiles/TR2D.dir/Engine/cScript.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -o CMakeFiles/TR2D.dir/Engine/cScript.cpp.o -c /home/tim/Projects/TR2D/Engine/cScript.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cScript.cpp",
+  "output": "CMakeFiles/TR2D.dir/Engine/cScript.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -o CMakeFiles\\MapEditor.dir\\TRME.cpp.obj -c C:\\Projects\\TR2D\\TRME.cpp",
-  "file": "C:/Projects/TR2D/TRME.cpp",
-  "output": "CMakeFiles/MapEditor.dir/TRME.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -static -D SFML_STATIC -o CMakeFiles/MapEditor.dir/TRME.cpp.o -c /home/tim/Projects/TR2D/TRME.cpp",
+  "file": "/home/tim/Projects/TR2D/TRME.cpp",
+  "output": "CMakeFiles/MapEditor.dir/TRME.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -o CMakeFiles\\MapEditor.dir\\Engine\\cAnimation.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cAnimation.cpp",
-  "file": "C:/Projects/TR2D/Engine/cAnimation.cpp",
-  "output": "CMakeFiles/MapEditor.dir/Engine/cAnimation.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -static -D SFML_STATIC -o CMakeFiles/MapEditor.dir/Engine/cAnimation.cpp.o -c /home/tim/Projects/TR2D/Engine/cAnimation.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cAnimation.cpp",
+  "output": "CMakeFiles/MapEditor.dir/Engine/cAnimation.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -o CMakeFiles\\MapEditor.dir\\Engine\\cAssets.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cAssets.cpp",
-  "file": "C:/Projects/TR2D/Engine/cAssets.cpp",
-  "output": "CMakeFiles/MapEditor.dir/Engine/cAssets.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -static -D SFML_STATIC -o CMakeFiles/MapEditor.dir/Engine/cAssets.cpp.o -c /home/tim/Projects/TR2D/Engine/cAssets.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cAssets.cpp",
+  "output": "CMakeFiles/MapEditor.dir/Engine/cAssets.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -o CMakeFiles\\MapEditor.dir\\Engine\\cGlobal.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cGlobal.cpp",
-  "file": "C:/Projects/TR2D/Engine/cGlobal.cpp",
-  "output": "CMakeFiles/MapEditor.dir/Engine/cGlobal.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -static -D SFML_STATIC -o CMakeFiles/MapEditor.dir/Engine/cGlobal.cpp.o -c /home/tim/Projects/TR2D/Engine/cGlobal.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cGlobal.cpp",
+  "output": "CMakeFiles/MapEditor.dir/Engine/cGlobal.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -o CMakeFiles\\MapEditor.dir\\Engine\\cInput.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cInput.cpp",
-  "file": "C:/Projects/TR2D/Engine/cInput.cpp",
-  "output": "CMakeFiles/MapEditor.dir/Engine/cInput.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -static -D SFML_STATIC -o CMakeFiles/MapEditor.dir/Engine/cInput.cpp.o -c /home/tim/Projects/TR2D/Engine/cInput.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cInput.cpp",
+  "output": "CMakeFiles/MapEditor.dir/Engine/cInput.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -o CMakeFiles\\MapEditor.dir\\Engine\\cProgrammable.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cProgrammable.cpp",
-  "file": "C:/Projects/TR2D/Engine/cProgrammable.cpp",
-  "output": "CMakeFiles/MapEditor.dir/Engine/cProgrammable.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -static -D SFML_STATIC -o CMakeFiles/MapEditor.dir/Engine/cProgrammable.cpp.o -c /home/tim/Projects/TR2D/Engine/cProgrammable.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cProgrammable.cpp",
+  "output": "CMakeFiles/MapEditor.dir/Engine/cProgrammable.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -o CMakeFiles\\MapEditor.dir\\Engine\\cWindow.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cWindow.cpp",
-  "file": "C:/Projects/TR2D/Engine/cWindow.cpp",
-  "output": "CMakeFiles/MapEditor.dir/Engine/cWindow.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -static -D SFML_STATIC -o CMakeFiles/MapEditor.dir/Engine/cWindow.cpp.o -c /home/tim/Projects/TR2D/Engine/cWindow.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cWindow.cpp",
+  "output": "CMakeFiles/MapEditor.dir/Engine/cWindow.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -o CMakeFiles\\SkeletonEditor.dir\\TRSE.cpp.obj -c C:\\Projects\\TR2D\\TRSE.cpp",
-  "file": "C:/Projects/TR2D/TRSE.cpp",
-  "output": "CMakeFiles/SkeletonEditor.dir/TRSE.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -static -D SFML_STATIC -o CMakeFiles/SkeletonEditor.dir/TRSE.cpp.o -c /home/tim/Projects/TR2D/TRSE.cpp",
+  "file": "/home/tim/Projects/TR2D/TRSE.cpp",
+  "output": "CMakeFiles/SkeletonEditor.dir/TRSE.cpp.o"
 },
 {
-  "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -o CMakeFiles\\SkeletonEditor.dir\\Engine\\cGlobal.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cGlobal.cpp",
-  "file": "C:/Projects/TR2D/Engine/cGlobal.cpp",
-  "output": "CMakeFiles/SkeletonEditor.dir/Engine/cGlobal.cpp.obj"
+  "directory": "/home/tim/Projects/TR2D/build",
+  "command": "/usr/bin/c++   -g -w -static -D SFML_STATIC -o CMakeFiles/SkeletonEditor.dir/Engine/cGlobal.cpp.o -c /home/tim/Projects/TR2D/Engine/cGlobal.cpp",
+  "file": "/home/tim/Projects/TR2D/Engine/cGlobal.cpp",
+  "output": "CMakeFiles/SkeletonEditor.dir/Engine/cGlobal.cpp.o"
 }
 ]

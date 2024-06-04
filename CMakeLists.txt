@@ -20,13 +20,12 @@ set(TR2D_SOURCES
 	Engine/cWorld.cpp
 	Engine/cParticles.cpp
 	Engine/cCutscene.cpp
-	Engine/cScript.cpp
-	Engine/pugixml.o)
+	Engine/cScript.cpp)
 	
 project(TR2D VERSION 2.0 LANGUAGES CXX)
 add_executable(TR2D TR2D.cpp ${TR2D_SOURCES})
 
-target_link_libraries(TR2D sfml-window sfml-graphics sfml-system sfml-audio box2d lua)
+target_link_libraries(TR2D sfml-window sfml-graphics sfml-system sfml-audio box2d lua pugixml)
 
 target_compile_options(TR2D PUBLIC -w)
 

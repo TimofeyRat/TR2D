@@ -1,3 +1,4 @@
+#include <math.h>
 #include "hWindow.hpp"
 #include "hGlobal.hpp"
 #include "hAssets.hpp"
@@ -64,7 +65,7 @@ void Window::init(int argc, char *argv[])
 	else
 	{
 		window.create(
-			sf::VideoMode(vars.getVar("SizeX"), vars.getVar("SizeY")),
+			sf::VideoMode(fmax(vars.getVar("SizeX"), 100), fmax(vars.getVar("SizeY"), 100)),
 			vars.getVar("Title").str,
 			sf::Style::Default,
 			sf::ContextSettings(24, 0, 0, 3, 3)

@@ -1,9 +1,13 @@
 #ifndef trScript
 #define trScript
 
-#include <lua.h>
-#include <lualib.h>
-#include <lauxlib.h>
+extern "C"
+{
+	#include <lua.h>
+	#include <lualib.h>
+	#include <lauxlib.h>
+}
+
 
 #include "hProgrammable.hpp"
 
@@ -26,6 +30,7 @@ public:
 	Script();
 	void load(sf::String path);
 	void execute(sf::String func);
+	static Programmable *getProgrammable(sf::String path);
 };
 
 #endif
