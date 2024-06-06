@@ -18,7 +18,7 @@ function main()
 	setExecNum("speed", 1)
 	local dist = distance(getExecNum("posX"), getExecNum("posY"), getNum("ent Nasake posX"), getNum("ent Nasake posY"))
 	if (dist == clamp(dist, -750, 750)) then
-		dist = getNum("ent Nasake posX") - getExecNum("posX")
+		dist = getNum("ent-Nasake-posX") - getExecNum("posX")
 		setExecNum("attacking", 1)
 		rotation = dist / math.abs(dist)
 		setExecNum("dx", rotation)

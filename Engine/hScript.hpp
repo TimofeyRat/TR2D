@@ -1,13 +1,15 @@
 #ifndef trScript
 #define trScript
 
-extern "C"
-{
-	#include <lua.h>
-	#include <lualib.h>
-	#include <lauxlib.h>
+#ifndef __WIN32__
+extern "C" {
+#endif
+#include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
+#ifndef __WIN32__
 }
-
+#endif
 
 #include "hProgrammable.hpp"
 
@@ -19,6 +21,8 @@ private:
 	bool started;
 	static int getNum(lua_State *L);
 	static int setNum(lua_State *L);
+	static int setStr(lua_State *L);
+	static int getStr(lua_State *L);
 	static int exec(lua_State *L);
 	static int getDeltaTime(lua_State *L);
 	static int getExecutorNum(lua_State *L);

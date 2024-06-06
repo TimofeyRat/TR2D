@@ -8,7 +8,7 @@
 		<action event="key-click-F6" condition="null">assets init;loadGame</action>
 	</object>
 	<object name="inv">
-		<toggle event="key-click-E" />
+		<toggle event="cmp-input-main-inventory-eq-1" />
 		<position type="relative-lerp">0.5 0 0.5 0.5</position>
 		<update type="inventory" />
 		<sprite name="grid">
@@ -126,7 +126,7 @@
 			<toggle event="key-click-F3" />
 			<font path="ru/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
 			<txt type="idle" appear="set" />
-			<txt type="active" appear="set">{Window-num-musicVolume}</txt>
+			<txt type="active" appear="set" />
 			<position type="relative-set">0.5 1 0.5 1</position>
 			<origin type="relative-lerp">0.5 0 0.5 1</origin>
 			<color state="idle" type="lerp">255 255 255 255</color><outline state="idle" type="lerp">0 0 0 255</outline>

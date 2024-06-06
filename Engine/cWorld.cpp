@@ -1349,6 +1349,17 @@ void tr::execute(sf::String cmd)
 			e->setVar("dontUpdateAnim", 1);
 		}
 	}
+	else if (args[0] == "lvl")
+	{
+		if (args[1] == "setNum")
+		{
+			World::getCurrentLevel()->setVar(args[2], std::stof(args[3].toAnsiString()));
+		}
+		if (args[2] == "setStr")
+		{
+			World::getCurrentLevel()->setVar(args[2], args[3]);
+		}
+	}
 	else if (args[0] == "saveGame")
 	{
 		std::cout << "Saving...\n";

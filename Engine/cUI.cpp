@@ -1255,6 +1255,23 @@ bool UI::updateToggle(bool active, sf::String toggle, sf::FloatRect hitbox)
 	{
 		return World::getCurrentLevel()->getVar(args[1]).num == 1;
 	}
+	else if (tr::strContains(args[0], "cmp"))
+	{
+		float tester = std::stof(args[args.size() - 1].toAnsiString());
+		auto cmp = args[args.size() - 2];
+		float value;
+		if (args[1] == "input")
+		{
+			Input::Controller *c = Input::getControl(args[2]);
+			value = c->getVariable(args[3])->value;
+		}
+		if (cmp == "eq") return value == tester;
+		if (cmp == "ne") return value != tester;
+		if (cmp == "gt") return value >  tester;
+		if (cmp == "ge") return value >= tester;
+		if (cmp == "lt") return value <  tester;
+		if (cmp == "le") return value <= tester;
+	}
 	return false;
 }
 

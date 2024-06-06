@@ -36,8 +36,7 @@ add_executable(MapEditor TRME.cpp
 	Engine/cGlobal.cpp
 	Engine/cInput.cpp
 	Engine/cProgrammable.cpp
-	Engine/cWindow.cpp
-	Engine/pugixml.o)
+	Engine/cWindow.cpp)
 
 target_link_libraries(MapEditor
 	sfml-window-s sfml-system-s opengl32 winmm gdi32
@@ -48,7 +47,7 @@ target_link_libraries(MapEditor
 target_compile_options(MapEditor PUBLIC -w -static -D SFML_STATIC)
 
 project(SkeletonEditor VERSION 0.1 LANGUAGES CXX)
-add_executable(SkeletonEditor TRSE.cpp Engine/cGlobal.cpp Engine/pugixml.o)
+add_executable(SkeletonEditor TRSE.cpp Engine/cGlobal.cpp)
 target_link_libraries(SkeletonEditor
 	sfml-window-s sfml-system-s opengl32 winmm gdi32
 	sfml-graphics-s sfml-system-s sfml-window-s opengl32 freetype

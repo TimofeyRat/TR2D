@@ -258,6 +258,7 @@ void Entity::updateAttack()
 {
 	setVar("state", weapon.type);
 	setVar("attacked", 0);
+	setVar("weapon", weapon.id);
 	if (weapon.id == "null")
 	{
 		setVar("attacking", 0);

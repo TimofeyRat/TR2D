@@ -689,21 +689,22 @@ Input::Controller::Variable::Variable(sf::String Name)
 Input::Controller::Variable::Variable(sf::String Name, float defaultValue)
 {
 	name = Name;
-	value = defValue = defaultValue;
+	value = 0;
+	defValue = defaultValue;
 }
 
 Input::Controller::Key::Key()
 {
 	key = varName = "";
-	addOrSet = false;
+	type = "";
 	value = 0;
 }
 
-Input::Controller::Key::Key(sf::String Key, sf::String var, bool AddOrSet, float Value)
+Input::Controller::Key::Key(sf::String Key, sf::String var, sf::String input, float Value)
 {
 	key = Key;
 	varName = var;
-	addOrSet = AddOrSet;
+	type = input;
 	value = Value;
 }
 
@@ -727,7 +728,7 @@ Input::Controller::Variable *Input::Controller::getVariable(sf::String name)
 
 void Input::Controller::update()
 {
-	for (int i = 0; i < vars.size(); i++) { vars[i].value = vars[i].defValue; }
+	for (int i = 0; i < vars.size(); i++) if (vars[i].defValue != UINT16_MAX) vars[i].value = vars[i].defValue;
 	if (!active) { return; }
 	for (int i = 0; i < keys.size(); i++)
 	{
@@ -746,8 +747,9 @@ void Input::Controller::update()
 		}
 		if (active)
 		{
-			if (!k->addOrSet) { v->value += k->value; }
-			else { v->value = k->value; }
+			if (k->type == "add") { v->value += k->value; }
+			if (k->type == "set") { v->value = k->value; }
+			if (k->type == "toggle") { v->value = !v->value; }
 		}
 	}
 }
@@ -777,13 +779,10 @@ void Input::init()
 				}
 				else if (sf::String(node.name()) == "input")
 				{
-					bool addOrSet;
-					if (sf::String(node.attribute(L"type").as_string()) == "add") { addOrSet = false; }
-					if (sf::String(node.attribute(L"type").as_string()) == "set") { addOrSet = true; }
 					ctrl.keys.push_back({
 						node.attribute(L"event").as_string(),
 						node.attribute(L"var").as_string(),
-						addOrSet,
+						node.attribute(L"type").as_string(),
 						node.attribute(L"value").as_float()
 					});
 				} 

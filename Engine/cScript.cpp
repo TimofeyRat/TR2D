@@ -3,6 +3,7 @@
 #include "hGlobal.hpp"
 #include "hWorld.hpp"
 #include "hWindow.hpp"
+#include "hInput.hpp"
 #include <iostream>
 
 Programmable* Script::currentExecutor;
@@ -14,6 +15,8 @@ Script::Script()
 	luaL_openlibs(state);
 	lua_register(state, "getNum", getNum);
 	lua_register(state, "setNum", setNum);
+	lua_register(state, "getStr", getStr);
+	lua_register(state, "setStr", setStr);
 	lua_register(state, "exec", exec);
 	lua_register(state, "getDeltaTime", getDeltaTime);
 	lua_register(state, "getExecNum", getExecutorNum);
@@ -24,37 +27,32 @@ Script::Script()
 
 int Script::getNum(lua_State *L)
 {
-	auto path = tr::splitStr(lua_tostring(L, -1), " ");
+	auto path = tr::splitStr(lua_tostring(L, -1), "-");
 	float value = 0;
-	if (path[0] == "ent")
-	{
-		value = World::getCurrentLevel()->getEntity(path[1])->getVar(path[2]);
-	}
-	if (path[0] == "lvl")
-	{
-		if (path[1] == "current") value = World::getCurrentLevel()->getVar(path[2]);
-		else value = World::getLevel(path[1])->getVar(path[2]);
-	}
-	if (path[0] == "window")
-	{
-		value = Window::getVar(path[1]);
-	}
+	if (path[0] == "input") value = Input::getControl(path[1])->getVariable(path[2])->value;
+	else value = getProgrammable(path[0])->getVar(path[1]);
 	lua_pushnumber(L, value);
 	return 1;
 }
 
 int Script::setNum(lua_State *L)
 {
-	auto path = tr::splitStr(lua_tostring(L, -2), " ");
-	if (path[0] == "ent")
-	{
-		World::getCurrentLevel()->getEntity(path[1])->setVar(path[2], lua_tonumber(L, -1));
-	}
-	if (path[0] == "lvl")
-	{
-		if (path[1] == "current") World::getCurrentLevel()->setVar(path[2], lua_tonumber(L, -1));
-		else World::getLevel(path[1])->setVar(path[2], lua_tonumber(L, -1));
-	}
+	auto path = tr::splitStr(lua_tostring(L, -2), "-");
+	getProgrammable(path[0])->setVar(path[1], lua_tonumber(L, -1));
+	return 0;
+}
+
+int Script::getStr(lua_State *L)
+{
+	auto path = tr::splitStr(lua_tostring(L, -1), "-");
+	lua_pushstring(L, getProgrammable(path[0])->getVar(path[1]).str.toAnsiString().c_str());
+	return 1;
+}
+
+int Script::setStr(lua_State *L)
+{
+	auto path = tr::splitStr(lua_tostring(L, -2), "-");
+	getProgrammable(path[0])->setVar(path[1], lua_tostring(L, -1));
 	return 0;
 }
 

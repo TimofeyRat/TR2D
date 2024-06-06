@@ -75,10 +75,10 @@ public:
 		struct Key
 		{
 			sf::String key, varName;
-			bool addOrSet;
+			sf::String type;
 			float value;
 			Key();
-			Key(sf::String Key, sf::String var, bool AddOrSet, float Value);
+			Key(sf::String Key, sf::String var, sf::String input, float Value);
 			sf::String toString();
 		};
 		sf::String id;
