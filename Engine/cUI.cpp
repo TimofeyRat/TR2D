@@ -891,6 +891,19 @@ void UI::Frame::Object::handle()
 		auto path = tr::splitStr(bar->target, "-");
 		Script::getProgrammable(bar->target)->setVar(path[2], bar->value);
 	}
+	else if (tr::strContains(handler, "input"))
+	{
+		auto txt = getText("txt");
+		if (!txt->active) return;
+		if (txt->txt.getGlobalBounds().contains(Input::getMousePos()) && Input::isMBJustPressed(sf::Mouse::Left)) txt->setVar("input", 1);
+		if (!txt->getVar("input")) return;
+		auto path = tr::splitStr(handler, "-");
+		auto key = Input::getControl(path[1])->getKeyByVar(path[2]);
+		auto k = Input::getPressedInput();
+		//TODO: Write a wrapper that will determine the whole input event, i.e. key-hold/press
+		std::cout << k.toAnsiString() << std::endl;
+		if (k != "key-press-Escape") { key->key = k; txt->setVar("input", 0); }
+	}
 }
 
 void UI::Frame::Object::draw()

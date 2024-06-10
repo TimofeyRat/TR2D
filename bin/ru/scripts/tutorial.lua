@@ -5,7 +5,7 @@ end
 function main()
 	if getNum("lvl-tutorial1") == 1 then
 		exec("window showHint {Window-str-tutorial1} 0")
-		if getNum("input-main-inventory") == 1 then
+		if getNum("input-main-showInventory") == 1 then
 			setNum("lvl-tutorial1", 0)
 			setNum("lvl-tutorial2", 1)
 		end

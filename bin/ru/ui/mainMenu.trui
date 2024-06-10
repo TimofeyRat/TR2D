@@ -336,6 +336,90 @@
 			<color state="active" type="lerp">255 255 255 255</color><outline state="active" type="lerp">0 0 0 255</outline>
 		</text>
 	</object>
+	<object name="moveLeft">
+		<update type='input-keyboard-"dx -1"' />
+		<position type="relative-set">0.25 0.3 0.25 0.3</position>
+		<text name="txt">
+			<toggle event="mouseHover" />
+			<font path="ru/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
+			<txt type="idle" appear="set">Движение влево: {input-keyboard-"dx -1"}</txt>
+			<txt type="active" appear="set">Движение влево: {input-keyboard-"dx -1"}</txt>
+			<position type="inherit-obj-rel">0 0 0 0 input-moveLeft</position>
+			<origin type="relative">0.5 0.5 0.5 0.5</origin>
+			<color state="idle" type="lerp">255 255 255 255</color><outline state="idle" type="lerp">0 0 0 255</outline>
+			<color state="active" type="lerp">0 0 0 255</color><outline state="active" type="lerp">255 255 255 255</outline>
+		</text>
+	</object>
+	<object name="moveRight">
+		<update type='input-keyboard-"dx +1"' />
+		<position type="relative-set">0.75 0.3 0.75 0.3</position>
+		<text name="txt">
+			<toggle event="mouseHover" />
+			<font path="ru/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
+			<txt type="idle" appear="set">Движение вправо: {input-keyboard-"dx +1"}</txt>
+			<txt type="active" appear="set">Движение вправо: {input-keyboard-"dx +1"}</txt>
+			<position type="inherit-obj-rel">0 0 0 0 input-moveRight</position>
+			<origin type="relative">0.5 0.5 0.5 0.5</origin>
+			<color state="idle" type="lerp">255 255 255 255</color><outline state="idle" type="lerp">0 0 0 255</outline>
+			<color state="active" type="lerp">0 0 0 255</color><outline state="active" type="lerp">255 255 255 255</outline>
+		</text>
+	</object>
+	<object name="moveJump">
+		<update type='input-keyboard-"dy =-1"' />
+		<position type="relative-set">0.5 0.3 0.5 0.3</position>
+		<text name="txt">
+			<toggle event="mouseHover" />
+			<font path="ru/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
+			<txt type="idle" appear="set">Прыжок: {input-keyboard-"dy =-1"}</txt>
+			<txt type="active" appear="set">Прыжок: {input-keyboard-"dy =-1"}</txt>
+			<position type="inherit-obj-rel">0 0 0 0 input-moveJump</position>
+			<origin type="relative">0.5 0.5 0.5 0.5</origin>
+			<color state="idle" type="lerp">255 255 255 255</color><outline state="idle" type="lerp">0 0 0 255</outline>
+			<color state="active" type="lerp">0 0 0 255</color><outline state="active" type="lerp">255 255 255 255</outline>
+		</text>
+	</object>
+	<object name="attack">
+		<update type='input-keyboard-attack' />
+		<position type="relative-set">0.25 0.5 0.25 0.5</position>
+		<text name="txt">
+			<toggle event="mouseHover" />
+			<font path="ru/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
+			<txt type="idle" appear="set">Атака: {input-keyboard-attack}</txt>
+			<txt type="active" appear="set">Атака: {input-keyboard-attack}</txt>
+			<position type="inherit-obj-rel">0 0 0 0 input-attack</position>
+			<origin type="relative">0.5 0.5 0.5 0.5</origin>
+			<color state="idle" type="lerp">255 255 255 255</color><outline state="idle" type="lerp">0 0 0 255</outline>
+			<color state="active" type="lerp">0 0 0 255</color><outline state="active" type="lerp">255 255 255 255</outline>
+		</text>
+	</object>
+	<object name="interaction">
+		<update type='input-keyboard-interacting' />
+		<position type="relative-set">0.5 0.5 0.5 0.5</position>
+		<text name="txt">
+			<toggle event="mouseHover" />
+			<font path="ru/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
+			<txt type="idle" appear="set">Взаимодействие: {input-keyboard-interacting}</txt>
+			<txt type="active" appear="set">Взаимодействие: {input-keyboard-interacting}</txt>
+			<position type="inherit-obj-rel">0 0 0 0 input-interaction</position>
+			<origin type="relative">0.5 0.5 0.5 0.5</origin>
+			<color state="idle" type="lerp">255 255 255 255</color><outline state="idle" type="lerp">0 0 0 255</outline>
+			<color state="active" type="lerp">0 0 0 255</color><outline state="active" type="lerp">255 255 255 255</outline>
+		</text>
+	</object>
+	<object name="inventory">
+		<update type='input-keyboard-showInventory' />
+		<position type="relative-set">0.75 0.5 0.75 0.5</position>
+		<text name="txt">
+			<toggle event="mouseHover" />
+			<font path="ru/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
+			<txt type="idle" appear="set">Инвентарь: {input-keyboard-showInventory}</txt>
+			<txt type="active" appear="set">Инвентарь: {input-keyboard-showInventory}</txt>
+			<position type="inherit-obj-rel">0 0 0 0 input-inventory</position>
+			<origin type="relative">0.5 0.5 0.5 0.5</origin>
+			<color state="idle" type="lerp">255 255 255 255</color><outline state="idle" type="lerp">0 0 0 255</outline>
+			<color state="active" type="lerp">0 0 0 255</color><outline state="active" type="lerp">255 255 255 255</outline>
+		</text>
+	</object>
 	<object name="exit">
 		<position type="relative-set">0.5 0.8 0.5 0.8</position>
 		<sprite name="btn">

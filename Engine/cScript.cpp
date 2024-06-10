@@ -114,5 +114,6 @@ Programmable *Script::getProgrammable(sf::String name)
 	if (path[0] == "Window") return Window::getProgrammable();
 	if (path[0] == "camOwner") return World::getCameraOwner();
 	if (path[0] == "lvl") return World::getCurrentLevel();
-	else return World::getCurrentLevel()->getEntity(path[1]);
+	if (path[0] == "input") return nullptr;
+	return World::getCurrentLevel()->getEntity(path[1]);
 }

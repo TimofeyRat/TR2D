@@ -745,11 +745,32 @@ void Input::Controller::update()
 		{
 			active = (key[1] == "press" && isMBJustPressed(strToMouse(key[2]))) || (key[1] == "hold" && isMBPressed(strToMouse(key[2])));
 		}
+		else if (key[0] == "axis")
+		{
+			auto data = tr::splitStr(key[2], "_");
+			float axis = getJoyAxis(std::stoi(data[0].toAnsiString()), strToAxis(data[1]));
+			active =
+				(key[1] == "nonZero" && axis != 0) ||
+				(key[1] == "negative" && axis < 0) ||
+				(key[1] == "positive" && axis > 0);
+		}
+		else if (key[0] == "joystick")
+		{
+			auto data = tr::splitStr(key[2], "_");
+			active =
+				(key[1] == "press" && isJoyJustPressed(std::stoi(data[0].toAnsiString()), strToButton(data[1]))) ||
+				(key[1] == "hold" && isJoyPressed(std::stoi(data[0].toAnsiString()), strToButton(data[1])));
+		}
 		if (active)
 		{
 			if (k->type == "add") { v->value += k->value; }
 			if (k->type == "set") { v->value = k->value; }
 			if (k->type == "toggle") { v->value = !v->value; }
+			if (k->type == "passthrough" && key[0] == "axis")
+			{
+				auto data = tr::splitStr(key[2], "_");
+				v->value = getJoyAxis(std::stoi(data[0].toAnsiString()), strToAxis(data[1]));
+			}
 		}
 	}
 }
@@ -812,9 +833,96 @@ Input::Controller *Input::getControl(sf::String id)
 
 Input::Controller::Key *Input::Controller::getKeyByVar(sf::String varName)
 {
+	auto var = tr::splitStr(varName, " ");
+	auto name = var[0];
+	sf::String type = ""; if (var.size() == 2) type = var[1];
 	for (int i = 0; i < keys.size(); i++)
 	{
-		if (keys[i].varName == varName) { return &keys[i]; }
+		if (keys[i].varName == name)
+		{
+			if ((type.isEmpty()) ||
+				(type == "0/1" && keys[i].type == "toggle") ||
+				(type.toAnsiString()[0] == '+' && keys[i].type == "add" && std::stof(type.toAnsiString().substr(1)) == keys[i].value) ||
+				(type.toAnsiString()[0] == '-' && keys[i].type == "add" && std::stof(type.toAnsiString()) == keys[i].value) ||
+				(type.toAnsiString()[0] == '=' && keys[i].type == "set" && std::stof(type.toAnsiString().substr(1)) == keys[i].value))
+					return &keys[i];
+		}
 	}
 	return nullptr;
+}
+
+sf::String Input::getPressedInput()
+{
+	sf::String type = "", action = "", key = "";
+	bool waiting = true;
+	sf::Clock clock;
+	while (Window::isOpen() && waiting)
+	{
+		Window::update();
+		if (type.isEmpty())
+		{
+			if (Window::hasEvent(sf::Event::KeyPressed))
+			{
+				type = "key";
+				key = keyToStr(Window::getEvent(sf::Event::KeyPressed).key.code);
+			}
+			if (Window::hasEvent(sf::Event::MouseButtonPressed))
+			{
+				type = "mouse";
+				key = mouseToStr(Window::getEvent(sf::Event::MouseButtonPressed).mouseButton.button);
+			}
+			if (Window::hasEvent(sf::Event::JoystickButtonPressed))
+			{
+				type = "joystick";
+				auto e = Window::getEvent(sf::Event::JoystickButtonPressed).joystickButton;
+				key = std::to_string(e.joystickId) + "_" + btnToStr(toUniversalButton(e.joystickId, e.button));
+				clock.restart();
+			}
+			if (Window::hasEvent(sf::Event::JoystickMoved))
+			{
+				type = "axis";
+				auto e = Window::getEvent(sf::Event::JoystickMoved).joystickMove;
+				key = std::to_string(e.joystickId) + "_" + axisToStr(toUniversalAxis(e.joystickId, e.axis));
+				clock.restart();
+			}
+		}
+		else
+		{
+			if (type == "key")
+			{
+				if (Window::hasEvent(sf::Event::KeyPressed) &&
+					keyToStr(Window::getEvent(sf::Event::KeyPressed).key.code) == key) action = "hold";
+				if (Window::hasEvent(sf::Event::KeyReleased) &&
+					keyToStr(Window::getEvent(sf::Event::KeyReleased).key.code) == key) action = "press";
+			}
+			if (type == "mouse")
+			{
+				if (Window::hasEvent(sf::Event::MouseButtonPressed) &&
+					mouseToStr(Window::getEvent(sf::Event::MouseButtonPressed).mouseButton.button) == key) action = "hold";
+				if (Window::hasEvent(sf::Event::MouseButtonReleased) &&
+					mouseToStr(Window::getEvent(sf::Event::MouseButtonReleased).mouseButton.button) == key) action = "press";
+			}
+			if (type == "axis")
+			{
+				auto data = tr::splitStr(key, "_");
+				auto axis = getJoyAxis(std::stoi(data[0].toAnsiString()), strToAxis(data[1]));
+				if (axis == -1) action = "negative";
+				else if (axis == 1) action = "positive";
+				else if (clock.getElapsedTime().asSeconds() > 0.5) action = "nonZero";
+			}
+			if (type == "joystick")
+			{
+				auto data = tr::splitStr(key, "_");
+				if (Window::hasEvent(sf::Event::JoystickButtonReleased))
+				{
+					auto e = Window::getEvent(sf::Event::JoystickButtonReleased).joystickButton;
+					if (e.joystickId == std::stoi(data[0].toAnsiString()) &&
+						btnToStr(toUniversalButton(e.joystickId, e.button)) == data[1]) action = "press";
+				}
+				else if (clock.getElapsedTime().asSeconds() > 0.5) { action = "hold"; }
+			}
+			if (!action.isEmpty()) waiting = false;
+		}
+	}
+	return type + "-" + action + "-" + key;
 }

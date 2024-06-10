@@ -15,8 +15,8 @@
 
 const sf::Uint32 xVendor = 1118;
 const sf::Uint32 xA = 0;
-const sf::Uint32 xX = 1;
-const sf::Uint32 xB = 2;
+const sf::Uint32 xB = 1;
+const sf::Uint32 xX = 2;
 const sf::Uint32 xY = 3;
 const sf::Uint32 xLB = 4;
 const sf::Uint32 xRB = 5;
@@ -106,8 +106,11 @@ public:
 	static bool isMBJustReleased(sf::Mouse::Button btn);
 	static bool isJoyJustReleased(sf::Uint32 id, sf::Uint32 btn);
 	static float getJoyAxis(sf::Uint32 id, sf::Uint32 axis);
+	
 	static int getVendor(sf::Uint32 id);
 	static bool isJoyConnected(sf::Uint32 id);
+	static sf::String getPressedInput();
+	
 	static sf::Vector2f getMousePos(bool inGame = false);
 	static sf::Keyboard::Key getPressedKey();
 	static sf::Mouse::Button getPressedButton();
