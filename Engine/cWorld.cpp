@@ -134,48 +134,63 @@ void World::loadFromFile(std::string filename)
 	{
 		World::Level level;
 		level.name = lvl.attribute(L"name").as_string();
-		auto map = lvl.child(L"map");
-		level.map.tileTex = AssetManager::getTexture(pugi::as_utf8(map.attribute(L"tex").as_string()));
-		auto ts = tr::splitStr(map.attribute(L"tileSize").as_string(), " ");
-		level.map.tileSize = {std::stoi(ts[0].toAnsiString()), std::stoi(ts[1].toAnsiString())};
-		level.map.computeRects();
-		auto ms = tr::splitStr(map.attribute(L"size").as_string(), " ");
-		level.map.resize(std::stoi(ms[0].toAnsiString()), std::stoi(ms[1].toAnsiString()));
-		level.map.scale = map.attribute(L"scale").as_float();
-		auto tilemap = tr::splitStr(map.text().as_string(), "x");
-		for (int y = 0; y < level.map.mapSize.y; y++)
+		//Map
 		{
-			for (int x = 0; x < level.map.mapSize.x; x++)
+			auto map = lvl.child(L"map");
+			level.map.tileTex = AssetManager::getTexture(pugi::as_utf8(map.attribute(L"tex").as_string()));
+			auto ts = tr::splitStr(map.attribute(L"tileSize").as_string(), " ");
+			level.map.tileSize = {std::stoi(ts[0].toAnsiString()), std::stoi(ts[1].toAnsiString())};
+			level.map.computeRects();
+			auto ms = tr::splitStr(map.attribute(L"size").as_string(), " ");
+			level.map.resize(std::stoi(ms[0].toAnsiString()), std::stoi(ms[1].toAnsiString()));
+			level.map.scale = map.attribute(L"scale").as_float();
+			auto tilemap = tr::splitStr(map.text().as_string(), "x");
+			for (int y = 0; y < level.map.mapSize.y; y++)
 			{
-				level.map.tiles[x][y] = std::stoi(tilemap[y * level.map.mapSize.x + x].toAnsiString());
+				for (int x = 0; x < level.map.mapSize.x; x++)
+				{
+					level.map.tiles[x][y] = std::stoi(tilemap[y * level.map.mapSize.x + x].toAnsiString());
+				}
 			}
 		}
-		level.bgTex = AssetManager::getTexture(pugi::as_utf8(lvl.child(L"background").attribute(L"path").as_string()));
-		auto bgBounds = tr::splitStr(lvl.child(L"background").attribute(L"bounds").as_string(), " ");
-		level.bgBounds = {
-			std::stof(bgBounds[0].toAnsiString()), std::stof(bgBounds[1].toAnsiString()),
-			std::stof(bgBounds[2].toAnsiString()), std::stof(bgBounds[3].toAnsiString())
-		};
-		level.musicFilename = pugi::as_utf8(lvl.child(L"music").attribute(L"path").as_string());
-		level.musicVolume = lvl.child(L"music").attribute(L"volume").as_float();
-		auto camSize = tr::splitStr(lvl.child(L"camera").attribute(L"size").as_string(), " ");
-		auto camOS = tr::splitStr(lvl.child(L"camera").attribute(L"offset").as_string(), " ");
-		level.cam = Camera(
-			{std::stof(camSize[0].toAnsiString()), std::stof(camSize[1].toAnsiString())},
-			{std::stof(camOS[0].toAnsiString()), std::stof(camOS[1].toAnsiString())},
-			lvl.child(L"camera").attribute(L"owner").as_string()
-		);
+		//Background
+		{
+			auto bg = tr::splitStr(lvl.attribute(L"bg").as_string(), " ");
+			level.bgTex = AssetManager::getTexture(bg[0]);
+			level.bgBounds = {
+				std::stof(bg[1].toAnsiString()), std::stof(bg[2].toAnsiString()),
+				std::stof(bg[3].toAnsiString()), std::stof(bg[4].toAnsiString())
+			};
+		}
+		//Music
+		{
+			auto music = tr::splitStr(lvl.attribute(L"music").as_string(), " ");
+			level.musicFilename = music[0];
+			level.musicVolume = std::stof(music[1].toAnsiString());
+		}
+		//Camera
+		{
+			auto camera = tr::splitStr(lvl.attribute(L"camera").as_string(), " ");
+			level.cam = Camera(
+				{std::stof(camera[2].toAnsiString()), std::stof(camera[3].toAnsiString())},
+				{std::stof(camera[0].toAnsiString()), std::stof(camera[1].toAnsiString())},
+				camera[4]
+			);
+		}
+		//Gravity
+		{
+			auto gravity = tr::splitStr(lvl.attribute(L"gravity").as_string(), " ");
+			level.gravity = {
+				std::stof(gravity[0].toAnsiString()),
+				std::stof(gravity[1].toAnsiString())
+			};
+		}
 		for (auto ent : lvl.children(L"entity"))
 		{
 			auto pos = tr::splitStr(ent.attribute(L"pos").as_string(), " ");
 			level.spawners.push_back(Spawner(ent.attribute(L"name").as_string(), {std::stof(pos[0].toAnsiString()), std::stof(pos[1].toAnsiString())}));
 			level.ents.push_back(Entity(getEntFile(ent.attribute(L"name").as_string())));
 		}
-		auto gravity = lvl.child(L"gravity").attribute(L"value").as_string();
-		level.gravity = {
-			std::stof(tr::splitStr(gravity, " ")[0].toAnsiString()),
-			std::stof(tr::splitStr(gravity, " ")[1].toAnsiString())
-		};
 		for (auto trigger : lvl.children(L"trigger"))
 		{
 			sf::String prompt;

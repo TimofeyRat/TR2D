@@ -304,27 +304,39 @@ void loadFromFile(sf::String path)
 				level.map.tiles[x][y] = std::stoi(tilemap[y * level.map.mapSize.x + x].toAnsiString());
 			}
 		}
-		level.bgPath =pugi::as_utf8(lvl.child(L"background").attribute(L"path").as_string());
-		level.bgTex.loadFromFile(level.bgPath);
-		auto bgBounds = tr::splitStr(lvl.child(L"background").attribute(L"bounds").as_string(L"0 0 0 0"), " ");
-		level.bgBounds = {
-			std::stof(bgBounds[0].toAnsiString()), std::stof(bgBounds[1].toAnsiString()),
-			std::stof(bgBounds[2].toAnsiString()), std::stof(bgBounds[3].toAnsiString())
-		};
-		level.music = lvl.child(L"music").attribute(L"path").as_string();
-		level.musicVolume = lvl.child(L"music").attribute(L"volume").as_float(100);
-		auto camSize = tr::splitStr(lvl.child(L"camera").attribute(L"size").as_string(L"0 0"), " ");
-		auto camOS = tr::splitStr(lvl.child(L"camera").attribute(L"offset").as_string(L"0 0"), " ");
-		level.camera = {
-			std::stof(camSize[0].toAnsiString()), std::stof(camSize[1].toAnsiString()),
-			std::stof(camOS[0].toAnsiString()), std::stof(camOS[1].toAnsiString())
-		};
-		level.camOwner = lvl.child(L"camera").attribute(L"owner").as_string();
-		auto gravity = tr::splitStr(lvl.child(L"gravity").attribute(L"value").as_string(L"0 0"), " ");
-		level.gravity = {
-			std::stof(gravity[0].toAnsiString()),
-			std::stof(gravity[1].toAnsiString())
-		};
+		//Background
+		{
+			auto bg = tr::splitStr(lvl.attribute(L"bg").as_string(), " ");
+			level.bgPath = bg[0];
+			level.bgTex.loadFromFile(level.bgPath);
+			level.bgBounds = {
+				std::stof(bg[1].toAnsiString()), std::stof(bg[2].toAnsiString()),
+				std::stof(bg[3].toAnsiString()), std::stof(bg[4].toAnsiString())
+			};
+		}
+		//Music
+		{
+			auto music = tr::splitStr(lvl.attribute(L"music").as_string(), " ");
+			level.music = music[0];
+			level.musicVolume = std::stof(music[1].toAnsiString());
+		}
+		//Camera
+		{
+			auto camera = tr::splitStr(lvl.attribute(L"camera").as_string(), " ");
+			level.camera = {
+				{std::stof(camera[2].toAnsiString()), std::stof(camera[3].toAnsiString())},
+				{std::stof(camera[0].toAnsiString()), std::stof(camera[1].toAnsiString())}
+			};
+			level.camOwner = camera[4];
+		}
+		//Gravity
+		{
+			auto gravity = tr::splitStr(lvl.attribute(L"gravity").as_string(), " ");
+			level.gravity = {
+				std::stof(gravity[0].toAnsiString()),
+				std::stof(gravity[1].toAnsiString())
+			};
+		}
 		for (auto ent : lvl.children(L"entity"))
 		{
 			auto pos = tr::splitStr(ent.attribute(L"pos").as_string(), " ");
@@ -407,31 +419,24 @@ void save(sf::String file)
 		}
 		map.text() = tilemap.substring(0, tilemap.getSize() - 1).toWideString().c_str();
 		//Background node
-		auto bg = level.append_child(L"background");
-		bg.append_attribute(L"path") = lvls[i].bgPath.toWideString().c_str();
-		bg.append_attribute(L"bounds") = pugi::as_wide(
+		level.append_attribute(L"bg") = sf::String(
+			lvls[i].bgPath + " " +
 			std::to_string(lvls[i].bgBounds.left) + " " + std::to_string(lvls[i].bgBounds.top) + " " +
 			std::to_string(lvls[i].bgBounds.width) + " " + std::to_string(lvls[i].bgBounds.height)
-		).c_str();
+		).toWideString().c_str();
 		//Music node
-		level.append_child(L"music").append_attribute(L"path") = lvls[i].music.toWideString().c_str();
-		level.child(L"music").append_attribute(L"volume") = lvls[i].musicVolume;
+		level.append_attribute(L"music") = sf::String(lvls[i].music + " " + std::to_string(lvls[i].musicVolume)).toWideString().c_str();
 		//Camera node
-		auto cam = level.append_child(L"camera");
-		cam.append_attribute(L"size") = pugi::as_wide(
-			std::to_string(lvls[i].camera.left) + " " +
-			std::to_string(lvls[i].camera.top)
-		).c_str();
-		cam.append_attribute(L"offset") = pugi::as_wide(
-			std::to_string(lvls[i].camera.width) + " " +
-			std::to_string(lvls[i].camera.height)
-		).c_str();
-		cam.append_attribute(L"owner") = lvls[i].camOwner.toWideString().c_str();
+		level.append_attribute(L"camera") = sf::String(
+			std::to_string(lvls[i].camera.width) + " " + std::to_string(lvls[i].camera.height) + " " +
+			std::to_string(lvls[i].camera.left) + " " + std::to_string(lvls[i].camera.top) + " " +
+			lvls[i].camOwner
+		).toWideString().c_str();
 		//Gravity
-		level.append_child(L"gravity").append_attribute(L"value") = pugi::as_wide(
+		level.append_attribute(L"gravity") = sf::String(
 			std::to_string(lvls[i].gravity.x) + " " +
 			std::to_string(lvls[i].gravity.y)
-		).c_str();
+		).toWideString().c_str();
 		//Triggers
 		for (int j = 0; j < lvls[i].triggers.size(); j++)
 		{
