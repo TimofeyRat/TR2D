@@ -46,7 +46,7 @@
 	</clip>
 	<clip name="5" duration="1" startPhraseOnEnd="0" music="ru/audio/music/G20.ogg">
 		<move_ent name="Greed" points="500 175|500 372" continueAfterEnd="0" />
-		<anim_ent name="Greed" animation="room_obsessed3" animSpeed="1" continueAfterEnd="0" />
+		<anim_ent name="Greed" animation="room_obsessed3" animSpeed="0.75" continueAfterEnd="0" />
 		<anim_ent offset="1" name="Greed" animation="idleRight" animSpeed="0" />
 		<move_ent name="Nasake" points="940 380|920 380" />
 		<anim_ent name="Nasake" animation="room_fall2" animSpeed="0.5" />
@@ -81,22 +81,21 @@
 		<anim_ent duration="4" name="Nasake" animation="walkLeft" animSpeed="0.75" continueAfterEnd="0" />
 		<anim_ent offset="4" name="Nasake" animation="idleLeft" animSpeed="0" />
 		<anim_ent name="Greed" animation="idleRight" animSpeed="0" continueAfterEnd="0" />
-		<anim_ent offset="3" name="Greed" animation="idleLeft" animSpeed="0" />
 		<execute count="1">ent setNum Nasake rotation -1</execute>
-		<execute count="1">ent setNum Greed rotation -1</execute>
+		<execute count="1">ent setNum Greed rotateToPlayer 1</execute>
 	</clip>
 </world_cutscene>
 
-<world_cutscene name="street" dialogue="street">
-	<clip name="1" duration="1" startPhraseOnEnd="1">
-		<move_ent duration="4" name="Nasake" points="0 2230|800 2230" />
-		<anim_ent duration="4" name="Nasake" animation="walkRight" animSpeed="0.75" continueAfterEnd="0" />
-		<anim_ent offset="4" name="Nasake" animation="idleRight" />
-		<move_cam points="960 2110" size="0 0 960 540 set" />
+<world_cutscene name="forestSide" dialogue="forestEnter">
+	<clip name="1" duration="10" startPhraseOnEnd="1">
+		<move_ent duration="2" name="Nasake" points="current current|3200 660" />
+		<anim_ent duration="2" name="Nasake" animation="walkRight" animSpeed="1" continueAfterEnd="0" />
+		<execute count="1">world setLevel forest</execute>
+		<execute offset="0.5" count="1">cutscene stop</execute>
 	</clip>
-	<clip name="2" duration="10" startPhraseOnEnd="0" waitAll="1">
-		<anim_ent name="Nasake" animation="idleRight2" animSpeed="0" />
-		<move_cam points="960 2110|1920 1512" size="960 540 3840 2160 linear" />
-		<execute count="1">ent setNum Nasake rotation 1</execute>
+</world_cutscene>
+
+<world_cutscene name="forest" dialogue="forestEnter">
+	<clip name="1" duration="1" startPhraseOnEnd="1">
 	</clip>
 </world_cutscene>

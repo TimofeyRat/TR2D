@@ -1,23 +1,29 @@
-<dialogue name="street">
-	<phrase name="1">
-		<speaker>Насаке</speaker>
-		<text>Ну и где мне искать его босса?</text>
+<dialogue name="townSide">
+	<phrase name="1" speaker="Насаке">
+		<text>Не думаю, что мне сейчас надо в город.</text>
+		<reply name="next">
+			<text>[->]</text>
+			<action>talk active 0</action>
+			<action>input active 1</action>
+		</reply>
+	</phrase>
+</dialogue>
+<dialogue name="forestEnter">
+	<phrase name="1" speaker="Насаке">
+		<text>Ну и где мне их боссов искать?</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 2</action>
 		</reply>
 	</phrase>
-	<phrase name="2">
-		<speaker>Насаке</speaker>
-		<text>Город-то огромный...</text>
+	<phrase name="2" speaker="Насаке">
+		<text>Лес-то огромный...</text>
 		<reply name="next">
 			<text>[->]</text>
-			<action>cutscene setClip 2</action>
 			<action>talk setPhrase 3</action>
 		</reply>
 	</phrase>
-	<phrase name="3">
-		<speaker>Насаке</speaker>
+	<phrase name="3" speaker="Насаке">
 		<text>Да и темнеть начинает...</text>
 		<reply name="next">
 			<text>[->]</text>

@@ -4,6 +4,7 @@ end
 
 function main()
 	updateAttack()
+	setExecNum("interacted", getExecNum("interacted") + getExecNum("interacting"))
 end
 
 function updateAttack()

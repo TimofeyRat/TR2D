@@ -14,14 +14,14 @@ Rigidbody::Rigidbody()
 	size = {0, 0};
 }
 
-void Rigidbody::create(b2Vec2 pos, b2Vec2 size, float friction, float density, float restitution, float angle, bool fixedAngle, bool dynamic, int cg)
+void Rigidbody::create(sf::Vector2f pos, sf::Vector2f size, float friction, float density, float restitution, float angle, bool fixedAngle, bool dynamic, int cg)
 {
 	body = nullptr;
 	fixture = nullptr;
 	bodyDef = b2BodyDef();
 	fixDef = b2FixtureDef();
 	this->size = size;
-	if (pos != b2Vec2(-1, -1)) bodyDef.position.Set(pos.x / tr::M2P, pos.y / tr::M2P);
+	if (pos != sf::Vector2f(-1, -1)) bodyDef.position.Set(pos.x / tr::M2P, pos.y / tr::M2P);
 	bodyDef.type = (dynamic ? b2_dynamicBody : b2_staticBody);
 	bodyDef.angle = angle * tr::DEGTORAD;
 	bodyDef.fixedRotation = fixedAngle;
@@ -65,7 +65,7 @@ void Rigidbody::draw(sf::RenderTarget *target)
 	target->draw(center);
 }
 
-void Rigidbody::resize(b2World *world, b2Vec2 size)
+void Rigidbody::resize(b2World *world, sf::Vector2f size)
 {
 	this->size = size;
 	shape.SetAsBox(this->size.x / 2 / tr::M2P, this->size.y / 2 / tr::M2P);
@@ -73,15 +73,15 @@ void Rigidbody::resize(b2World *world, b2Vec2 size)
 	reloadFixture();
 }
 
-b2Vec2 Rigidbody::getSize() { return size; }
+sf::Vector2f Rigidbody::getSize() { return size; }
 
-void Rigidbody::setPosition(b2Vec2 pos)
+void Rigidbody::setPosition(sf::Vector2f pos)
 {
 	bodyDef.position.Set(pos.x / tr::M2P, pos.y / tr::M2P);
 	if (body != nullptr) body->SetTransform({pos.x / tr::M2P, pos.y / tr::M2P}, body->GetAngle());
 }
 
-b2Vec2 Rigidbody::getPosition()
+sf::Vector2f Rigidbody::getPosition()
 {
 	if (body == nullptr) { return {0, 0}; }
 	return {

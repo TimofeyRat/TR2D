@@ -3,7 +3,8 @@
 	<object name="hotKeys">
 		<action event="key-click-Escape" condition="null">world setActive 0;ui load ru/ui/mainMenu.trui</action>
 		<action event="key-click-F1" condition="null">ui setFrame console;input active 0</action>
-		<action event="key-click-F2" condition="null">assets init;world load ru/worlds/start.trworld</action>
+		<action event="key-click-F2" condition="null">assets reload text ru/global/light.frag;loadGame</action>
+		<action event="key-click-F4" condition="null">assets reload text ru/worlds/start.trworld;loadGame</action>
 		<action event="key-click-F5" condition="null">saveGame</action>
 		<action event="key-click-F6" condition="null">assets init;loadGame</action>
 	</object>
@@ -121,18 +122,18 @@
 			<color state="active" type="lerp">255 255 255 255</color><outline state="active" type="lerp">0 0 0 255</outline>
 		</text>
 	</object>
-	<object name="debug">
+	<!-- <object name="debug">
 		<text name="debug">
 			<toggle event="key-click-F3" />
 			<font path="ru/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
 			<txt type="idle" appear="set" />
-			<txt type="active" appear="set">{lvl-int-tutorial1}</txt>
-			<position type="relative-set">0.5 1 0.5 1</position>
-			<origin type="relative-lerp">0.5 0 0.5 1</origin>
+			<txt type="active" appear="set">{Window-int-FPS} {lvl-int-tutorial0} {lvl-int-tutorial01} {camOwner-int-interacted}</txt>
+			<position type="relative-set">0.5 0 0.5 0</position>
+			<origin type="relative-lerp">0.5 1 0.5 0</origin>
 			<color state="idle" type="lerp">255 255 255 255</color><outline state="idle" type="lerp">0 0 0 255</outline>
 			<color state="active" type="lerp">255 255 255 255</color><outline state="active" type="lerp">0 0 0 255</outline>
 		</text>
-	</object>
+	</object> -->
 	<object name="dialogue">
 		<update type="dialogue" />
 		<toggle event="txtReady-inventory-dialogue-phrase" />

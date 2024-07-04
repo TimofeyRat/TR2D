@@ -74,9 +74,9 @@ void WorldCL::ParticleEntity(int partID, sf::String entName, bool start)
 
 void WorldCL::EntityTrigger(sf::String entName, sf::String triggerName, bool start)
 {
-	auto *lvl = World::getCurrentLevel();
-	auto *ent = lvl->getEntity(entName);
-	auto *trigger = lvl->getTrigger(triggerName);
+	auto *lvl = World::getCurrentLevel(); if (!lvl) return;
+	auto *ent = lvl->getEntity(entName); if (!ent) return;
+	auto *trigger = lvl->getTrigger(triggerName); if (!trigger) return;
 	if (entName != lvl->cam.owner) return;
 	
 	if (trigger->hasVar("enter") && start &&
@@ -161,6 +161,7 @@ void World::loadFromFile(std::string filename)
 				std::stof(bg[1].toAnsiString()), std::stof(bg[2].toAnsiString()),
 				std::stof(bg[3].toAnsiString()), std::stof(bg[4].toAnsiString())
 			};
+			level.bgType = bg[5];
 		}
 		//Music
 		{
@@ -256,10 +257,7 @@ void World::loadFromFile(std::string filename)
 		}
 		for (auto script : lvl.children(L"script"))
 		{
-			level.scripts.push_back({
-				script.attribute(L"path").as_string(),
-				script.attribute(L"mainFunc").as_string()
-			});
+			level.scripts.push_back({script.attribute(L"path").as_string()});
 		}
 		World::lvls.push_back(level);
 	}
@@ -379,13 +377,11 @@ sf::Vector2f World::Map::getPixelSize()
 World::ScriptExecutor::ScriptExecutor()
 {
 	source = Script();
-	func = "";
 }
 
-World::ScriptExecutor::ScriptExecutor(sf::String path, sf::String main)
+World::ScriptExecutor::ScriptExecutor(sf::String path)
 {
 	source.load(path);
-	func = main;
 }
 
 World::Level::Level()
@@ -418,6 +414,7 @@ void World::Level::reset()
 	musicVolume = 100;
 	clear();
 	cl = WorldCL();
+	bgType = "";
 }
 
 Entity *World::Level::getEntity(sf::String name)
@@ -470,18 +467,22 @@ void World::Level::update()
 			bgBounds.width / bgTex->getSize().x,
 			bgBounds.height / bgTex->getSize().y
 		);
-		render.draw(bgSpr);
+		if (bgType == "static")
+		{
+			bgSpr.setPosition(bgBounds.left, bgBounds.top);
+			render.draw(bgSpr);
+		}
 		map.draw(&render);
 		render.display();
-		auto temp = render.getTexture().copyToImage();
-		temp.flipVertically();
-		bg.loadFromImage(temp);
+		mapTexture.loadFromImage(render.getTexture().copyToImage());
 		//Render lights
 		render.clear({0, 0, 0, 0});
 		sf::RectangleShape basis((sf::Vector2f)render.getSize());
 		std::vector<sf::Glsl::Vec2> lightPos(32, {0, 0});
 		std::vector<sf::Glsl::Vec4> lightClr(32, {0, 0, 0, 0});
 		std::vector<sf::Glsl::Vec3> lightData(32, {0, 0, 0});
+		std::vector<sf::Glsl::Vec4> bodies(32, {0, 0, 0, 0});
+		std::vector<sf::Glsl::Vec2> bodiesData(32, {0, 0});
 		for (int i = 0; i < lights.size(); i++)
 		{
 			lightPos[i] = {
@@ -496,20 +497,40 @@ void World::Level::update()
 			};
 			lightData[i] = {lights[i].radius, lights[i].angle, lights[i].field};
 		}
+		for (int i = 0; i < triggers.size(); i++)
+		{
+			if (!triggers[i].getVar("shadowCaster")) continue;
+			bodies[i] = {
+				triggers[i].rect.left,
+				getVar("h") - triggers[i].rect.top - triggers[i].rect.height,
+				triggers[i].rect.width,
+				triggers[i].rect.height
+			};
+			bodiesData[i] = {
+				triggers[i].getVar("angle"),
+				triggers[i].getVar("shadowCaster")
+			};
+		}
 		lightShader.setUniformArray("lightPos", lightPos.data(), 32);
 		lightShader.setUniformArray("lightClr", lightClr.data(), 32);
 		lightShader.setUniformArray("lightData", lightData.data(), 32);
+		lightShader.setUniformArray("triggers", bodies.data(), 32);
+		lightShader.setUniformArray("triggersData", bodiesData.data(), 32);
 		render.draw(basis, &lightShader);
 		render.display();
-		temp = render.getTexture().copyToImage();
-		temp.flipVertically();
-		lightMap.loadFromImage(temp);
+		lightMap.loadFromImage(render.getTexture().copyToImage());
 		//Objects layer
 		objects = new sf::RenderTexture();
 		objects->create(getVar("w"), getVar("h"));
 		//Entities layer
 		entsLayer = new sf::RenderTexture();
 		entsLayer->create(getVar("w"), getVar("h"));
+		//Map layer
+		if (bgType == "parallax")
+		{
+			bgLayer = new sf::RenderTexture();
+			bgLayer->create(getVar("w"), getVar("h"));
+		}
 		started = true;
 		Window::resetTime();
 	}
@@ -608,7 +629,7 @@ void World::Level::update()
 		partCurves[i].update();
 		if (partCurves[i].getVar("joined")) { partCurves.erase(partCurves.begin() + i); }
 	}
-	for (int i = 0; i < scripts.size(); i++) { scripts[i].source.execute(scripts[i].func); }
+	for (int i = 0; i < scripts.size(); i++) { scripts[i].source.execute("main"); }
 	for (int i = 0; i < ents.size(); i++)
 	{
 		if (!ents[i].isAlive()) continue;
@@ -699,13 +720,31 @@ void World::Level::draw()
 	auto mapSize = map.getPixelSize();
 	if (screen.getSize() != (sf::Vector2u)mapSize) { screen.create(mapSize.x, mapSize.y); }
 	screen.clear();
-	sf::Sprite mapSpr(bg);
 	float random = (float)rand() / RAND_MAX;
 	auto camOwner = getCameraOwner();
+	
 	mapShader.setUniform("rand", random);
-	mapShader.setUniform("texture", bg);
 	if (camOwner) mapShader.setUniform("camOwnerHP", camOwner->getVar("HP").num);
 	mapShader.setUniform("lightMap", lightMap);
+
+	if (bgLayer && bgType == "parallax")
+	{
+		bgLayer->clear({0, 0, 0, 0});
+		bgSpr.setOrigin(bgSpr.getLocalBounds().width / 2, 0);
+		float x;
+		auto camPercent = (cam.view.getCenter().x - cam.view.getSize().x / 2) / (map.getPixelSize().x - cam.view.getSize().x);
+		auto bgRange = map.getPixelSize().x - bgSpr.getGlobalBounds().width;
+		x = camPercent * bgRange + bgSpr.getGlobalBounds().width / 2;
+		bgSpr.setPosition(x, bgBounds.top);
+		bgLayer->draw(bgSpr);
+		bgLayer->display();
+		auto t = bgLayer->getTexture();
+		mapShader.setUniform("texture", t);
+		screen.draw(sf::Sprite(t), &mapShader);
+	}
+
+	sf::Sprite mapSpr(mapTexture);
+	mapShader.setUniform("texture", mapTexture);
 	screen.draw(mapSpr, &mapShader);
 	cam.update(mapSize);
 	setVar("camX", cam.view.getCenter().x);
@@ -754,6 +793,7 @@ void World::Level::draw()
 			rect.setFillColor({0, 0, 0, 0});
 			rect.setOutlineColor(sf::Color::Red);
 			rect.setOutlineThickness(-2);
+			rect.setRotation(triggers[i].getVar("angle"));
 			screen.draw(rect);
 		}
 		if (CSManager::active) CSManager::drawDebug(&screen);

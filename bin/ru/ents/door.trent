@@ -1,0 +1,12 @@
+<entity name="Door" skeleton="ru/skeletons/door.trskeleton">
+	<physics
+		friction="0"
+		mass="0"
+		restituion="0"
+		angle="0"
+		fixedAngle="1"
+		dynamic="0"
+		collisionGroup="-1" />
+	<variable name="headBone" num="0" />
+	<variable name="scale" num="4" />
+</entity>

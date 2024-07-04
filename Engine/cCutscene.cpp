@@ -121,8 +121,8 @@ void CSManager::init()
 								{
 									auto p = tr::splitStr(pts[i], " ");
 									curve.push_back({
-										std::stof(p[0].toAnsiString()),
-										std::stof(p[1].toAnsiString())
+										(p[0] == "current" ? UINT64_MAX : std::stof(p[0].toAnsiString())),
+										(p[1] == "current" ? UINT64_MAX : std::stof(p[1].toAnsiString()))
 									});
 								}
 								WorldCutscene::Change::MoveEnt me;
@@ -283,6 +283,8 @@ void CSManager::WorldCutscene::Change::MoveEnt::update()
 	if (!isActive()) return;
 	auto ent = World::getCurrentLevel()->getEntity(entName);
 	ent->getRigidbody()->getBody()->SetLinearVelocity({0, 0});
+	if (curve[0].x == UINT64_MAX) curve[0].x = (int)ent->getPosition().x;
+	if (curve[0].y == UINT64_MAX) curve[0].y = (int)ent->getPosition().y;
 	ent->setPosition(tr::getBezierPoint(curve, current / duration));
 }
 

@@ -513,6 +513,7 @@ void UI::Frame::Object::update()
 void UI::Frame::Object::handle()
 {
 	if (handler.isEmpty()) { return; }
+	if (handler != "dialogue" && (CSManager::active || Talk::active) && name != "console") { return; }
 	if (tr::strContains(handler, "inventory"))
 	{
 		//Item Description

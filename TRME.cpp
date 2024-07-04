@@ -56,7 +56,7 @@ struct Level
 			{
 				sf::IntRect r;
 				r.left = (int)(id % texX) * tileSize.x;
-				r.top = (int)(id / texY) * tileSize.y;
+				r.top = (int)(id / texX) * tileSize.y;
 				r.width = tileSize.x;
 				r.height = tileSize.y;
 				rects.push_back(r);
@@ -84,8 +84,9 @@ struct Level
 			{
 				for (int y = 0; y < mapSize.y; y++)
 				{
+					tiles[x][y] = tr::clamp(tiles[x][y], 0, rects.size());
 					auto id = tiles[x][y];
-					if (!id || id != tr::clamp(id, 0, rects.size() - 1)) continue;
+					if (!id) continue;
 					tile.setTextureRect(rects[id - 1]);
 					tile.setPosition(x * tileSize.x * scale, y * tileSize.y * scale);
 					screen.draw(tile);
@@ -121,6 +122,18 @@ struct Level
 					tex.loadFromImage(s.getTexture("headIdle")->tex->copyToImage());
 					spr.setTexture(tex);
 					spr.setTextureRect(s.getTexture("headIdle")->rect);
+					for (auto var : ent.first_child().children(L"variable"))
+					{
+						std::wstring n = var.attribute(L"name").as_string();
+						if (n == L"scale")
+						{
+							float scale = var.attribute(L"num").as_float();
+							spr.setScale(
+								scale,
+								scale
+							);
+						}
+					}
 					spr.setOrigin(spr.getTextureRect().width / 2, spr.getTextureRect().height / 2);
 					return;
 				}
@@ -202,9 +215,15 @@ struct Level
 			field = f;
 		}
 	};
+	struct Script
+	{
+		sf::String path;
+		Script() { path = ""; }
+		Script(sf::String p) { path = p; }
+	};
 	sf::String name;
 	sf::Texture bgTex;
-	sf::String bgPath, camOwner;
+	sf::String bgPath, bgType, camOwner;
 	sf::FloatRect bgBounds;
 	sf::String music;
 	float musicVolume;
@@ -213,6 +232,7 @@ struct Level
 	std::vector<Trigger> triggers;
 	std::vector<Control> ctrl;
 	std::vector<Light> lights;
+	std::vector<Script> scripts;
 	sf::Vector2f gravity;
 	Level()
 	{
@@ -226,8 +246,9 @@ struct Level
 		triggers.clear();
 		ctrl.clear();
 		gravity = {0, 0};
-		bgPath = "";
+		bgPath = bgType = "";
 		camOwner = "";
+		scripts.clear();
 	}
 	void draw()
 	{
@@ -267,7 +288,6 @@ struct Level
 		{
 			ents[i].spr.setPosition(ents[i].position);
 			ents[i].spr.setTexture(ents[i].tex);
-			ents[i].spr.setScale(2, 2);
 			screen.draw(ents[i].spr);
 		}
 	}
@@ -313,6 +333,7 @@ void loadFromFile(sf::String path)
 				std::stof(bg[1].toAnsiString()), std::stof(bg[2].toAnsiString()),
 				std::stof(bg[3].toAnsiString()), std::stof(bg[4].toAnsiString())
 			};
+			level.bgType = bg[5];
 		}
 		//Music
 		{
@@ -384,6 +405,10 @@ void loadFromFile(sf::String path)
 				l.attribute(L"field").as_float()
 			));
 		}
+		for (auto s : lvl.children(L"script"))
+		{
+			level.scripts.push_back({s.attribute(L"path").as_string()});
+		}
 		lvls.push_back(level);
 	}
 }
@@ -422,7 +447,8 @@ void save(sf::String file)
 		level.append_attribute(L"bg") = sf::String(
 			lvls[i].bgPath + " " +
 			std::to_string(lvls[i].bgBounds.left) + " " + std::to_string(lvls[i].bgBounds.top) + " " +
-			std::to_string(lvls[i].bgBounds.width) + " " + std::to_string(lvls[i].bgBounds.height)
+			std::to_string(lvls[i].bgBounds.width) + " " + std::to_string(lvls[i].bgBounds.height) + " " +
+			lvls[i].bgType
 		).toWideString().c_str();
 		//Music node
 		level.append_attribute(L"music") = sf::String(lvls[i].music + " " + std::to_string(lvls[i].musicVolume)).toWideString().c_str();
@@ -465,6 +491,7 @@ void save(sf::String file)
 				std::to_string(s->position.y)
 			).c_str();
 		}
+		//Controls
 		for (int j = 0; j < lvls[i].ctrl.size(); j++)
 		{
 			auto *c = &lvls[i].ctrl[j];
@@ -472,6 +499,7 @@ void save(sf::String file)
 			ctrl.append_attribute(L"ent") = c->name.toWideString().c_str();
 			ctrl.append_attribute(L"controller") = c->ctrl.toWideString().c_str();
 		}
+		//Lights
 		for (int j = 0; j < lvls[i].lights.size(); j++)
 		{
 			auto *l = &lvls[i].lights[j];
@@ -487,6 +515,13 @@ void save(sf::String file)
 			light.append_attribute(L"angle") = l->angle;
 			light.append_attribute(L"field") = l->field;
 		}
+		//Scripts
+		for (int j = 0; j < lvls[i].scripts.size(); j++)
+		{
+			auto s = &lvls[i].scripts[j];
+			auto script = level.append_child(L"script");
+			script.append_attribute(L"path") = s->path.toWideString().c_str();
+		}
 	}
 	doc.save_file(pugi::as_wide(file).c_str());
 }
@@ -497,6 +532,7 @@ void save(sf::String file)
 #define PageTrigger 3
 #define PageControl 4
 #define PageLight 5
+#define PageScripts 6
 
 //Main page
 #define MainOpen 0
@@ -507,10 +543,12 @@ void save(sf::String file)
 #define MainLevels 5
 #define MainBG 6
 #define MainBounds 7
-#define MainMusic 8
-#define MainVolume 9
-#define MainGravity 10
-#define MainCamera 11
+#define MainBGType 8
+#define MainMusic 9
+#define MainVolume 10
+#define MainGravity 11
+#define MainCamera 12
+#define MainCamOwner 13
 
 //Drawing page
 #define DrawPixelSize 0
@@ -550,6 +588,10 @@ void save(sf::String file)
 #define LightRadius 6
 #define LightAngle 7
 #define LightField 8
+
+//Scripts page
+#define ScriptsNew 0
+#define ScriptsDelete 1
 
 sf::String openWindow(char* filter = "TR2D World (*.trworld)\0*.trworld\0")
 {
@@ -623,12 +665,13 @@ std::vector<sf::Text> ui;
 void reloadUI()
 {
 	ui.clear();
-	if (currentPage == PageMain) { ui.resize(12, {"", font, 20}); }
+	if (currentPage == PageMain) { ui.resize(14, {"", font, 20}); }
 	if (currentPage == PageDraw) { ui.resize(5, {"", font, 20});}
 	if (currentPage == PageEnt) { ui.resize(5, {"", font, 20}); }
 	if (currentPage == PageTrigger) { ui.resize(5, {"", font, 20}); }
 	if (currentPage == PageControl) { ui.resize(5, {"", font, 20}); }
 	if (currentPage == PageLight) { ui.resize(9, {"", font, 20}); }
+	if (currentPage == PageScripts) { ui.resize(3, {"", font, 20}); }
 }
 
 void updateUI()
@@ -650,18 +693,20 @@ void updateUI()
 			std::to_string((int)l->bgBounds.width) + " " +
 			std::to_string((int)l->bgBounds.height)
 		);
-		ui[8].setString("Music path:\n" + l->music);
-		ui[9].setString("Music volume: " + std::to_string((int)l->musicVolume));
-		ui[10].setString("Gravity: " +
+		ui[8].setString("Background type:\n" + l->bgType);
+		ui[9].setString("Music path:\n" + l->music);
+		ui[10].setString("Music volume: " + std::to_string((int)l->musicVolume));
+		ui[11].setString("Gravity: " +
 			std::to_string(l->gravity.x) + " " +
 			std::to_string(l->gravity.y)
 		);
-		ui[11].setString("Camera size/offset:\n" +
+		ui[12].setString("Camera size/offset:\n" +
 			std::to_string((int)l->camera.left) + " " +
 			std::to_string((int)l->camera.top) + " " +
 			std::to_string((int)l->camera.width) + " " +
 			std::to_string((int)l->camera.height)
 		);
+		ui[13].setString("Camera owner:\n" + l->camOwner);
 	}
 	if (currentPage == PageDraw)
 	{
@@ -757,6 +802,18 @@ void updateUI()
 		ui[7].setString("Light angle: " + std::to_string(l->angle));
 		ui[8].setString("Light field: " + std::to_string(l->field));
 	}
+	if (currentPage == PageScripts)
+	{
+		if (!lvls.size()) { currentPage = PageMain; reloadUI(); return; }
+		auto lvl = &lvls[currentLevel];
+		ui[0].setString("Add script");
+		ui[1].setString("Delete script");
+		ui[2].setString("Scripts:");
+		for (int i = 0; i < lvl->scripts.size(); i++)
+		{
+			ui[2].setString(ui[2].getString() + "\n" + lvl->scripts[i].path);
+		}
+	}
 }
 
 void execute(int page, int btn)
@@ -788,6 +845,7 @@ void execute(int page, int btn)
 			lvls[currentLevel].bgTex.loadFromFile(lvls[currentLevel].bgPath);
 		}
 		if (btn == MainBounds) { typing = true; enter.setString("Set background bounds:\n"); }
+		if (btn == MainBGType) { typing = true; enter.setString("Static/Parallax background:\n"); }
 		if (btn == MainMusic)
 		{
 			auto path = openWindow("Music (*.ogg)\0*.ogg\0");
@@ -797,6 +855,7 @@ void execute(int page, int btn)
 		if (btn == MainVolume) { typing = true; enter.setString("Set music volume:\n"); }
 		if (btn == MainGravity) { typing = true; enter.setString("Set level gravity:\n"); }
 		if (btn == MainCamera) { typing = true; enter.setString("Set new camera size or offset:\n"); }
+		if (btn == MainCamOwner) { typing = true; enter.setString("Set camera owner:\n"); }
 	}
 	if (page == PageDraw)
 	{
@@ -843,6 +902,11 @@ void execute(int page, int btn)
 		if (btn == LightRadius) { typing = true; enter.setString("Set light radius:\n"); }
 		if (btn == LightAngle) { typing = true; enter.setString("Set light angle:\n"); }
 		if (btn == LightField) { typing = true; enter.setString("Set light field:\n"); }
+	}
+	if (page == PageScripts)
+	{
+		if (btn == ScriptsNew) { typing = true; enter.setString("Enter script path:\n"); }
+		if (btn == ScriptsDelete) { typing = true; enter.setString("Enter script path:\n"); }
 	}
 	if (typing) command = {page, btn};
 }
@@ -893,6 +957,10 @@ void cmd()
 				std::stof(b[2].toAnsiString()), std::stof(b[3].toAnsiString())
 			};
 		}
+		if (btn == MainBGType)
+		{
+			lvls[currentLevel].bgType = prompt;
+		}
 		if (btn == MainVolume)
 		{
 			lvls[currentLevel].musicVolume = std::stof(prompt.toAnsiString());
@@ -920,6 +988,10 @@ void cmd()
 				std::stof(args[0].toAnsiString()), std::stof(args[1].toAnsiString()),
 				std::stof(args[2].toAnsiString()), std::stof(args[3].toAnsiString())
 			};
+		}
+		if (btn == MainCamOwner)
+		{
+			lvls[currentLevel].camOwner = prompt;
 		}
 	}
 	if (page == PageDraw)
@@ -1045,7 +1117,7 @@ void cmd()
 		if (btn == TriggerVars)
 		{
 			auto t = tr::splitStr(prompt, " ");
-			if (std::isdigit(t[1].toAnsiString()[0]))
+			if (std::isdigit(t[1].toAnsiString()[0]) || t[1].toAnsiString()[0] == '-')
 			{
 				l->triggers[currentTrigger].setVar(t[0], std::stof(t[1].toAnsiString()));
 			}
@@ -1217,6 +1289,7 @@ int main()
 				if (event.key.code == sf::Keyboard::Num4 && !typing) { currentPage = PageTrigger; reloadUI(); }
 				if (event.key.code == sf::Keyboard::Num5 && !typing) { currentPage = PageControl; reloadUI(); }
 				if (event.key.code == sf::Keyboard::Num6 && !typing) { currentPage = PageLight; reloadUI(); }
+				if (event.key.code == sf::Keyboard::Num7 && !typing) { currentPage = PageScripts; reloadUI(); }
 			}
 			if (event.type == sf::Event::MouseWheelScrolled)
 			{
@@ -1307,6 +1380,10 @@ int main()
 					if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 					{
 						l->map.tiles[tile.x][tile.y] = currentTile;
+					}
+					if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+					{
+						currentTile = l->map.tiles[tile.x][tile.y];
 					}
 				}
 			}

@@ -59,8 +59,9 @@ void main()
 {
 	ivec2 renderSize = textureSize(render, 0);
 	vec2 uv = gl_FragCoord.xy / renderSize;
+	vec2 lightUV = vec2(gl_FragCoord.x, renderSize.y - gl_FragCoord.y) / renderSize;
 	vec4 pixel = texture2D(render, uv);
-	vec4 light = texture2D(lightMap, uv);
+	vec4 light = texture2D(lightMap, lightUV);
 	vec2 point = vec2(gl_FragCoord.x, renderSize.y - gl_FragCoord.y);
 	int player = 0;
 	if (PointAABB(point, camOwnerRect))

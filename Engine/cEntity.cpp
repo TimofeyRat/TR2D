@@ -149,7 +149,6 @@ void Entity::updateAnim()
 		bodyY = b->GetLinearVelocity().y * tr::M2P;
 	}
 	moveX = getVar("dx");
-	moveY = getVar("dy");
 
 	float dx = 0, dy = 0;
 	
@@ -165,8 +164,8 @@ void Entity::updateAnim()
 	if (dx == 1) { anim = "wr"; } //walkRight
 	if (dx == 0.5) { anim = "sr"; } //stopRight
 	if (!dx) { auto r = getVar("rotation").num; if (r < 0) anim = "il"; if (r > 0) anim = "ir"; } //idle
-	if (dy < 0) { auto r = getVar("rotation").num; if (r < 0) anim = "jl"; if (r > 0) anim = "jr"; } //Jump
-	if (dy > 0) { auto r = getVar("rotation").num; if (r < 0) anim = "fl"; if (r > 0) anim = "fr"; } //Fall
+	if (!getVar("onStairs") && dy < 0) { auto r = getVar("rotation").num; if (r < 0) anim = "jl"; if (r > 0) anim = "jr"; } //Jump
+	if (!getVar("onStairs") && dy > 0) { auto r = getVar("rotation").num; if (r < 0) anim = "fl"; if (r > 0) anim = "fr"; } //Fall
 	if (getVar("attacking")) { auto r = getVar("rotation").num; if (r < 0) anim = "al"; if (r > 0) anim = "ar"; } //Attack
 	auto state = getVar("state").str;
 	if (!state.isEmpty() && hasVar(anim + "-" + state)) { anim += "-" + state; }
@@ -176,7 +175,7 @@ void Entity::updateAnim()
 }
 
 void Entity::setPosition(sf::Vector2f pos) { rb.setPosition({pos.x, pos.y}); }
-sf::Vector2f Entity::getPosition() { return s.getPosition(); }
+sf::Vector2f Entity::getPosition() { return rb.getPosition(); }
 
 sf::FloatRect Entity::getHitbox() { return s.generateHitbox(); }
 
@@ -227,26 +226,45 @@ void Entity::updateRB(float scale)
 	if (!body) return;
 
 	auto triggers = World::getTriggers();
+	auto rect = s.generateHitbox();
 	auto triggersCheck = sf::Vector2f(
-		body->GetPosition().x * tr::M2P,
-		body->GetPosition().y * tr::M2P + s.generateHitbox().height / 2 + getVar("ogd") * scale
+		body->GetPosition().x * tr::M2P - rect.width / 2,
+		body->GetPosition().y * tr::M2P + rect.height / 2 + getVar("ogd") * scale
 	);
 	auto speed = getVar("speed") + getVar("baubleSpeed");
 	setVar("onGround", 0);
+	auto dx = getVar("dx").num, dy = getVar("dy").num;
 	for (int i = 0; i < triggers.size(); i++)
 	{
-		if (triggers[i]->rb.getBody()->GetFixtureList()->TestPoint({triggersCheck.x / tr::M2P, triggersCheck.y / tr::M2P}) &&
-			triggers[i]->getVar("name").str == "ground")
+		auto name = triggers[i]->getVar("name").str;
+		if (!tr::strContains(name, "ground") &&
+			!tr::strContains(name, "stairs")) continue;
+		auto f = triggers[i]->rb.getBody()->GetFixtureList();
+		bool found = false;
+		while (!found && triggersCheck.x < rect.left + rect.width)
 		{
-			setVar("onGround", 1);
+			if (f->TestPoint({triggersCheck.x / tr::M2P, triggersCheck.y / tr::M2P})) found = true;
+			else triggersCheck.x++;
 		}
+		if (found)
+		{
+			if (tr::strContains(name, "ground")) setVar("onGround", 1);
+			if (tr::strContains(name, "stairs"))
+			{
+				auto angle = triggers[i]->getVar("angle");
+				if ((dx < 0 && angle < 0) || (dx > 0 && angle > 0)) { dy -= abs(sin(tr::DEGTORAD * angle)) / 1.5; setVar("onStairs", 1); }
+			}
+			else setVar("onStairs", 0);
+			break;
+		}
+		else triggersCheck.x -= rect.width;
 	}
-	auto x = body->GetLinearVelocity().x, dx = getVar("dx").num, maxSpeed = getVar("maxSpeed").num * speed * scale;
+	auto maxSpeed = getVar("maxSpeed").num * speed * scale;
 	if (getVar("attacking") && hasVar("slowOnAttack") && getVar("slowOnAttack")) { maxSpeed /= 2; }
 	else
 	{
 		body->ApplyForceToCenter({dx * getVar("speedX") * speed * scale, 0}, true);
-		if (getVar("onGround") && getVar("dy")) body->SetLinearVelocity({body->GetLinearVelocity().x, getVar("dy") * getVar("speedY") * scale});
+		if (getVar("onGround") && dy != 0) body->SetLinearVelocity({body->GetLinearVelocity().x, dy * getVar("speedY") * scale});
 	}
 	if (body->GetLinearVelocity().x > maxSpeed) { body->SetLinearVelocity({maxSpeed, body->GetLinearVelocity().y}); }
 	else if (body->GetLinearVelocity().x < -maxSpeed) { body->SetLinearVelocity({-maxSpeed, body->GetLinearVelocity().y}); }

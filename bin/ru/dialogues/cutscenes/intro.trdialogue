@@ -1,48 +1,39 @@
 <?xml version="1.0"?>
 <dialogue name="intro">
 	<phrase name="first">
-		<speaker />
 		<text>Сотни лет назад, когда Египет ещё был великой страной...</text>
 		<reply name="continue"><text>[Дальше]</text><action>talk setPhrase second</action></reply>
 		<reply name="skip"><text>Ближе к делу.</text><action>talk setPhrase skip</action></reply>
 	</phrase>
 	<phrase name="second">
-		<speaker />
 		<text>Существовал бог по имени Евгений.</text>
 		<reply name="continue"><text>[Дальше]</text><action>talk setPhrase third</action></reply>
 	</phrase>
 	<phrase name="third">
-		<speaker />
 		<text>Единственный бог с русскими корнями. Откуда он появился - никто не знал.</text>
 		<reply name="continue"><text>[Дальше]</text><action>talk setPhrase fourth</action></reply>
 	</phrase>
 	<phrase name="fourth">
-		<speaker />
 		<text>Однажды он решил взглянуть на мир людской, и вновь удивился увиденному...</text>
 		<reply name="continue"><text>[Дальше]</text><action>talk setPhrase fifth</action></reply>
 	</phrase>
 	<phrase name="fifth">
-		<speaker />
 		<text>Злоба, жадность и вражда.</text>
 		<reply name="continue"><text>[Дальше]</text><action>talk setPhrase sixth</action></reply>
 	</phrase>
 	<phrase name="sixth">
-		<speaker />
 		<text>"Что же им мешает жить в мире, как нам, богам?"</text>
 		<reply name="continue"><text>[Дальше]</text><action>talk setPhrase seventh</action></reply>
 	</phrase>
 	<phrase name="seventh">
-		<speaker />
 		<text>С этими словами он бросил на землю небольшую звезду - метку...</text>
 		<reply name="continue"><text>[Дальше]</text><action>talk setPhrase eighth</action></reply>
 	</phrase>
 	<phrase name="eighth">
-		<speaker />
 		<text>Метку, которую поднимет тот, кто способен изменить мир.</text>
 		<reply name="continue"><text>[Дальше]</text><action>talk setPhrase end</action></reply>
 	</phrase>
 	<phrase name="end">
-		<speaker />
 		<text>Но в какую сторону он изменит этот мир?</text>
 		<reply name="continue">
 			<text>[Начать игру]</text>
@@ -52,7 +43,6 @@
 		</reply>
 	</phrase>
 	<phrase name="skip">
-		<speaker />
 		<text>Так вот, начинаем.</text>
 		<reply name="continue">
 			<text>[Начать игру]</text>
@@ -64,49 +54,43 @@
 </dialogue>
 
 <dialogue name="room">
-	<phrase name="1">
-		<speaker>Жадность</speaker>
-		<text>НАСАКЕЕЕ!</text>
+	<phrase name="1" speaker="Жадность">
+		<text>ДЕД ИНСА-А-АЙД!</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>cutscene setClip 2</action>
 			<action>talk setPhrase 2</action>
 		</reply>
 	</phrase>
-	<phrase name="2">
-		<speaker>Насаке</speaker>
-		<text>Чего тебе?</text>
+	<phrase name="2" speaker="Насаке">
+		<text>Чего разорался?</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 3</action>
 		</reply>
 	</phrase>
-	<phrase name="3">
-		<speaker>Жадность</speaker>
+	<phrase name="3" speaker="Жадность">
 		<text>Деньги принёс?</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 4</action>
 		</reply>
 	</phrase>
-	<phrase name="4">
-		<speaker>Насаке</speaker>
+	<phrase name="4" speaker="Насаке">
 		<text>Нет. Я отдыхаю, отвянь.</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 5</action>
 		</reply>
 	</phrase>
-	<phrase name="5">
-		<speaker>Жадность</speaker>
-		<text>...Ты же знаешь, что сейчас будет?</text>
+	<phrase name="5" speaker="Жадность">
+		<text>Как обычно. Ты же знаешь, что сейчас будет?</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 6</action>
 		</reply>
 	</phrase>
-	<phrase name="6">
-		<speaker>Насаке</speaker>
+	<phrase name="6" speaker="Насаке">
 		<text>Да пошёл ты.</text>
 		<reply name="next">
 			<text>[->]</text>
@@ -114,8 +98,7 @@
 			<action>talk setPhrase 7</action>
 		</reply>
 	</phrase>
-	<phrase name="7">
-		<speaker>Жадность</speaker>
+	<phrase name="7" speaker="Жадность">
 		<text>Не смей...</text>
 		<reply name="next">
 			<text>[->]</text>
@@ -123,8 +106,7 @@
 			<action>cutscene setClip 4</action>
 		</reply>
 	</phrase>
-	<phrase name="8">
-		<speaker>Жадность</speaker>
+	<phrase name="8" speaker="Жадность">
 		<text>НЕ СМЕЙ ТАК РАЗГОВАРИВАТЬ СО МНОЙ!</text>
 		<reply name="next">
 			<text>[->]</text>
@@ -132,24 +114,21 @@
 			<action>talk setPhrase 9</action>
 		</reply>
 	</phrase>
-	<phrase name="9">
-		<speaker>Насаке</speaker>
+	<phrase name="9" speaker="Насаке">
 		<text>ДА ОТВАЛИ ТЫ УЖЕ!</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 10</action>
 		</reply>
 	</phrase>
-	<phrase name="10">
-		<speaker>Насаке</speaker>
+	<phrase name="10" speaker="Насаке">
 		<text>И без тебя плохо.</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 11</action>
 		</reply>
 	</phrase>
-	<phrase name="11">
-		<speaker>Насаке</speaker>
+	<phrase name="11" speaker="Насаке">
 		<text>Гнев заставил кота убить... Мразота.</text>
 		<reply name="next">
 			<text>[->]</text>
@@ -157,24 +136,21 @@
 			<action>cutscene setClip 6</action>
 		</reply>
 	</phrase>
-	<phrase name="12">
-		<speaker>Насаке</speaker>
+	<phrase name="12" speaker="Насаке">
 		<text>Желающий часть вещей забрал...</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 13</action>
 		</reply>
 	</phrase>
-	<phrase name="13">
-		<speaker>Насаке</speaker>
+	<phrase name="13" speaker="Насаке">
 		<text>И ты ещё тут.</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 14</action>
 		</reply>
 	</phrase>
-	<phrase name="14">
-		<speaker>Жадность</speaker>
+	<phrase name="14" speaker="Жадность">
 		<text>Я всё слышал.</text>
 		<reply name="next">
 			<text>[->]</text>
@@ -182,16 +158,14 @@
 			<action>cutscene setClip 7</action>
 		</reply>
 	</phrase>
-	<phrase name="15">
-		<speaker>Насаке</speaker>
+	<phrase name="15" speaker="Насаке">
 		<text>Чего?</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 16</action>
 		</reply>
 	</phrase>
-	<phrase name="16">
-		<speaker>Жадность</speaker>
+	<phrase name="16" speaker="Жадность">
 		<text>Ты забылся. Я - это ты. Я слышу твои мысли.</text>
 		<reply name="next">
 			<text>[->]</text>
@@ -199,16 +173,14 @@
 			<action>cutscene setClip 8</action>
 		</reply>
 	</phrase>
-	<phrase name="17">
-		<speaker>Насаке</speaker>
+	<phrase name="17" speaker="Насаке">
 		<text>ОТ ТЕБЯ ВООБЩЕ РЕАЛЬНО ИЗБАВИТЬСЯ, ИЛИ КАК?</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 18</action>
 		</reply>
 	</phrase>
-	<phrase name="18">
-		<speaker>Жадность</speaker>
+	<phrase name="18" speaker="Жадность">
 		<text>Неа.</text>
 		<reply name="next">
 			<text>[->]</text>
@@ -216,16 +188,14 @@
 			<action>cutscene setClip 9</action>
 		</reply>
 	</phrase>
-	<phrase name="19">
-		<speaker>Жадность</speaker>
+	<phrase name="19" speaker="Жадность">
 		<text>Только если избавиться от моего босса...</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 20</action>
 		</reply>
 	</phrase>
-	<phrase name="20">
-		<speaker>Жадность</speaker>
+	<phrase name="20" speaker="Жадность">
 		<text>Допустим, что нет.</text>
 		<reply name="next">
 			<text>[->]</text>
@@ -233,24 +203,21 @@
 			<action>cutscene setClip 10</action>
 		</reply>
 	</phrase>
-	<phrase name="21">
-		<speaker>Насаке</speaker>
+	<phrase name="21" speaker="Насаке">
 		<text>Босса? И где он?</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 22</action>
 		</reply>
 	</phrase>
-	<phrase name="22">
-		<speaker>Жадность</speaker>
+	<phrase name="22" speaker="Жадность">
 		<text>Какой босс? Нет никакого босса...</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 23</action>
 		</reply>
 	</phrase>
-	<phrase name="23">
-		<speaker>Насаке</speaker>
+	<phrase name="23" speaker="Насаке">
 		<text>Да-да, так я тебе и поверил.</text>
 		<reply name="next">
 			<text>[->]</text>
@@ -258,16 +225,14 @@
 			<action>cutscene setClip 11</action>
 		</reply>
 	</phrase>
-	<phrase name="24">
-		<speaker>Жадность</speaker>
+	<phrase name="24" speaker="Жадность">
 		<text>Э, ты куда?</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 25</action>
 		</reply>
 	</phrase>
-	<phrase name="25">
-		<speaker>Насаке</speaker>
+	<phrase name="25" speaker="Насаке">
 		<text>Прогуляюсь на свежем воздухе. Бывай.</text>
 		<reply name="next">
 			<text>[->]</text>

@@ -1,14 +1,12 @@
 <dialogue name="doorNasake">
-	<phrase name="1">
-		<speaker>Насаке</speaker>
+	<phrase name="1" speaker="Насаке">
 		<text>Это моя квартира.</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 2</action>
 		</reply>
 	</phrase>
-	<phrase name="2">
-		<speaker>Насаке</speaker>
+	<phrase name="2" speaker="Насаке">
 		<text>Мне нет смысла возвращаться туда.</text>
 		<reply name="next">
 			<text>[->]</text>
@@ -18,16 +16,14 @@
 	</phrase>
 </dialogue>
 <dialogue name="doorSuicide">
-	<phrase name="1">
-		<speaker>Насаке</speaker>
+	<phrase name="1" speaker="Насаке">
 		<text>Эта квартира пустует.</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 2</action>
 		</reply>
 	</phrase>
-	<phrase name="2">
-		<speaker>Насаке</speaker>
+	<phrase name="2" speaker="Насаке">
 		<text>Самый тихий сосед здесь был, а в какой-то момент пропал.</text>
 		<reply name="next">
 			<text>[->]</text>
@@ -37,16 +33,14 @@
 	</phrase>
 </dialogue>
 <dialogue name="doorDrunk">
-	<phrase name="1">
-		<speaker>Насаке</speaker>
+	<phrase name="1" speaker="Насаке">
 		<text>Эта квартира пустует.</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 2</action>
 		</reply>
 	</phrase>
-	<phrase name="2">
-		<speaker>Насаке</speaker>
+	<phrase name="2" speaker="Насаке">
 		<text>Её владелец спился. Как будто ничего другого нет...</text>
 		<reply name="next">
 			<text>[->]</text>
@@ -56,24 +50,21 @@
 	</phrase>
 </dialogue>
 <dialogue name="doorNice">
-	<phrase name="1">
-		<speaker>Насаке</speaker>
+	<phrase name="1" speaker="Насаке">
 		<text>Эта квартира пустует.</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 2</action>
 		</reply>
 	</phrase>
-	<phrase name="2">
-		<speaker>Насаке</speaker>
+	<phrase name="2" speaker="Насаке">
 		<text>Соседка в другой город на время уехала, как я слышал.</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 3</action>
 		</reply>
 	</phrase>
-	<phrase name="3">
-		<speaker>Насаке</speaker>
+	<phrase name="3" speaker="Насаке">
 		<text>Хоть кто-то нормальный.</text>
 		<reply name="next">
 			<text>[->]</text>

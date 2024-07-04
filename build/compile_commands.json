@@ -103,43 +103,43 @@
 },
 {
   "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -o CMakeFiles\\MapEditor.dir\\TRME.cpp.obj -c C:\\Projects\\TR2D\\TRME.cpp",
+  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -mwindows -o CMakeFiles\\MapEditor.dir\\TRME.cpp.obj -c C:\\Projects\\TR2D\\TRME.cpp",
   "file": "C:/Projects/TR2D/TRME.cpp",
   "output": "CMakeFiles/MapEditor.dir/TRME.cpp.obj"
 },
 {
   "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -o CMakeFiles\\MapEditor.dir\\Engine\\cAnimation.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cAnimation.cpp",
+  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -mwindows -o CMakeFiles\\MapEditor.dir\\Engine\\cAnimation.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cAnimation.cpp",
   "file": "C:/Projects/TR2D/Engine/cAnimation.cpp",
   "output": "CMakeFiles/MapEditor.dir/Engine/cAnimation.cpp.obj"
 },
 {
   "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -o CMakeFiles\\MapEditor.dir\\Engine\\cAssets.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cAssets.cpp",
+  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -mwindows -o CMakeFiles\\MapEditor.dir\\Engine\\cAssets.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cAssets.cpp",
   "file": "C:/Projects/TR2D/Engine/cAssets.cpp",
   "output": "CMakeFiles/MapEditor.dir/Engine/cAssets.cpp.obj"
 },
 {
   "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -o CMakeFiles\\MapEditor.dir\\Engine\\cGlobal.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cGlobal.cpp",
+  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -mwindows -o CMakeFiles\\MapEditor.dir\\Engine\\cGlobal.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cGlobal.cpp",
   "file": "C:/Projects/TR2D/Engine/cGlobal.cpp",
   "output": "CMakeFiles/MapEditor.dir/Engine/cGlobal.cpp.obj"
 },
 {
   "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -o CMakeFiles\\MapEditor.dir\\Engine\\cInput.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cInput.cpp",
+  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -mwindows -o CMakeFiles\\MapEditor.dir\\Engine\\cInput.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cInput.cpp",
   "file": "C:/Projects/TR2D/Engine/cInput.cpp",
   "output": "CMakeFiles/MapEditor.dir/Engine/cInput.cpp.obj"
 },
 {
   "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -o CMakeFiles\\MapEditor.dir\\Engine\\cProgrammable.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cProgrammable.cpp",
+  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -mwindows -o CMakeFiles\\MapEditor.dir\\Engine\\cProgrammable.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cProgrammable.cpp",
   "file": "C:/Projects/TR2D/Engine/cProgrammable.cpp",
   "output": "CMakeFiles/MapEditor.dir/Engine/cProgrammable.cpp.obj"
 },
 {
   "directory": "C:/Projects/TR2D/build",
-  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -o CMakeFiles\\MapEditor.dir\\Engine\\cWindow.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cWindow.cpp",
+  "command": "C:\\PROGRA~1\\mingw64\\bin\\G__~1.EXE   -g -w -static -D SFML_STATIC -mwindows -o CMakeFiles\\MapEditor.dir\\Engine\\cWindow.cpp.obj -c C:\\Projects\\TR2D\\Engine\\cWindow.cpp",
   "file": "C:/Projects/TR2D/Engine/cWindow.cpp",
   "output": "CMakeFiles/MapEditor.dir/Engine/cWindow.cpp.obj"
 },

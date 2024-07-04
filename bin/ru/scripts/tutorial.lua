@@ -3,6 +3,14 @@ function init()
 end
 
 function main()
+	if getNum("lvl-tutorial01") == 0 then
+		if getNum("lvl-tutorial0") == 0 then exec("window showHint {Window-str-tutorial0} 0") end
+		if getNum("camOwner-interacted") >= 1 then
+			setNum("lvl-tutorial0", 1)
+			setNum("lvl-tutorial01", 1)
+			setNum("lvl-tutorial1", 1)
+		end
+	end
 	if getNum("lvl-tutorial1") == 1 then
 		exec("window showHint {Window-str-tutorial1} 0")
 		if getNum("input-main-showInventory") == 1 then

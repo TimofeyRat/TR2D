@@ -58,7 +58,7 @@ public:
 			{
 				sf::IntRect r;
 				r.left = (int)(id % texX) * tileSize.x;
-				r.top = (int)(id / texY) * tileSize.y;
+				r.top = (int)(id / texX) * tileSize.y;
 				r.width = tileSize.x;
 				r.height = tileSize.y;
 				tileRects.push_back(r);
@@ -137,9 +137,8 @@ public:
 	struct ScriptExecutor
 	{
 		Script source;
-		sf::String func;
 		ScriptExecutor();
-		ScriptExecutor(sf::String path, sf::String function);
+		ScriptExecutor(sf::String path);
 	};
 	struct Level : public Programmable
 	{
@@ -155,7 +154,7 @@ public:
 		std::vector<ParticleCurve> partCurves;
 		std::vector<LightSource> lights;
 		std::vector<ScriptExecutor> scripts;
-		sf::String name;
+		sf::String name, bgType;
 		sf::Texture *bgTex;
 		sf::Sprite bgSpr;
 		b2Vec2 gravity;
@@ -166,8 +165,8 @@ public:
 		b2World *world;
 		float musicVolume;
 		WorldCL cl;
-		sf::Texture bg, lightMap;
-		sf::RenderTexture *objects, *entsLayer;
+		sf::Texture mapTexture, lightMap;
+		sf::RenderTexture *objects, *entsLayer, *bgLayer;
 		Level();
 		void reset();
 		void update();

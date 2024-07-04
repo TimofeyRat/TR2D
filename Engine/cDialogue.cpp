@@ -86,7 +86,7 @@ void Talk::loadFromFile(std::string filename)
 			Dialogue::Phrase p(
 				phrase.attribute(L"name").as_string(),
 				phrase.child_value(L"text"),
-				phrase.child_value(L"speaker")
+				phrase.attribute(L"speaker").as_string()
 			);
 			for (auto reply : phrase.children())
 			{

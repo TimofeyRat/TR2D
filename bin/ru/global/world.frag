@@ -15,7 +15,7 @@ float lerp(in float start, in float end, in float t)
 void main()
 {
 	ivec2 texSize = textureSize(texture, 0);
-	vec2 pos = gl_FragCoord.xy;
+	vec2 pos = vec2(gl_FragCoord.x, texSize.y - gl_FragCoord.y);
 	vec4 pixel = texture2D(texture, pos / texSize);
 	vec4 light = texture2D(lightMap, pos / texSize);
 	float greyscale = (pixel.r + pixel.g + pixel.b) / 3;
