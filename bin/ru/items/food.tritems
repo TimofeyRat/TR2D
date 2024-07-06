@@ -1,7 +1,7 @@
-<item id="food:shaurma" name="Шаурма" countable="1" useable="1" anim="ru/anims/items.tranim">
+<item id="food:shaurma" name="Шаурма" countable="1" useable="1" anim="anims/items.tranim">
 	<effect name="HP" type="add" num="5" frequency="0.5" usages="1" />
 </item>
 
-<item id="food:meat" name="Шашлык" countable="1" useable="1" anim="ru/anims/items.tranim">
+<item id="food:meat" name="Шашлык" countable="1" useable="1" anim="anims/items.tranim">
 	<effect name="HP" type="add" num="-5" frequency="0.5" usages="1" />
 </item>

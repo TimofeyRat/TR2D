@@ -1,19 +1,19 @@
 <animation name="shaurma" duration="1" repeat="1" scale="-1 -1">
-	<frame path="ru/tex/items/food.png" rect="32 64 16 16" />
+	<frame path="tex/items/food.png" rect="32 64 16 16" />
 </animation>
 
 <animation name="meat" duration="1" repeat="1" scale="-1 -1">
-	<frame path="ru/tex/items/food.png" rect="16 64 16 16" />
+	<frame path="tex/items/food.png" rect="16 64 16 16" />
 </animation>
 
 <animation name="sticky_blade" duration="1" repeat="1" scale="-1 -1">
-	<frame path="ru/tex/items/sticky_blade.png" rect="6 4 24 24" />
+	<frame path="tex/items/sticky_blade.png" rect="6 4 24 24" />
 </animation>
 
 <animation name="speed" duration="1" repeat="1" scale="-1 -1">
-	<frame path="ru/tex/items/bauble.png" rect="0 0 32 32" />
+	<frame path="tex/items/bauble.png" rect="0 0 32 32" />
 </animation>
 
 <animation name="lighter" duration="1" repeat="1" scale="-1 -1">
-	<frame path="ru/tex/items/lighter.png" rect="0 0 16 16" />
+	<frame path="tex/items/lighter.png" rect="0 0 16 16" />
 </animation>

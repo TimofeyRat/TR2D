@@ -140,3 +140,15 @@ sf::VertexArray tr::generateBezier(std::vector<sf::Vector2f> points, float step,
 	}
 	return va;
 }
+
+tr::AssetException::AssetException(sf::String file)
+{
+	filename = file;
+}
+
+char* tr::AssetException::what()
+{
+	std::string ret = "Failed to load file";
+	ret += filename.toAnsiString();
+	return (char*)ret.c_str();
+}

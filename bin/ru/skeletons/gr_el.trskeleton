@@ -5,11 +5,11 @@
 <bone root="1" layer="0" length="12" angleOffset="0" />
 <bone root="2" layer="0" length="0" angleOffset="0" />
 <bone root="3" layer="0" length="0" angleOffset="0" />
-<texture name="bodyRight" texture="ru/tex/characters/gr_el.png" rect="0 0 12 31" />
-<texture name="bodyLeft" texture="ru/tex/characters/gr_el.png" rect="12 0 -12 31" />
-<texture name="particle" texture="ru/tex/characters/gr_el.png" rect="24 0 6 7" />
-<texture name="bodyRightAttack" texture="ru/tex/characters/gr_el.png" rect="12 0 12 31" />
-<texture name="bodyLeftAttack" texture="ru/tex/characters/gr_el.png" rect="24 0 -12 31" />
+<texture name="bodyRight" texture="tex/characters/gr_el.png" rect="0 0 12 31" />
+<texture name="bodyLeft" texture="tex/characters/gr_el.png" rect="12 0 -12 31" />
+<texture name="particle" texture="tex/characters/gr_el.png" rect="24 0 6 7" />
+<texture name="bodyRightAttack" texture="tex/characters/gr_el.png" rect="12 0 12 31" />
+<texture name="bodyLeftAttack" texture="tex/characters/gr_el.png" rect="24 0 -12 31" />
 <animation name="idleRight" duration="2" repeat="true">
 	<change bone="0">
 		<frame timestamp="0" texture="bodyRight" origin="6.000000 0.000000" />

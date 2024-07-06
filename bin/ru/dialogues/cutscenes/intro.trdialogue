@@ -37,9 +37,9 @@
 		<text>Но в какую сторону он изменит этот мир?</text>
 		<reply name="continue">
 			<text>[Начать игру]</text>
-			<action>world load ru/worlds/start.trworld</action>
+			<action>world load worlds/start.trworld</action>
 			<action>cutscene stop</action>
-			<action>ui load ru/ui/inventory.trui</action>
+			<action>ui load ui/inventory.trui</action>
 		</reply>
 	</phrase>
 	<phrase name="skip">
@@ -47,8 +47,8 @@
 		<reply name="continue">
 			<text>[Начать игру]</text>
 			<action>cutscene stop</action>
-			<action>world load ru/worlds/start.trworld</action>
-			<action>ui load ru/ui/inventory.trui</action>
+			<action>world load worlds/start.trworld</action>
+			<action>ui load ui/inventory.trui</action>
 		</reply>
 	</phrase>
 </dialogue>

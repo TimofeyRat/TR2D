@@ -114,10 +114,10 @@ void World::init()
 	currentMusic = "";
 	brightness = 0;
 	musicVolume = 100;
-	mapShader.loadFromMemory(AssetManager::getText(AssetManager::path + "global/world.frag"), sf::Shader::Fragment);
-	lightShader.loadFromMemory(AssetManager::getText(AssetManager::path + "global/light.frag"), sf::Shader::Fragment);
-	objectsShader.loadFromMemory(AssetManager::getText(AssetManager::path + "global/objects.frag"), sf::Shader::Fragment);
-	entShader.loadFromMemory(AssetManager::getText(AssetManager::path + "global/ents.frag"), sf::Shader::Fragment);
+	mapShader.loadFromMemory(AssetManager::getText("global/world.frag"), sf::Shader::Fragment);
+	lightShader.loadFromMemory(AssetManager::getText("global/light.frag"), sf::Shader::Fragment);
+	objectsShader.loadFromMemory(AssetManager::getText("global/objects.frag"), sf::Shader::Fragment);
+	entShader.loadFromMemory(AssetManager::getText("global/ents.frag"), sf::Shader::Fragment);
 
 	Inventory::init();
 	ParticleSystem::init();
@@ -301,14 +301,14 @@ void World::update()
 		if (music.getVolume() == 0)
 		{
 			currentMusic = cutsceneMusic;
-			if (!currentMusic.isEmpty()) music.openFromFile(currentMusic);
+			if (!currentMusic.isEmpty()) music.openFromFile(AssetManager::path + currentMusic);
 			music.play();
 		}
 	}
 	else if (getCurrentLevel()->musicFilename != currentMusic)
 	{
 		currentMusic = getCurrentLevel()->musicFilename;
-		music.openFromFile(currentMusic);
+		music.openFromFile(AssetManager::path + currentMusic);
 		music.play();
 	}
 	if (getCurrentLevel()->musicFilename == currentMusic && !CSManager::active) music.setVolume(brightness / 255 * musicVolume);
@@ -539,7 +539,7 @@ void World::Level::update()
 	auto musicStatus = music.getStatus();
 	if (musicStatus == sf::Music::Status::Stopped)
 	{
-		music.openFromFile(musicFilename);
+		music.openFromFile(AssetManager::path + musicFilename);
 		musicVolume = musicVolume * Window::getVar("musicVolume") / 100.0f;
 		music.play();
 	}
@@ -639,6 +639,16 @@ void World::Level::update()
 			ents[i].getRigidbody()->setUserData("ent_" + ents[i].name);
 		}
 		ents[i].update();
+		if (ents[i].hasVar("attackOnTouch")) for (int j = 0; j < ents.size(); j++)
+		{
+			if (i != j)
+			if (ents[i].getHitbox().intersects(ents[j].getHitbox()))
+			if (ents[i].getVar("group").num != ents[j].getVar("group").num)
+			if (ents[j].getVar("noHurtTimer") >= ents[j].getVar("damageCD"))
+			{
+				ents[j].addEffect(Inventory::Effect({"HP", ents[i].getVar("attackOnTouch").num}, 0, 1, true));
+			}
+		}
 		if (ents[i].weapon.id != "null" && ents[i].getVar("attacking"))
 		{
 			if (ents[i].weapon.effects.size()) for (int j = 0; j < ents.size(); j++)
@@ -764,7 +774,7 @@ void World::Level::draw()
 	}
 	for (int i = 0; i < ents.size(); i++)
 	{
-		if (ents[i].getHitbox().intersects(camRect) && ents[i].name != cam.owner)
+		if (ents[i].name != cam.owner)
 		{
 			ents[i].draw(entsLayer, &lightShader);
 			auto hitbox = ents[i].getHitbox();
@@ -1429,9 +1439,9 @@ void tr::execute(sf::String cmd)
 	else if (args[0] == "loadGame")
 	{
 		std::cout << "Loading...\n";
-		AssetManager::reloadText(AssetManager::path + "global/save.trconf");
+		AssetManager::reloadText("global/save.trconf");
 		pugi::xml_document doc;
-		doc.load_string(AssetManager::getText(AssetManager::path + "global/save.trconf").toWideString().c_str());
+		doc.load_string(AssetManager::getText("global/save.trconf").toWideString().c_str());
 		World::loadGame(doc.child(L"world"));
 		auto inv = doc.child(L"inventory");
 		Inventory::load(inv);

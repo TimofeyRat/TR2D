@@ -1,4 +1,4 @@
-<entity name="Eutihey" skeleton="ru/skeletons/eutihey.trskeleton">
+<entity name="Eutihey" skeleton="skeletons/eutihey.trskeleton">
 	<physics
 		friction="0.5"
 		mass="1"
@@ -12,6 +12,7 @@
 	<variable name="neckBone" num="2" />
 	<variable name="headBone" num="1" />
 	<variable name="damageCooldown" num="0.5" />
+	<variable name="group" num="1" />
 	<variable name="speed" num="0.5" /><variable name="maxSpeed" num="1" />
 	<variable name="speedX" num="35" /><variable name="speedY" num="2" />
 	<variable name="wl" string="wl" /><variable name="wr" string="wr" />

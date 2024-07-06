@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
-<bone id="0" root="0" length="24" angle="0" tex="ru/tex/characters/eutihey.png" scale="1 1" offset="0" origin="11 0" layer="0">0 17 22 24</bone>
-<bone id="1" root="1" length="17" angle="180" tex="ru/tex/characters/eutihey.png" scale="1 1" offset="180" origin="8.500000 17" layer="2">2 0 17 17</bone>
+<bone id="0" root="0" length="24" angle="0" tex="tex/characters/eutihey.png" scale="1 1" offset="0" origin="11 0" layer="0">0 17 22 24</bone>
+<bone id="1" root="1" length="17" angle="180" tex="tex/characters/eutihey.png" scale="1 1" offset="180" origin="8.500000 17" layer="2">2 0 17 17</bone>
 <bone id="2" root="2" length="5" angle="0" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
 <bone id="3" root="2" length="11" angle="90" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
-<bone id="4" root="3" length="10" angle="0" tex="ru/tex/characters/eutihey.png" scale="1 1" offset="0" origin="4 3" layer="2">54 0 6 13</bone>
-<bone id="5" root="4" length="14" angle="0" tex="ru/tex/characters/eutihey.png" scale="1 1" offset="0" origin="4 0" layer="0">54 13 6 14</bone>
+<bone id="4" root="3" length="10" angle="0" tex="tex/characters/eutihey.png" scale="1 1" offset="0" origin="4 3" layer="2">54 0 6 13</bone>
+<bone id="5" root="4" length="14" angle="0" tex="tex/characters/eutihey.png" scale="1 1" offset="0" origin="4 0" layer="0">54 13 6 14</bone>
 <bone id="6" root="2" length="11" angle="-90" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
-<bone id="7" root="6" length="10" angle="0" tex="ru/tex/characters/eutihey.png" scale="1 1" offset="0" origin="2 3" layer="0">60 0 -6 13</bone>
-<bone id="8" root="7" length="14" angle="0" tex="ru/tex/characters/eutihey.png" scale="1 1" offset="0" origin="2 0" layer="0">60 13 -6 14</bone>
+<bone id="7" root="6" length="10" angle="0" tex="tex/characters/eutihey.png" scale="1 1" offset="0" origin="2 3" layer="0">60 0 -6 13</bone>
+<bone id="8" root="7" length="14" angle="0" tex="tex/characters/eutihey.png" scale="1 1" offset="0" origin="2 0" layer="0">60 13 -6 14</bone>
 <bone id="9" root="0" length="3" angle="90" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
-<bone id="10" root="9" length="8" angle="0" tex="ru/tex/characters/eutihey.png" scale="1 1" offset="0" origin="3 0" layer="0">5 41 5 8</bone>
-<bone id="11" root="10" length="8" angle="0" tex="ru/tex/characters/eutihey.png" scale="1 1" offset="0" origin="3 0" layer="0">5 46 5 8</bone>
-<bone id="12" root="11" length="5" angle="0" tex="ru/tex/characters/eutihey.png" scale="1 1" offset="0" origin="6 0" layer="0">2 57 8 5</bone>
+<bone id="10" root="9" length="8" angle="0" tex="tex/characters/eutihey.png" scale="1 1" offset="0" origin="3 0" layer="0">5 41 5 8</bone>
+<bone id="11" root="10" length="8" angle="0" tex="tex/characters/eutihey.png" scale="1 1" offset="0" origin="3 0" layer="0">5 46 5 8</bone>
+<bone id="12" root="11" length="5" angle="0" tex="tex/characters/eutihey.png" scale="1 1" offset="0" origin="6 0" layer="0">2 57 8 5</bone>
 <bone id="13" root="0" length="3" angle="-90" tex="" scale="1 1" offset="0" origin="0 0" layer="0">0 0 0 0</bone>
-<bone id="14" root="13" length="8" angle="0" tex="ru/tex/characters/eutihey.png" scale="1 1" offset="0" origin="2 0" layer="0">12 41 5 8</bone>
-<bone id="15" root="14" length="8" angle="0" tex="ru/tex/characters/eutihey.png" scale="1 1" offset="0" origin="2 0" layer="0">12 46 5 8</bone>
-<bone id="16" root="15" length="5" angle="0" tex="ru/tex/characters/eutihey.png" scale="1 1" offset="0" origin="2 0" layer="0">12 57 8 5</bone>
+<bone id="14" root="13" length="8" angle="0" tex="tex/characters/eutihey.png" scale="1 1" offset="0" origin="2 0" layer="0">12 41 5 8</bone>
+<bone id="15" root="14" length="8" angle="0" tex="tex/characters/eutihey.png" scale="1 1" offset="0" origin="2 0" layer="0">12 46 5 8</bone>
+<bone id="16" root="15" length="5" angle="0" tex="tex/characters/eutihey.png" scale="1 1" offset="0" origin="2 0" layer="0">12 57 8 5</bone>
 <animation name="idle" duration="2.000000" repeat="true">
 	<change bone="0">
 		<frame timestamp="0.000000">

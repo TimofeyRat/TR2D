@@ -59,5 +59,11 @@
 		"streambuf": "cpp",
 		"typeinfo": "cpp"
 	},
-	"cmake.configureOnOpen": true
+	"cmake.configureOnOpen": true,
+	"Lua.diagnostics.globals": [
+		"getExecNum"
+	],
+	"Lua.diagnostics.disable": [
+		"lowercase-global"
+	]
 }

@@ -51,7 +51,7 @@ AssetManager::Texture::Texture()
 }
 AssetManager::Texture::Texture(std::string file)
 {
-	tex.loadFromFile(file);
+	if (!tex.loadFromFile(file)) throw tr::AssetException(file);
 	path = file;
 }
 AssetManager::Texture::Texture(sf::Image img, std::string file)
@@ -76,6 +76,7 @@ AssetManager::Text::Text(std::string file)
 	{
 		text += line + L"\n";
 	}
+	if (text.isEmpty()) throw tr::AssetException(file);
 }
 AssetManager::Text::Text(sf::String txt, std::string file)
 {
@@ -90,7 +91,7 @@ AssetManager::Font::Font()
 AssetManager::Font::Font(std::string file)
 {
 	path = file;
-	font.loadFromFile(path);
+	if (!font.loadFromFile(path)) throw tr::AssetException(file);
 }
 AssetManager::Font::Font(sf::Font f, std::string file)
 {
@@ -235,115 +236,115 @@ void AssetManager::reset()
 	sounds.clear();
 }
 
-void AssetManager::set(std::string path, sf::Image img)
+void AssetManager::set(std::string file, sf::Image img)
 {
 	for (int i = 0; i < textures.size(); i++)
 	{
-		if (textures[i].path == path)
+		if (textures[i].path == file)
 		{
 			textures[i].tex.loadFromImage(img);
 			return;
 		}
 	}
 	Texture t;
-	t.path = path;
+	t.path = file;
 	t.tex.loadFromImage(img);
 	textures.push_back(t);
 }
 
-void AssetManager::set(std::string path, sf::Texture img)
+void AssetManager::set(std::string file, sf::Texture img)
 {
 	for (int i = 0; i < textures.size(); i++)
 	{
-		if (textures[i].path == path)
+		if (textures[i].path == file)
 		{
 			textures[i].tex = img;
 			return;
 		}
 	}
-	textures.push_back(Texture(img, path));
+	textures.push_back(Texture(img, file));
 }
 
-void AssetManager::set(std::string path, sf::String text)
+void AssetManager::set(std::string file, sf::String text)
 {
 	for (int i = 0; i < texts.size(); i++)
 	{
-		if (texts[i].path == path)
+		if (texts[i].path == file)
 		{
 			texts[i].text = text;
 			return;
 		}
 	}
-	texts.push_back(Text(text, path));
+	texts.push_back(Text(text, file));
 }
 
-void AssetManager::set(std::string path, sf::Font font)
+void AssetManager::set(std::string file, sf::Font font)
 {
 	for (int i = 0; i < fonts.size(); i++)
 	{
-		if (fonts[i].path == path) { fonts[i].font = font; return; }
+		if (fonts[i].path == file) { fonts[i].font = font; return; }
 	}
-	fonts.push_back(Font(font, path));
+	fonts.push_back(Font(font, file));
 }
 
-void AssetManager::set(std::string path, sf::SoundBuffer sb)
+void AssetManager::set(std::string file, sf::SoundBuffer sb)
 {
 	for (int i = 0; i < sounds.size(); i++)
 	{
-		if (sounds[i].path == path) { sounds[i].music = sb; return; }
+		if (sounds[i].path == file) { sounds[i].music = sb; return; }
 	}
-	sounds.push_back(Sound(sb, path));
+	sounds.push_back(Sound(sb, file));
 }
 
-sf::Texture *AssetManager::getTexture(std::string path)
+sf::Texture *AssetManager::getTexture(std::string file)
 {
 	for (int i = 0; i < textures.size(); i++)
 	{
-		if (textures[i].path == path)
+		if (textures[i].path == path + file)
 		{
 			return &textures[i].tex;
 		}
 	}
-	textures.push_back(Texture(path));
+	textures.push_back(Texture(path + file));
 	return &textures[textures.size() - 1].tex;
 }
 
-sf::String AssetManager::getText(std::string path)
+sf::String AssetManager::getText(std::string file)
 {
 	for (int i = 0; i < texts.size(); i++)
 	{
-		if (texts[i].path == path)
+		if (texts[i].path == path + file)
 		{
 			return texts[i].text;
 		}
 	}
-	texts.push_back(Text(path));
+	texts.push_back(Text(path + file));
 	return texts[texts.size() - 1].text;
 }
 
-sf::Font *AssetManager::getFont(std::string path)
+sf::Font *AssetManager::getFont(std::string file)
 {
 	for (int i = 0; i < fonts.size(); i++)
 	{
-		if (fonts[i].path == path)
+		if (fonts[i].path == path + file)
 		{
 			return &fonts[i].font;
 		}
 	}
-	fonts.push_back(Font(path));
+	fonts.push_back(Font(path + file));
 	return &fonts[fonts.size() - 1].font;
 }
 
-sf::SoundBuffer *AssetManager::getSound(std::string path)
+sf::SoundBuffer *AssetManager::getSound(std::string file)
 {
 	for (int i = 0; i < sounds.size(); i++)
 	{
-		if (sounds[i].path == path)
+		if (sounds[i].path == path + file)
 		{
 			return &sounds[i].music;
 		}
 	}
-	sounds.push_back(Sound(path));
+	sounds.push_back(Sound(path + file));
 	return &sounds[sounds.size() - 1].music;
 }
 
@@ -354,7 +355,8 @@ std::vector<std::string> AssetManager::getTextures(std::string part)
 	{
 		if (tr::strContains(textures[i].path, part))
 		{
-			paths.push_back(textures[i].path);
+			auto p = textures[i].path; p.erase(0, p.find("/") + 1);
+			paths.push_back(p);
 		}
 	}
 	return paths;
@@ -367,7 +369,8 @@ std::vector<std::string> AssetManager::getTexts(std::string part)
 	{
 		if (tr::strContains(texts[i].path, part))
 		{
-			paths.push_back(texts[i].path);
+			auto p = texts[i].path; p.erase(0, p.find("/") + 1);
+			paths.push_back(p);
 		}
 	}
 	return paths;
@@ -380,7 +383,8 @@ std::vector<std::string> AssetManager::getFonts(std::string part)
 	{
 		if (tr::strContains(fonts[i].path, part))
 		{
-			paths.push_back(fonts[i].path);
+			auto p = fonts[i].path; p.erase(0, p.find("/") + 1);
+			paths.push_back(p);
 		}
 	}
 	return paths;
@@ -393,7 +397,8 @@ std::vector<std::string> AssetManager::getSounds(std::string part)
 	{
 		if (tr::strContains(sounds[i].path, part))
 		{
-			paths.push_back(sounds[i].path);
+			auto p = sounds[i].path; p.erase(0, p.find("/") + 1);
+			paths.push_back(p);
 		}
 	}
 	return paths;
@@ -408,7 +413,7 @@ AssetManager::Sound::Sound()
 AssetManager::Sound::Sound(std::string file)
 {
 	path = file;
-	music.loadFromFile(path);
+	if (!music.loadFromFile(path)) throw tr::AssetException(file);
 }
 
 AssetManager::Sound::Sound(sf::SoundBuffer sb, std::string file)
@@ -417,12 +422,12 @@ AssetManager::Sound::Sound(sf::SoundBuffer sb, std::string file)
 	music = sb;
 }
 
-void AssetManager::reloadTexture(std::string path)
+void AssetManager::reloadTexture(std::string file)
 {
-	auto tex = Texture(path);
+	auto tex = Texture(path + file);
 	for (int i = 0; i < textures.size(); i++)
 	{
-		if (textures[i].path == path)
+		if (textures[i].path == path + file)
 		{
 			textures[i] = tex;
 			return;
@@ -431,12 +436,12 @@ void AssetManager::reloadTexture(std::string path)
 	textures.push_back(tex);
 }
 
-void AssetManager::reloadText(std::string path)
+void AssetManager::reloadText(std::string file)
 {
-	auto text = Text(path);
+	auto text = Text(path + file);
 	for (int i = 0; i < texts.size(); i++)
 	{
-		if (texts[i].path == path)
+		if (texts[i].path == path + file)
 		{
 			texts[i] = text;
 			return;
@@ -445,12 +450,12 @@ void AssetManager::reloadText(std::string path)
 	texts.push_back(text);
 }
 
-void AssetManager::reloadFont(std::string path)
+void AssetManager::reloadFont(std::string file)
 {
-	auto font = Font(path);
+	auto font = Font(path + file);
 	for (int i = 0; i < fonts.size(); i++)
 	{
-		if (fonts[i].path == path)
+		if (fonts[i].path == path + file)
 		{
 			fonts[i] = font;
 			return;
@@ -459,12 +464,12 @@ void AssetManager::reloadFont(std::string path)
 	fonts.push_back(font);
 }
 
-void AssetManager::reloadSound(std::string path)
+void AssetManager::reloadSound(std::string file)
 {
-	auto sound = Sound(path);
+	auto sound = Sound(path + file);
 	for (int i = 0; i < sounds.size(); i++)
 	{
-		if (sounds[i].path == path)
+		if (sounds[i].path == path + file)
 		{
 			sounds[i] = sound;
 			return;

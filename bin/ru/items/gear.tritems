@@ -1,17 +1,17 @@
-<item id="bauble:speed" name="Ожерелье скорости" countable="0" useable="0" anim="ru/anims/items.tranim" />
+<item id="bauble:speed" name="Ожерелье скорости" countable="0" useable="0" anim="anims/items.tranim" />
 
-<bauble id="speed" anim="ru/anims/baubles.tranim" delay="0" origin="6 2" scale="2" rotation="0" type="idle" placement="neckBone">
+<bauble id="speed" anim="anims/baubles.tranim" delay="0" origin="6 2" scale="2" rotation="0" type="idle" placement="neckBone">
 	<effect name="baubleSpeed" type="set" num="1" frequency="0" usages="1" />
 </bauble>
 
-<item id="weapon:sticky_blade" name="Липкий клинок" countable="0" useable="0" anim="ru/anims/items.tranim" showOnIdle="1" />
+<item id="weapon:sticky_blade" name="Липкий клинок" countable="0" useable="0" anim="anims/items.tranim" showOnIdle="1" />
 
-<weapon id="sticky_blade" anim="ru/anims/weapons.tranim" delay="1.0" origin="4 17" scale="4" rotation="60" type="sword">
+<weapon id="sticky_blade" anim="anims/weapons.tranim" delay="1.0" origin="4 17" scale="4" rotation="60" type="sword">
 	<effect name="HP" type="add" num="-10" frequency="0.5" usages="4" />
 </weapon>
 
-<item id="weapon:lighter" name="Зажигалка" countable="0" useable="0" anim="ru/anims/items.tranim" />
+<item id="weapon:lighter" name="Зажигалка" countable="0" useable="0" anim="anims/items.tranim" />
 
-<weapon id="lighter" anim="ru/anims/weapons.tranim" delay="0.75" origin="6 4.5" scale="2" rotation="90" type="fist" showOnIdle="1">
+<weapon id="lighter" anim="anims/weapons.tranim" delay="0.75" origin="6 4.5" scale="2" rotation="90" type="fist" showOnIdle="1">
 	<effect name="HP" type="add" num="-5" frequency="1" usages="1" />
 </weapon>

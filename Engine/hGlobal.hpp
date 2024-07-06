@@ -7,6 +7,7 @@
 
 #include <string>
 #include <vector>
+#include <exception>
 #include <SFML/Graphics.hpp>
 
 class Programmable;
@@ -96,6 +97,15 @@ namespace tr
 	// \param step Step between points(between 0 and 1)
 	// \param clr Color of line
 	sf::VertexArray generateBezier(std::vector<sf::Vector2f> points, float step, sf::Color clr);
+
+	class AssetException : public std::exception
+	{
+		private:
+			sf::String filename;
+		public:
+			AssetException(sf::String filename);
+			char* what();
+	};
 }
 
 #endif

@@ -452,7 +452,7 @@ bool UI::Frame::Object::Action::isAvailable(bool objActive)
 		}
 		else if (args[0] == "fileExists")
 		{
-			auto exists = std::filesystem::exists(args[1].toAnsiString());
+			auto exists = std::filesystem::exists(AssetManager::path.toAnsiString() + args[1].toAnsiString());
 			if (!(
 				(exists && args[2] == "true") ||
 				(!exists && args[2] == "false")

@@ -73,7 +73,7 @@ void Inventory::init()
 	weapons.clear();
 	baubles.clear();
 	inv.clear();
-	for (auto path : AssetManager::getTexts(AssetManager::path + "items"))
+	for (auto path : AssetManager::getTexts("items"))
 	{
 		pugi::xml_document file;
 		file.load_string(AssetManager::getText(path).toWideString().c_str());

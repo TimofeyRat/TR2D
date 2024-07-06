@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <bone root="0" layer="0" length="0" angleOffset="0" />
-<texture name="headIdle" texture="ru/tex/worlds/Bricks.png" rect="0 160 32 64" />
+<texture name="headIdle" texture="tex/worlds/Bricks.png" rect="0 160 32 64" />
 <animation name="" duration="0" repeat="false">
 	<change bone="0">
 		<frame timestamp="0" texture="headIdle" origin="16.000000 64.000000" />

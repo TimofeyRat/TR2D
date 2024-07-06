@@ -199,7 +199,7 @@ void ParticleSystem::init()
 	templates.clear();
 
 	pugi::xml_document file;
-	file.load_string(AssetManager::getText(AssetManager::path + "worlds/particles.trconf").toWideString().c_str());
+	file.load_string(AssetManager::getText("worlds/particles.trconf").toWideString().c_str());
 	for (auto temp : file.children())
 	{
 		templates.push_back(temp);

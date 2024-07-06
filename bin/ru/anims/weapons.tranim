@@ -1,7 +1,7 @@
 <animation name="sticky_blade" duration="1" repeat="1" scale="-1 -1">
-	<frame path="ru/tex/items/sticky_blade.png" rect="11 6 15 20" />
+	<frame path="tex/items/sticky_blade.png" rect="11 6 15 20" />
 </animation>
 
 <animation name="lighter" duration="1" repeat="1" scale="-1 -1">
-	<frame path="ru/tex/items/lighter.png" rect="21 4 6 9" />
+	<frame path="tex/items/lighter.png" rect="21 4 6 9" />
 </animation>

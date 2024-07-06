@@ -14,6 +14,7 @@ sf::Vector2f mouse;
 sf::Text enter;
 bool typing, play = false;
 int nearest;
+sf::String res;
 
 //Pages
 #define PageCreate 0
@@ -94,6 +95,7 @@ sf::String openWindow(char* filter = "TR2D Skeleton (*.trskeleton)\0*.trskeleton
 		file.erase(0, path.string().length() + 1);
 		std::filesystem::current_path(path);
 		while (tr::strContains(file, "\\")) file.replace("\\", "/");
+		res = file.substring(0, file.find("/") + 1);
 		return file;
 	}
 	return "Fail";
@@ -148,7 +150,7 @@ public:
 		Texture(pugi::xml_node node)
 		{
 			path = node.attribute(L"texture").as_string();
-			if (!path.isEmpty()) tex.loadFromFile(path);
+			if (!path.isEmpty()) tex.loadFromFile(res + path);
 			name = node.attribute(L"name").as_string();
 			auto tr = tr::splitStr(node.attribute(L"rect").as_string(L"0 0 0 0"), " ");
 			rect = {

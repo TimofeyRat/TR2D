@@ -3,13 +3,13 @@
 	<object name="background">
 		<position type="relative-set">0 0 0 0</position>
 		<sprite name="bg">
-			<texture path="ru/anims/menus.tranim" activeAnim="menuBG" idleAnim="menuBG" />
+			<texture path="anims/menus.tranim" activeAnim="menuBG" idleAnim="menuBG" />
 			<position type="inherit-obj-rel">0 0 0 0 menu-background</position>
 			<origin type="relative">0 0 0 0</origin>
 			<scale type="stretch" />
 		</sprite>
 		<text name="title">
-			<font path="ru/global/font.ttf" idleSize="32" idleOutline="2" activeSize="32" activeOutline="2" sizeChange="set" />
+			<font path="global/font.ttf" idleSize="32" idleOutline="2" activeSize="32" activeOutline="2" sizeChange="set" />
 			<txt type="idle" appear="typing-20">God's Star: Chapter One</txt>
 			<txt type="active" appear="typing-20">God's Star: Chapter One</txt>
 			<position type="relative-set">0.5 0.1 0.5 0.1</position>
@@ -23,16 +23,16 @@
 		<sprite name="btn">
 			<toggle event="mouseHover" />
 			<action event="mouse-click-Left"
-				condition="active-true">ui load ru/ui/inventory.trui;talk init;world load ru/worlds/start.trworld</action>
-				<!-- condition="active-true">ui load ru/ui/dialogue.trui;talk init;cutscene start intro</action> -->
-			<texture path="ru/anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
+				condition="active-true">ui load ui/inventory.trui;talk init;world load worlds/start.trworld</action>
+				<!-- condition="active-true">ui load ui/dialogue.trui;talk init;cutscene start intro</action> -->
+			<texture path="anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
 			<position type="inherit-obj-rel">0 0 0 0 menu-startGame</position>
 			<origin type="relative">0.5 0.5 0.5 0.5</origin>
 			<scale type="lerp">5 5 7 7</scale>
 		</sprite>
 		<text name="title">
 			<toggle event="btn-menu-startGame-btn" />
-			<font path="ru/global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
+			<font path="global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
 			<txt type="active" appear="set">Начать игру</txt>
 			<txt type="idle" appear="set">Начать игру</txt>
 			<position type="inherit-obj-rel">0 0 0 0 menu-startGame</position>
@@ -47,16 +47,16 @@
 			<toggle event="mouseHover" />
 			<action
 				event="mouse-click-Left"
-				condition="active-true;worldLoaded-true">ui load ru/ui/inventory.trui;world setActive 1</action>
-				<!-- condition="active-true">ui-load-ru/ui/dialogue.trui;cutscene-start-intro</action> -->
-			<texture path="ru/anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
+				condition="active-true;worldLoaded-true">ui load ui/inventory.trui;world setActive 1</action>
+				<!-- condition="active-true">ui-load-ui/dialogue.trui;cutscene-start-intro</action> -->
+			<texture path="anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
 			<position type="inherit-obj-rel">0 0 0 0 menu-continueGame</position>
 			<origin type="relative">0.5 0.5 0.5 0.5</origin>
 			<scale type="lerp">5 5 7 7</scale>
 		</sprite>
 		<text name="title">
 			<toggle event="btn-menu-continueGame-btn" />
-			<font path="ru/global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
+			<font path="global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
 			<txt type="active" appear="set">Продолжить игру</txt>
 			<txt type="idle" appear="set">Продолжить игру</txt>
 			<position type="inherit-obj-rel">0 0 0 0 menu-continueGame</position>
@@ -71,16 +71,16 @@
 			<toggle event="mouseHover" />
 			<action
 				event="mouse-click-Left"
-				condition="active-true;fileExists-ru/global/save.trconf-true">ui load ru/ui/inventory.trui;talk init;loadGame</action>
-				<!-- condition="active-true">ui-load-ru/ui/dialogue.trui;cutscene-start-intro</action> -->
-			<texture path="ru/anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
+				condition="active-true;fileExists-global/save.trconf-true">ui load ui/inventory.trui;talk init;loadGame</action>
+				<!-- condition="active-true">ui-load-ui/dialogue.trui;cutscene-start-intro</action> -->
+			<texture path="anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
 			<position type="inherit-obj-rel">0 0 0 0 menu-loadGame</position>
 			<origin type="relative">0.5 0.5 0.5 0.5</origin>
 			<scale type="lerp">5 5 7 7</scale>
 		</sprite>
 		<text name="title">
 			<toggle event="btn-menu-loadGame-btn" />
-			<font path="ru/global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
+			<font path="global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
 			<txt type="active" appear="set">Загрузить игру</txt>
 			<txt type="idle" appear="set">Загрузить игру</txt>
 			<position type="inherit-obj-rel">0 0 0 0 menu-loadGame</position>
@@ -95,13 +95,13 @@
 			<toggle event="mouseHover" />
 			<action event="mouse-click-Left" condition="active-true">ui setFrame settings</action>
 			<position type="inherit-obj-rel">0 0 0 0 menu-settings</position>
-			<texture path="ru/anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
+			<texture path="anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
 			<origin type="relative">0.5 0.5 0.5 0.5</origin>
 			<scale type="lerp">5 5 7 7</scale>
 		</sprite>
 		<text name="title">
 			<toggle event="btn-menu-settings-btn" />
-			<font path="ru/global/font.ttf" idleSize="20" activeSize="28" sizeChange="lerp" />
+			<font path="global/font.ttf" idleSize="20" activeSize="28" sizeChange="lerp" />
 			<position type="inherit-obj-rel">0 0 0 0 menu-settings</position>
 			<origin type="relative">0.5 0.5 0.5 0.5</origin>
 			<txt type="idle" appear="set">Настройки</txt>
@@ -117,7 +117,7 @@
 			<action
 				event="mouse-click-Left"
 				condition="active-true">window close</action>
-			<font path="ru/global/font.ttf" idleSize="14" activeSize="14" activeOutline="2" idleOutline="2" sizeChange="set" />
+			<font path="global/font.ttf" idleSize="14" activeSize="14" activeOutline="2" idleOutline="2" sizeChange="set" />
 			<txt type="idle" appear="set">Выйти из игры</txt>
 			<txt type="active" appear="set">Выйти из игры</txt>
 			<position type="inherit-obj-rel">0 0 0 0 menu-exit</position>
@@ -133,7 +133,7 @@
 			<action
 				event="mouse-click-Left"
 				condition="active-true">window showCredits 1</action>
-			<font path="ru/global/font.ttf" idleSize="14" activeSize="14" activeOutline="2" idleOutline="2" sizeChange="set" />
+			<font path="global/font.ttf" idleSize="14" activeSize="14" activeOutline="2" idleOutline="2" sizeChange="set" />
 			<txt type="idle" appear="set">Авторы</txt>
 			<txt type="active" appear="set">Авторы</txt>
 			<position type="inherit-obj-rel">0 0 0 0 menu-credits</position>
@@ -147,13 +147,13 @@
 	<object name="background">
 		<position type="relative-set">0 0 0 0</position>
 		<sprite name="bg">
-			<texture path="ru/anims/menus.tranim" activeAnim="menuEnd" idleAnim="menuEnd" />
+			<texture path="anims/menus.tranim" activeAnim="menuEnd" idleAnim="menuEnd" />
 			<position type="inherit-obj-rel">0 0 0 0 settings-background</position>
 			<origin type="relative">0 0 0 0</origin>
 			<scale type="stretch" />
 		</sprite>
 		<text name="title">
-			<font path="ru/global/font.ttf" idleSize="32" idleOutline="2" activeSize="32" activeOutline="2" sizeChange="set" />
+			<font path="global/font.ttf" idleSize="32" idleOutline="2" activeSize="32" activeOutline="2" sizeChange="set" />
 			<txt type="idle" appear="typing-20">Настройки</txt>
 			<txt type="active" appear="typing-20">Настройки</txt>
 			<position type="relative-set">0.5 0.1 0.5 0.1</position>
@@ -169,14 +169,14 @@
 			<action
 				event="mouse-click-Left"
 				condition="active-true">ui setFrame sound</action>
-			<texture path="ru/anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
+			<texture path="anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
 			<position type="inherit-obj-rel">0 0 0 0 settings-sound</position>
 			<origin type="relative">0.5 0.5 0.5 0.5</origin>
 			<scale type="lerp">5 5 7 7</scale>
 		</sprite>
 		<text name="title">
 			<toggle event="btn-settings-sound-btn" />
-			<font path="ru/global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
+			<font path="global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
 			<txt type="active" appear="set">Звук</txt>
 			<txt type="idle" appear="set">Звук</txt>
 			<position type="inherit-obj-rel">0 0 0 0 settings-sound</position>
@@ -192,14 +192,14 @@
 			<action
 				event="mouse-click-Left"
 				condition="active-true">ui setFrame input</action>
-			<texture path="ru/anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
+			<texture path="anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
 			<position type="inherit-obj-rel">0 0 0 0 settings-input</position>
 			<origin type="relative">0.5 0.5 0.5 0.5</origin>
 			<scale type="lerp">5 5 7 7</scale>
 		</sprite>
 		<text name="title">
 			<toggle event="btn-settings-input-btn" />
-			<font path="ru/global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
+			<font path="global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
 			<txt type="active" appear="set">Управление</txt>
 			<txt type="idle" appear="set">Управление</txt>
 			<position type="inherit-obj-rel">0 0 0 0 settings-input</position>
@@ -215,14 +215,14 @@
 			<action
 				event="mouse-click-Left"
 				condition="active-true">ui setFrame menu</action>
-			<texture path="ru/anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
+			<texture path="anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
 			<position type="inherit-obj-rel">0 0 0 0 settings-exit</position>
 			<origin type="relative">0.5 0.5 0.5 0.5</origin>
 			<scale type="lerp">5 5 7 7</scale>
 		</sprite>
 		<text name="title">
 			<toggle event="btn-settings-exit-btn" />
-			<font path="ru/global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
+			<font path="global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
 			<txt type="active" appear="set">Выйти в меню</txt>
 			<txt type="idle" appear="set">Выйти в меню</txt>
 			<position type="inherit-obj-rel">0 0 0 0 settings-exit</position>
@@ -236,13 +236,13 @@
 	<object name="background">
 		<position type="relative-set">0 0 0 0</position>
 		<sprite name="bg">
-			<texture path="ru/anims/menus.tranim" activeAnim="menuEnd" idleAnim="menuEnd" />
+			<texture path="anims/menus.tranim" activeAnim="menuEnd" idleAnim="menuEnd" />
 			<position type="inherit-obj-rel">0 0 0 0 settings-background</position>
 			<origin type="relative">0 0 0 0</origin>
 			<scale type="stretch" />
 		</sprite>
 		<text name="title">
-			<font path="ru/global/font.ttf" idleSize="32" idleOutline="2" activeSize="32" activeOutline="2" sizeChange="set" />
+			<font path="global/font.ttf" idleSize="32" idleOutline="2" activeSize="32" activeOutline="2" sizeChange="set" />
 			<txt type="idle" appear="typing-20">Звук</txt>
 			<txt type="active" appear="typing-20">Звук</txt>
 			<position type="relative-set">0.5 0.1 0.5 0.1</position>
@@ -255,7 +255,7 @@
 		<update type="scroller" />
 		<position type="relative-set">0.5 0.2 0.5 0.2</position>
 		<text name="title">
-			<font path="ru/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
+			<font path="global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
 			<txt type="idle" appear="set">Громкость музыки: {Window-int-musicVolume}</txt>
 			<txt type="active" appear="set">Громкость музыки: {Window-int-musicVolume}</txt>
 			<position type="inherit-obj-rel">0 0 0 0 sound-music</position>
@@ -264,7 +264,7 @@
 			<color state="active" type="lerp">255 255 255 255</color><outline state="active" type="lerp">0 0 0 255</outline>
 		</text>
 		<progress name="scroller">
-			<texture path="ru/anims/ui.tranim" bg="progressBG" fg="progressFG" offset="6 6" />
+			<texture path="anims/ui.tranim" bg="progressBG" fg="progressFG" offset="6 6" />
 			<position type="inherit-txt-rel">1 0 1 0 sound-music-title</position>
 			<scale type="set">1.5 1.5 1.5 1.5</scale>
 			<origin-bg type="relative-set">0 0.5 0 0.5</origin-bg>
@@ -276,7 +276,7 @@
 		<update type="scroller" />
 		<position type="relative-set">0.5 0.4 0.5 0.4</position>
 		<text name="title">
-			<font path="ru/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
+			<font path="global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
 			<txt type="idle" appear="set">Громкость звуков: {Window-int-sfxVolume}</txt>
 			<txt type="active" appear="set">Громкость звуков: {Window-int-sfxVolume}</txt>
 			<position type="inherit-obj-rel">0 0 0 0 sound-sfx</position>
@@ -285,7 +285,7 @@
 			<color state="active" type="lerp">255 255 255 255</color><outline state="active" type="lerp">0 0 0 255</outline>
 		</text>
 		<progress name="scroller">
-			<texture path="ru/anims/ui.tranim" bg="progressBG" fg="progressFG" offset="6 6" />
+			<texture path="anims/ui.tranim" bg="progressBG" fg="progressFG" offset="6 6" />
 			<position type="inherit-txt-rel">1 0 1 0 sound-sfx-title</position>
 			<scale type="set">1.5 1.5 1.5 1.5</scale>
 			<origin-bg type="relative-set">0 0.5 0 0.5</origin-bg>
@@ -300,14 +300,14 @@
 			<action
 				event="mouse-click-Left"
 				condition="active-true">ui setFrame settings</action>
-			<texture path="ru/anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
+			<texture path="anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
 			<position type="inherit-obj-rel">0 0 0 0 settings-exit</position>
 			<origin type="relative">0.5 0.5 0.5 0.5</origin>
 			<scale type="lerp">5 5 7 7</scale>
 		</sprite>
 		<text name="title">
 			<toggle event="btn-sound-exit-btn" />
-			<font path="ru/global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
+			<font path="global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
 			<txt type="active" appear="set">Выйти в меню</txt>
 			<txt type="idle" appear="set">Выйти в меню</txt>
 			<position type="inherit-obj-rel">0 0 0 0 settings-exit</position>
@@ -321,13 +321,13 @@
 	<object name="background">
 		<position type="relative-set">0 0 0 0</position>
 		<sprite name="bg">
-			<texture path="ru/anims/menus.tranim" activeAnim="menuEnd" idleAnim="menuEnd" />
+			<texture path="anims/menus.tranim" activeAnim="menuEnd" idleAnim="menuEnd" />
 			<position type="inherit-obj-rel">0 0 0 0 menu-background</position>
 			<origin type="relative">0 0 0 0</origin>
 			<scale type="stretch" />
 		</sprite>
 		<text name="title">
-			<font path="ru/global/font.ttf" idleSize="32" idleOutline="2" activeSize="32" activeOutline="2" sizeChange="set" />
+			<font path="global/font.ttf" idleSize="32" idleOutline="2" activeSize="32" activeOutline="2" sizeChange="set" />
 			<txt type="idle" appear="typing-20">Управление</txt>
 			<txt type="active" appear="typing-20">Управление</txt>
 			<position type="relative-set">0.5 0.1 0.5 0.1</position>
@@ -341,7 +341,7 @@
 		<position type="relative-set">0.25 0.3 0.25 0.3</position>
 		<text name="txt">
 			<toggle event="mouseHover" />
-			<font path="ru/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
+			<font path="global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
 			<txt type="idle" appear="set">Движение влево: {input-keyboard-"dx -1"}</txt>
 			<txt type="active" appear="set">Движение влево: {input-keyboard-"dx -1"}</txt>
 			<position type="inherit-obj-rel">0 0 0 0 input-moveLeft</position>
@@ -355,7 +355,7 @@
 		<position type="relative-set">0.75 0.3 0.75 0.3</position>
 		<text name="txt">
 			<toggle event="mouseHover" />
-			<font path="ru/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
+			<font path="global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
 			<txt type="idle" appear="set">Движение вправо: {input-keyboard-"dx +1"}</txt>
 			<txt type="active" appear="set">Движение вправо: {input-keyboard-"dx +1"}</txt>
 			<position type="inherit-obj-rel">0 0 0 0 input-moveRight</position>
@@ -369,7 +369,7 @@
 		<position type="relative-set">0.5 0.3 0.5 0.3</position>
 		<text name="txt">
 			<toggle event="mouseHover" />
-			<font path="ru/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
+			<font path="global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
 			<txt type="idle" appear="set">Прыжок: {input-keyboard-"dy =-1"}</txt>
 			<txt type="active" appear="set">Прыжок: {input-keyboard-"dy =-1"}</txt>
 			<position type="inherit-obj-rel">0 0 0 0 input-moveJump</position>
@@ -383,7 +383,7 @@
 		<position type="relative-set">0.25 0.5 0.25 0.5</position>
 		<text name="txt">
 			<toggle event="mouseHover" />
-			<font path="ru/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
+			<font path="global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
 			<txt type="idle" appear="set">Атака: {input-keyboard-attack}</txt>
 			<txt type="active" appear="set">Атака: {input-keyboard-attack}</txt>
 			<position type="inherit-obj-rel">0 0 0 0 input-attack</position>
@@ -397,7 +397,7 @@
 		<position type="relative-set">0.5 0.5 0.5 0.5</position>
 		<text name="txt">
 			<toggle event="mouseHover" />
-			<font path="ru/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
+			<font path="global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
 			<txt type="idle" appear="set">Взаимодействие: {input-keyboard-interacting}</txt>
 			<txt type="active" appear="set">Взаимодействие: {input-keyboard-interacting}</txt>
 			<position type="inherit-obj-rel">0 0 0 0 input-interaction</position>
@@ -411,7 +411,7 @@
 		<position type="relative-set">0.75 0.5 0.75 0.5</position>
 		<text name="txt">
 			<toggle event="mouseHover" />
-			<font path="ru/global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
+			<font path="global/font.ttf" idleSize="20" idleOutline="2" activeSize="20" activeOutline="2" sizeChange="set" />
 			<txt type="idle" appear="set">Инвентарь: {input-keyboard-showInventory}</txt>
 			<txt type="active" appear="set">Инвентарь: {input-keyboard-showInventory}</txt>
 			<position type="inherit-obj-rel">0 0 0 0 input-inventory</position>
@@ -427,14 +427,14 @@
 			<action
 				event="mouse-click-Left"
 				condition="active-true">ui setFrame settings</action>
-			<texture path="ru/anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
+			<texture path="anims/menus.tranim" activeAnim="activeBtn" idleAnim="idleBtn" />
 			<position type="inherit-obj-rel">0 0 0 0 settings-exit</position>
 			<origin type="relative">0.5 0.5 0.5 0.5</origin>
 			<scale type="lerp">5 5 7 7</scale>
 		</sprite>
 		<text name="title">
 			<toggle event="btn-input-exit-btn" />
-			<font path="ru/global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
+			<font path="global/font.ttf" activeSize="28" idleSize="20" sizeChange="lerp" />
 			<txt type="active" appear="set">Выйти в меню</txt>
 			<txt type="idle" appear="set">Выйти в меню</txt>
 			<position type="inherit-obj-rel">0 0 0 0 settings-exit</position>

@@ -1,4 +1,4 @@
-<entity name="Door" skeleton="ru/skeletons/door.trskeleton">
+<entity name="Door" skeleton="skeletons/door.trskeleton">
 	<physics
 		friction="0"
 		mass="0"

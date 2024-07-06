@@ -169,7 +169,7 @@ void Talk::loadNameColors()
 {
 	nameColors.clear();
 	pugi::xml_document doc;
-	doc.load_string(AssetManager::getText(AssetManager::path + "dialogues/colors.trconf").toWideString().c_str());
+	doc.load_string(AssetManager::getText("dialogues/colors.trconf").toWideString().c_str());
 	for (auto clr : doc.children())
 	{
 		SpeakerColor sc;

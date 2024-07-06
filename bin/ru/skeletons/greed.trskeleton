@@ -17,36 +17,36 @@
 <bone root="2" layer="1" length="8" angleOffset="0" />
 <bone root="15" layer="1" length="9" angleOffset="0" />
 <bone root="16" layer="1" length="5" angleOffset="0" />
-<texture name="headIdle" texture="ru/tex/characters/greed.png" rect="0 0 22 18" />
-<texture name="chestIdle" texture="ru/tex/characters/greed.png" rect="4 18 14 11" />
-<texture name="torsoIdle" texture="ru/tex/characters/greed.png" rect="4 29 14 12" />
-<texture name="armLeft" texture="ru/tex/characters/greed.png" rect="20 19 5 12" />
-<texture name="handLeft" texture="ru/tex/characters/greed.png" rect="20 31 6 13" />
-<texture name="armRight" texture="ru/tex/characters/greed.png" rect="25 19 -5 12" />
-<texture name="handRight" texture="ru/tex/characters/greed.png" rect="25 31 -6 13" />
-<texture name="hipLeftIdle" texture="ru/tex/characters/greed.png" rect="5 41 5 8" />
-<texture name="legLeftIdle" texture="ru/tex/characters/greed.png" rect="5 49 5 9" />
-<texture name="footLeftIdle" texture="ru/tex/characters/greed.png" rect="3 58 7 5" />
-<texture name="hipRightIdle" texture="ru/tex/characters/greed.png" rect="12 41 5 8" />
-<texture name="legRightIdle" texture="ru/tex/characters/greed.png" rect="12 49 5 9" />
-<texture name="footRightIdle" texture="ru/tex/characters/greed.png" rect="12 58 7 5" />
-<texture name="headLeft" texture="ru/tex/characters/greed.png" rect="25 0 18 18" />
-<texture name="headRight" texture="ru/tex/characters/greed.png" rect="43 0 -18 18" />
-<texture name="chestLeft" texture="ru/tex/characters/greed.png" rect="30 18 9 11" />
-<texture name="chestRight" texture="ru/tex/characters/greed.png" rect="39 18 -9 11" />
-<texture name="torsoLeft" texture="ru/tex/characters/greed.png" rect="30 29 8 12" />
-<texture name="torsoRight" texture="ru/tex/characters/greed.png" rect="38 29 -8 12" />
-<texture name="hipLeft" texture="ru/tex/characters/greed.png" rect="32 41 5 8" />
-<texture name="hipRight" texture="ru/tex/characters/greed.png" rect="37 41 -5 8" />
-<texture name="legLeft" texture="ru/tex/characters/greed.png" rect="32 49 5 9" />
-<texture name="legRight" texture="ru/tex/characters/greed.png" rect="37 49 -5 9" />
-<texture name="footLeft" texture="ru/tex/characters/greed.png" rect="28 58 9 5" />
-<texture name="footRight" texture="ru/tex/characters/greed.png" rect="37 58 -9 5" />
-<texture name="headIdle2" texture="ru/tex/characters/greed.png" rect="43 0 22 18" />
-<texture name="headLeft2" texture="ru/tex/characters/greed.png" rect="44 18 18 18" />
-<texture name="headRight2" texture="ru/tex/characters/greed.png" rect="62 18 -18 18" />
-<texture name="headRight2" texture="ru/tex/characters/greed.png" rect="43 18 -18 18" />
-<texture name="headRight2" texture="ru/tex/characters/greed.png" rect="61 18 -18 18" />
+<texture name="headIdle" texture="tex/characters/greed.png" rect="0 0 22 18" />
+<texture name="chestIdle" texture="tex/characters/greed.png" rect="4 18 14 11" />
+<texture name="torsoIdle" texture="tex/characters/greed.png" rect="4 29 14 12" />
+<texture name="armLeft" texture="tex/characters/greed.png" rect="20 19 5 12" />
+<texture name="handLeft" texture="tex/characters/greed.png" rect="20 31 6 13" />
+<texture name="armRight" texture="tex/characters/greed.png" rect="25 19 -5 12" />
+<texture name="handRight" texture="tex/characters/greed.png" rect="25 31 -6 13" />
+<texture name="hipLeftIdle" texture="tex/characters/greed.png" rect="5 41 5 8" />
+<texture name="legLeftIdle" texture="tex/characters/greed.png" rect="5 49 5 9" />
+<texture name="footLeftIdle" texture="tex/characters/greed.png" rect="3 58 7 5" />
+<texture name="hipRightIdle" texture="tex/characters/greed.png" rect="12 41 5 8" />
+<texture name="legRightIdle" texture="tex/characters/greed.png" rect="12 49 5 9" />
+<texture name="footRightIdle" texture="tex/characters/greed.png" rect="12 58 7 5" />
+<texture name="headLeft" texture="tex/characters/greed.png" rect="25 0 18 18" />
+<texture name="headRight" texture="tex/characters/greed.png" rect="43 0 -18 18" />
+<texture name="chestLeft" texture="tex/characters/greed.png" rect="30 18 9 11" />
+<texture name="chestRight" texture="tex/characters/greed.png" rect="39 18 -9 11" />
+<texture name="torsoLeft" texture="tex/characters/greed.png" rect="30 29 8 12" />
+<texture name="torsoRight" texture="tex/characters/greed.png" rect="38 29 -8 12" />
+<texture name="hipLeft" texture="tex/characters/greed.png" rect="32 41 5 8" />
+<texture name="hipRight" texture="tex/characters/greed.png" rect="37 41 -5 8" />
+<texture name="legLeft" texture="tex/characters/greed.png" rect="32 49 5 9" />
+<texture name="legRight" texture="tex/characters/greed.png" rect="37 49 -5 9" />
+<texture name="footLeft" texture="tex/characters/greed.png" rect="28 58 9 5" />
+<texture name="footRight" texture="tex/characters/greed.png" rect="37 58 -9 5" />
+<texture name="headIdle2" texture="tex/characters/greed.png" rect="43 0 22 18" />
+<texture name="headLeft2" texture="tex/characters/greed.png" rect="44 18 18 18" />
+<texture name="headRight2" texture="tex/characters/greed.png" rect="62 18 -18 18" />
+<texture name="headRight2" texture="tex/characters/greed.png" rect="43 18 -18 18" />
+<texture name="headRight2" texture="tex/characters/greed.png" rect="61 18 -18 18" />
 <animation name="idle" duration="2" repeat="true">
 	<change bone="0">
 		<frame timestamp="0" rotate="180" texture="headIdle" layer="1" origin="11.000000 18.000000" />

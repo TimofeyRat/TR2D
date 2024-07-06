@@ -1,4 +1,4 @@
-<entity name="Greed" skeleton="ru/skeletons/greed.trskeleton" script="ru/scripts/soul.lua">
+<entity name="Greed" skeleton="skeletons/greed.trskeleton" script="scripts/soul.lua">
 	<physics
 		friction="0.5"
 		mass="1"

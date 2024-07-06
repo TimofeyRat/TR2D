@@ -1,4 +1,4 @@
-<entity name="GreenElemental" skeleton="ru/skeletons/gr_el.trskeleton" script="ru/scripts/gr_el.lua" weapon="lighter" >
+<entity name="GreenElemental" skeleton="skeletons/gr_el.trskeleton" script="scripts/gr_el.lua" weapon="lighter" >
 	<physics
 		friction="0.5"
 		mass="1"

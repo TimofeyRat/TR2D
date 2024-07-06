@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<bone root="0" layer="0" length="10" angleOffset="0" />
+<texture name="slime0" texture="tex/characters/slime.png" rect="0 0 16 10" />
+<texture name="slime1" texture="tex/characters/slime.png" rect="16 0 16 10" />
+<texture name="slime2" texture="tex/characters/slime.png" rect="32 0 16 10" />
+<animation name="slime" duration="1" repeat="true">
+	<change bone="0">
+		<frame timestamp="0" texture="slime0" layer="0" root="0" origin="8.000000 0.000000" />
+		<frame timestamp="0.25" texture="slime1" />
+		<frame timestamp="0.5" texture="slime2" />
+		<frame timestamp="0.75" texture="slime1" />
+	</change>
+</animation>
