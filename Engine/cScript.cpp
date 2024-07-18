@@ -23,6 +23,8 @@ Script::Script()
 	lua_register(state, "setExecNum", setExecutorNum);
 	lua_register(state, "getExecStr", getExecutorStr);
 	lua_register(state, "setExecStr", setExecutorStr);
+	lua_register(state, "hasItem", hasItem);
+	lua_register(state, "hasVar", hasVar);
 }
 
 int Script::getNum(lua_State *L)
@@ -88,6 +90,15 @@ int Script::setExecutorStr(lua_State *L)
 
 int Script::getDeltaTime(lua_State *L) { lua_pushnumber(L, Window::getDeltaTime()); return 1; }
 
+int Script::hasItem(lua_State *L) { lua_pushboolean(L, Inventory::hasItem(lua_tostring(L, -2), lua_tonumber(L, -1))); return 1; }
+
+int Script::hasVar(lua_State *L)
+{
+	auto path = tr::splitStr(lua_tostring(L, -1), "-");
+	lua_pushboolean(L, getProgrammable(path[0])->hasVar(path[1]));
+	return 1;
+}
+
 void Script::load(sf::String path) { code = AssetManager::getText(path); }
 void Script::execute(sf::String func)
 {
@@ -115,5 +126,6 @@ Programmable *Script::getProgrammable(sf::String name)
 	if (path[0] == "camOwner") return World::getCameraOwner();
 	if (path[0] == "lvl") return World::getCurrentLevel();
 	if (path[0] == "input") return nullptr;
-	return World::getCurrentLevel()->getEntity(path[1]);
+	if (auto ent = World::getCurrentLevel()->getEntity(path[0])) return ent;
+	return World::getCurrentLevel()->getTrigger(path[0]);
 }

@@ -1,22 +1,22 @@
 <?xml version="1.0"?>
 <bone root="0" layer="1" length="18" angleOffset="180" />
-<bone root="1" layer="1" length="11" angleOffset="0" />
-<bone root="1" layer="1" length="12" angleOffset="0" />
+<bone root="1" layer="2" length="11" angleOffset="0" />
+<bone root="1" layer="2" length="12" angleOffset="0" />
 <bone root="3" layer="0" length="3" angleOffset="0" />
 <bone root="3" layer="0" length="8" angleOffset="0" />
-<bone root="3" layer="0" length="12" angleOffset="0" />
-<bone root="5" layer="0" length="13" angleOffset="0" />
+<bone root="4" layer="1" length="12" angleOffset="0" />
+<bone root="5" layer="1" length="16" angleOffset="0" />
 <bone root="3" layer="0" length="8" angleOffset="0" />
-<bone root="3" layer="2" length="12" angleOffset="0" />
-<bone root="8" layer="2" length="13" angleOffset="0" />
+<bone root="7" layer="1" length="12" angleOffset="0" />
+<bone root="8" layer="1" length="13" angleOffset="0" />
 <bone root="2" layer="0" length="3" angleOffset="0" />
-<bone root="2" layer="0" length="8" angleOffset="0" />
-<bone root="11" layer="0" length="9" angleOffset="0" />
-<bone root="12" layer="0" length="5" angleOffset="0" />
+<bone root="10" layer="2" length="8" angleOffset="0" />
+<bone root="11" layer="2" length="9" angleOffset="0" />
+<bone root="12" layer="2" length="5" angleOffset="0" />
 <bone root="2" layer="0" length="3" angleOffset="0" />
-<bone root="2" layer="1" length="8" angleOffset="0" />
-<bone root="15" layer="1" length="9" angleOffset="0" />
-<bone root="16" layer="1" length="5" angleOffset="0" />
+<bone root="14" layer="2" length="8" angleOffset="0" />
+<bone root="15" layer="2" length="9" angleOffset="0" />
+<bone root="16" layer="2" length="5" angleOffset="0" />
 <texture name="headIdle" texture="tex/characters/nasake.png" rect="0 0 22 18" />
 <texture name="chestIdle" texture="tex/characters/nasake.png" rect="4 18 14 11" />
 <texture name="torsoIdle" texture="tex/characters/nasake.png" rect="4 29 14 12" />

@@ -5,7 +5,7 @@
 	<invSizeX num="6" /><invSizeY num="3" /><invCellSize num="11" /><invCellMax num="32" />
 	<clearClr str="0-0-0-255" />
 	<musicVolume num="0" /><sfxVolume num="50" />
-	<debug num="0" /><Fullscreen num="1" />
+	<debug num="0" /><Fullscreen num="0" />
 	<dialogueFrame str="dialogue" />
 	<modification str="God's Star[RU] 0.1" />
 	<tutorial0 str="С помощью клавиш A/D подойдите к ящику." />

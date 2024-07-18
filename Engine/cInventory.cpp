@@ -294,3 +294,18 @@ void Inventory::load(pugi::xml_node node)
 		addItem(e.attribute(L"item").as_string(), e.attribute(L"count").as_uint());
 	}
 }
+
+bool Inventory::hasItem(sf::String type, sf::String id, unsigned short count)
+{
+	for (int i = 0; i < inv.size(); i++)
+	{
+		if (inv[i].item.type == type && inv[i].item.id == id) { return (count == 0 ? true : inv[i].count >= count); }
+	}
+	return false;
+}
+
+bool Inventory::hasItem(sf::String id, unsigned short count)
+{
+	auto data = tr::splitStr(id, ":");
+	return hasItem(data[0], data[1], count);
+}

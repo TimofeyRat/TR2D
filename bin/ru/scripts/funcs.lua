@@ -15,3 +15,7 @@ function distanceToPlayer(x, y)
 		getNum("camOwner-posY")
 	)
 end
+
+function xor(a, b)
+	if a ~= b then return true else return false end
+end

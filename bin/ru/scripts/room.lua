@@ -2,8 +2,8 @@ function init()
 	-- body
 end
 
-function main()
-	if getNum("lvl-tutorial01") == 0 then
+function tutorial()
+	if not hasVar("lvl-tutorial01") or getNum("lvl-tutorial01") == 0 then
 		if getNum("lvl-tutorial0") == 0 then exec("window showHint {Window-str-tutorial0} 0") end
 		if getNum("camOwner-interacted") >= 1 then
 			setNum("lvl-tutorial0", 1)
@@ -24,4 +24,9 @@ function main()
 			setNum("lvl-tutorial2", 0)
 		end
 	end
+end
+
+function main()
+	tutorial()
+	setNum("gotoHouse-active", (getStr("camOwner-weapon") == "lighter") and 1 or 0)
 end

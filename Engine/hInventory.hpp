@@ -45,6 +45,8 @@ public:
 	static Bauble getBauble(sf::String id);
 	static bool addItem(sf::String type, sf::String id, unsigned short count = 1);
 	static bool addItem(sf::String id, unsigned short count = 1);
+	static bool hasItem(sf::String type, sf::String id, unsigned short count = 0);
+	static bool hasItem(sf::String id, unsigned short count = 0);
 	static sf::Glsl::Vec4 size;
 	static sf::Texture invItems;
 	static void updateGrid();

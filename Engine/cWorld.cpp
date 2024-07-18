@@ -79,7 +79,8 @@ void WorldCL::EntityTrigger(sf::String entName, sf::String triggerName, bool sta
 	auto *trigger = lvl->getTrigger(triggerName); if (!trigger) return;
 	if (entName != lvl->cam.owner) return;
 	
-	if (trigger->hasVar("enter") && start &&
+	if ((!trigger->hasVar("active") != (trigger->getVar("active") == 1)) &&
+		trigger->hasVar("enter") && start &&
 		(trigger->getVar("entered") < trigger->getVar("enters") || !trigger->hasVar("enters")))
 	{
 		auto cmd = tr::splitStr(trigger->getVar("enter"), "|");
@@ -87,7 +88,8 @@ void WorldCL::EntityTrigger(sf::String entName, sf::String triggerName, bool sta
 		if (trigger->hasVar("enters")) trigger->setVar("entered", trigger->getVar("entered") + 1);
 	}
 
-	if (trigger->hasVar("exit") && !start && !ent->getHitbox().intersects(trigger->rect) &&
+	if ((!trigger->hasVar("active") != (trigger->getVar("active") == 1)) &&
+		trigger->hasVar("exit") && !start && !ent->getHitbox().intersects(trigger->rect) &&
 		(trigger->getVar("exited") < trigger->getVar("exits") || !trigger->hasVar("exits")))
 	{
 		auto cmd = tr::splitStr(trigger->getVar("exit"), "|");
@@ -114,6 +116,7 @@ void World::init()
 	currentMusic = "";
 	brightness = 0;
 	musicVolume = 100;
+
 	mapShader.loadFromMemory(AssetManager::getText("global/world.frag"), sf::Shader::Fragment);
 	lightShader.loadFromMemory(AssetManager::getText("global/light.frag"), sf::Shader::Fragment);
 	objectsShader.loadFromMemory(AssetManager::getText("global/objects.frag"), sf::Shader::Fragment);
@@ -447,7 +450,7 @@ void World::Level::update()
 		}
 		for (int i = 0; i < spawners.size(); i++)
 		{
-			getEntity(spawners[i].name)->setPosition(spawners[i].pos);
+			ents[i].setPosition(spawners[i].pos);
 		}
 		for (int i = 0; i < ents.size(); i++)
 		{
@@ -639,14 +642,14 @@ void World::Level::update()
 			ents[i].getRigidbody()->setUserData("ent_" + ents[i].name);
 		}
 		ents[i].update();
-		if (ents[i].hasVar("attackOnTouch")) for (int j = 0; j < ents.size(); j++)
+		if (ents[i].getVar("attackOnTouch")) for (int j = 0; j < ents.size(); j++)
 		{
 			if (i != j)
 			if (ents[i].getHitbox().intersects(ents[j].getHitbox()))
 			if (ents[i].getVar("group").num != ents[j].getVar("group").num)
 			if (ents[j].getVar("noHurtTimer") >= ents[j].getVar("damageCD"))
 			{
-				ents[j].addEffect(Inventory::Effect({"HP", ents[i].getVar("attackOnTouch").num}, 0, 1, true));
+				ents[j].addEffect(Inventory::Effect({"HP", ents[i].getVar("touchDamage").num}, 0, 1, true));
 			}
 		}
 		if (ents[i].weapon.id != "null" && ents[i].getVar("attacking"))
@@ -671,7 +674,8 @@ void World::Level::update()
 	{
 		for (int i = 0; i < triggers.size(); i++)
 		{
-			if (triggers[i].rect.intersects(camOwner->getHitbox()) &&
+			if ((!triggers[i].hasVar("active") != (triggers[i].getVar("active") == 1)) &&
+				triggers[i].rect.intersects(camOwner->getHitbox()) &&
 				triggers[i].hasVar("inter") &&
 				(triggers[i].hasVar("usages") ? (triggers[i].getVar("used") < triggers[i].getVar("usages")) : true) &&
 				Input::active)

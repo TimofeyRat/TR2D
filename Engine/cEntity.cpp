@@ -119,6 +119,9 @@ void Entity::update()
 	setVar("moveY", rb.getBody()->GetLinearVelocity().y * tr::M2P);
 	setVar("noHurtTimer", getVar("noHurtTimer") + Window::getDeltaTime());
 	setVar("damageCD", getVar("damageCooldown").num);
+	/*/
+		Настрой возможность продолжать отрисовку при HP <= 0 и сделай анимацию смерти.
+	*/
 }
 
 void Entity::draw(sf::RenderTarget *target, const sf::RenderStates &states)

@@ -29,6 +29,8 @@ private:
 	static int setExecutorNum(lua_State *L);
 	static int getExecutorStr(lua_State *L);
 	static int setExecutorStr(lua_State *L);
+	static int hasItem(lua_State *L);
+	static int hasVar(lua_State *L);
 public:
 	static Programmable* currentExecutor;
 	Script();
