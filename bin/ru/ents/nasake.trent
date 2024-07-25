@@ -9,7 +9,7 @@
 		collisionGroup="-1" />
 	<variable name="HP" num="100" />
 	<variable name="handBone" num="6" />
-	<variable name="weaponLayer" num="1" />
+	<variable name="weaponLayer" num="0" />
 	<variable name="neckBone" num="2" />
 	<variable name="baubleLayer" num="1" />
 	<variable name="headBone" num="1" />

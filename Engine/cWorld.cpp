@@ -1577,3 +1577,17 @@ void World::loadGame(pugi::xml_node world)
 		}
 	}
 }
+
+bool World::checkCollision(sf::String obj1, sf::String obj2)
+{
+	return getHitbox(obj1).intersects(getHitbox(obj2));
+}
+
+sf::FloatRect World::getHitbox(sf::String obj)
+{
+	auto path = tr::splitStr(obj, "-");
+	if (path[0] == "camOwner") return World::getCameraOwner()->getHitbox();
+	if (path[0] == "ent") return World::getCurrentLevel()->getEntity(path[1])->getHitbox();
+	if (path[0] == "trigger") return World::getCurrentLevel()->getTrigger(path[1])->rect;
+	return sf::FloatRect();
+}

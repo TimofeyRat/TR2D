@@ -1,10 +1,10 @@
 #include <math.h>
 #include <SFML/Graphics.hpp>
-#include <windows.h>
 #include <filesystem>
 #include <iostream>
 #include "Engine/hGlobal.hpp"
 #include <pugixml.hpp>
+#include "Engine/hAssets.hpp"
 #include "Engine/hAnimation.hpp"
 #include "Engine/hProgrammable.hpp"
 
@@ -306,7 +306,7 @@ void loadFromFile(sf::String path)
 		level.name = lvl.attribute(L"name").as_string();
 		auto map = lvl.child(L"map");
 		level.map.tilePath = map.attribute(L"tex").as_string();
-		level.map.tileTex.loadFromFile(level.map.tilePath);
+		level.map.tileTex.loadFromFile(assets + level.map.tilePath);
 		auto ts = tr::splitStr(map.attribute(L"tileSize").as_string(L"0 0"), " ");
 		level.map.tileSize = {
 			std::stoi(ts[0].toAnsiString()),
@@ -328,7 +328,7 @@ void loadFromFile(sf::String path)
 		{
 			auto bg = tr::splitStr(lvl.attribute(L"bg").as_string(), " ");
 			level.bgPath = bg[0];
-			level.bgTex.loadFromFile(level.bgPath);
+			level.bgTex.loadFromFile(assets + level.bgPath);
 			level.bgBounds = {
 				std::stof(bg[1].toAnsiString()), std::stof(bg[2].toAnsiString()),
 				std::stof(bg[3].toAnsiString()), std::stof(bg[4].toAnsiString())
@@ -593,8 +593,15 @@ void save(sf::String file)
 #define ScriptsNew 0
 #define ScriptsDelete 1
 
-sf::String openWindow(char* filter = "TR2D World (*.trworld)\0*.trworld\0")
+#ifdef __WIN32__
+#include <windows.h>
+sf::String openWindow(
+	char* desc = "TR2D Skeleton (*.trskeleton)",
+	char* ext = "*.trskeleton")
 {
+	std::string cppFilter = desc;
+	cppFilter += "\0" + ext + "\0";
+	char* filter = cppFilter.c_str();
 	auto path = std::filesystem::current_path();
 	OPENFILENAME ofn;
 	char filename[MAX_PATH] = "";
@@ -619,8 +626,8 @@ sf::String openWindow(char* filter = "TR2D World (*.trworld)\0*.trworld\0")
 		sf::String file = ofn.lpstrFile;
 		file.erase(0, path.string().length() + 1);
 		std::filesystem::current_path(path);
-		while (tr::strContains(currentPath, "\\")) currentPath.replace("\\", "/");
 		while (tr::strContains(file, "\\")) file.replace("\\", "/");
+		res = file.substring(0, file.find("/") + 1);
 		return file;
 	}
 	return "Fail";
@@ -659,6 +666,91 @@ sf::String saveWindow()
 	}
 	return "Fail"; 
 }
+#elif defined(__linux__)
+sf::String openWindow(sf::String desc, sf::String type)
+{
+	auto path = std::filesystem::current_path();
+	std::vector<std::pair<bool, sf::String>> entries;
+
+	sf::Font font;
+	#ifdef __WIN32__
+	font.loadFromFile("C:/Windows/Fonts/Arial.ttf");
+	#elif defined(__linux__)
+	font.loadFromFile("/usr/share/fonts/TTF/OpenSans-Regular.ttf");
+	#endif
+	sf::Text entry("", font, 16);
+
+	sf::RenderWindow window({640, 480}, "Open file: " + desc);
+
+	bool click = false, update = true;
+	int offset = 0;
+	while (window.isOpen())
+	{
+		click = false;
+		sf::Event e;
+		while (window.pollEvent(e))
+		{
+			if (e.type == sf::Event::Closed) { window.close(); return ""; }
+			if (e.type == sf::Event::Resized) { window.setView(sf::View({0, 0, e.size.width, e.size.height})); }
+			if (e.type == sf::Event::MouseButtonPressed && e.mouseButton.button == sf::Mouse::Left) click = true;
+			if (e.type == sf::Event::MouseWheelScrolled && e.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
+			{
+				offset = std::clamp(offset - e.mouseWheelScroll.delta, 0.0f, (float)entries.size() - 1);
+			}
+		}
+
+		if (update)
+		{
+			entries.clear();
+			entries.push_back(std::make_pair<bool, sf::String>(true, ".."));
+			for (auto p : std::filesystem::directory_iterator(path))
+			{
+				if (p.is_directory())
+				{
+					entries.push_back(std::make_pair<bool, sf::String>(true, p.path().string()));
+				}
+				else if (p.path().extension().string() == type.toAnsiString())
+				{
+					entries.push_back(std::make_pair<bool, sf::String>(false, p.path().string()));
+				}
+			}
+			update = false;
+			offset = 0;
+		}
+
+		auto mouse = (sf::Vector2f)sf::Mouse::getPosition(window);
+
+		window.clear();
+		for (int i = offset; i < entries.size(); i++)
+		{
+			entry.setString(entries[i].second + (entries[i].first ? "/" : ""));
+			entry.setPosition(0, 20 * (i - offset));
+			if (entry.getGlobalBounds().contains(mouse))
+			{
+				entry.setFillColor(sf::Color::Green);
+				if (click)
+				{
+					if (entries[i].first)
+					{
+						if (!i) path = path.parent_path();
+						else path.append(entries[i].second.toAnsiString());
+						update = true;
+					}
+					else return entries[i].second.substring(std::filesystem::current_path().string().length() + 1);
+				}
+			}
+			else entry.setFillColor(sf::Color::White);
+			window.draw(entry);
+		}
+		window.display();
+	}
+	return "";
+}
+sf::String saveWindow()
+{
+	return "Fail";
+}
+#endif
 
 std::vector<sf::Text> ui;
 
@@ -822,9 +914,10 @@ void execute(int page, int btn)
 	{
 		if (btn == MainOpen)
 		{
-			auto path = openWindow();
+			auto path = openWindow("TR2D World (*.trworld)", ".trworld");
 			if (path == "Fail") { return; }
 			assets = path.substring(0, path.find("/") + 1);
+			AssetManager::path = assets;
 			loadFromFile(path);
 		}
 		if (btn == MainSave)
@@ -839,7 +932,7 @@ void execute(int page, int btn)
 		if (btn == MainLevels) { typing = true; enter.setString("Choose level by name/ID:\n"); }
 		if (btn == MainBG)
 		{
-			auto path = openWindow("Texture (*.png)\0*.png\0");
+			auto path = openWindow("Texture (*.png)", ".png");
 			if (path == "Fail") return;
 			lvls[currentLevel].bgPath = path;
 			lvls[currentLevel].bgTex.loadFromFile(lvls[currentLevel].bgPath);
@@ -848,7 +941,7 @@ void execute(int page, int btn)
 		if (btn == MainBGType) { typing = true; enter.setString("Static/Parallax background:\n"); }
 		if (btn == MainMusic)
 		{
-			auto path = openWindow("Music (*.ogg)\0*.ogg\0");
+			auto path = openWindow("Music (*.ogg)", "*.ogg");
 			if (path == "Fail") return;
 			lvls[currentLevel].music = path;
 		}
@@ -862,7 +955,7 @@ void execute(int page, int btn)
 		if (btn == DrawMap) { typing = true; enter.setString("Set map size:\n"); }
 		if (btn == DrawTex)
 		{
-			auto path = openWindow("Texture (*.png)\0*.png\0");
+			auto path = openWindow("Texture (*.png)", ".png");
 			if (path == "Fail") return;
 			lvls[currentLevel].map.tilePath = path;
 			lvls[currentLevel].map.tileTex.loadFromFile(path);

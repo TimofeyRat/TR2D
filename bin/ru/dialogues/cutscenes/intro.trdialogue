@@ -55,7 +55,7 @@
 
 <dialogue name="room">
 	<phrase name="1" speaker="Жадность">
-		<text>ДЕД ИНСА-А-АЙД!</text>
+		<text>ДЕД ИНСААААААААААЙД!</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>cutscene setClip 2</action>
@@ -77,7 +77,7 @@
 		</reply>
 	</phrase>
 	<phrase name="4" speaker="Насаке">
-		<text>Нет. Я отдыхаю, отвянь.</text>
+		<text>Нет. Я отдыхаю, кыш отсюда.</text>
 		<reply name="next">
 			<text>[->]</text>
 			<action>talk setPhrase 5</action>

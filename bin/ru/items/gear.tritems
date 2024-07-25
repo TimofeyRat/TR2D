@@ -12,6 +12,6 @@
 
 <item id="weapon:lighter" name="Зажигалка" countable="0" useable="0" anim="anims/items.tranim" />
 
-<weapon id="lighter" anim="anims/weapons.tranim" delay="0.75" origin="6 4.5" scale="2" rotation="90" type="fist" showOnIdle="1">
+<weapon id="lighter" anim="anims/weapons.tranim" delay="0.75" origin="10 4.5" scale="2" rotation="90" type="fist" showOnIdle="1">
 	<effect name="HP" type="add" num="-5" frequency="1" usages="1" />
 </weapon>

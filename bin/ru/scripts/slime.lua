@@ -15,7 +15,6 @@ function main()
 	local onGround = getExecNum("onGround")
 	jumpTimer = jumpTimer + getDeltaTime()
 
-	print(getExecNum("attackOnTouch"))
 	setExecNum("attackOnTouch", getExecNum("noHurtTimer") < damageCD and 0 or 1)
 	
 	if dist > enemyDistance then

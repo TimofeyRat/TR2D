@@ -200,7 +200,7 @@ void Window::display()
 {
 	if (getVar("showCredits"))
 	{
-		auto font = *AssetManager::getFont(AssetManager::path + "global/font.ttf");
+		auto font = *AssetManager::getFont("global/font.ttf");
 		int count = 0, current = 0;
 		for (int i = 0; i < credits.size(); i++)
 		{

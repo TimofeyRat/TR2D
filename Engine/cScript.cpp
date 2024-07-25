@@ -25,6 +25,7 @@ Script::Script()
 	lua_register(state, "setExecStr", setExecutorStr);
 	lua_register(state, "hasItem", hasItem);
 	lua_register(state, "hasVar", hasVar);
+	lua_register(state, "checkCollision", checkCollision);
 }
 
 int Script::getNum(lua_State *L)
@@ -96,6 +97,12 @@ int Script::hasVar(lua_State *L)
 {
 	auto path = tr::splitStr(lua_tostring(L, -1), "-");
 	lua_pushboolean(L, getProgrammable(path[0])->hasVar(path[1]));
+	return 1;
+}
+
+int Script::checkCollision(lua_State *L)
+{
+	lua_pushboolean(L, World::checkCollision(lua_tostring(L, -1), lua_tostring(L, -2)));
 	return 1;
 }
 

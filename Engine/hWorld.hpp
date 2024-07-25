@@ -191,6 +191,8 @@ public:
 	static void setCurrentLevel(sf::String name);
 	static void saveGame(pugi::xml_node node);
 	static void loadGame(pugi::xml_node node);
+	static bool checkCollision(sf::String obj1, sf::String obj2);
+	static sf::FloatRect getHitbox(sf::String obj);
 	static std::map<sf::String, sf::String> ents;
 	static sf::Music music;
 	static std::vector<Level> lvls;

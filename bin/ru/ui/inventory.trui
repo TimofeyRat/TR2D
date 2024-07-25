@@ -3,11 +3,8 @@
 	<object name="hotKeys">
 		<action event="key-click-Escape" condition="null">world setActive 0;ui load ui/mainMenu.trui</action>
 		<action event="key-click-F1" condition="null">ui setFrame console;input active 0</action>
-		<action event="key-click-F2" condition="null">assets reload text global/light.frag;loadGame</action>
-		<action event="key-click-F4" condition="null">assets reload text worlds/start.trworld;loadGame</action>
 		<action event="key-click-F5" condition="null">saveGame</action>
 		<action event="key-click-F6" condition="null">assets init;loadGame</action>
-		<action event="key-click-F7" condition="null">assets reload text scripts/slime.lua;loadGame</action>
 	</object>
 	<object name="inv">
 		<toggle event="cmp-input-main-showInventory-eq-1" />

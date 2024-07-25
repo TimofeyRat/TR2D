@@ -1,3 +1,1 @@
-"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\SkeletonEditor.dir/objects.a
-C:\PROGRA~1\mingw64\bin\ar.exe qc CMakeFiles\SkeletonEditor.dir/objects.a @CMakeFiles\SkeletonEditor.dir\objects1.rsp
-C:\PROGRA~1\mingw64\bin\G__~1.EXE -g -Wl,--whole-archive CMakeFiles\SkeletonEditor.dir/objects.a -Wl,--no-whole-archive -o C:\Projects\TR2D\bin\SkeletonEditor.exe -Wl,--out-implib,C:\Projects\TR2D\bin\libSkeletonEditor.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\SkeletonEditor.dir\linkLibs.rsp
+/usr/bin/g++ -g CMakeFiles/SkeletonEditor.dir/TRSE.cpp.o CMakeFiles/SkeletonEditor.dir/Engine/cGlobal.cpp.o -o /home/tim/Projects/TR2D/bin/SkeletonEditor  -lsfml-window -lsfml-graphics -lsfml-system -lsfml-audio -lpugixml

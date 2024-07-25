@@ -39,7 +39,7 @@ add_executable(MapEditor TRME.cpp
 	Engine/cWindow.cpp)
 
 target_link_libraries(MapEditor sfml-window sfml-graphics sfml-system sfml-audio pugixml)
-target_compile_options(MapEditor PUBLIC -w -static -D SFML_STATIC -mwindows)
+target_compile_options(MapEditor PUBLIC -w -static -D SFML_STATIC)
 
 project(SkeletonEditor VERSION 0.1 LANGUAGES CXX)
 add_executable(SkeletonEditor TRSE.cpp Engine/cGlobal.cpp)

@@ -1,10 +1,197 @@
 #include <SFML/Graphics.hpp>
 #include <pugixml.hpp>
 #include "Engine/hGlobal.hpp"
-#include <windows.h>
 #include <iostream>
 #include <filesystem>
 #include <math.h>
+
+#ifdef __WIN32__
+#include <windows.h>
+
+sf::String openWindow(
+	char* desc = "TR2D Skeleton (*.trskeleton)",
+	char* ext = "*.trskeleton")
+{
+	std::string cppFilter = desc;
+	cppFilter += "\0" + ext + "\0";
+	char* filter = cppFilter.c_str();
+	auto path = std::filesystem::current_path();
+	OPENFILENAME ofn;
+	char filename[MAX_PATH] = "";
+
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = NULL;
+	ofn.lpstrFile = filename;
+	ofn.lpstrFile[0] = '\0';
+	ofn.nMaxFile = sizeof(filename);
+	ofn.lpstrFilter = filter;
+	ofn.nFilterIndex = 1;
+	ofn.lpstrFileTitle = NULL;
+	ofn.nMaxFileTitle = 0;
+	ofn.lpstrInitialDir = NULL;
+	ofn.lpstrTitle = "Open file";
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+	ofn.lpstrInitialDir = path.string().c_str();
+
+	if (GetOpenFileName(&ofn) == TRUE)
+	{
+		sf::String file = ofn.lpstrFile;
+		file.erase(0, path.string().length() + 1);
+		std::filesystem::current_path(path);
+		while (tr::strContains(file, "\\")) file.replace("\\", "/");
+		res = file.substring(0, file.find("/") + 1);
+		return file;
+	}
+	return "Fail";
+}
+
+sf::String saveWindow()
+{
+	auto path = std::filesystem::current_path();
+	OPENFILENAME ofn;
+	char filename[MAX_PATH] = "";
+
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = NULL;
+	ofn.lpstrFile = filename;
+	ofn.lpstrFile[0] = '\0';
+	ofn.nMaxFile = sizeof(filename);
+	ofn.lpstrFilter = "TR2D Skeleton (*.trskeleton)\0*.trskeleton\0";
+	ofn.nFilterIndex = 1;
+	ofn.lpstrFileTitle = NULL;
+	ofn.nMaxFileTitle = 0;
+	ofn.lpstrInitialDir = NULL;
+	ofn.lpstrTitle = "Open file";
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+	ofn.lpstrInitialDir = path.string().c_str();
+
+	if (GetSaveFileName(&ofn) == TRUE)
+	{
+		sf::String file = ofn.lpstrFile;
+		file.erase(0, path.string().length() + 1);
+		std::filesystem::current_path(path);
+		while (tr::strContains(file, "\\")) file.replace("\\", "/");
+		return file;
+	}
+	return "Fail"; 
+}
+#endif
+#ifdef __linux
+
+sf::String openWindow(sf::String desc, sf::String type)
+{
+	auto path = std::filesystem::current_path();
+	std::vector<std::pair<bool, sf::String>> entries;
+
+	sf::Font font;
+	#ifdef __WIN32__
+	font.loadFromFile("C:/Windows/Fonts/Arial.ttf");
+	#elif defined(__linux__)
+	font.loadFromFile("/usr/share/fonts/TTF/OpenSans-Regular.ttf");
+	#endif
+	sf::Text entry("", font, 16);
+
+	sf::RenderWindow window({640, 480}, "Open file: " + desc);
+
+	bool click = false, update = true;
+	int offset = 0;
+	while (window.isOpen())
+	{
+		click = false;
+		sf::Event e;
+		while (window.pollEvent(e))
+		{
+			if (e.type == sf::Event::Closed) { window.close(); return ""; }
+			if (e.type == sf::Event::Resized) { window.setView(sf::View({0, 0, e.size.width, e.size.height})); }
+			if (e.type == sf::Event::MouseButtonPressed && e.mouseButton.button == sf::Mouse::Left) click = true;
+			if (e.type == sf::Event::MouseWheelScrolled && e.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel)
+			{
+				offset = std::clamp(offset - e.mouseWheelScroll.delta, 0.0f, (float)entries.size() - 1);
+			}
+		}
+
+		if (update)
+		{
+			entries.clear();
+			entries.push_back(std::make_pair<bool, sf::String>(true, ".."));
+			for (auto p : std::filesystem::directory_iterator(path))
+			{
+				if (p.is_directory())
+				{
+					entries.push_back(std::make_pair<bool, sf::String>(true, p.path().string()));
+				}
+				else if (p.path().extension().string() == type.toAnsiString())
+				{
+					entries.push_back(std::make_pair<bool, sf::String>(false, p.path().string()));
+				}
+			}
+			update = false;
+			offset = 0;
+		}
+
+		auto mouse = (sf::Vector2f)sf::Mouse::getPosition(window);
+
+		window.clear();
+		for (int i = offset; i < entries.size(); i++)
+		{
+			entry.setString(entries[i].second + (entries[i].first ? "/" : ""));
+			entry.setPosition(0, 20 * (i - offset));
+			if (entry.getGlobalBounds().contains(mouse))
+			{
+				entry.setFillColor(sf::Color::Green);
+				if (click)
+				{
+					if (entries[i].first)
+					{
+						if (!i) path = path.parent_path();
+						else path.append(entries[i].second.toAnsiString());
+						update = true;
+					}
+					else return entries[i].second;
+				}
+			}
+			else entry.setFillColor(sf::Color::White);
+			window.draw(entry);
+		}
+		window.display();
+	}
+	return "";
+}
+
+sf::String saveWindow()
+{
+	// auto path = std::filesystem::current_path();
+	// OPENFILENAME ofn;
+	// char filename[MAX_PATH] = "";
+
+	// ZeroMemory(&ofn, sizeof(ofn));
+	// ofn.lStructSize = sizeof(ofn);
+	// ofn.hwndOwner = NULL;
+	// ofn.lpstrFile = filename;
+	// ofn.lpstrFile[0] = '\0';
+	// ofn.nMaxFile = sizeof(filename);
+	// ofn.lpstrFilter = "TR2D Skeleton (*.trskeleton)\0*.trskeleton\0";
+	// ofn.nFilterIndex = 1;
+	// ofn.lpstrFileTitle = NULL;
+	// ofn.nMaxFileTitle = 0;
+	// ofn.lpstrInitialDir = NULL;
+	// ofn.lpstrTitle = "Open file";
+	// ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+	// ofn.lpstrInitialDir = path.string().c_str();
+
+	// if (GetSaveFileName(&ofn) == TRUE)
+	// {
+	// 	sf::String file = ofn.lpstrFile;
+	// 	file.erase(0, path.string().length() + 1);
+	// 	std::filesystem::current_path(path);
+	// 	while (tr::strContains(file, "\\")) file.replace("\\", "/");
+	// 	return file;
+	// }
+	return "Fail"; 
+}
+#endif
 
 sf::RenderWindow window;
 float deltaTime, currentFrame;
@@ -68,69 +255,20 @@ sf::String res;
 #define FrameRoot 5
 #define FrameOrigin 6
 
-sf::String openWindow(char* filter = "TR2D Skeleton (*.trskeleton)\0*.trskeleton\0")
+void initRes(sf::String filename)
 {
-	auto path = std::filesystem::current_path();
-	OPENFILENAME ofn;
-	char filename[MAX_PATH] = "";
-
-	ZeroMemory(&ofn, sizeof(ofn));
-	ofn.lStructSize = sizeof(ofn);
-	ofn.hwndOwner = NULL;
-	ofn.lpstrFile = filename;
-	ofn.lpstrFile[0] = '\0';
-	ofn.nMaxFile = sizeof(filename);
-	ofn.lpstrFilter = filter;
-	ofn.nFilterIndex = 1;
-	ofn.lpstrFileTitle = NULL;
-	ofn.nMaxFileTitle = 0;
-	ofn.lpstrInitialDir = NULL;
-	ofn.lpstrTitle = "Open file";
-	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
-	ofn.lpstrInitialDir = path.string().c_str();
-
-	if (GetOpenFileName(&ofn) == TRUE)
+	std::filesystem::path p(filename.toAnsiString());
+	p = p.parent_path();
+	bool foundGlobal = false;
+	while (!foundGlobal)
 	{
-		sf::String file = ofn.lpstrFile;
-		file.erase(0, path.string().length() + 1);
-		std::filesystem::current_path(path);
-		while (tr::strContains(file, "\\")) file.replace("\\", "/");
-		res = file.substring(0, file.find("/") + 1);
-		return file;
+		for (auto file : std::filesystem::directory_iterator(p))
+		{
+			if (file.is_directory() && file.path().filename().string() == "global") foundGlobal = true;
+		}
+		if (!foundGlobal) p = p.parent_path();
 	}
-	return "Fail";
-}
-
-sf::String saveWindow()
-{
-	auto path = std::filesystem::current_path();
-	OPENFILENAME ofn;
-	char filename[MAX_PATH] = "";
-
-	ZeroMemory(&ofn, sizeof(ofn));
-	ofn.lStructSize = sizeof(ofn);
-	ofn.hwndOwner = NULL;
-	ofn.lpstrFile = filename;
-	ofn.lpstrFile[0] = '\0';
-	ofn.nMaxFile = sizeof(filename);
-	ofn.lpstrFilter = "TR2D Skeleton (*.trskeleton)\0*.trskeleton\0";
-	ofn.nFilterIndex = 1;
-	ofn.lpstrFileTitle = NULL;
-	ofn.nMaxFileTitle = 0;
-	ofn.lpstrInitialDir = NULL;
-	ofn.lpstrTitle = "Open file";
-	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
-	ofn.lpstrInitialDir = path.string().c_str();
-
-	if (GetSaveFileName(&ofn) == TRUE)
-	{
-		sf::String file = ofn.lpstrFile;
-		file.erase(0, path.string().length() + 1);
-		std::filesystem::current_path(path);
-		while (tr::strContains(file, "\\")) file.replace("\\", "/");
-		return file;
-	}
-	return "Fail"; 
+	res = p.string() + "/";
 }
 
 class Skeleton
@@ -323,6 +461,7 @@ public:
 	void loadFromFile(std::string filename)
 	{
 		if (!tr::strContains(filename, ".trskeleton")) { filename += ".trskeleton"; }
+		initRes(filename);
 		init();
 		pugi::xml_document file;
 		file.load_file(pugi::as_wide(filename).c_str());
@@ -644,7 +783,7 @@ void execute(int page, int id)
 	{
 		if (id == OpenFile)
 		{
-			auto path = openWindow();
+			auto path = openWindow("TR2D Skeleton(.trskeleton)", ".trskeleton");
 			if (path != "Fail") skeleton.loadFromFile(path);
 		}
 		if (id == Save)
@@ -743,7 +882,7 @@ void execute(int page, int id)
 		if (id == TextureName) { typing = true; enter.setString("New name|"); }
 		if (id == TexturePath)
 		{
-			auto path = openWindow("Texture (*.png)\0*.png\0");
+			auto path = openWindow("Texture (.png)", ".png");
 			if (path != "Fail") skeleton.tex[currentTexture].path = path;
 		}
 		if (id == TextureRect) { typing = true; enter.setString("New rect|"); }
@@ -1117,7 +1256,7 @@ int main()
 				if (event.key.code == sf::Keyboard::Num4 && !typing) { currentPage = PageAnimation; reloadUI(); }
 				if (event.key.code == sf::Keyboard::Num5 && !typing) { currentPage = PageFrame; reloadUI(); }
 				if (event.key.code == sf::Keyboard::S && event.key.control && !typing) { skeleton.saveAs(saveWindow()); }
-				if (event.key.code == sf::Keyboard::O && event.key.control && !typing) { skeleton.loadFromFile(openWindow()); }
+				if (event.key.code == sf::Keyboard::O && event.key.control && !typing) { skeleton.loadFromFile(openWindow("TR2D Skeleton (.trskeleton)", ".trskeleton")); }
 				if (event.key.code == sf::Keyboard::Q && !typing) { currentFrame = 0; }
 				if (event.key.code == sf::Keyboard::Space && !typing) { play = !play; }
 			}

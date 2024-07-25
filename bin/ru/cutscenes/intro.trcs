@@ -16,8 +16,9 @@
 		<move_ent name="Nasake" points="1030 390" />
 		<anim_ent name="Nasake" animation="room_inbed" />
 		<move_cam points="752 240" size="0 0 800 450 set" />
+		<execute offset="2.5" count="1">cutscene setClip 2</execute>
 	</clip>
-	<clip name="2" duration="1.25" startPhraseOnEnd="1" music="audio/music/G16.ogg">
+	<clip name="2" duration="1.25" startPhraseOnEnd="0" music="audio/music/G16.ogg">
 		<move_ent duration="2.4" name="Greed" points="300 375|500 375" />
 		<anim_ent duration="2.4" name="Greed" animation="walkRight" animSpeed="0.5" continueAfterEnd="0" />
 		<anim_ent offset="2.4" name="Greed" animation="idleRight" animSpeed="0" />
