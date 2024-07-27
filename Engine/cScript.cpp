@@ -110,16 +110,15 @@ void Script::load(sf::String path) { code = AssetManager::getText(path); }
 void Script::execute(sf::String func)
 {
 	if (code.isEmpty()) { return; }
-	int r = luaL_dostring(state, code.toAnsiString().c_str());
-	if (r != LUA_OK)
-	{
-		std::cout << "Error executing Lua code:\n" << lua_tostring(state, -1) << std::endl;
-		return;
-	}
 	if (!started)
 	{
+		if (luaL_dostring(state, code.toAnsiString().c_str()) != LUA_OK)
+		{
+			std::cout << "Error executing Lua code:\n" << lua_tostring(state, -1) << std::endl;
+			return;
+		}
 		lua_getglobal(state, "init");
-		lua_call(state, 0, 0);
+		if (lua_isfunction(state, -1)) lua_call(state, 0, 0);
 		started = true;
 	}
 	lua_getglobal(state, func.toAnsiString().c_str());

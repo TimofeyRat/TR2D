@@ -1,7 +1,3 @@
-function init()
-	-- body
-end
-
 function tutorial()
 	local state = -1
 	if not hasItem("weapon:lighter", 0) and

@@ -1,5 +1,9 @@
 {
 	"files.associations": {
+		"*.trcs": "xml",
+		"*.tritems": "xml",
+		"*.trent": "xml",
+		"*.tranim": "xml",
 		"*.trdialogue": "xml",
 		"*.trui": "xml",
 		"*.trskeleton": "xml",
@@ -57,7 +61,10 @@
 		"sstream": "cpp",
 		"stdexcept": "cpp",
 		"streambuf": "cpp",
-		"typeinfo": "cpp"
+		"typeinfo": "cpp",
+		"any": "cpp",
+		"charconv": "cpp",
+		"variant": "cpp"
 	},
 	"cmake.configureOnOpen": true,
 	"Lua.diagnostics.globals": [

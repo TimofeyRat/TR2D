@@ -1,7 +1,3 @@
-function init()
-	-- body
-end
-
 function main()
 	if (getExecNum("rotateToPlayer") == 1) then
 		local rotation = 0

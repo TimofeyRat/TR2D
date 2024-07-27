@@ -1,7 +1,3 @@
-function init()
-	-- body
-end
-
 function main()
 	updateAttack()
 	setExecNum("interacted", getExecNum("interacted") + getExecNum("interacting"))

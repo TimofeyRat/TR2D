@@ -73,8 +73,8 @@
 	<trigger name_str="leaves6" pos_str="576 -8" size_str="256 8" shadowCaster_num="-1" x_num="576" y_num="-8" w_num="256" h_num="8" />
 	<trigger name_str="leaves7" pos_str="960 -8" size_str="256 8" shadowCaster_num="-1" x_num="960" y_num="-8" w_num="256" h_num="8" />
 	<entity name="Nasake" pos="100.000000 450.000000" />
-	<entity name="Slime" pos="1100.000000 450.000000" />
-	<entity name="Slime" pos="900.000000 450.000000" />
+	<entity name="Slime" pos="1100.000000 528.000000" />
+	<entity name="Slime" pos="900.000000 528.000000" />
 	<control ent="Nasake" controller="keyboard" />
 	<light pos="64.000000 -256.000000" color="255 255 255 255" radius="1600" angle="45" field="120" />
 </level>

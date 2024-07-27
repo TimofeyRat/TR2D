@@ -64,7 +64,7 @@ void WorldCL::ParticleTrigger(int partID, sf::String triggerName, bool start)
 void WorldCL::ParticleEntity(int partID, sf::String entName, bool start)
 {
 	auto *part = &World::getCurrentLevel()->parts[partID];
-	auto *ent = World::getCurrentLevel()->getEntity(entName);
+	auto *ent = &World::getCurrentLevel()->ents[std::stoi(entName.toAnsiString())];
 	for (int i = 0; i < part->effects.size(); i++)
 	{
 		ent->addEffect(part->effects[i]);
@@ -75,9 +75,9 @@ void WorldCL::ParticleEntity(int partID, sf::String entName, bool start)
 void WorldCL::EntityTrigger(sf::String entName, sf::String triggerName, bool start)
 {
 	auto *lvl = World::getCurrentLevel(); if (!lvl) return;
-	auto *ent = lvl->getEntity(entName); if (!ent) return;
+	auto *ent = &lvl->ents[std::stoi(entName.toAnsiString())]; if (!ent) return;
 	auto *trigger = lvl->getTrigger(triggerName); if (!trigger) return;
-	if (entName != lvl->cam.owner) return;
+	if (ent->name != lvl->cam.owner) return;
 	
 	if ((!trigger->hasVar("active") != (trigger->getVar("active") == 1)) &&
 		trigger->hasVar("enter") && start &&
@@ -446,7 +446,7 @@ void World::Level::update()
 		for (int i = 0; i < ents.size(); i++)
 		{
 			ents[i].getRigidbody()->reset(world);
-			ents[i].getRigidbody()->setUserData(sf::String("ent_") + ents[i].name);
+			ents[i].getRigidbody()->setUserData(sf::String("ent_") + std::to_string(i));
 		}
 		for (int i = 0; i < spawners.size(); i++)
 		{
@@ -639,7 +639,7 @@ void World::Level::update()
 		if (ents[i].getRigidbody()->getUserData().isEmpty())
 		{
 			ents[i].getRigidbody()->reset(world);
-			ents[i].getRigidbody()->setUserData("ent_" + ents[i].name);
+			ents[i].getRigidbody()->setUserData("ent_" + std::to_string(i));
 		}
 		ents[i].update();
 		if (ents[i].getVar("attackOnTouch")) for (int j = 0; j < ents.size(); j++)
@@ -1517,6 +1517,7 @@ void World::saveGame(pugi::xml_node world)
 			auto ent = &lvl->ents[i];
 			auto e = l.append_child(L"entity");
 			e.append_attribute(L"name") = ent->name.toWideString().c_str();
+			e.append_attribute(L"id") = i;
 			auto vars = ent->getVars();
 			for (int j = 0; j < vars.size(); j++)
 			{
@@ -1557,7 +1558,7 @@ void World::loadGame(pugi::xml_node world)
 		}
 		for (auto e : l.children(L"entity"))
 		{
-			auto ent = lvl->getEntity(e.attribute(L"name").as_string());
+			auto ent = &lvl->ents[e.attribute(L"id").as_uint()];
 			for (auto data : e.attributes())
 			{
 				auto name = tr::splitStr(data.name(), "_");

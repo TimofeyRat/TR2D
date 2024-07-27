@@ -1,9 +1,5 @@
 require("ru/scripts/funcs")
 
-function init()
-	-- body
-end
-
 function main()
 	setExecNum("attacking", 0)
 	setExecNum("dx", 0)
