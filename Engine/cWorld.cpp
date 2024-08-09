@@ -1431,7 +1431,6 @@ void tr::execute(sf::String cmd)
 	}
 	else if (args[0] == "saveGame")
 	{
-		std::cout << "Saving...\n";
 		pugi::xml_document doc;
 		World::saveGame(doc.append_child(L"world"));
 		auto inv = doc.append_child(L"inventory");
@@ -1442,7 +1441,6 @@ void tr::execute(sf::String cmd)
 	}
 	else if (args[0] == "loadGame")
 	{
-		std::cout << "Loading...\n";
 		AssetManager::reloadText("global/save.trconf");
 		pugi::xml_document doc;
 		doc.load_string(AssetManager::getText("global/save.trconf").toWideString().c_str());

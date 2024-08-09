@@ -1,5 +1,5 @@
-/home/tim/Projects/TR2D/build/CMakeFiles/TR2D.dir
-/home/tim/Projects/TR2D/build/CMakeFiles/MapEditor.dir
-/home/tim/Projects/TR2D/build/CMakeFiles/SkeletonEditor.dir
-/home/tim/Projects/TR2D/build/CMakeFiles/edit_cache.dir
-/home/tim/Projects/TR2D/build/CMakeFiles/rebuild_cache.dir
+C:/Projects/TR2D/build/CMakeFiles/TR2D.dir
+C:/Projects/TR2D/build/CMakeFiles/MapEditor.dir
+C:/Projects/TR2D/build/CMakeFiles/SkeletonEditor.dir
+C:/Projects/TR2D/build/CMakeFiles/edit_cache.dir
+C:/Projects/TR2D/build/CMakeFiles/rebuild_cache.dir

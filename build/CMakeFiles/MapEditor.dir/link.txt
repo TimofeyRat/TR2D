@@ -1,1 +1,3 @@
-/usr/bin/g++ -g CMakeFiles/MapEditor.dir/TRME.cpp.o CMakeFiles/MapEditor.dir/Engine/cAnimation.cpp.o CMakeFiles/MapEditor.dir/Engine/cAssets.cpp.o CMakeFiles/MapEditor.dir/Engine/cGlobal.cpp.o CMakeFiles/MapEditor.dir/Engine/cInput.cpp.o CMakeFiles/MapEditor.dir/Engine/cProgrammable.cpp.o CMakeFiles/MapEditor.dir/Engine/cWindow.cpp.o -o /home/tim/Projects/TR2D/bin/MapEditor  -lsfml-window -lsfml-graphics -lsfml-system -lsfml-audio -lpugixml
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\MapEditor.dir/objects.a
+C:\PROGRA~1\mingw64\bin\ar.exe qc CMakeFiles\MapEditor.dir/objects.a @CMakeFiles\MapEditor.dir\objects1.rsp
+C:\PROGRA~1\mingw64\bin\G__~1.EXE -g -Wl,--whole-archive CMakeFiles\MapEditor.dir/objects.a -Wl,--no-whole-archive -o C:\Projects\TR2D\bin\MapEditor.exe -Wl,--out-implib,C:\Projects\TR2D\bin\libMapEditor.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\MapEditor.dir\linkLibs.rsp

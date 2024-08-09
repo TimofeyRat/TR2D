@@ -1,10 +1,12 @@
 file(REMOVE_RECURSE
-  "/home/tim/Projects/TR2D/bin/SkeletonEditor"
-  "/home/tim/Projects/TR2D/bin/SkeletonEditor.pdb"
-  "CMakeFiles/SkeletonEditor.dir/Engine/cGlobal.cpp.o"
-  "CMakeFiles/SkeletonEditor.dir/Engine/cGlobal.cpp.o.d"
-  "CMakeFiles/SkeletonEditor.dir/TRSE.cpp.o"
-  "CMakeFiles/SkeletonEditor.dir/TRSE.cpp.o.d"
+  "C:/Projects/TR2D/bin/SkeletonEditor.exe"
+  "C:/Projects/TR2D/bin/SkeletonEditor.exe.manifest"
+  "C:/Projects/TR2D/bin/SkeletonEditor.pdb"
+  "C:/Projects/TR2D/bin/libSkeletonEditor.dll.a"
+  "CMakeFiles/SkeletonEditor.dir/Engine/cGlobal.cpp.obj"
+  "CMakeFiles/SkeletonEditor.dir/Engine/cGlobal.cpp.obj.d"
+  "CMakeFiles/SkeletonEditor.dir/TRSE.cpp.obj"
+  "CMakeFiles/SkeletonEditor.dir/TRSE.cpp.obj.d"
 )
 
 # Per-language clean rules from dependency scanning.

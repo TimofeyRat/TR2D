@@ -898,11 +898,9 @@ void UI::Frame::Object::handle()
 		if (!txt->active) return;
 		if (txt->txt.getGlobalBounds().contains(Input::getMousePos()) && Input::isMBJustPressed(sf::Mouse::Left)) txt->setVar("input", 1);
 		if (!txt->getVar("input")) return;
-		auto path = tr::splitStr(handler, "-");
-		auto key = Input::getControl(path[1])->getKeyByVar(path[2]);
+		auto path = tr::splitStr(handler.substring(6), "_");
+		auto key = Input::getControl(path[0])->getKeyByVar(path[1]);
 		auto k = Input::getPressedInput();
-		//TODO: Write a wrapper that will determine the whole input event, i.e. key-hold/press
-		std::cout << k.toAnsiString() << std::endl;
 		if (k != "key-press-Escape") { key->key = k; txt->setVar("input", 0); }
 	}
 }
@@ -1299,7 +1297,12 @@ sf::String UI::parseText(sf::String txt)
 		auto var = tr::splitStr(path, "-");
 		sf::String value;
 		Programmable *prog = Script::getProgrammable(path);
-		if (var[0] == "input" && !prog) { prog = Window::getProgrammable(); value = Input::getControl(var[1])->getKeyByVar(var[2])->toString(); }
+		if (var[0] == "input" && !prog)
+		{
+			prog = Window::getProgrammable();
+			auto p = tr::splitStr(path.substring(6), "_");
+			value = Input::getControl(p[0])->getKeyByVar(p[1])->toString();
+		}
 		if (prog == nullptr) { result.replace(start, end - start + 1, "?"); continue; }
 		if (var[1] == "str") value = prog->getVar(var[2]);
 		else if (var[1] == "int") value = std::to_string((int)prog->getVar(var[2]).num);

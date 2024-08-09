@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/tim/Projects/TR2D/Engine/cGlobal.cpp" "CMakeFiles/SkeletonEditor.dir/Engine/cGlobal.cpp.o" "gcc" "CMakeFiles/SkeletonEditor.dir/Engine/cGlobal.cpp.o.d"
-  "/home/tim/Projects/TR2D/TRSE.cpp" "CMakeFiles/SkeletonEditor.dir/TRSE.cpp.o" "gcc" "CMakeFiles/SkeletonEditor.dir/TRSE.cpp.o.d"
+  "C:/Projects/TR2D/Engine/cGlobal.cpp" "CMakeFiles/SkeletonEditor.dir/Engine/cGlobal.cpp.obj" "gcc" "CMakeFiles/SkeletonEditor.dir/Engine/cGlobal.cpp.obj.d"
+  "C:/Projects/TR2D/TRSE.cpp" "CMakeFiles/SkeletonEditor.dir/TRSE.cpp.obj" "gcc" "CMakeFiles/SkeletonEditor.dir/TRSE.cpp.obj.d"
   )
 
 # Targets to which this target links which contain Fortran sources.
